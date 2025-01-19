@@ -64,8 +64,8 @@ return [
     */
 
     'logo' => '<b>ADEPES</b>',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image img-circle elevation-3',
+    'logo_img' => 'vendor/adminlte/dist/img/adepes.png',
+    'logo_img_class' => 'brand-image img-circle elevation-5',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'Admin Logo',
@@ -86,7 +86,7 @@ return [
     'auth_logo' => [
         'enabled' => true,
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',//logo del dashboard el que salo arriba a la izquierda
+            'path' => 'vendor/adminlte/dist/img/adepes.png',//logo del dashboard el que salo arriba a la izquierda
             'alt' => 'Auth Logo',
             'class' => '',
             'width' => 50,
@@ -113,7 +113,7 @@ return [
         'enabled' => true,
         'mode' => 'fullscreen',
         'img' => [
-            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',// imagen de carga
+            'path' => 'vendor/adminlte/dist/img/adepes.png',// imagen de carga
             'alt' => 'AdminLTE Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
