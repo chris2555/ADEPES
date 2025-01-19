@@ -312,12 +312,12 @@ return [
         ],
         [
             'text' => 'Usuarios',
-            'route' => '', // Ruta al index del controlador
+            'route' => 'users.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-users', // Ícono representativo de usuarios
         ],
         [
             'text' => 'Roles',
-            'route' => '', // Ruta al index del controlador
+            'route' => 'roles.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-shield', // Ícono representativo de usuarios
         ],
         
