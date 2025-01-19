@@ -15,13 +15,22 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-    // Crear el permiso
-    $permission = Permission::firstOrCreate(['name' => 'users.index']);
-
-    // Obtener el rol admin
-    $adminRole = Role::firstOrCreate(['name' => 'admin']);
-
-    // Asignar el permiso al rol admin
-    $adminRole->givePermissionTo($permission);
+        // Crear el permiso
+        $permission = Permission::firstOrCreate(['name' => 'users.index']);
+    
+        // Crear el rol admin
+        $adminRole = Role::firstOrCreate(['name' => 'admin']);
+    
+        // Asignar el permiso al rol admin
+        $adminRole->givePermissionTo($permission);
+    
+        // Obtener el usuario con id 3
+        $user = User::find(3);
+    
+        if ($user) {
+            // Asignar el rol al usuario
+            $user->assignRole($adminRole);
+        }
     }
+    
 }
