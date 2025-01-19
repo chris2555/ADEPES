@@ -24,7 +24,7 @@
 
 @section('content')
     <div class="table-responsive">
-        <table id="roles" class="table table-dark table-striped">
+        <table id="roles" class="table table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
