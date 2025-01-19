@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
    
   
     Route::resource('roles', AsignarRole::class)->names('roles');
-    Route::resource('users', UserController::class)->middleware('can:users.index')->names('users');
+    Route::resource('users', UserController::class)->names('users');
 });
 
 require __DIR__.'/auth.php';
