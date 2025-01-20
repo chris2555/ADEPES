@@ -87,3 +87,5 @@
     console.log('Registro cargado con éxito');
 </script>
 @endsection
+
+
