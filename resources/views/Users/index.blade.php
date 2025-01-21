@@ -23,7 +23,7 @@
 
 @section('content')
     <div class="table-responsive">
-        <table id="user" class="table table-dark table-striped">
+        <table id="user" class="table table-striped">
             <thead>
                 <tr>
                     <th>ID</th>
