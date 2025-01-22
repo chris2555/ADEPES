@@ -12,7 +12,6 @@ class UserController extends Controller
     {
         // Retrieve all users from the database
         $users = User::all();
-
         // Return the view with the list of users
         return view('Users.index', compact('users'));
     }

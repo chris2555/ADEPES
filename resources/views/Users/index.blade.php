@@ -13,12 +13,24 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1>Usuarios</h1>
-        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
+<div class="d-flex justify-content-between align-items-center mb-3"> 
+   
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
+        </ol>
+      </nav>
+    <div>
+        <button type="button" class="btn btn-info me-2" data-bs-toggle="modal" data-bs-target="#nuevoUsuarioModal">
             Nuevo Usuario
         </button>
+        <a href="{{ route('roles.index') }}" class="btn btn-success">
+            Ver Roles asignados
+        </a>
     </div>
+</div>
+
 @stop
 
 @section('content')

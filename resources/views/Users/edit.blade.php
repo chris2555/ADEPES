@@ -30,16 +30,6 @@
             </div>
 
             <div class="form-group">
-                <label for="role">Rol</label>
-                <select class="form-control" id="role" name="role" required>
-                    <option value="" disabled>Seleccione un rol</option>
-                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Administrador</option>
-                    <option value="editor" {{ $user->role == 'editor' ? 'selected' : '' }}>Editor</option>
-                    <option value="viewer" {{ $user->role == 'viewer' ? 'selected' : '' }}>Visualizador</option>
-                </select>
-            </div>
-
-            <div class="form-group">
                 <label for="password">Contraseña (Opcional)</label>
                 <input type="password" class="form-control" id="password" name="password" placeholder="Dejar vacío si no desea cambiarla">
             </div>
