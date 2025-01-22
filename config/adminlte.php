@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -314,11 +314,13 @@ return [
             'text' => 'Usuarios',
             'route' => 'users.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-users', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
         ],
         [
             'text' => 'Roles',
             'route' => 'roles.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-shield', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
         ],
         
     ],

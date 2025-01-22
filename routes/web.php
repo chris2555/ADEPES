@@ -21,8 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
    
   
-    Route::resource('roles', AsignarRole::class)->names('roles');
-    Route::resource('users', UserController::class)->names('users');
+    Route::resource('roles', AsignarRole::class)->middleware('can:users.index')->names('roles');
+    Route::resource('users', UserController::class)->middleware('can:users.index')->names('users');
 });
 
 require __DIR__.'/auth.php';
