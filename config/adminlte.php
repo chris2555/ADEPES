@@ -311,6 +311,12 @@ return [
             'icon' => 'fas fa-fw fa-users', // Ícono representativo de usuarios
             'can' => 'users.index', // Permiso asociado
         ],
+        [
+            'text' => 'Solicitud de prestamo',
+            'route' => 'solicitud.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-users', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
+        ],
     ],
 
     /*
