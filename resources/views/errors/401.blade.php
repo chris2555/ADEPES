@@ -18,7 +18,7 @@
                 <h1 class="mb-4">No autorizado</h1>
                 <p class="mb-4">Lo sentimos, no tienes autorización para acceder a esta página.
                     Por favor, verifica tus credenciales o contacta con el administrador.</p>
-                <a class="btn btn-success rounded-pill py-3 px-5" href="">Volver al inicio</a>
+                <a class="btn btn-success rounded-pill py-3 px-5" href="/dashboard">Volver al inicio</a>
             </div>
         </div>
     </div>
