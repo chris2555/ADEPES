@@ -18,7 +18,7 @@
                 <h1 class="mb-4">Página no encontrada</h1>
                 <p class="mb-4">Lo sentimos, la página que buscas no existe en nuestro sitio web.
                     ¿Quizás quieres ir a nuestra página de inicio o intentar usar el buscador?</p>
-                <a class="btn btn-success rounded-pill py-3 px-5" href="/horas">Volver al inicio</a>
+                <a class="btn btn-success rounded-pill py-3 px-5" href="/dashboard">Volver al inicio</a>
             </div>
         </div>
     </div>
