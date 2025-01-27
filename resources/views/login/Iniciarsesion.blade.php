@@ -62,6 +62,12 @@
                         <button type="submit" class="btn btn-success ms-auto">
                             Iniciar sesión
                         </button>
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="forgot-password-link">Olvidaste tu
+                                contraseña?</a>
+                            </a>
+                        @endif
+
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-5">
@@ -70,8 +76,7 @@
 
                     </div>
                 </form>
-                <p class="login-wrapper-footer-text">¿Necesitas una cuenta? <a href="{{ route('register') }}"
-                        class="text-reset">Regístrate aquí</a></p>
+                
             </div>
         </div>
     </div>

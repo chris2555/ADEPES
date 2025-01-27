@@ -1,38 +1,98 @@
 @extends('adminlte::page')
 
-@section('title', 'Solicitud Prestamo')
+@section('title', 'Solicitudes - Creando nueva solicitud')
 
 @section('content_header')
-    <h1>ASOCIACION DE DESARROLLO PESPIRENSE "ADEPES"</h1>
-    <h1>"ADEPES"</h1>
-    <img src="https://fundacioncovelo.hn/wp-content/uploads/2020/06/ADEPES.png" class="rounded float-start" alt="Logotipo de ADEPES">
-    
-    <head>
+    <div class="d-flex justify-content-between align-items-center">
+        <!-- Logo en la esquina izquierda -->
+        <img src="{{ asset('img/logo-adepes.png') }}" alt="Logo ADEPES" style="height: 60px;">
+        
+        <!-- Contenedor de los títulos centrados -->
+        <div class="text-center flex-grow-1">
+            <h1 class="titulo-negrita">Asociación de Desarrollo Pespirense</h1>
+            <h1 class="titulo-negrita">"ADEPES"</h1>
+        </div>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Karla:wght@200;300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="javascript" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js">
-    <link rel="javascript" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-</head>
+        <!-- Espacio vacío para mantener el título centrado -->
+        <div style="width: 60px;"></div>
+    </div>
+@stop
 
-<section class="content"> 
-<div class="container-fluid">
-        <div class="card card-default">
-          <div class="card-header">
-            <h2 class="card-title">Solicitud de Prestamo</h2>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-         
-          <div class="card-body">
-            <div class="row">
+@section('css')
+    <style>
+        .titulo-negrita {
+            font-weight: bold; /* Negrita */
+            font-family: 'Arial', sans-serif; /* Cambia el tipo de letra */
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .card-title {
+            font-weight: bold;
+            margin: 0;
+        }       
+    .custom-border-top {
+    border-top: 2px solid #28a745; /* Línea verde en la parte superior */
+    border-bottom: none;  /* Elimina el borde inferior */
+    border-left: none;    /* Elimina el borde izquierdo */
+    border-right: none;   /* Elimina el borde derecho */
+    background-color: #f8f9fa; /* Color de fondo neutro */
+    padding: 10px 15px;  /* Espaciado interno para mejor apariencia */
+}
+    .card {
+        border: none; /* Eliminar borde de la tarjeta */
+        box-shadow: none; /* Sin sombras */
+    }
+        .btn-collapse {
+            border: none;
+            background: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .btn-collapseC {
+            border: none;
+            background: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .btn-collapseF {
+            border: none;
+            background: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .btn-collapseR {
+            border: none;
+            background: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        .btn-collapseA{
+            border: none;
+            background: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+.btn-collapse:focus {
+        outline: none;
+        box-shadow: none;
+    }
+    </style>
+@stop
+
+@section('content')
+<div class="card border border-success">
+    <!-- Nueva Sección: Información General -->
+    <div class="card-header bg-green text-white">
+        <h3 class="card-title">SOLICITUD DE PRESTAMO</h3>
+    </div>
+    <div class="card-body">
+    <div class="row">
               <div class="col-md-3">
                 <div class="form-group">
                      <!-- Tipo de Garantía -->
@@ -45,9 +105,8 @@
                 </select>
                 </div>
              </div>
-            
-                <!-- Cuota -->
-                <div class="col-md-3">
+            <!-- Cuota -->
+            <div class="col-md-3">
                 <div class="form-group">
                 <label for="cuota" class="form-label">Cuota:</label>
                 <select class="form-control select2" style="width: 100%;" id="cuota" required>
@@ -57,10 +116,8 @@
                 </select>
                 </div>
                 </div>
-           
-            
-                <!-- Tasa -->
-                <div class="col-md-3">
+            <!-- Tasa -->
+            <div class="col-md-3">
                 <div class="form-group">
                 <label for="tasa" class="form-label">Tasa:</label>
                 <select class="form-control select2" id="tasa" required style="width: 100%;" >
@@ -75,42 +132,24 @@
                 </select>
                 </div>
                 </div>
-
-                <div class="col-md-3">
+                   
+                   <div class="col-md-3">
                 <div class="form-group">
                 <label for="tasaTipo" class="form-label">Tipo de Tasa</label>
                 <input type="text" class="form-control" id="tasaTipo" placeholder="Anual" required>
                 </div>
                 <!-- /.form-group -->
                 </div>
-
-            </div>
-            <!-- /.row -->
-          
-
-          <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                     <!-- Monto -->
-                <label for="monto" class="form-label">Monto:</label>
+            <div class="col-md-4">
+                <label for="asesor">Monto</label>
                 <input type="number" class="form-control" id="monto" placeholder="Ej: 40,000.00" required >
-                     <!-- /.form-group -->
-                </div>
             </div>
-
             <div class="col-md-4">
-                <div class="form-group">
-                     <!-- Plazo -->
-                <label for="plazo" class="form-label">Plazo:</label>
+                <label for="asesor">Plazo</label>
                 <input type="number" class="form-control" id="plazo" placeholder="Ej: 24 meses" required >
-                     <!-- /.form-group -->
-                </div>
             </div>
-
             <div class="col-md-4">
-                <div class="form-group">
-                     <!-- Invierte En -->
-                <label for="invierteEn" class="form-label">Invierte En:</label>
+            <label for="invierteEn" class="form-label">Invierte En:</label>
                 <select class="form-control select2" id="tasa" style="width: 100%;" required >
                     <option selected disabled value="">Seleccione</option>
                     <option value="comercio">Comercio</option>
@@ -121,106 +160,70 @@
                     <option value="energiarenovable">Energia Renovable</option>
                     <option value="consumo">Consumo</option>
                 </select>
-                     <!-- /.form-group -->
-                </div>
             </div>
-          </div>
-           <!-- /.row -->
-          </div>
-          <!-- /.card-body -->
+        </div>
+    </div>
+</div>
 
-          </div>
-        <!-- /.card card-default -->
+<div class="card border">
+<div class="card-header custom-border-top d-flex justify-content-between align-items-center">
+        <h3 class="card-title mb-0">DATOS PERSONALES</h2>
+        <button class="btn btn-collapse ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#datosPersonales" aria-expanded="false" aria-controls="datosPersonales">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
 
-           <!-- /otra seccion 2-->
-         <div class="card card-default">
-          <div class="card-header">
-            <h2 class="card-title">Informacion Personal</h2>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="nombres" class="form-label">Nombres y Apellidos:</label>
-                <input type="text" class="form-control" id="nombres" required>
+    <!-- Contenido colapsable -->
+    <div class="collapse" id="datosPersonales">
+        <div class="card-body">
+            <form action="{{ route('solicitud.store') }}" method="POST">
+                @csrf
+                
+                <!-- Campos del formulario -->
+                <div class="row">
+                    <div class="col-md-6">
+                    <label for="nombres" class="form-label">Nombres y Apellidos:</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="identidad">Número de Identidad</label>
+                        <input type="text" class="form-control" name="identidad" required>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                    <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                    <input type="date" class="form-control" id="fechaNacimiento" required>
+                    </div>
 
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="numeroidentidad" class="form-label">Numero de Identidad:</label>
-                <input type="number" class="form-control" id="numeroidentidad" required>
+                    <div class="col-md-4">
+                    <label for="edad" class="form-label">Edad:</label>
+                    <input type="number" class="form-control" id="edad" required>     
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="nacionalidad" class="form-label">Nacionalidad:</label>
+                    <input type="text" class="form-control" id="nacionalidad" required>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
 
-            <div class="row">
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
-                <input type="date" class="form-control" id="fechaNacimiento" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                    <label for="direccion" class="form-label">Dirección Completa:</label>
+                <textarea class="form-control" id="direccion" rows="1" placeholder="Escribe la direccion aquí..." required></textarea>
+                    </div>
 
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="edad" class="form-label">Edad:</label>
-                <input type="number" class="form-control" id="edad" required>     
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="nacionalidad" class="form-label">Nacionalidad:</label>
-                <input type="text" class="form-control" id="nacionalidad" required>                    
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                <label for="direccion" class="form-label">Dirección Completa:</label>
-                <textarea class="form-control" id="direccion" rows="3" placeholder="Escribe la direccion aquí..." required></textarea>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="telefono" class="form-label">Teléfono:</label>
+                    <div class="col-md-4">
+                    <label for="telefono" class="form-label">Teléfono:</label>
               <input type="tel" class="form-control" id="telefono" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="celular" class="form-label">Celular:</label>
-                <input type="tel" class="form-control" id="celular" required>   
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
+                    </div>
+                    
+                    <div class="col-md-4">
+                    <label for="celular" class="form-label">Celular:</label>
+                    <input type="tel" class="form-control" id="celular" required> 
+                    </div>
+                
+                <div class="col-md-4">
                 <label for="estadoCivil" class="form-label">Estado Civil:</label>
                 <select class="form-control select2" id="estadoCivil" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
@@ -228,38 +231,27 @@
                     <option value="soltero">Soltero</option>
                     <option value="unionlibre">Union libre</option>
                     <option value="nodefinido">No Definido</option>
-                </select>                    
+                </select>            
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                    <label for="dependientes" class="form-label">Dependientes:</label>
+                    <input type="text" class="form-control" id="dependientes" required>
+                    </div>
 
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="dependientes" class="form-label">Dependientes:</label>
-              <input type="text" class="form-control" id="dependientes" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="casa" class="form-label">Casa:</label>
+                    <div class="col-md-4">
+                    <label for="casa" class="form-label">Casa:</label>
                 <select class="form-control select2" id="casa" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
                     <option value="propia">Propia</option>
                     <option value="alquilada">Alquilada</option>
                     <option value="familiar">Familiar</option>
-                </select>   
-                </div>
-                 <!-- /.form-group -->
-              </div>
+                </select>      
+                    </div>
 
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="tiempoVivir" class="form-label">Tiempo de Vivir:</label>
+                    <div class="col-md-4">
+                    <label for="tiempoVivir" class="form-label">Tiempo de Vivir:</label>
                 <select class="form-control select2" id="tiempoVivir" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
                     <option value="1años">1 años</option>
@@ -268,69 +260,47 @@
                     <option value="4años">4 años</option>
                     <option value="masde5Años">Mas de 5 años</option>
                 </select>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="paga" class="form-label">Paga:</label>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                    <label for="paga" class="form-label">Paga:</label>
                 <select class="form-control select2" id="paga" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
                     <option value="si">Si</option>
                     <option value="no">No</option>
                 </select>
+                    </div>
+                    <div class="col-md-4">
+                    <label for="valorPago" class="form-label">Valor del Pago:</label>
+                <input type="number" class="form-control" id="valorPago" required>  
+                    </div>
+                    <div class="col-md-4">
+                    <label for="paga" class="form-label">Genero</label>
+                <select class="form-control select2" id="paga" style="width: 100%;" required>
+                    <option selected disabled value="">Seleccione</option>
+                    <option value="si">Maculino</option>
+                    <option value="no">Femenino</option>
+                </select>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="valorPago" class="form-label">Valor del Pago:</label>
-                <input type="number" class="form-control" id="valorPago" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="profesion" class="form-label">Profesión u Oficio:</label>
-                <input type="text" class="form-control" id="profesion" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="patrono" class="form-label">Patrono o Negocio:</label>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="patrono" class="form-label">Profesion u oficio</label>
                 <input type="text" class="form-control" id="patrono" required>
+                    </div>
+                    <div class="col-md-6">
+                    <label for="cargo" class="form-label">Patrono o negocio</label>
+                    <input type="text" class="form-control" id="cargo" required>    
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="cargo" class="form-label">Cargo que desempeña:</label>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="cargo" class="form-label">Actividad que desempeña:</label>
                 <input type="text" class="form-control" id="cargo" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="tiempoLaborar" class="form-label">Tiempo de Laborar:</label>
+                    </div>
+                    <div class="col-md-6">
+                    <label for="tiempoLaborar" class="form-label">Tiempo de Laborar:</label>
                 <select class="form-control select2" id="tiempoLaborar" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
                     <option value="1años">1 años</option>
@@ -338,332 +308,162 @@
                     <option value="3años">3 años</option>
                     <option value="4años">4 años</option>
                     <option value="masde5Años">Mas de 5 años</option>
-                </select>
+                </select> 
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="sueldoMensual" class="form-label">Sueldo Mensual:</label>
-                <input type="number" class="form-control" id="sueldoMensual" required>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                    <label for="ingresos" class="form-label">Ingresos por negocio</label>
+                <input type="text" class="form-control" id="ingreso" required>
+                    </div>
+                    <div class="col-md-4">
+                    <label for="sueldo" class="form-label">Sueldo base</label>
+                    <input type="text" class="form-control" id="sueldo" required>    
+                    </div>
+                    <div class="col-md-4">
+                    <label for="gasto" class="form-label">Gasto Alimentacion</label>
+                    <input type="text" class="form-control" id="gasto" required>    
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="sueldoBase" class="form-label">Sueldo Base:</label>
-                <input type="number" class="form-control" id="sueldoBase" required>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="direccion_trabajo" class="form-label">Direccion de trabajo</label>
+                <input type="text" class="form-control" id="direccion_trabajo" required>
+                    </div>
+                    <div class="col-md-6">
+                    <label for="tiempoLaborar" class="form-label">Telefono</label>
+                    <input type="text" class="form-control" id="direccion_trabajo" required>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="gastos" class="form-label">Gastos Alimentación:</label>
-                <input type="number" class="form-control" id="gastos" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-8">
-              <div class="form-group">
-              <label for="direccionTrabajo" class="form-label">Dirección del Trabajo:</label>
-              <textarea class="form-control" id="direccionTrabajo" rows="2" placeholder="Escribe la direccion aquí..." required></textarea>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="telefonoTrabajo" class="form-label">Teléfono del Trabajo:</label>
-                <input type="tel" class="form-control" id="telefonoTrabajo" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="tipoCliente" class="form-label">Tipo de Cliente:</label>
-                <select class="form-control select2" id="tipoCliente" style="width: 100%;" required>
-                    <option selected disabled value="seleccione">Seleccione</option>
-                    <option value="primeraVez">Primera Vez</option>
-                    <option value="activo">Activo</option>
-                    <option value="inactivo">Inactivo</option>
-                </select>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="cuentan" class="form-label">cuenta #:</label>
-                <input type="number" class="form-control" id="cuentan" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="estadoCredito" class="form-label">Estado del Credito:</label>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="tipoCredito" class="form-label">Tipo credito</label>
+                <select class="form-control select2" id="tipoCredito" style="width: 100%;" required>
+                    <option selected disabled value="">Seleccione</option>
+                    <option value="primeravez">Primera Vez</option>
+                    <option value="novacion">Novacion</option>
+                    <option value="reingreso">Reingreso</option>
+                    <option value="refinanciamiento">Refinanciamiento</option>
+                </select> 
+                    </div>
+                    <div class="col-md-6">
+                    <label for="estadoCredito" class="form-label">Estado Credito</label>
                 <select class="form-control select2" id="estadoCredito" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
-                    <option value="creditoAldia">Credito al Dia</option>
-                    <option value="creditoMora">Credito en Mora</option>
-                    <option value="noExiste">No Existe Registro</option>
-                </select>
+                    <option value="irregular">Con pago irregular</option>
+                    <option value="regular">Con pago regular</option>
+                    <option value="normal">con pago normal</option>
+                </select> 
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="valorCuota" class="form-label">Valor de la Cuota:</label>
-                <input type="number" class="form-control" id="valorCuota" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="esAval" class="form-label">¿Es Aval?</label>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                    <label for="valorCuota" class="form-label">Valor de la cuota:</label>
+                    <input type="text" class="form-control" id="valorCuota" required>
+                    </div>
+                    <div class="col-md-3">
+                    <label for="esAval" class="form-label">¿Es Aval?</label>
                 <select class="form-control select2" id="esAval" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
-                    <option value="si">Si</option>
-                    <option value="no">No</option>
-                </select>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="cuentanAval" class="form-label">cuenta #:</label>
-                <input type="number" class="form-control" id="cuentanAval" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="nombreAval" class="form-label">Nombre del Aval:</label>
-                <input type="text" class="form-control" id="nombreAval" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="estadoCreditoAval" class="form-label">Estado del Credito:</label>
-                <select class="form-control select2" id="estadoCreditoAval" style="width: 100%;" required>
+                    <option value="noEs">No es aval</option>
+                    <option value="avala1">Avala 1 persona</option>
+                    <option value="avala2">Avala 2 personas</option>
+                    <option value="avalaMas">Avala mas de 2 personas</option>
+                </select>      
+                    </div>
+                    <div class="col-md-3">
+                    <label for="esAval" class="form-label"></label>
+                <select class="form-control select2" id="esAval" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
-                    <option value="creditoAldia">Credito al Dia</option>
-                    <option value="creditoMora">Credito en Mora</option>
-                    <option value="noExiste">No Existe Registro</option>
-                </select>
+                    <option value="noEs">Credito(s) al dia</option>
+                    <option value="avalMora1">1 aval en mora</option>
+                    <option value="avalaMora2">2 avales en mora</option>
+                    <option value="avalMora">2 avales en mora</option>
+                    <option value="avalMora">3 avales en mora</option>
+                </select>      
+                    </div>
+                    <div class="col-md-3">
+                    <label for="valorCuota" class="form-label">Valor de la cuota</label>
+                    <input type="text" class="form-control" id="valorCuota" required>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-          </div>
-          <!-- /.card-body -->
-          </div>
-          <!-- /.card card-default -->
-
-          <!-- /otra seccion 3 -->
-          <div class="card card-default">
-          <div class="card-header">
-            <h2 class="card-title">Información del Esposo(a) o Compañero(a)</h2>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="nombreC" class="form-label">Nombres y Apellidos:</label>
-                <input type="text" class="form-control" id="nombresC" required>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- SECCION DE CONTENEDOR INFORMACION DEL ESPOSO(A) O COMPAÑERO(A)-->
+<div class="card border ">
+<div class="card-header custom-border-top d-flex justify-content-between align-items-center">
+        <h3 class="card-title">INFORMACION DEL ESPOSO(A) O COMPAÑERO(A)</h3>
+        <button class="btn btn-collapseC ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#datosConyugue" aria-expanded="false" aria-controls="datosConyugue">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    <!-- Contenido colapsable -->
+    <div class="collapse" id="datosConyugue">
+        <div class="card-body">
+            <form action="{{ route('solicitud.store') }}" method="POST">
+                @csrf
+                
+                <!-- Campos del formulario -->
+                <div class="row">
+                    <div class="col-md-6">
+                    <label for="nombres" class="form-label">Nombres y Apellidos:</label>
+                        <input type="text" class="form-control" name="nombre" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="identidad">Número de Identidad</label>
+                        <input type="text" class="form-control" name="identidad" required>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="numeroidentidadC" class="form-label">Numero de Identidad:</label>
-                <input type="number" class="form-control" id="numeroidentidadC" required>
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                    <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                    <input type="date" class="form-control" id="fechaNacimiento" required>
+                    
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="fechaNacimientoC" class="form-label">Fecha de Nacimiento:</label>
-                <input type="date" class="form-control" id="fechaNacimientoC" required>
+                    <div class="col-md-4">
+                    <label for="edad" class="form-label">Edad:</label>
+                    <input type="number" class="form-control" id="edad" required>     
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
 
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="edadC" class="form-label">Edad:</label>
-                <input type="number" class="form-control" id="edadC" required>     
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                <label for="direccionC" class="form-label">Dirección Completa:</label>
-                <textarea class="form-control" id="direccionC" rows="3" placeholder="Escribe la direccion aquí..." required></textarea>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="telefonoc" class="form-label">Teléfono:</label>
-              <input type="tel" class="form-control" id="telefonoc" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="celularc" class="form-label">Celular:</label>
-                <input type="tel" class="form-control" id="celularc" required>   
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="estadoCivilc" class="form-label">Estado Civil:</label>
-                <select class="form-control select2" id="estadoCivilc" style="width: 100%;" required>
-                    <option selected disabled value="">Seleccione</option>
-                    <option value="casado">Casado</option>
-                    <option value="soltero">Soltero</option>
-                    <option value="unionlibre">Union libre</option>
-                    <option value="nodefinido">No Definido</option>
-                </select>                    
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="profesionC" class="form-label">Profesión u Oficio:</label>
-                <input type="text" class="form-control" id="profesionC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="patronoC" class="form-label">Patrono o Negocio:</label>
-                <input type="text" class="form-control" id="patronoC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="cargoC" class="form-label">Cargo que desempeña:</label>
-                <input type="text" class="form-control" id="cargoC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="tiempoLaborarC" class="form-label">Tiempo de Laborar:</label>
-                <select class="form-control select2" id="tiempoLaborarC" style="width: 100%;" required>
-                    <option selected disabled value="">Seleccione</option>
-                    <option value="1años">1 años</option>
-                    <option value="2años">2 años</option>
-                    <option value="3años">3 años</option>
-                    <option value="4años">4 años</option>
-                    <option value="masde5Años">Mas de 5 años</option>
-                </select>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="profesion" class="form-label">Profesión u Oficio:</label>
-                <input type="text" class="form-control" id="profesion" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="patrono" class="form-label">Patrono o Negocio:</label>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                    <label for="direccion" class="form-label">Dirección Completa:</label>
+                <textarea class="form-control" id="direccion" rows="1" placeholder="Escribe la direccion aquí..." required></textarea>
+                    </div>
+                    <div class="col-md-4">
+                    <label for="telefono" class="form-label">Teléfono:</label>
+              <input type="tel" class="form-control" id="telefono" required>
+                    </div>
+                    
+                    <div class="col-md-4">
+                    <label for="celular" class="form-label">Celular:</label>
+                    <input type="tel" class="form-control" id="celular" required> 
+                    </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="patrono" class="form-label">Profesion u oficio</label>
                 <input type="text" class="form-control" id="patrono" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
+                    </div>
 
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="cargo" class="form-label">Cargo que desempeña:</label>
+                    <div class="col-md-6">
+                    <label for="cargo" class="form-label">Patrono o negocio</label>
+                    <input type="text" class="form-control" id="cargo" required>    
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="cargo" class="form-label">Actividad que desempeña:</label>
                 <input type="text" class="form-control" id="cargo" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
+                    </div>
 
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="tiempoLaborar" class="form-label">Tiempo de Laborar:</label>
+                    <div class="col-md-6">
+                    <label for="tiempoLaborar" class="form-label">Tiempo de Laborar:</label>
                 <select class="form-control select2" id="tiempoLaborar" style="width: 100%;" required>
                     <option selected disabled value="">Seleccione</option>
                     <option value="1años">1 años</option>
@@ -671,479 +471,367 @@
                     <option value="3años">3 años</option>
                     <option value="4años">4 años</option>
                     <option value="masde5Años">Mas de 5 años</option>
-                </select>
+                </select> 
+                    </div>
+                </div> 
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                    <label for="ingresos" class="form-label">Ingresos por negocio</label>
+                <input type="text" class="form-control" id="ingreso" required>
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="sueldo" class="form-label">Sueldo base</label>
+                    <input type="text" class="form-control" id="sueldo" required>    
+                    </div>
+                    <div class="col-md-4">
+                    <label for="gasto" class="form-label">Gasto Alimentacion</label>
+                    <input type="text" class="form-control" id="gasto" required>    
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="direccion_trabajo" class="form-label">Direccion de trabajo</label>
+                <input type="text" class="form-control" id="direccion_trabajo" required>
+                    </div>
 
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="sueldoMensualC" class="form-label">Sueldo Mensual:</label>
-                <input type="number" class="form-control" id="sueldoMensualC" required>
+                    <div class="col-md-6">
+                    <label for="tiempoLaborar" class="form-label">Telefono</label>
+                    <input type="text" class="form-control" id="direccion_trabajo" required>
+                    </div>
                 </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="sueldoBaseC" class="form-label">Sueldo Base:</label>
-                <input type="number" class="form-control" id="sueldoBaseC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="gastosC" class="form-label">Gastos Alimentación:</label>
-                <input type="number" class="form-control" id="gastosC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-12">
-              <div class="form-group">
-              <label for="direccionTrabajoC" class="form-label">Dirección del Trabajo:</label>
-              <textarea class="form-control" id="direccionTrabajoC" rows="2" placeholder="Escribe la direccion aquí..." required></textarea>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="tipoClienteC" class="form-label">Tipo de Cliente:</label>
-                <select class="form-control select2" id="tipoClienteC" style="width: 100%; required>
-                    <option selected disabled value="">Seleccione</option>
-                    <option value="primeraVez">Primera Vez</option>
-                    <option value="activo">Activo</option>
-                    <option value="inactivo">Inactivo</option>
-                </select>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="idc" class="form-label">IDC #:</label>
-                <input type="number" class="form-control" id="idc" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="estadoCreditoC" class="form-label">Estado del Credito:</label>
-                <select class="form-control select2" id="estadoCreditoC" style="width: 100%;" required>
-                    <option selected disabled value="">Seleccione</option>
-                    <option value="creditoAldia">Credito al Dia</option>
-                    <option value="creditoMora">Credito en Mora</option>
-                    <option value="noExiste">No Existe Registro</option>
-                </select>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-4">
-              <div class="form-group">
-              <label for="valorCuotaC" class="form-label">Valor de la Cuota:</label>
-                <input type="number" class="form-control" id="valorCuotaC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="esAvalC" class="form-label">¿Es Aval?</label>
-                <select class="form-control select2" id="esAvalC" style="width: 100%;" required>
-                    <option selected disabled value="">Seleccione</option>
-                    <option value="si">Si</option>
-                    <option value="no">No</option>
-                </select>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-              <div class="col-md-4">
-                <div class="form-group">
-                <label for="cuentanAvalC" class="form-label">cuenta #:</label>
-                <input type="number" class="form-control" id="cuentanAvalC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-            <div class="row">
-              <div class="col-md-6">
-              <div class="form-group">
-              <label for="nombreAvalC" class="form-label">Nombre del Aval:</label>
-                <input type="text" class="form-control" id="nombreAvalC" required>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-
-
-              <div class="col-md-6">
-                <div class="form-group">
-                <label for="estadoCreditoAvalC" class="form-label">Estado del Credito:</label>
-                <select class="form-control select2" id="estadoCreditoAvalC" style="width: 100%;" required>
-                    <option selected disabled value="">Seleccione</option>
-                    <option value="creditoAldia">Credito al Dia</option>
-                    <option value="creditoMora">Credito en Mora</option>
-                    <option value="noExiste">No Existe Registro</option>
-                </select>
-                </div>
-                 <!-- /.form-group -->
-              </div>
-            </div>
-            <!-- /.row -->
-
-          </div>
-          <!-- /.card-body -->
-          </div>
-          <!-- /.card card-default -->
-
-        
-            <div class="container mt-5"> 
-                <h2 class="text-center">Estado de Ingresos y Gastos</h2> 
-                <h4 class="mt-4">Ingresos Mensuales</h4> 
-                <table class="table table-bordered"> 
-                    <thead> 
-                    <tr> 
-                     <th>Descripción</th>
-                     <th>Monto</th> 
-                    </tr> 
-                    </thead> 
-                    <tbody> 
-                    <tr> 
-                    <td>Sueldos Netos</td> 
-                    <td>L. 10,000.00</td> 
-                    </tr> 
-                    <tr> 
-                    <td>Renta de propiedades</td> 
-                    <td>L. 2,000.00</td> 
-                    </tr> 
-                    <tr> 
-                    <td>Otros Ingresos</td> 
-                    <td>L. 1,000.00</td> 
-                    </tr> 
-                    <tr> 
-                    <td><strong>Total Ingresos</strong></td> 
-                    <td><strong>L. 13,000.00</strong></td> 
-                    </tr> 
-                    </tbody> 
-                    </table> 
-                    <h4 class="mt-4">Gastos Mensuales</h4> 
-                    <table class="table table-bordered">
-                    <thead> 
-                    <tr> 
-                    <th>Descripción</th> 
-                    <th>Monto</th> 
-                    </tr> 
-                    </thead> 
-                    <tbody> 
-                    <tr> 
-                    <td>Obligaciones financieras</td> 
-                    <td>L. 4,000.00</td> 
-                    </tr> 
-                    <tr> 
-                    <td>Alimentación</td> 
-                    <td>L. 2,000.00</td> 
-                    </tr> 
-                    <tr> 
-                    <td>Otros Gastos</td> 
-                    <td>L. 1,000.00</td> 
-                    </tr> 
-                    <tr> 
-                    <td><strong>Total Gastos</strong></td> 
-                    <td><strong>L. 7,000.00</strong></td> 
-                    </tr> 
-                    </tbody> 
-                    </table> 
-                    <div class="mt-4"> 
-                    <h5>Evaluación según información recopilada</h5> 
-                    <p>Relación cuotas en cuanto a ingresos netos: L. 496.31</p> 
-                    <p>Liquidez del Cliente: L. 10,117.56</p> 
-            </div> 
-    
-</div>
-            
-
-            <!-- Botón Enviar -->
-            <div class="col-12 text-center">
-                <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
-            </div>
+            </form>
         </div>
     </div>
-
 </div>
-</section>
+
+                <div class="card border">
+                <div class="card-header custom-border-top d-flex justify-content-between align-items-center">
+        <h3 class="card-title">ESTADO DE INGRESOS Y GASTOS</h3>
+        <button class="btn btn-collapseF ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#datosFinancieros" aria-expanded="false" aria-controls="datosdatosFinancieros">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+
+    <!-- Contenido colapsable -->
+    <div class="collapse" id="datosFinancieros">
+        <div class="card-body">
+            <form action="{{ route('solicitud.store') }}" method="POST">
+                @csrf
+                
+                <div class="d-flex justify-content-center">
+                <div class="table-responsive" style="max-width: 800px;">
+    <h4 class="text-center titulo-negrita">ESTADO DE INGRESOS Y GASTOS</h4>
+    <table class="table table-bordered">
+        <thead class="bg-primary text-white">
+            <tr>
+                <th colspan="2" class="text-center">Ingresos Mensuales</th>
+                <th colspan="2" class="text-center">Egresos Mensuales</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Sueldo Base</td>
+                <td><input type="number" class="form-control" id="sueldoBase" readonly></td>
+                <td>Cuota de préstamo en ADEPES</td>
+                <td><input type="number" class="form-control" id="cuotaADEPES" readonly></td>
+            </tr>
+            <tr>
+                <td>Ingresos del negocio</td>
+                <td><input type="number" class="form-control" id="ingresoNegocio"></td>
+                <td>Cuota de Vivienda</td>
+                <td><input type="number" class="form-control" id="cuotaVivienda" readonly></td>
+            </tr>
+            <tr>
+                <td>Renta de propiedades</td>
+                <td><input type="number" class="form-control" id="rentaPropiedades"></td>
+                <td>Alimentación</td>
+                <td><input type="number" class="form-control" id="alimentacion" readonly></td>
+            </tr>
+            <tr>
+                <td>Remesas</td>
+                <td><input type="number" class="form-control" id="remesas"></td>
+                <td>Central de riesgo como Cliente</td>
+                <td><input type="number" class="form-control" id="centralRiesgo"></td>
+            </tr>
+            <tr>
+                <td>Aporte del cónyuge</td>
+                <td><input type="number" class="form-control" id="aporteConyuge"></td>
+                <td>Otros egresos</td>
+                <td><input type="number" class="form-control" id="otrosEgresos"></td>
+            </tr>
+            <tr>
+                <td>Ingresos por sociedad</td>
+                <td><input type="number" class="form-control" id="ingresoSociedad"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr class="bg-warning text-white">
+                <td class="text-right"><strong>Total Ingresos</strong></td>
+                <td><input type="number" class="form-control" id="totalIngresos" readonly></td>
+                <td class="text-right"><strong>Total Egresos</strong></td>
+                <td><input type="number" class="form-control" id="totalEgresos" readonly></td>
+            </tr>
+            <tr class="bg-success text-white">
+                <td colspan="2" class="text-right"><strong>Total Ingresos Netos</strong></td>
+                <td colspan="2"><input type="number" class="form-control" id="totalIngresosNetos" readonly></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+    <div class="table-responsive" style="max-width: 600px;">
+        <h4 class="text-center titulo-negrita">RELACION CUOTAS EN CUANTO A INGRESOS NETOS</h4>
+        <table class="table table-bordered">
+            <thead class="bg-warning text-white">
+                <tr>
+                    <th colspan="2" class="text-center">Relación de Cuotas</th>
+                    <th colspan="2" class="text-center">Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Letra mensual</td>
+                    <td>L.</td>
+                    <td><input type="number" class="form-control" id="letraMensual" readonly value="3038.92"></td>
+                </tr>
+                <tr>
+                    <td>Interés corriente mensual</td>
+                    <td>L.</td>
+                    <td><input type="number" class="form-control" id="interesMensual" readonly value="620.00"></td>
+                </tr>
+                <tr class="bg-primary text-white">
+                    <td><strong>Total por pagar cuota</strong></td>
+                    <td>L.</td>
+                    <td><input type="number" class="form-control" id="totalCuota" readonly value="3658.92"></td>
+                </tr>
+                <tr class="bg-success text-white">
+                    <td colspan="2" class="text-center"><strong>Capital disponible para el crédito</strong></td>
+                    <td><input type="number" class="form-control bg-success text-white text-center" id="capitalDisponible" readonly value="16092.00"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="d-flex justify-content-center mt-4">
+    <div class="table-responsive" style="max-width: 400px;">
+        <table class="table table-bordered">
+            <thead class="bg-warning text-black text-center">
+                <tr>
+                    <th>EVALUACIÓN SEGÚN INFORMACIÓN RECOPILADA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <textarea class="form-control" rows="4" placeholder="Escriba aquí..."></textarea>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+
+<script>
+    function calcularTotales() {
+        let totalIngresos = 0;
+        let totalEgresos = 0;
+        
+        totalIngresos += Number(document.getElementById('sueldoBase').value) || 0;
+        totalIngresos += Number(document.getElementById('ingresoNegocio').value) || 0;
+        totalIngresos += Number(document.getElementById('rentaPropiedades').value) || 0;
+        totalIngresos += Number(document.getElementById('remesas').value) || 0;
+        totalIngresos += Number(document.getElementById('aporteConyuge').value) || 0;
+        totalIngresos += Number(document.getElementById('ingresoSociedad').value) || 0;
+        
+        totalEgresos += Number(document.getElementById('cuotaADEPES').value) || 0;
+        totalEgresos += Number(document.getElementById('cuotaVivienda').value) || 0;
+        totalEgresos += Number(document.getElementById('alimentacion').value) || 0;
+        totalEgresos += Number(document.getElementById('centralRiesgo').value) || 0;
+        totalEgresos += Number(document.getElementById('otrosEgresos').value) || 0;
+        
+        document.getElementById('totalIngresos').value = totalIngresos.toFixed(2);
+        document.getElementById('totalEgresos').value = totalEgresos.toFixed(2);
+        document.getElementById('totalIngresosNetos').value = (totalIngresos - totalEgresos).toFixed(2);
+    }
+    
+    document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', calcularTotales);
+    });
+</script>
+
 
 
 
 @stop
-
-@section('content')
-
-
-@stop
-
-@section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-
-    <style>
-    .logo {
-        width: 150px;
-        /* Ajusta este valor según el tamaño deseado */
-        height: auto;
-        /* Mantiene la proporción original de la imagen */
-    }
-
-    body {
-        background-color: #fff;
-        font-family: 'Karla', sans-serif;
-    }
-
-    h1>a {
-        text-decoration: none;
-        color: #fff !important;
-    }
-
-    @media (max-width: 991px) {
-        .intro-section {
-            padding-left: 50px;
-            padding-rigth: 50px;
-        }
-    }
-
-    @media (max-width: 767px) {
-        .intro-section {
-            padding: 28px;
-        }
-    }
-
-    @media (max-width: 575px) {
-        .intro-section {
-            min-height: auto;
-        }
-    }
-
-    .brand-wrapper .logo {
-        height: 35px;
-    }
-
-    @media (max-width: 767px) {
-        .brand-wrapper {
-            margin-bottom: 35px;
-        }
-    }
-
-    .intro-content-wrapper {
-        width: 410px;
-        max-width: 100%;
-        margin-top: auto;
-        margin-bottom: auto;
-    }
-
-    .intro-content-wrapper .intro-title {
-        font-size: 40px;
-        font-weight: bold;
-        margin-bottom: 17px;
-    }
-
-    .intro-content-wrapper .intro-text {
-        font-size: 19px;
-        line-height: 1.37;
-    }
-
-    .intro-content-wrapper .btn-read-more {
-        background-color: #fff;
-        padding: 13px 30px;
-        border-radius: 0;
-        font-size: 16px;
-        font-weight: bold;
-        color: #000;
-    }
-
-    .intro-content-wrapper .btn-read-more:hover {
-        background-color: transparent;
-        border: 1px solid #fff;
-        color: #fff;
-    }
-
-    @media (max-width: 767px) {
-        .intro-section-footer {
-            margin-top: 35px;
-        }
-    }
-
-    .intro-section-footer .footer-nav a {
-        font-size: 20px;
-        font-weight: bold;
-        color: inherit;
-    }
-
-    @media (max-width: 767px) {
-        .intro-section-footer .footer-nav a {
-            font-size: 14px;
-        }
-    }
-
-    .intro-section-footer .footer-nav a+a {
-        margin-left: 30px;
-    }
-
-    .form-section {
-        display: -webkit-box;
-        display: flex;
-        -webkit-box-align: center;
-        align-items: center;
-        -webkit-box-pack: center;
-        justify-content: center;
-    }
-
-    @media (max-width: 767px) {
-        .form-section {
-            padding: 35px;
-        }
-    }
-
-    .login-wrapper {
-        width: 300px;
-        max-width: 100%;
-    }
-
-    @media (max-width: 575px) {
-        .login-wrapper {
-            width: 100%;
-        }
-    }
-
-    .login-wrapper .form-control {
-        border: 0;
-        border-bottom: 1px solid #e7e7e7;
-        border-radius: 0;
-        font-size: 14px;
-        font-weight: bold;
-        padding: 15px 10px;
-        margin-bottom: 7px;
-    }
-
-    .login-wrapper .form-control::-webkit-input-placeholder {
-        color: #b0adad;
-    }
-
-    .login-wrapper .form-control::-moz-placeholder {
-        color: #b0adad;
-    }
-
-    .login-wrapper .form-control:-ms-input-placeholder {
-        color: #b0adad;
-    }
-
-    .login-wrapper .form-control::-ms-input-placeholder {
-        color: #b0adad;
-    }
-
-    .login-wrapper .form-control::placeholder {
-        color: #b0adad;
-    }
-
-    .login-title {
-        font-size: 30px;
-        font-weight: bold;
-        margin-bottom: 30px;
-    }
-
-    .login-btn {
-        padding: 13px 30px;
-        background-color: #000;
-        border-radius: 0;
-        font-size: 20px;
-        font-weight: bold;
-        color: #fff;
-    }
-
-    .login-btn:hover {
-        border: 1px solid #000;
-        background-color: transparent;
-        color: #000;
-    }
-
-    .forgot-password-link {
-        font-size: 14px;
-        color: #080808;
-        text-decoration: underline;
-    }
-
-    .social-login-title {
-        font-size: 15px;
-        color: #919aa3;
-        display: -webkit-box;
-        display: flex;
-        margin-bottom: 23px;
-    }
-
-    .social-login-title::before,
-    .social-login-title::after {
-        content: "";
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#f4f4f4));
-        background-image: linear-gradient(#f4f4f4, #f4f4f4);
-        -webkit-box-flex: 1;
-        flex-grow: 1;
-        background-size: calc(100% - 20px) 1px;
-        background-repeat: no-repeat;
-    }
-
-    .social-login-title::before {
-        background-position: center left;
-    }
-
-    .social-login-title::after {
-        background-position: center right;
-    }
-
-    .social-login-links {
-        text-align: center;
-        margin-bottom: 32px;
-    }
-
-    .social-login-link img {
-        width: 40px;
-        height: 40px;
-        -o-object-fit: contain;
-        object-fit: contain;
-    }
-
-    .social-login-link+.socia-login-link {
-        margin-left: 16px;
-    }
-
-    .login-wrapper-footer-text {
-        font-size: 14px;
-        text-align: center;
-    }
-</style>
-@stop
-
+ 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
-    $(document).ready(function() {
-            $('.select2').select2();
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        
+        // Cambiar el icono del botón cuando se colapsa o expande
+        $('#datosPersonales').on('show.bs.collapse', function () {
+            // Cambiar icono a mas cuando se expanda
+            $('.btn-collapse i').removeClass('fas fa-plus').addClass('fas fa-minus');
+        }).on('hide.bs.collapse', function () {
+            // Cambiar icono a más cuando se colapse
+            $('.btn-collapse i').removeClass('fas fa-minus').addClass('fas fa-plus');
         });
+        </script>
+
+         <script>
+        $('#datosConyugue').on('show.bs.collapse', function () {
+            // Cambiar icono a mas cuando se expanda
+            $('.btn-collapseC i').removeClass('fas fa-plus').addClass('fas fa-minus');
+        }).on('hide.bs.collapse', function () {
+            // Cambiar icono a más cuando se colapse
+            $('.btn-collapseC i').removeClass('fas fa-minus').addClass('fas fa-plus');
+        });
+        </script>
+
+         <script>
+
+        $('#datosFinancieros').on('show.bs.collapse', function () {
+            // Cambiar icono a mas cuando se expanda
+            $('.btn-collapseF i').removeClass('fas fa-plus').addClass('fas fa-minus');
+        }).on('hide.bs.collapse', function () {
+            // Cambiar icono a más cuando se colapse
+            $('.btn-collapseF i').removeClass('fas fa-minus').addClass('fas fa-plus');
+        });
+
+    </script>
+    
+<!-- CONTENEDOR REFERENCIAS FAMILIARES QUE NO VIVAN EN SU CASA -->
+<div class="card border">
+<div class="card-header custom-border-top d-flex justify-content-between align-items-center">
+        <h3 class="card-title">REFERENCIAS FAMILIARES QUE NO VIVAN EN SU CASA</h3>
+        <button class="btn btn-collapseR ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#datosReferencia" aria-expanded="false" aria-controls="datosReferencia">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    <!-- Contenido colapsable -->
+    <div class="collapse" id="datosReferencia">
+        <div class="card-body">
+            <form action="{{ route('solicitud.store') }}" method="POST">
+                @csrf
+                
+                <!-- Campos del formulario -->    
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                    <label for="ingresos" class="form-label">1. Nombre</label>
+                <input type="text" class="form-control" id="ingreso" required>
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="sueldo" class="form-label">Parentesco</label>
+                    <input type="text" class="form-control" id="sueldo" required>    
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="gasto" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="gasto" required>    
+                    </div>
+
+                    <div class="col-md-12">
+                    <label for="direccion_trabajo" class="form-label">Direccion de trabajo</label>
+                <input type="text" class="form-control" id="direccion_trabajo" required>
+                    </div>
+                
+                    <div class="col-md-4">
+                    <label for="ingresos" class="form-label">2. Nombre</label>
+                <input type="text" class="form-control" id="ingreso" required>
+                    </div>
+
+                    <div class="col-md-4">
+                    <label for="sueldo" class="form-label">Parentesco</label>
+                    <input type="text" class="form-control" id="sueldo" required>    
+                    </div>
+                    <div class="col-md-4">
+                    <label for="gasto" class="form-label">Celular</label>
+                    <input type="text" class="form-control" id="gasto" required>    
+                    </div>
+                
+                    <div class="col-md-12">
+                    <label for="direccion_trabajo" class="form-label">Direccion de trabajo</label>
+                <input type="text" class="form-control" id="direccion_trabajo" required>
+                </div>
+            </div>  
+        </div>
+    </div>
+</div>
+    
+<script>
+        $('#datosReferencia').on('show.bs.collapse', function () {
+            // Cambiar icono a mas cuando se expanda
+            $('.btn-collapseR i').removeClass('fas fa-plus').addClass('fas fa-minus');
+        }).on('hide.bs.collapse', function () {
+            // Cambiar icono a más cuando se colapse
+            $('.btn-collapseR i').removeClass('fas fa-minus').addClass('fas fa-plus');
+        });
+        </script>
+    
+<!-- CONTENEDOR REFERENCIAS FAMILIARES QUE NO VIVAN EN SU CASA -->
+<div class="card border">
+<div class="card-header custom-border-top d-flex justify-content-between align-items-center">
+        <h3 class="card-title">INFORMACION ADICIONAL</h3>
+        <button class="btn btn-collapseA ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#datosAdicional" aria-expanded="false" aria-controls="datosAdicional">
+            <i class="fas fa-plus"></i>
+        </button>
+    </div>
+    <!-- Contenido colapsable -->
+    <div class="collapse" id="datosAdicional">
+        <div class="card-body">
+            <form action="{{ route('solicitud.store') }}" method="POST">
+                @csrf
+                
+                <!-- Campos del formulario -->    
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                    <label for="direccion_trabajo" class="form-label">Actividad Actual</label>
+                <input type="text" class="form-control" id="direccion_trabajo" required>
+                    </div>
+                
+                    <div class="col-md-6">
+                    <label for="ingresos" class="form-label">Lo inventira en:</label>
+                <input type="text" class="form-control" id="ingreso" required>
+                    </div>
+
+                    <div class="col-md-12">
+                    <label for="sueldo" class="form-label">Personas que dependen de usted</label>
+                    <input type="text" class="form-control" id="sueldo" required>    
+                    </div>
+                    
+                    <div class="col-md-6">
+                    <label for="direccion_trabajo" class="form-label">OBSERVACIONES</label>
+                <input type="text" class="form-control" id="" required>
+                <label for="direccion_trabajo" class="form-label"></label>
+                    </div>
+                    <div class="col-md-6">
+                    <label for="direccion_trabajo" class="form-label">Fecha de emision</label>
+                
+                    </div>
+
+                    <div class="col-md-6">
+                    <label for="direccion_trabajo" class="form-label">Firma del solicitante</label>
+                    <label for="direccion_trabajo" class="form-label">____________________________________________________________</label>
+                    </div>
+                <!-- Agrega más campos si es necesario -->
+                
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-success">Guardar Solicitud</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        $('#datosAdicional').on('show.bs.collapse', function () {
+            // Cambiar icono a mas cuando se expanda
+            $('.btn-collapseA i').removeClass('fas fa-plus').addClass('fas fa-minus');
+        }).on('hide.bs.collapse', function () {
+            // Cambiar icono a más cuando se colapse
+            $('.btn-collapseA i').removeClass('fas fa-minus').addClass('fas fa-plus');
+        });
+        </script>
+    
 @stop
-
-
-
