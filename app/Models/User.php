@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable 
+class User extends Authenticatable implements MustVerifyEmail 
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -45,4 +45,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function adminlte_image(){
+        return 'https://picsum.photos/300/300';
+    }
+    public function adminlte_desc(){
+        return 'Administrador';
+    }
+
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\HorasController;
 use App\Http\Controllers\AsignarRole;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SolicitudPrestamoController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -21,8 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
    
   
-    Route::resource('roles', AsignarRole::class)->names('roles');
-    Route::resource('users', UserController::class)->names('users');
+    Route::resource('roles', AsignarRole::class)->middleware('can:users.index')->names('roles');
+    Route::resource('users', UserController::class)->middleware('can:users.index')->names('users');
+    Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:users.index')->names('solicitud');
 });
 
 require __DIR__.'/auth.php';

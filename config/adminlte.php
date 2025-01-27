@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'ADEPES',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'use_ico_only' => false,
+    'use_ico_only' => true,
     'use_full_favicon' => false,
 
     /*
@@ -135,9 +135,9 @@ return [
 
     'usermenu_enabled' => true,
     'usermenu_header' => true,
-    'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
-    'usermenu_desc' => false,
+    'usermenu_header_class' => 'bg-green',
+    'usermenu_image' => true,
+    'usermenu_desc' => true,
     'usermenu_profile_url' => false,
 
     /*
@@ -154,8 +154,8 @@ return [
 
     'layout_topnav' => null,
     'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
-    'layout_fixed_navbar' => null,
+    'layout_fixed_sidebar' => true,
+    'layout_fixed_navbar' => true,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => false,// modo oscuro del dashboard
 
@@ -191,14 +191,14 @@ return [
     */
 
     'classes_body' => '',
-    'classes_brand' => '',
+    'classes_brand' => 'bg-primary',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
-    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar' => 'sidebar-light-green elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => '',// color de la barra de arriba del dashboard
+    'classes_topnav' => 'navbar-white navbar-light',// color de la barra de arriba del dashboard
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -239,8 +239,8 @@ return [
     'right_sidebar' => false,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
-    'right_sidebar_slide' => true,
-    'right_sidebar_push' => true,
+    'right_sidebar_slide' => false,
+    'right_sidebar_push' => false,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -306,19 +306,74 @@ return [
             'can' => 'manage-blog',
         ],
         [
-            'text' => 'Registro de horas',
-            'route' => '', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-clock',
+            'text' => 'Inicio',
+            'route' => 'dashboard', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
         ],
         [
-            'text' => 'Usuarios',
+            'text' => 'Solicitudes',
+            'route' => 'solicitud.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
+        ],
+        [
+            'text' => 'Evaluacion del negocio',
+            'route' => 'dashboard', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
+        ],
+        [
+            'text' => 'Gestion de Clientes',
+            'route' => 'solicitud.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
+        ],
+
+        [
+            'text' => 'Prestamos',
             'route' => 'users.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-users', // Ícono representativo de usuarios
+            'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
         ],
         [
-            'text' => 'Roles',
-            'route' => 'roles.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-user-shield', // Ícono representativo de usuarios
+            'text' => 'Seguridad',
+            'icon' => 'fas fa-fw fa-user-lock', // Ícono representativo de usuarios
+            'submenu' => [
+                [
+                    'text' => 'Roles',
+                    'route' => 'roles.index', // Ruta al módulo de usuarios
+                    'icon' => 'fas fa-fw fa-user-shield', // Ícono de usuarios
+                ],
+                [
+                    'text' => 'Permisos',
+                    'route' => 'roles.index', // Ruta al módulo de bitácora
+                    'icon' => 'fas fa-fw fa-key', // Ícono de lista para bitácora
+                ],
+            ],
+            'can' => 'users.index', // Permiso asociado
+        ],
+        [
+            'text' => 'Administración',
+            'icon' => 'fas fa-fw fa-cogs', // Ícono de engranajes para administración
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'route' => 'users.index', // Ruta al módulo de usuarios
+                    'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
+                ],
+                [
+                    'text' => 'Bitácora',
+                    'route' => 'solicitud.index', // Ruta al módulo de bitácora
+                    'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
+                ],
+            ],
+        ],
+        [
+            'text' => 'Respaldo',
+            'route' => 'dashboard', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-database', // Ícono representativo de usuarios
+            'can' => 'users.index', // Permiso asociado
         ],
         
     ],

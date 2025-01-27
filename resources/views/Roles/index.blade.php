@@ -14,7 +14,12 @@
 </head>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Roles</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Roles asignados</li>
+        </ol>
+      </nav>
     <a href="{{ route('roles.create') }}" class="btn btn-info">
         Asignar roles
     </a>
@@ -40,7 +45,12 @@
                         <td>{{ $user->id }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->roles->first()->name}}</td>
+                        <td>
+                            <span class="badge bg-success">
+                                {{ $user->roles->first()->name }}
+                            </span>
+                        </td>
+                        
                         <td>
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm">
                                 <i class="bi bi-pencil"></i>
