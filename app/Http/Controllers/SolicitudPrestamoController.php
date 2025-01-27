@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\SolicitudPrestamo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SolicitudPrestamoController extends Controller
 {
@@ -26,9 +27,7 @@ class SolicitudPrestamoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    //
-}
+
 
     /**
      * Display the specified resource.
