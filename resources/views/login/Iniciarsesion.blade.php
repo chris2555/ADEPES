@@ -76,8 +76,7 @@
 
                     </div>
                 </form>
-                <p class="login-wrapper-footer-text">¿Necesitas una cuenta? <a href="{{ route('register') }}"
-                        class="text-reset">Regístrate aquí</a></p>
+                
             </div>
         </div>
     </div>
