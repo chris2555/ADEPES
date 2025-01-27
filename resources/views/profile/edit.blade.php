@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Editar perfil')
+@section('title', 'ADEPES')
 
 @section('content_header')
 @stop
