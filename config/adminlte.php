@@ -309,32 +309,32 @@ return [
             'text' => 'Inicio',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
         [
             'text' => 'Solicitudes',
             'route' => 'solicitud.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
         [
             'text' => 'Evaluacion del negocio',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
         [
             'text' => 'Gestion de Clientes',
             'route' => 'solicitud.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
 
         [
             'text' => 'Prestamos',
             'route' => 'users.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
         [
             'text' => 'Seguridad',
@@ -351,7 +351,7 @@ return [
                     'icon' => 'fas fa-fw fa-key', // Ícono de lista para bitácora
                 ],
             ],
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
         [
             'text' => 'Administración',
@@ -373,7 +373,7 @@ return [
             'text' => 'Respaldo',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-database', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
         
     ],
