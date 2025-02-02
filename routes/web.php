@@ -22,9 +22,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
    
   
-    Route::resource('roles', AsignarRole::class)->middleware('can:users.index')->names('roles');
-    Route::resource('users', UserController::class)->middleware('can:users.index')->names('users');
-    Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:users.index')->names('solicitud');
+    Route::resource('roles', AsignarRole::class)->middleware('can:Administrador')->names('roles');
+    Route::resource('users', UserController::class)->middleware('can:Administrador')->names('users');
+    Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:Administrador')->names('solicitud');
 });
 
 require __DIR__.'/auth.php';
