@@ -17,4 +17,15 @@ router.get('/usuarios', async (req, res) => {
       res.status(500).send('Error al obtener usuarios: ' + error.message);
     }
   });
+
+  // Ruta para obtener usuarios
+router.get('/solicitudes', async (req, res) => {
+  try {
+    // Consulta SQL para obtener todos los usuarios
+    const [rows] = await pool.query('SELECT * FROM SolicitudPrestamo');
+    res.json(rows); // Devuelve los usuarios en formato JSON
+  } catch (error) {
+    res.status(500).send('Error al obtener Solicitudades: ' + error.message);
+  }
+});
 module.exports = router;
