@@ -321,7 +321,7 @@ return [
             'text' => 'Evaluacion del negocio',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'Administrador', // Permiso asociado
         ],
         [
             'text' => 'Gestion de Clientes',
