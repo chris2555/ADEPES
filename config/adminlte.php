@@ -309,32 +309,27 @@ return [
             'text' => 'Inicio',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
         ],
         [
             'text' => 'Solicitudes',
             'route' => 'solicitud.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
         ],
         [
             'text' => 'Evaluacion del negocio',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
-            'can' => 'Administrador', // Permiso asociado
         ],
         [
             'text' => 'Gestion de Clientes',
             'route' => 'solicitud.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
         ],
 
         [
             'text' => 'Prestamos',
             'route' => 'users.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
         ],
         [
             'text' => 'Seguridad',
@@ -344,14 +339,15 @@ return [
                     'text' => 'Roles',
                     'route' => 'roles.index', // Ruta al módulo de usuarios
                     'icon' => 'fas fa-fw fa-user-shield', // Ícono de usuarios
+                    'can' => 'ver-seguridad', // Permiso asociado
                 ],
                 [
                     'text' => 'Permisos',
                     'route' => 'roles.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-key', // Ícono de lista para bitácora
+                    'can' => 'ver-seguridad', // Permiso asociado
                 ],
             ],
-            'can' => 'users.index', // Permiso asociado
         ],
         [
             'text' => 'Administración',
@@ -361,11 +357,13 @@ return [
                     'text' => 'Usuarios',
                     'route' => 'users.index', // Ruta al módulo de usuarios
                     'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
+                    'can' => 'ver-seguridad', // Permiso asociado
                 ],
                 [
                     'text' => 'Bitácora',
                     'route' => 'solicitud.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
+                    'can' => 'ver-seguridad', // Permiso asociado
                 ],
             ],
         ],
@@ -373,7 +371,7 @@ return [
             'text' => 'Respaldo',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-database', // Ícono representativo de usuarios
-            'can' => 'users.index', // Permiso asociado
+            'can' => 'ver-seguridad', // Permiso asociado
         ],
         
     ],
