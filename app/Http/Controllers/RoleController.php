@@ -67,7 +67,7 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $permissions = Permission::all(); // **LÍNEA IMPORTANTE: Obtiene todos los permisos**
-        return view('roles.editrole', compact('role', 'permissions')); // **LÍNEA IMPORTANTE: Pasa $permissions a la vista**
+        return view('Roles.editrole', compact('role', 'permissions')); // **LÍNEA IMPORTANTE: Pasa $permissions a la vista**
     }
     /**
      * Update the specified resource in storage.
