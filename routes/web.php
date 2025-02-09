@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\HorasController;
 use App\Http\Controllers\AsignarRole;
+use App\Http\Controllers\PermisosController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\TwoFactorController;
 use GuzzleHttp\Middleware;
@@ -29,9 +31,11 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::resource('roles', AsignarRole::class)->middleware('can:users.index')->names('roles');
-    Route::resource('users', UserController::class)->middleware('can:users.index')->names('users');
-    Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:users.index')->names('solicitud');
+    Route::resource('roles', AsignarRole::class)->middleware('can:ver-seguridad')->names('roles');
+    Route::resource('verroles', RoleController::class)->middleware('can:ver-seguridad')->names('verroles');
+    Route::resource('permisos', PermisosController::class)->middleware('can:ver-seguridad')->names('permisos');
+    Route::resource('users', UserController::class)->middleware('can:ver-seguridad')->names('users');
+    Route::resource('solicitud', SolicitudPrestamoController::class)->names('solicitud');
 });
 
 require __DIR__.'/auth.php';

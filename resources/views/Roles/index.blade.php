@@ -33,9 +33,9 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>nombre</th>
+                    <th>Nombre</th>
                     <th>Email</th>
-                    <th>role</th>
+                    <th>Rol</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
