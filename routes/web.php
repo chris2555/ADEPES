@@ -35,7 +35,7 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::resource('verroles', RoleController::class)->middleware('can:ver-seguridad')->names('verroles');
     Route::resource('permisos', PermisosController::class)->middleware('can:ver-seguridad')->names('permisos');
     Route::resource('users', UserController::class)->middleware('can:ver-seguridad')->names('users');
-    Route::resource('solicitud', SolicitudPrestamoController::class)->names('solicitud');
+    Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
 });
 
 require __DIR__.'/auth.php';
