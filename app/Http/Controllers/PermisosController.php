@@ -61,7 +61,7 @@ class PermisosController extends Controller
     public function edit(string $id)
     {
         $permission = Permission::findOrFail($id);
-        return view('permisos.edit', compact('permission'));
+        return view('Permisos.edit', compact('permission'));
     }
 
     /**
