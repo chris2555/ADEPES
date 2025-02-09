@@ -27,16 +27,13 @@ class SolicitudPrestamoController extends Controller
      */
     public function store(Request $request)
     {
-    //
+        
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+   
 
     /**
      * Show the form for editing the specified resource.
