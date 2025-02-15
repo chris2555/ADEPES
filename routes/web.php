@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\TwoFactorController;
+use App\Http\Controllers\PagosController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,7 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
     Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
     Route::resource('Prestamo', PrestamoController::class)->middleware('can:ver-seguridad')->names('Prestamo');
+    Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
 });
 
 require __DIR__.'/auth.php';

@@ -1,3 +1,4 @@
+
 @extends('adminlte::page')
 @section('plugins.Datatables', true)
 @section('title')
@@ -10,3 +11,4 @@
 @section('content')
     @yield('content_body')
 @stop
+
