@@ -330,7 +330,7 @@ return [
         ],
         [
             'text' => 'Gestion de Clientes',
-            'route' => 'solicitud.index', // Ruta al index del controlador
+            'route' => 'gestionclientes.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
            
         ],
