@@ -317,6 +317,12 @@ return [
            
         ],
         [
+            'text' => 'Pagos',
+            'route' => 'pagos.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
+           
+        ],
+        [
             'text' => 'Evaluacion del negocio',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
