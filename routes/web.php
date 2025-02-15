@@ -5,6 +5,7 @@ use App\Http\Controllers\AsignarRole;
 use App\Http\Controllers\PermisosController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RelacionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\TwoFactorController;
@@ -36,6 +37,7 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::resource('permisos', PermisosController::class)->middleware('can:ver-seguridad')->names('permisos');
     Route::resource('users', UserController::class)->middleware('can:ver-seguridad')->names('users');
     Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
+    Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
 });
 
 require __DIR__.'/auth.php';
