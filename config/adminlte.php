@@ -331,7 +331,7 @@ return [
 
         [
             'text' => 'Prestamos',
-            'route' => 'users.index', // Ruta al index del controlador
+            'route' => 'Prestamo.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
            
         ],
