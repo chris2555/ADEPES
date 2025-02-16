@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
 class ClientesController extends Controller
@@ -11,7 +11,10 @@ class ClientesController extends Controller
      */
     public function index()
     {
-        return view('gestionclientes.index');
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas', [
+        ]);
+            $personas = $response->json();
+            return view('gestionclientes.index', compact('personas'));
     }
 
     /**
