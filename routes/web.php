@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RelacionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\PrestamoController;
@@ -40,6 +41,7 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::resource('permisos', PermisosController::class)->middleware('can:ver-seguridad')->names('permisos');
     Route::resource('users', UserController::class)->middleware('can:ver-seguridad')->names('users');
     Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
+    Route::resource('solicitudes', SolicitudController::class)->middleware('can:ver-seguridad')->names('solicitud');
     Route::resource('gestionclientes', ClientesController::class)->middleware('can:ver-seguridad')->names('gestionclientes');
     Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
     Route::resource('Prestamo', PrestamoController::class)->middleware('can:ver-seguridad')->names('Prestamo');
