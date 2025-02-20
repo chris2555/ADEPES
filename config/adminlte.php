@@ -136,7 +136,7 @@ return [
     'usermenu_enabled' => true,
     'usermenu_header' => true,
     'usermenu_header_class' => 'bg-green',
-    'usermenu_image' => true,
+    'usermenu_image' => false,
     'usermenu_desc' => true,
     'usermenu_profile_url' => false,
 
@@ -199,8 +199,8 @@ return [
     'classes_sidebar' => 'sidebar-light-green elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',// color de la barra de arriba del dashboard
-    'classes_topnav_nav' => 'navbar-expand',
-    'classes_topnav_container' => 'container',
+    'classes_topnav_nav' => '',
+    'classes_topnav_container' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -311,9 +311,28 @@ return [
             'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
         ],
         [
+            'text' => 'Gestion de Clientes',
+            'route' => 'gestionclientes.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+           
+        ],
+
+        [
             'text' => 'Solicitudes',
             'route' => 'solicitud.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
+           
+        ],
+        [
+            'text' => 'Prestamos',
+            'route' => 'Prestamo.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
+           
+        ],
+        [
+            'text' => 'Pagos',
+            'route' => 'pagos.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
            
         ],
         [
@@ -322,19 +341,8 @@ return [
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
            
         ],
-        [
-            'text' => 'Gestion de Clientes',
-            'route' => 'solicitud.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
-           
-        ],
-
-        [
-            'text' => 'Prestamos',
-            'route' => 'Prestamo.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
-           
-        ],
+      
+        
         [
             'text' => 'Seguridad',
             'icon' => 'fas fa-fw fa-user-lock', // Ícono representativo de usuarios

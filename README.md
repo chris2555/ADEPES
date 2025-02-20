@@ -46,4 +46,7 @@ Sigue estos pasos para configurar el proyecto en tu entorno local:
 Puedes acceder a la aplicación en producción mediante el siguiente enlace:  
 [https://sea-turtle-app-fzqwb.ondigitalocean.app/inicio](https://sea-turtle-app-fzqwb.ondigitalocean.app/inicio)
 
+Puedes acceder a la API en producción mediante el siguiente enlace:  
+[https://goldfish-app-q3ucp.ondigitalocean.app](https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona)
+
 hola mundo 
