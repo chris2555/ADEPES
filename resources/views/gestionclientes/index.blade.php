@@ -26,7 +26,7 @@
 <!-- Botón "Nuevo" más arriba -->
 <div class="d-flex justify-content-end mb-3">
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
-        <i class="fas fa-plus"></i> Nuevo
+        <i class="fas fa-plus"></i> Añadir Nuevo
 </div>
 
 <!-- Contenedor de la tabla alineada a la derecha -->

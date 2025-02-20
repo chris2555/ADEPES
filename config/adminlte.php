@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>ADEPES</b>',
+    'logo' => '<b>FONDO</b> ROTATORIO',
     'logo_img' => 'vendor/adminlte/dist/img/adepes.png',
     'logo_img_class' => 'brand-image img-circle elevation-5',
     'logo_img_xl' => null,
@@ -377,6 +377,12 @@ return [
                     'route' => 'solicitud.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
                     'can' => 'ver-seguridad' 
+                ],
+                [
+                    'text' => 'Configuraciones',
+                    'route' => 'solicitud.index', // Ruta al módulo de usuarios
+                    'icon' => 'fas fa-fw fa-gear', // Ícono de usuarios
+                    'classes' => 'bg-blue text-dark' 
                 ],
             ],
         ],
