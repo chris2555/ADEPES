@@ -38,7 +38,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ url('/prestamos') }}" method="POST">
+                    <form action="{{ route('prestamos.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -138,14 +138,24 @@
                 <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
                 <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
                 <td>
-                    <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($prestamo) }})">
-                        <i class="fa fa-eye"></i>
-                    </a>
-                    <a href="javascript:void(0);" class="btn btn-outline-primary btn-sm" onclick="openEditModal({{ json_encode($prestamo) }})">
-                     Editar
-                    </a>
-
-                </td>
+                           <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                              onclick="viewModal({{ json_encode($prestamos) }})">
+                              <i class="fa fa-eye"></i>
+                           </a>
+                              <a href="{{ route('prestamos.edit') }}"
+                              class="btn btn-outline-primary btn-sm">
+                              <i class="fas fa-edit"></i> Editar
+                              </a>
+                              <form action="{{ route('prestamos.destroy') }}"
+                               method="POST" class="d-inline">
+                               @csrf
+                                @method('DELETE')
+                                 <button type="submit" class="btn btn-outline-warning btn-sm"
+                                    onclick="return confirm('¿Está seguro de eliminar esta relación?')">
+                                 <i class="fas fa-trash"></i> Eliminar
+                              </button>
+                        </form>
+                  </td>
             </tr>
         @endforeach
     @else

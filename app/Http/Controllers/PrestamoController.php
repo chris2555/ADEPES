@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,6 @@ class PrestamoController extends Controller
     
         return view('prestamo.Prestamo', compact('prestamos'));
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -31,8 +31,14 @@ class PrestamoController extends Controller
         return view('prestamo.Prestamo');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
+        $usuario_id = auth()->id();
+        
+        // Validar los datos del formulario
         $validatedData = $request->validate([
             'id_persona' => 'required|integer',
             'total_pagado' => 'required|numeric',
@@ -47,9 +53,20 @@ class PrestamoController extends Controller
             'creado_por' => 'required|integer',
         ]);
 
-        $response = Http::withHeaders([
-            'x-api-key' => 'tu-token-aqui'
-        ])->post('http://localhost:3000/api/prestamo', $validatedData);
+        // Enviar datos a la API
+        $response = Http::post('http://localhost:3000/api/prestamo', [
+            'id_persona' => $request->id_persona,
+            'total_pagado' => $request->total_pagado,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_vencimiento' => $request->fecha_vencimiento,
+            'tipo' => $request->tipo,
+            'monto' => $request->monto,
+            'tasa' => $request->tasa,
+            'plazo' => $request->plazo,
+            'estado' => $request->estado,
+            'tipo_garantia' => $request->tipo_garantia,
+            'creado_por' => $usuario_id,
+        ]);
 
         if ($response->successful()) {
             return redirect()->back()->with('success', 'Préstamo creado exitosamente.');
@@ -64,6 +81,7 @@ class PrestamoController extends Controller
     public function show(string $id)
     {
         //
+        return view('prestamo.Prestamo');
     }
 
     /**
