@@ -45,6 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('gestionclientes', ClientesController::class)->middleware('can:ver-seguridad')->names('gestionclientes');
     Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
     Route::resource('Prestamo', PrestamoController::class)->middleware('can:ver-seguridad')->names('Prestamo');
+    Route::get('/prestamos', [PrestamoController::class, 'index'])->middleware('can:ver-seguridad')->name('prestamos.index');
+    Route::post('/prestamos', [PrestamoController::class, 'store'])->middleware('can:ver-seguridad')->name('prestamos.store');
+    Route::put('/prestamos', [PrestamoController::class, 'edit'])->middleware('can:ver-seguridad')->name('prestamos.edit');
+    Route::delete('/prestamos', [PrestamoController::class, 'destroy'])->middleware('can:ver-seguridad')->name('prestamos.destroy');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
 });
 
