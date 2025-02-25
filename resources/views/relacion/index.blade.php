@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
-@section('title', 'Gestión de Relaciones de Solicitud') 
-@section('plugins.Sweetalert2', true) 
+@section('title', 'Gestión de Relaciones de Solicitud')
+@section('plugins.Sweetalert2', true)
 
 @section('content_header')
-   
+
 @stop
 
 @section('content')
@@ -21,7 +21,7 @@
         <div class="shadow-lg p-5 bg-white">
             <div class="card-header text-success text-center">
                 <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Relaciones de Solicitud</h4>
-              
+
             </div>
 
             <div class="d-flex justify-content-end mb-3">
@@ -58,17 +58,14 @@
                                             onclick="viewModal({{ json_encode($solicitud) }})">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('solicitud.edit', $solicitud['id_relacion']) }}"
-                                            class="btn btn-outline-primary btn-sm">
-                                            <i class="fas fa-edit"></i> Editar
+                                        <a href="{{ route('relacion.show', $solicitud['id_relacion'])}}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('relacion.destroy', $solicitud['id_relacion']) }}"
-                                            method="POST" class="d-inline">
+                                        <form action="{{ route('relacion.destroy', $solicitud['id_relacion']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-warning btn-sm"
-                                                onclick="return confirm('¿Está seguro de eliminar esta relación?')">
-                                                <i class="fas fa-trash"></i> Eliminar
+                                            <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -99,7 +96,7 @@
             </div>
         </div>
     </div>
-    
+
 
 
     {{-- Modal para Insertar Nueva Solicitud --}}
@@ -114,10 +111,22 @@
                     <form id="insertForm" action="{{ route('relacion.store') }}" method="POST">
                         @csrf
                         <div class="row">
-                            <x-adminlte-input name="id_solicitud" type="hidden" value="2" />
+
+                            <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3"
+                                required>
+                                <option value="">Seleccione una solicitud</option>
+                                @foreach ($solicitudesp as $solicitud)
+                                    <option value="{{ $solicitud->id_solicitud }}">
+                                        ID: {{ $solicitud->id_solicitud }} - Monto:
+                                        {{ number_format($solicitud->monto, 2) }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+
 
                             <div class="col-md-6">
-                                <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3"
+                                    required>
                                     <option value="">Seleccione una persona</option>
                                     @foreach ($personas as $persona)
                                         <option value="{{ $persona->id_persona }}">
@@ -125,55 +134,69 @@
                                         </option>
                                     @endforeach
                                 </x-adminlte-select>
-                                
 
-                                <x-adminlte-input name="id_ingresos" type="number" label="ID Ingresos"
-                                    placeholder="Ingresa el ID de los ingresos" fgroup-class="mb-3" required />
 
-                                    <x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
-                                        <option value="">Seleccione un aval</option>
-                                        @foreach ($avales as $aval)
-                                            <option value="{{ $aval->id_persona }}">
-                                                {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
-                                    
+                                <x-adminlte-select name="id_ingresos" label="Seleccione un ingreso" fgroup-class="mb-3"
+                                    required>
+                                    <option value="">Seleccione...</option>
+                                    @foreach ($ingresos as $ingreso)
+                                        <option value="{{ $ingreso->id_ingresos }}">{{ $ingreso->id_ingresos }} -
+                                            {{ $ingreso->total_ingresos }}</option>
+                                    @endforeach
+                                </x-adminlte-select>
+
+
+                                <x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
+                                    <option value="">Seleccione un aval</option>
+                                    @foreach ($avales as $aval)
+                                        <option value="{{ $aval->id_persona }}">
+                                            {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
+                                        </option>
+                                    @endforeach
+                                </x-adminlte-select>
+
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label for="id_conyuge">ID Cónyuge</label>
                                     <select name="id_conyuge" class="form-control" required>
                                         <option value="">Selecciona un cónyuge</option>
-                                        @foreach($conyuges as $conyuge)
+                                        @foreach ($conyuges as $conyuge)
                                             <option value="{{ $conyuge->id_conyuge }}">
                                                 {{ $conyuge->nombres_conyuge }} - {{ $conyuge->identidad_conyuge }}
                                             </option>
                                         @endforeach
                                     </select>
                                 </div>
-                                
 
-                                <x-adminlte-input name="id_egresos" type="number" label="ID Egresos"
-                                    placeholder="Ingresa el ID de los egresos" fgroup-class="mb-3" required />
 
-                                    <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
-                                        <option value="">Seleccione un aval</option>
-                                        @foreach ($avales as $aval)
-                                            <option value="{{ $aval->id_persona }}">
-                                                {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+                                <x-adminlte-select name="id_egresos" label="Seleccione un egreso" fgroup-class="mb-3"
+                                    required>
+                                    <option value="">Seleccione...</option>
+                                    @foreach ($egresos as $egreso)
+                                        <option value="{{ $egreso->id_egresos }}">{{ $egreso->id_egresos }} -
+                                            {{ $egreso->total_egresos }}</option>
+                                    @endforeach
+                                </x-adminlte-select>
 
-                                    <x-adminlte-select name="id_aval3" label="Seleccionar Aval 3" fgroup-class="mb-3">
-                                        <option value="">Seleccione un aval</option>
-                                        @foreach ($avales as $aval)
-                                            <option value="{{ $aval->id_persona }}">
-                                                {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+
+                                <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
+                                    <option value="">Seleccione un aval</option>
+                                    @foreach ($avales as $aval)
+                                        <option value="{{ $aval->id_persona }}">
+                                            {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
+                                        </option>
+                                    @endforeach
+                                </x-adminlte-select>
+
+                                <x-adminlte-select name="id_aval3" label="Seleccionar Aval 3" fgroup-class="mb-3">
+                                    <option value="">Seleccione un aval</option>
+                                    @foreach ($avales as $aval)
+                                        <option value="{{ $aval->id_persona }}">
+                                            {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
+                                        </option>
+                                    @endforeach
+                                </x-adminlte-select>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -187,26 +210,12 @@
         </div>
     </div>
 
-    {{-- Modal para Editar Solicitud --}}
-    <x-adminlte-modal id="edit" size="lg" title="Modificar Relación de Solicitud">
-        <form id="updateForm">
-            <div class="row">
-                <x-adminlte-input name="UPDATE_PI_COD_SUCURSAL" id="cod" readonly label="Codigo de la Sucursal"
-                    placeholder="Ingresa el Codigo de la Sucursal" fgroup-class="col-md-6" />
 
-                <x-adminlte-input name="UPDATE_PV_NOM_SUCURSAL" label="Nombre de la Sucursal"
-                    placeholder="Ingresa el Nombre de la Sucursal" fgroup-class="col-md-6" />
+    
+    
+    
+    
 
-                <x-adminlte-input name="UPDATE_PI_COD_GERENTE" type="number" label="Codigo de Gerente"
-                    placeholder="Ingresa el Codigo del Gerente" fgroup-class="col-md-6" />
-
-                <x-adminlte-input name="UPDATE_PI_COD_UBICACION" type="number" label="Codigo de Ubicacion"
-                    placeholder="Ingresa el codigo de la ubicacion" fgroup-class="col-md-6" />
-            </div>
-            <x-adminlte-button class="btn-flat" type="submit" label="Guardar Cambios" theme="success"
-                icon="fas fa-lg fa-save" />
-        </form>
-    </x-adminlte-modal>
 
 
 @stop
@@ -261,8 +270,8 @@
         });
 
         function viewModal(solicitud) {
-    var modalBody = document.getElementById('viewModalBody');
-    modalBody.innerHTML = `
+            var modalBody = document.getElementById('viewModalBody');
+            modalBody.innerHTML = `
         <div class="col-md-6">
             <p><strong>Nombre del Solicitante:</strong> ${solicitud.nombre_persona}</p>
             <p><strong>Cónyuge:</strong> ${solicitud.nombre_conyuge || 'No disponible'}</p>
@@ -280,58 +289,85 @@
         </div>
     `;
 
-    var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
-    viewModalElement.show();
-}
+            var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
+            viewModalElement.show();
+        }
+
+        
+        document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "Esta acción no se puede deshacer",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
+            });
+        });
+    });
 
 
 
     </script>
 
 @section('css')
-<style>
+    <style>
+        #relacionTable_wrapper {
+            margin-left: auto;
+            width: 96%;
+            /* Ajusta este valor según lo que necesites */
+        }
 
-    #relacionTable_wrapper {
-        margin-left: auto;
-        width: 96%; /* Ajusta este valor según lo que necesites */
-    }
-        
         .container-fluid {
             width: 100vw;
             height: 100vh;
             padding: 0px;
         }
-    
-     .dt-buttons .btn {
-        color: success !important;
-        border: none !important;
-    }
-    .dt-buttons .btn:hover {
-        filter: brightness(85%);
-    }
-    
-    .card {
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-    .table {
-        font-size: 24px;
-    }
-    .dt-buttons .btn {
-        margin: 5px;
-        font-size: 14px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-    .dt-buttons .btn:hover {
-        filter: brightness(85%);
-    }
-    .btn-sm {
-        border-radius: 5px;
-    }
+
+        .dt-buttons .btn {
+            color: success !important;
+            border: none !important;
+        }
+
+        .dt-buttons .btn:hover {
+            filter: brightness(85%);
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table {
+            font-size: 24px;
+        }
+
+        .dt-buttons .btn {
+            margin: 5px;
+            font-size: 14px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .dt-buttons .btn:hover {
+            filter: brightness(85%);
+        }
+
+        .btn-sm {
+            border-radius: 5px;
+        }
     </style>
 
-    
+
 @stop
 
 @stop
