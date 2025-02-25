@@ -90,18 +90,42 @@ class RelacionController extends Controller
         return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id) {}
+    
+    public function update(Request $request, $id)
+{
+    $usuario_id = auth()->id();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+    // Validar los datos del formulario
+    $request->validate([
+        'id_solicitud' => 'required|integer',
+        'id_persona' => 'required|integer',
+        'id_conyuge' => 'nullable|integer',
+        'id_ingresos' => 'required|integer',
+        'id_egresos' => 'required|integer',
+        'id_aval1' => 'nullable|integer',
+        'id_aval2' => 'nullable|integer',
+        'id_aval3' => 'nullable|integer',
+    ]);
+
+    // Enviar datos a la API externa
+    $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona/{$id}", [
+        'id_solicitud' => $request->id_solicitud,
+        'id_persona' => $request->id_persona,
+        'id_conyuge' => $request->id_conyuge,
+        'id_ingresos' => $request->id_ingresos,
+        'id_egresos' => $request->id_egresos,
+        'id_aval1' => $request->id_aval1,
+        'id_aval2' => $request->id_aval2,
+        'id_aval3' => $request->id_aval3,
+        'modificado_por' => $usuario_id,
+    ]);
+
+    if ($response->successful()) {
+        return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
+    } else {
+        return redirect()->back()->with('error', 'Error al actualizar los datos en la API.');
     }
+}
 
     /**
      * Remove the specified resource from storage.
