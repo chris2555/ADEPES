@@ -31,7 +31,7 @@
 
 <!-- Contenedor de la tabla alineada a la derecha -->
 <div class="d-flex justify-content-end">
-    <div class="table-responsive ms-auto">
+    <div class="table-responsive ms-auto table-hover"> <!-- para colocar el cursosr gris en las tablas-->
         <table id="clienteTable">
                     <thead class="">
                         <tr>
