@@ -96,6 +96,12 @@ class PrestamoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $response = Http::delete("http://localhost:3000/api/prestamo/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('prestamos.index')->with('success', 'Prestamo eliminada correctamente.');
+        } else {
+            return redirect()->route('prestamos.index')->with('error', 'No se pudo eliminar la El Prestamo.');
+        }
     }
 }

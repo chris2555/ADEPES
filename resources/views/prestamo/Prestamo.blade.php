@@ -146,15 +146,13 @@
                               class="btn btn-outline-primary btn-sm">
                               <i class="fas fa-edit"></i> Editar
                               </a>
-                              <form action="{{ route('prestamos.destroy') }}"
-                               method="POST" class="d-inline">
+                              <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" style="display:inline;">
                                @csrf
-                                @method('DELETE')
-                                 <button type="submit" class="btn btn-outline-warning btn-sm"
-                                    onclick="return confirm('¿Está seguro de eliminar esta relación?')">
-                                 <i class="fas fa-trash"></i> Eliminar
-                              </button>
-                        </form>
+                               @method('DELETE')
+                               <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este Prestamo?');">
+                               <i class="fa fa-trash"></i>
+                               </button>
+                               </form>
                   </td>
             </tr>
         @endforeach
@@ -204,7 +202,7 @@
 
 #clienteTable_wrapper {
     margin-left: auto;
-    width: 80%; /* Ajusta este valor según lo que necesites */
+    width: 67%; /* Ajusta este valor según lo que necesites */
 }
     
     .container-fluid {
