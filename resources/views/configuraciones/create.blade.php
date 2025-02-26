@@ -1,10 +1,11 @@
 @extends('adminlte::page')
-@section('title', 'Solicitudes - Creando nueva solicitud')
+@section('title', 'Configuraciones - Creando nueva configuracion')
 
 @section('content_header')
     <h1><b>Configuraciones/registro de una nueva configuracion</b></h1>
     </hr>
 @stop
+
 @section('content')
     <div class='row'> 
     <div class="col-md-12">
@@ -243,4 +244,3 @@
 @stop
 
 
-@stop

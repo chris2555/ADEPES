@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Solicitudes - Creando nueva solicitud')
+@section('title', 'Configuraciones - Configuraciones')
 
 @section('content_header')
     <h1><b>Listado de Configuraciones</b></h1>
