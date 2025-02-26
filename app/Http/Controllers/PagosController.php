@@ -10,19 +10,22 @@ class PagosController extends Controller
     
     public function index()
     {
-        $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/pagos");
+        $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos");
         
-        $ModelDataToJson = $ModelResponse->json() ?? [];
+        $ModelDataToJson = $ModelResponse->json();
 
         //info de la tabla
         $heads = [
-            "id_pago" => "ID",
-            "id_prestamo" => "Id Prestamo",
-            "id_persona" => "Id Persona",
-            "metodo_pago" => "Metodo de Pago",
-            "monto" => "Cantidad depositada",
-            "fecha" => "Fecha que se Realizo el pago",
-            "Acciones" => "Acciones"
+           "Fecha De Pago" => "Fecha De Pago",
+           "Numero de Cuota" => "No. Cuota",
+           "Nombre Completo" => "Nombre de la Persona",
+           "Cuota Amortización" => "Valor de la Cuota",
+           "Pago Capital" => "Valor de Capital",
+           "Intereses Pagados" => "Valor de Intereses",
+           "Abono" => "Valor Pagado",
+           "Diferencia de Pago" => "Saldo de Capital",
+           "Estado de Pago" => "Estado de Pago",
+           "Acciones" => "Acciones" 
         ];
 
         $dataTable = [];
@@ -33,15 +36,15 @@ class PagosController extends Controller
                 if (!array_key_exists($key, $ModelDataToJson[$i]) && array_key_exists("Acciones", $heads)) {
 
                     //en los botones modificar la parte del data-id con lo que regrese la consulta
-                    $btnEdit = '<button class="btn btn-xs btn-default text-blue mx-1 shadow" id="editInfo" data-toggle="modal" data-id="' . $ModelDataToJson[$i]['id_pago'] . '" data-target="#edit">
+                    $btnEdit = '<button class="btn btn-xs btn-default text-blue mx-1 shadow" id="editInfo" data-toggle="modal" data-id="' . $ModelDataToJson[$i]['Fecha De Pago'] . '" data-target="#edit">
                             <i class="fa fa-lg fa-fw fa-pen"></i>
                         </button>';
 
-                    $btnDelete = '<button class="btn btn-xs btn-default text-red mx-1 shadow" id="deleteInfo" data-id="' . $ModelDataToJson[$i]['id_pago'] . '" data-target="#delete">
+                    $btnDelete = '<button class="btn btn-xs btn-default text-red mx-1 shadow" id="deleteInfo" data-id="' . $ModelDataToJson[$i]['Fecha De Pago'] . '" data-target="#delete">
                               <i class="fa fa-lg fa-fw fa-trash"></i>
                         </button>';
 
-                    $btnDetails = '<button type="button" class="btn btn-xs btn-default text-teal mx-1 shadow" id="showInfo" data-toggle="modal" data-id="' . $ModelDataToJson[$i]['id_pago'] . '" data-target="#view">
+                    $btnDetails = '<button type="button" class="btn btn-xs btn-default text-teal mx-1 shadow" id="showInfo" data-toggle="modal" data-id="' . $ModelDataToJson[$i]['Fecha De Pago'] . '" data-target="#view">
                 <i class="fa fa-lg fa-fw fa-eye"></i>
             </button>';
 
