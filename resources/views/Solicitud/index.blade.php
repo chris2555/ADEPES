@@ -58,7 +58,7 @@
                                     onclick="viewModal({{ json_encode($solicitudes) }})">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{ route('solicitud.edit', $solicitud['id_solicitud']) }}"
+                                <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}"
                                     class="btn btn-outline-primary btn-sm">
                                     <i class="fas fa-edit"></i> Editar
                                 </a>

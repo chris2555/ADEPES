@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\SolicitudPrestamo;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
@@ -62,7 +64,9 @@ class SolicitudController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $solicitudes = SolicitudPrestamo::findOrFail($id);
+
+        return view('solicitud.edit', compact( 'solicitudes'));
     }
 
     /**
