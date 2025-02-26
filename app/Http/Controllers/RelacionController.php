@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Persona;
 use App\Models\Conyuge;
+use App\Models\EstadoEgresos;
+use App\Models\EstadoIngresos;
+use App\Models\SolicitudPrestamo;
+use App\Models\RelacionSolicitudPersona;
 
 class RelacionController extends Controller
 {
@@ -16,9 +20,12 @@ class RelacionController extends Controller
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona');
         $personas = Persona::where('tipo_persona', 'Solicitante')->get();
         $conyuges = Conyuge::all();
+        $solicitudesp = SolicitudPrestamo::all();
+        $egresos = EstadoEgresos::all();
+        $ingresos = EstadoIngresos::all();
         $avales = Persona::where('tipo_persona', 'Aval')->get();
         $solicitudes = $response->json();
-        return view('relacion.index', compact('solicitudes', 'personas','avales','conyuges'));
+        return view('relacion.index', compact('solicitudes', 'personas', 'avales', 'conyuges', 'egresos', 'ingresos', 'solicitudesp'));
     }
 
     /**
@@ -34,7 +41,6 @@ class RelacionController extends Controller
      */
     public function store(Request $request)
     {
-
         $usuario_id = auth()->id();
         // Validar los datos del formulario
         $request->validate([
@@ -61,38 +67,65 @@ class RelacionController extends Controller
             'creado_por' => $usuario_id,
         ]);
 
-
         if ($response->successful()) {
             return redirect()->back()->with('success', 'Relación de solicitud creada correctamente.');
         } else {
             return redirect()->back()->with('error', 'Error al enviar los datos a la API.');
         }
     }
-    
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+        $relacion = RelacionSolicitudPersona::findOrFail($id);
+        $solicitudes = SolicitudPrestamo::all();
+        $personas = Persona::all();
+        $conyuges = Conyuge::all();
+        $ingresos = EstadoIngresos::all();
+        $egresos = EstadoEgresos::all();
+        $avales = Persona::all(); 
+
+        return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+    
+    public function update(Request $request, $id)
+{
+    $usuario_id = auth()->id();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
+    // Validar los datos del formulario
+    $request->validate([
+        'id_solicitud' => 'required|integer',
+        'id_persona' => 'required|integer',
+        'id_conyuge' => 'nullable|integer',
+        'id_ingresos' => 'required|integer',
+        'id_egresos' => 'required|integer',
+        'id_aval1' => 'nullable|integer',
+        'id_aval2' => 'nullable|integer',
+        'id_aval3' => 'nullable|integer',
+    ]);
+
+    // Enviar datos a la API externa
+    $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona/{$id}", [
+        'id_solicitud' => $request->id_solicitud,
+        'id_persona' => $request->id_persona,
+        'id_conyuge' => $request->id_conyuge,
+        'id_ingresos' => $request->id_ingresos,
+        'id_egresos' => $request->id_egresos,
+        'id_aval1' => $request->id_aval1,
+        'id_aval2' => $request->id_aval2,
+        'id_aval3' => $request->id_aval3,
+        'modificado_por' => $usuario_id,
+    ]);
+
+    if ($response->successful()) {
+        return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
+    } else {
+        return redirect()->back()->with('error', 'Error al actualizar los datos en la API.');
     }
+}
 
     /**
      * Remove the specified resource from storage.
