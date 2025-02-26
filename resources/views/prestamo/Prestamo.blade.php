@@ -79,9 +79,9 @@
                             <div class="mb-3">
                                 <label for="estado" class="form-label">Estado</label>
                                 <select class="form-control" id="estado" name="estado" required>
-                                    <option value="aprobado">Aprobado</option>
-                                    <option value="pendiente">Pendiente</option>
-                                    <option value="rechazado">Rechazado</option>
+                                    <option value="aprobado">aprobado</option>
+                                    <option value="pendiente">pendiente</option>
+                                    <option value="rechazado">rechazado</option>
                                 </select>
                             </div>
                             <div class="mb-3">
