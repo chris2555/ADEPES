@@ -66,7 +66,7 @@ class SolicitudController extends Controller
     {
         $solicitudes = SolicitudPrestamo::findOrFail($id);
 
-        return view('solicitud.edit', compact( 'solicitudes'));
+        return view('Solicitud.edit', compact( 'solicitudes'));
     }
 
     /**
@@ -84,8 +84,7 @@ class SolicitudController extends Controller
     {
         $usuario_id = auth()->id();
         
-        // Enviar datos a la API
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', [
+        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}", [
             'tipo_garantia' => $request->tipo_garantia,
             'tipo_cuota' => $request->tipo_cuota,
             'tasa' => $request->tasa,
@@ -98,7 +97,6 @@ class SolicitudController extends Controller
             'es_aval' => $request->es_aval,
             'modificado_por' => $usuario_id,
         ]);
-
 
          if ($response->successful()) {
             return redirect()->route('solicitudes.index')->with('success', 'solicitud actualizada correctamente.');
