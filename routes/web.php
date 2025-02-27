@@ -13,6 +13,7 @@ use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\PagosController;
+use App\Http\Controllers\TelefonoController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
     Route::resource('Prestamo', PrestamoController::class)->middleware('can:ver-seguridad')->names('Prestamo');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
+    Route::resource('telefonos',TelefonoController::class)->names('telefonos');
 });
 
 require __DIR__.'/auth.php';
