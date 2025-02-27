@@ -26,12 +26,12 @@
 <!-- Botón "Nuevo" más arriba -->
 <div class="d-flex justify-content-end mb-3">
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
-        <i class="fas fa-plus"></i> Nuevo
+        <i class="fas fa-plus"></i> Añadir Nuevo
 </div>
 
 <!-- Contenedor de la tabla alineada a la derecha -->
 <div class="d-flex justify-content-end">
-    <div class="table-responsive ms-auto">
+    <div class="table-responsive ms-auto table-hover"> <!-- para colocar el cursosr gris en las tablas-->
         <table id="clienteTable">
                     <thead class="">
                         <tr>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SolicitudPrestamo;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
 class SolicitudController extends Controller
 {
@@ -31,7 +33,30 @@ class SolicitudController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $usuario_id = auth()->id();
+
+        // Enviar datos a la API
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', [
+            'tipo_garantia' => $request->tipo_garantia,
+            'tipo_cuota' => $request->tipo_cuota,
+            'tasa' => $request->tasa,
+            'plazo' => $request->plazo,
+            'monto' => $request->monto,
+            'invierte_en' => $request->invierte_en,
+            'tipo_credito' => $request->tipo_credito,
+            'estado_solicitud' => $request->estado_solicitud,
+            'valor_cuota' => $request->valor_cuota,
+            'es_aval' => $request->es_aval,
+            'creado_por' => $usuario_id,
+        ]);
+
+
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'solicitud creada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al enviar los datos a la API.');
+        }
     }
 
     /**
@@ -39,7 +64,9 @@ class SolicitudController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $solicitudes = SolicitudPrestamo::findOrFail($id);
+
+        return view('solicitud.edit', compact( 'solicitudes'));
     }
 
     /**
@@ -55,7 +82,29 @@ class SolicitudController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $usuario_id = auth()->id();
+        
+        // Enviar datos a la API
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', [
+            'tipo_garantia' => $request->tipo_garantia,
+            'tipo_cuota' => $request->tipo_cuota,
+            'tasa' => $request->tasa,
+            'plazo' => $request->plazo,
+            'monto' => $request->monto,
+            'invierte_en' => $request->invierte_en,
+            'tipo_credito' => $request->tipo_credito,
+            'estado_solicitud' => $request->estado_solicitud,
+            'valor_cuota' => $request->valor_cuota,
+            'es_aval' => $request->es_aval,
+            'modificado_por' => $usuario_id,
+        ]);
+
+
+         if ($response->successful()) {
+            return redirect()->route('solicitudes.index')->with('success', 'solicitud actualizada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al actualizar los datos en la API.');
+        }
     }
 
     /**
@@ -63,6 +112,12 @@ class SolicitudController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('solicitudes.index')->with('success', 'solicitud eliminada correctamente.');
+        } else {
+            return redirect()->route('solicitudes.index')->with('error', 'No se pudo eliminar la solicitud.');
+        }
     }
 }
