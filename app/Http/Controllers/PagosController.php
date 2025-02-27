@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Persona;
+
 
 class PagosController extends Controller
 {
@@ -11,66 +13,10 @@ class PagosController extends Controller
     public function index()
     {
         $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos");
+        $personas = Persona::where('tipo_persona', 'Solicitante')->get();
+        $avales = Persona::where('tipo_persona', 'Aval')->get();
         
-        $ModelDataToJson = $ModelResponse->json();
-
-        //info de la tabla
-        $heads = [
-           "Fecha De Pago" => "Fecha De Pago",
-           "Numero de Cuota" => "No. Cuota",
-           "Nombre Completo" => "Nombre de la Persona",
-           "Cuota Amortización" => "Valor de la Cuota",
-           "Pago Capital" => "Valor de Capital",
-           "Intereses Pagados" => "Valor de Intereses",
-           "Abono" => "Valor Pagado",
-           "Diferencia de Pago" => "Saldo de Capital",
-           "Estado de Pago" => "Estado de Pago",
-           "Acciones" => "Acciones" 
-        ];
-
-        $dataTable = [];
-
-        for ($i = 0; $i < count($ModelDataToJson); $i++) {
-            $row = [];
-            foreach ($heads as $key => $value) {
-                if (!array_key_exists($key, $ModelDataToJson[$i]) && array_key_exists("Acciones", $heads)) {
-
-                    //en los botones modificar la parte del data-id con lo que regrese la consulta
-                    $btnEdit = '<button class="btn btn-xs btn-default text-blue mx-1 shadow" id="editInfo" data-toggle="modal" data-id="' . $ModelDataToJson[$i]['Fecha De Pago'] . '" data-target="#edit">
-                            <i class="fa fa-lg fa-fw fa-pen"></i>
-                        </button>';
-
-                    $btnDelete = '<button class="btn btn-xs btn-default text-red mx-1 shadow" id="deleteInfo" data-id="' . $ModelDataToJson[$i]['Fecha De Pago'] . '" data-target="#delete">
-                              <i class="fa fa-lg fa-fw fa-trash"></i>
-                        </button>';
-
-                    $btnDetails = '<button type="button" class="btn btn-xs btn-default text-teal mx-1 shadow" id="showInfo" data-toggle="modal" data-id="' . $ModelDataToJson[$i]['Fecha De Pago'] . '" data-target="#view">
-                <i class="fa fa-lg fa-fw fa-eye"></i>
-            </button>';
-
-                    $row[] = '<nobr>' . $btnEdit . $btnDelete . $btnDetails . '</nobr>';
-                } else {
-                    $row[] = $ModelDataToJson[$i][$key];
-                }
-            }
-            $dataTable[] = $row;
-        }
-
-
-        $configTable = [
-            'data' => $dataTable,
-            'order' => [[1, 'asc']],
-            'ordering' => true,
-        ];
-
-
-        //informacion a mandar al blade
-        $information = [
-            'headsTable' => array_values($heads),
-            'config' => $configTable,
-        ];
-
-        return view("pagos.pagos")->with('info', $information);
+        return view('pagos.index', compact('solicitudes', 'personas', 'avales', 'conyuges', 'egresos', 'ingresos', 'solicitudesp'));
 
 
     }
