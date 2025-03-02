@@ -71,8 +71,9 @@ class PrestamoController extends Controller
      */
     public function show(string $id)
     {
-        //
-        return view('prestamo.Prestamo');
+        $prestamo = Prestamo::findOrFail($id);
+
+        return view('prestamo.Prestamo', compact('prestamo'));
     }
 
     /**

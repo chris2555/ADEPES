@@ -138,18 +138,17 @@
                 <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
                 <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
                 <td>
-                           <a href="javascript:void(0);" class="btn btn-success btn-sm"
-                              onclick="viewModal({{ json_encode($prestamos) }})">
+                              <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($prestamo) }})">
                               <i class="fa fa-eye"></i>
-                           </a>
+                              </a>
                               <a href="{{ route('prestamos.edit') }}"
                               class="btn btn-outline-primary btn-sm">
                               <i class="fas fa-edit"></i> Editar
                               </a>
-                              <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" style="display:inline;">
+                              <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" style="display:inline;" class="d-inline">
                                @csrf
                                @method('DELETE')
-                               <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de eliminar este Prestamo?');">
+                               <button type="submit" class="btn btn-outline-warning btn-sm" onclick="return confirm('¿Estás seguro de eliminar este Prestamo?');">
                                <i class="fa fa-trash"></i>
                                </button>
                                </form>
@@ -168,6 +167,22 @@
     </div>
 </div>
 
+<!-- Modal para visualizar los detalles del préstamo -->
+<div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModalLabel">Detalles del Préstamo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="viewModalBody">
+        <!-- Los datos del préstamo se insertarán aquí -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -180,6 +195,7 @@
 <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 <script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
    $(document).ready(function () {
         $('#prestamoTable').DataTable({
@@ -239,4 +255,35 @@
     border-radius: 5px;
 }
 </style>
+
+@section('js')
+<script>
+    function viewModal(prestamo) {
+        var modalBody = document.getElementById('viewModalBody');
+        modalBody.innerHTML = `
+        <div class="col-md-6">
+            <p><strong>ID del Préstamo:</strong> ${prestamo.id_prestamo}</p>
+            <p><strong>Nombres y Apellidos:</strong> ${prestamo.nombres_apellidos || 'No disponible'}</p>
+            <p><strong>Número de Identidad:</strong> ${prestamo.n_identidad || 'No disponible'}</p>
+            <p><strong>Monto:</strong> ${prestamo.monto || 'No disponible'}</p>
+            <p><strong>Tasa:</strong> ${prestamo.tasa}%</p>
+            <p><strong>Plazo:</strong> ${prestamo.plazo} meses</p>
+            <p><strong>Estado del Préstamo:</strong> ${prestamo.estado || 'No disponible'}</p>
+            <p><strong>Tipo de Préstamo:</strong> ${prestamo.tipo || 'No disponible'}</p>
+            <p><strong>Tipo de Garantía:</strong> ${prestamo.tipo_garantia || 'No disponible'}</p>
+            <p><strong>Fecha de Inicio:</strong> ${prestamo.fecha_inicio || 'No disponible'}</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Creado por:</strong> ${prestamo.creado_por}</p>
+            <p><strong>Creado en:</strong> ${prestamo.creado_en ? new Date(prestamo.creado_en).toLocaleString() : 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${prestamo.modificado_por || 'No disponible'}</p>
+            <p><strong>Modificado en:</strong> ${prestamo.modificado_en ? new Date(prestamo.modificado_en).toLocaleString() : 'No disponible'}</p>
+        </div>
+        `;
+
+        var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
+        viewModalElement.show();
+    }
+</script>
+@endsection
 @stop
