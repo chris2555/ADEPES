@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RelacionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\ClientesController;
@@ -46,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
     Route::resource('Prestamo', PrestamoController::class)->middleware('can:ver-seguridad')->names('Prestamo');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
+    Route::resource('Parametros', ParametrosController::class)->middleware('can:ver-seguridad')->names('Parametros');
 });
 
 require __DIR__.'/auth.php';
