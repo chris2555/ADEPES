@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('configuracions', function (Blueprint $table) {
             $table->id();
-
             $table->string('nombre');
             $table->string('descripcion');
             $table->text('direccion');

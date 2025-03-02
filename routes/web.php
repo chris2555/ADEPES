@@ -13,6 +13,7 @@ use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\PagosController;
+use App\Http\Controllers\TelefonoController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -51,9 +52,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->name('prestamos.destroy');
 
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
-
- 
+    Route::resource('telefonos',TelefonoController::class)->names('telefonos');
 });
+ 
+
    
 //Rutas para configuraciones
 
