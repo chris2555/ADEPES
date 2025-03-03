@@ -71,26 +71,89 @@ class PrestamoController extends Controller
      */
     public function show(string $id)
     {
-        $prestamo = Prestamo::findOrFail($id);
-
+        $response = Http::get("http://localhost:3000/api/prestamo/{$id}");
+        $prestamo = $response->json();
+    
+        // Depura la respuesta de la API para verificar su estructura
+        dd($prestamo);
+        
+        return response()->json($prestamo);
+    }
+    
+    /*Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        // Llamar a la API para obtener los datos del préstamo por ID
+        $response = Http::get("http://localhost:3000/api/prestamo/{$id}");
+    
+        if ($response->failed()) {
+            return redirect()->route('prestamos.index')->with('error', 'Préstamo no encontrado');
+        }
+    
+        $prestamo = $response->json(); // Obtener los datos del préstamo en formato array
+    
+        // Pasar los datos del préstamo a la vista
         return view('prestamo.Prestamo', compact('prestamo'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, $id)
+{
+    $usuario_id = auth()->id();
+
+    // Usar el id_prestamo del formulario en lugar de la URL
+    $id_prestamo = $request->input('id_prestamo');
+
+    Log::info('ID recibido para actualización:', ['id_prestamo' => $id_prestamo]);
+
+    $validatedData = $request->validate([
+        'id_persona' => 'required|integer',
+        'total_pagado' => 'required|numeric',
+        'fecha_inicio' => 'required|date',
+        'fecha_vencimiento' => 'required|date',
+        'tipo' => 'required|string|max:50',
+        'monto' => 'required|numeric',
+        'tasa' => 'required|numeric',
+        'plazo' => 'required|integer',
+        'estado' => 'required|in:aprobado,pendiente,rechazado',
+        'tipo_garantia' => 'required|in:Fiduciaria,Prendaria,Hipotecaria,Solidaria',
+    ]);
+
+    Log::info('Datos validados para actualizar:', $validatedData);
+
+    try {
+        // Enviar el ID correcto a la API externa
+        $response = Http::put("http://localhost:3000/api/prestamo/{$id_prestamo}", [
+            'id_persona' => $request->id_persona,
+            'total_pagado' => $request->total_pagado,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_vencimiento' => $request->fecha_vencimiento,
+            'tipo' => $request->tipo,
+            'monto' => $request->monto,
+            'tasa' => $request->tasa,
+            'plazo' => $request->plazo,
+            'estado' => $request->estado,
+            'tipo_garantia' => $request->tipo_garantia,
+            'modificado_por' => $usuario_id,
+        ]);
+
+        Log::info('Respuesta de la API:', ['status' => $response->status(), 'body' => $response->body()]);
+
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Préstamo actualizado correctamente.');
+        } else {
+            Log::error('Error al actualizar:', ['status' => $response->status(), 'body' => $response->body()]);
+            return redirect()->back()->with('error', 'Error al actualizar el préstamo.');
+        }
+    } catch (\Exception $e) {
+        Log::error('Excepción:', ['error' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Hubo un error al procesar la solicitud.');
     }
+}
 
     /**
      * Remove the specified resource from storage.
