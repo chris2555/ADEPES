@@ -17,6 +17,7 @@ class TelefonoController extends Controller
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos');
         $telefonos = $response->json();
         $personas = Persona::all();
+        
         return view('telefonos.index', compact('telefonos', 'personas'));
     }
 
@@ -33,7 +34,18 @@ class TelefonoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos', [
+        'id_entidad' => $request->id_entidad,
+        'tipo_entidad' => $request->tipo_entidad,
+        'tipo' => $request->tipo,
+        'numero' => $request->numero,
+      ]);
+     
+      if ($response->successful()) {
+        return redirect()->route('telefonos.index')->with('success', 'Telefono creado correctamente');
+      } else {
+        return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al crear el telefono');
+      }
     }
 
     /**
@@ -41,7 +53,10 @@ class TelefonoController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/{$id}");
+        $telefono = $response->json();
+        $personas = Persona::all();  
+        return view('telefonos.edit', compact('telefono', 'personas'));
     }
 
     /**
@@ -49,7 +64,7 @@ class TelefonoController extends Controller
      */
     public function edit(string $id)
     {
-        //
+      
     }
 
     /**
@@ -57,7 +72,18 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/{$id}", [
+            'id_entidad' => $request->id_entidad,
+            'tipo_entidad' => $request->tipo_entidad,
+            'tipo' => $request->tipo,
+            'numero' => $request->numero,
+        ]);
+        
+        if ($response->successful()) {
+            return redirect()->route('telefonos.index')->with('success', 'Telefono actualizado correctamente');
+        } else {
+            return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al actualizar el telefono');
+        }
     }
 
     /**
@@ -65,6 +91,11 @@ class TelefonoController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/{$id}");
+        if ($response->successful()) {
+            return redirect()->route('telefonos.index')->with('success', 'Telefono eliminado correctamente');
+        } else {
+            return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al eliminar el telefono');
+        }
     }
 }

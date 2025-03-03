@@ -316,6 +316,22 @@ return [
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
            
         ],
+        [
+            'text' => 'Telefonos',
+            'route' => 'telefonos.index',
+            'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
+        ],
+        [
+            'text' => 'Relacion solicitudes',
+            'route' => 'relacion.index',
+            'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
+        ],
+        [
+            'text' => 'Viviendas',
+            'route' => 'viviendas.index',
+            'icon' => 'fas fa-fw fa-home', // Ícono de casa para viviendas
+        ],
+        
 
         [
             'text' => 'Solicitudes',
