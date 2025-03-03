@@ -25,48 +25,48 @@
 
 <!-- Botón "Nuevo" más arriba -->
 <div class="d-flex justify-content-end mb-3">
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoparametroModal">
         <i class="fas fa-plus"></i> Nuevo
 </div>
 
 <!-- Contenedor de la tabla alineada a la derecha -->
 <div class="d-flex justify-content-end">
     <div class="table-responsive ms-auto">
-        <table id="clienteTable">
+        <table id="parametroTable">
                     <thead class="">
                         <tr>
-                            <th>Id</th>
-                            <th>Nombre</th>
-                            <th>Identidad</th>
-                            <th>Edad</th>
-                            <th>Estado Civil</th>
-                            <th>Género</th>
-                            <th>Teléfono</th>
-                            <th>Email Personal</th>
-                            <th>Email Laboral</th>
-                            <th>Acciones</th>
+                            <th>Id_parametros</th>
+                            <th>tipo_usuario</th>
+                            <th>clave</th>
+                            <th>nombre_usuario</th>
+                            <th>creado_en</th>
+                            <th>actualizado_en</th>
+                            <th>intento_ingreso</th>
+                            <th>vencimiento_usuario</th>
+                            <th>descripcion</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($personas as $persona)
+                        @foreach($parametros as $parametro)
                             <tr>
-                                <td>{{ $persona['id_persona'] }}</td>
-                                <td>{{ $persona['nombres_apellidos'] }}</td>
-                                <td>{{ $persona['n_identidad'] }}</td>
-                                <td>{{ $persona['edad'] }}</td>
-                                <td>{{ $persona['estado_civil'] }}</td>
-                                <td>{{ $persona['genero'] }}</td>
-                                <td>{{ $persona['telefono_secundario'] }}</td>
-                                <td>{{ $persona['email_personal'] }}</td>
-                                <td>{{ $persona['email_laboral'] }}</td>
+                                <td>{{ $parametro['id_parametro'] }}</td>
+                                <td>{{ $parametro['tipo_usuario'] }}</td>
+                                <td>{{ $parametro['clave'] }}</td>
+                                <td>{{ $parametro['nombre_usuario'] }}</td>
+                                <td>{{ $parametro['creado_en'] }}</td>
+                                <td>{{ $parametro['actualizado_en'] }}</td>
+                                <td>{{ $parametro['intento_ingreso'] }}</td>
+                                <td>{{ $parametro['vencimiento_usuario'] }}</td>
+                                <td>{{ $parametro['descripcion'] }}</td>
                                 <td>
-                                <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($persona) }})">
+                                <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($parametro) }})">
                         <i class="fa fa-eye"></i>
                     </a>
-                                    <a href="{{ route('Parametros.edit', $persona['id_persona']) }}" class="btn btn-outline-primary btn-sm">
+                                    <a href="{{ route('Parametros.edit', $parametro['id_parametro']) }}" class="btn btn-outline-primary btn-sm">
                                         <i class="fas fa-edit"></i> Editar
                                     </a>
-                                    <form action="{{ route('Parametros.destroy', $persona['id_persona']) }}" method="POST" class="d-inline">
+                                    <form action="{{ route('Parametros.destroy', $parametro['id_parametro']) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-outline-warning btn-sm" onclick="return confirm('¿Está seguro de eliminar este Parametro?')">
@@ -77,37 +77,37 @@
                             </tr>
                         @endforeach
 <!-- Modal para agregar un nuevo cliente -->
-<div class="modal fade" id="nuevoClienteModal" tabindex="-1" aria-labelledby="nuevoClienteModalLabel" aria-hidden="true">
+<div class="modal fade" id="nuevoparametroModal" tabindex="-1" aria-labelledby="nuevoparametroModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg"> <!-- modal-lg para hacerlo más ancho -->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nuevoClienteModalLabel">Agregar Nuevo Cliente</h5>
+                <h5 class="modal-title" id="nuevoparametroModalLabel">Agregar Nuevo parametro</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="nuevoClienteForm">
+                <form id="nuevoparametroForm">
                     <div class="row">
                         <!-- Primera columna -->
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="nombres_apellidos" class="form-label">peludo</label>
+                                <label for="nombres_apellidos" class="form-label">intento ingreso</label>
                                 <input type="text" class="form-control" id="nombres_apellidos" name="nombres_apellidos" required>
                             </div>
                             <div class="mb-3">
-                                <label for="n_identidad" class="form-label">Número de Identidad</label>
+                                <label for="n_identidad" class="form-label">Nombre de usuario</label>
                                 <input type="text" class="form-control" id="n_identidad" name="n_identidad" required>
                             </div>
                             <div class="mb-3">
-                                <label for="edad" class="form-label">Edad</label>
+                                <label for="edad" class="form-label">Descripcion</label>
                                 <input type="number" class="form-control" id="edad" name="edad" required>
                             </div>
                             <div class="mb-3">
-                                <label for="estado_civil" class="form-label">Estado Civil</label>
+                                <label for="estado_civil" class="form-label">Tipo de usuario</label>
                                 <select class="form-control" id="estado_civil" name="estado_civil">
-                                    <option value="Soltero">Soltero</option>
-                                    <option value="Casado">Casado</option>
-                                    <option value="Divorciado">Divorciado</option>
-                                    <option value="Viudo">Viudo</option>
+                                    <option value="Administrador">Administrador</option>
+                                    <option value="Contador">Contador</option>
+                                    <option value="Tecnico">Tecnico</option>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -115,23 +115,19 @@
                         <!-- Segunda columna -->
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="genero" class="form-label">peludos</label>
-                                <select class="form-control" id="genero" name="genero">
-                                    <option value="Masculino">Masculino</option>
-                                    <option value="Femenino">Femenino</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
+                                <label for="genero" class="form-label">Creado en </label>
+                                <input type="number" class="form-control" id="edad" name="edad" required>
                             </div>
                             <div class="mb-3">
-                                <label for="telefono_secundario" class="form-label">Teléfono</label>
+                                <label for="telefono_secundario" class="form-label">Actualizado en </label>
                                 <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario">
                             </div>
                             <div class="mb-3">
-                                <label for="email_personal" class="form-label">Email Personal</label>
+                                <label for="email_personal" class="form-label">Clave</label>
                                 <input type="email" class="form-control" id="email_personal" name="email_personal">
                             </div>
                             <div class="mb-3">
-                                <label for="email_laboral" class="form-label">Email Laboral</label>
+                                <label for="email_laboral" class="form-label">Id Parametro</label>
                                 <input type="email" class="form-control" id="email_laboral" name="email_laboral">
                             </div>
                         </div>
@@ -167,7 +163,7 @@
 <script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
 <script>
    $(document).ready(function () {
-        $('#clienteTable').DataTable({
+        $('#parametroTable').DataTable({
             responsive: true,
             autoWidth: false,
             language: {
@@ -192,7 +188,7 @@
 <style>
 
 
-#clienteTable_wrapper {
+#parametroTable_wrapper {
     margin-left: auto;
     width: 96%; /* Ajusta este valor según lo que necesites */
 }
