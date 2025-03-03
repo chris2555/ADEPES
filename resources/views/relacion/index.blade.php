@@ -4,7 +4,7 @@
 @section('plugins.Sweetalert2', true)
 
 @section('content_header')
-
+<b></b>
 @stop
 
 @section('content')

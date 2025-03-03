@@ -1,75 +1,77 @@
 @extends('adminlte::page')
 
 @section('title', 'Gestión de Roles')
+@section('plugins.Sweetalert2', true)
 
 @section('content_header')
-
-<head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Gestión de Roles</li>
-        </ol>
-    </nav>
-    <div>
-    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#crearRolModal"> {{-- Botón que abre el modal --}}
-        Crear Rol
-    </button>
-    <a href="{{ route('roles.index') }}" class="btn btn-success">
-        Ver Roles asignados
-    </a>
-    <div>
-</div>
-
+    <b></b>
 @stop
 
 @section('content')
-    <div class="table-responsive">
-        <table id="rolesTable" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre del Rol</th>
-                    <th>Guard Name</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($roles as $role)
-                    <tr>
-                        <td>{{ $role->id }}</td>
-                        <td>{{ $role->name }}</td>
-                        <td>{{ $role->guard_name }}</td>
-                        <td>
-                           
-                            <form action="{{ route('verroles.destroy', $role->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash"></i> 
-                                </button>
-                            </form>
-                            <a href="{{ route('verroles.edit', $role->id) }}" class="btn btn-secondary btn-sm">
-                                <i class="bi bi-key"></i> 
-                            </a>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="4" class="text-center">No hay roles disponibles.</td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+<div class='row'> 
+    <div class="col-md-12">
+            
+    <head>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
+
+    <div class="container-fluid mt-4">
+        <div class="shadow-lg p-5 bg-white">
+            <div class="card-header text-success text-center">
+                <h4 class="mb-0"><i class="fas fa-user-shield"></i> Gestión de Roles</h4>
+            </div>
+
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#crearRolModal">
+                    <i class="fas fa-plus"></i> Crear Rol
+                </button>
+                <a href="{{ route('roles.index') }}" class="btn btn-success ms-2">
+                    <i class="fas fa-users"></i> Ver Roles asignados
+                </a>
+            </div>
+
+            <div class="table-responsive">
+                <table id="rolesTable" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre del Rol</th>
+                            <th>Guard Name</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($roles as $role)
+                            <tr>
+                                <td>{{ $role->id }}</td>
+                                <td>{{ $role->name }}</td>
+                                <td>{{ $role->guard_name }}</td>
+                                <td>
+                                    <form action="{{ route('verroles.destroy', $role->id) }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                    <a href="{{ route('verroles.edit', $role->id) }}" class="btn btn-secondary btn-sm">
+                                        <i class="fas fa-key"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="text-center">No hay roles disponibles.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="crearRolModal" tabindex="-1" aria-labelledby="crearRolModalLabel" aria-hidden="true">
@@ -80,9 +82,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('verroles.store') }}"> {{-- Formulario POST que envía a 'roles.store' --}}
+                    <form method="POST" action="{{ route('verroles.store') }}">
                         @csrf
-
                         <div class="mb-3">
                             <label for="name" class="form-label">Nombre del Rol:</label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" autofocus>
@@ -90,7 +91,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="mb-3">
                             <label for="guard_name" class="form-label">Guard Name:</label>
                             <select class="form-select @error('guard_name') is-invalid @enderror" id="guard_name" name="guard_name">
@@ -101,7 +101,6 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                             <button type="submit" class="btn btn-primary">Crear Rol</button>
@@ -115,10 +114,13 @@
 
 @section('js')
     <script>
-        var table = new DataTable('#rolesTable', {
-            language: {
-                url: '//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json',
-            },
+        $(document).ready(function() {
+            $('#rolesTable').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json',
+                },
+                responsive: true,
+            });
         });
     </script>
 @endsection
