@@ -25,7 +25,7 @@
             </div>
 
             <div class="d-flex justify-content-end mb-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertVivienda">
                     <i class="fas fa-plus"></i> Nueva Vivienda
                 </button>
             </div>
@@ -102,20 +102,86 @@
 
 
 
-    {{-- Modal para Insertar Nueva Solicitud --}}
-    <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="insertModalLabel">Insertar Nueva Relación de Solicitud</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+    <!-- Modal para Insertar Nueva Vivienda -->
+<div class="modal fade" id="insertVivienda" tabindex="-1" aria-labelledby="insertViviendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="insertViviendaLabel">Agregar Nueva Vivienda</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="insertViviendaForm" action="{{ route('viviendas.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6">
+                            <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                <option value="">Seleccione una persona</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->id_persona }}">
+                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+                            
+                            <x-adminlte-select name="tipo_casa" label="Tipo de Casa" fgroup-class="mb-3" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Alquila">Alquila</option>
+                                <option value="Propia">Propia</option>
+                                <option value="Familiar">Familiar</option>
+                            </x-adminlte-select>
+                            
+                            <x-adminlte-select name="tiempo_vivir" label="Tiempo de Vivir" fgroup-class="mb-3" required>
+                                <option value="">Seleccione...</option>
+                                <option value="1 año">1 año</option>
+                                <option value="2 años">2 años</option>
+                                <option value="3 años">3 años</option>
+                                <option value="4 años">4 años</option>
+                                <option value="Más de 5 años">Más de 5 años</option>
+                            </x-adminlte-select>
+                            
+                            <x-adminlte-select name="material_construccion" label="Material de Construcción" fgroup-class="mb-3" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Concreto">Concreto</option>
+                                <option value="Madera">Madera</option>
+                                <option value="Mixto">Mixto</option>
+                            </x-adminlte-select>
+                        </div>
+                        <div class="col-md-6">
+                            <x-adminlte-select name="pago_vivienda" label="Pago de Vivienda" fgroup-class="mb-3" required>
+                                <option value="">Seleccione...</option>
+                                <option value="SI">Sí</option>
+                                <option value="NO">No</option>
+                            </x-adminlte-select>
+                            <x-adminlte-input name="dependiente" label="Dependiente" type="number" fgroup-class="mb-3" placeholder="Ingrese la cantidad de dependientes" />
+
+                            
+                            <x-adminlte-select name="tipo_pago_vivienda" label="Tipo de Pago" fgroup-class="mb-3">
+                                <option value="">Seleccione...</option>
+                                <option value="Semanal">Semanal</option>
+                                <option value="Quincenal">Quincenal</option>
+                                <option value="Mensual">Mensual</option>
+                            </x-adminlte-select>
+                            
+                            <x-adminlte-input name="valor_pago" label="Valor del Pago" type="number" fgroup-class="mb-3" placeholder="Ingrese el monto" />
+                        </div>
+                    </div>
                     
-                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <x-adminlte-textarea name="direccion_completa" label="Dirección Completa" fgroup-class="mb-3" placeholder="Ingrese la dirección"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
+                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Vivienda" theme="success" icon="fas fa-lg fa-save" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
 
 
     
@@ -176,29 +242,32 @@
             });
         });
 
-        function viewModal(solicitud) {
-            var modalBody = document.getElementById('viewModalBody');
-            modalBody.innerHTML = `
+        function viewModal(vivienda) {
+    var modalBody = document.getElementById('viewModalBody');
+    modalBody.innerHTML = `
         <div class="col-md-6">
-            <p><strong>Nombre del Solicitante:</strong> ${solicitud.nombre_persona}</p>
-            <p><strong>Cónyuge:</strong> ${solicitud.nombre_conyuge || 'No disponible'}</p>
-            <p><strong>Ingresos:</strong> ${solicitud.ingresos}</p>
-            <p><strong>Egresos:</strong> ${solicitud.egresos}</p>
-            <p><strong>Aval 1:</strong> ${solicitud.nombre_aval1 || 'No disponible'}</p>
-            <p><strong>Aval 2:</strong> ${solicitud.nombre_aval2 || 'No disponible'}</p>
+            <p><strong>Nombre del Solicitante:</strong> ${vivienda.nombre_persona}</p>
+            <p><strong>Dependientes:</strong> ${vivienda.dependiente || 'No disponible'}</p>
+            <p><strong>Tipo de Casa:</strong> ${vivienda.tipo_casa}</p>
+            <p><strong>Tiempo Viviendo:</strong> ${vivienda.tiempo_vivir}</p>
+            <p><strong>Pago de Vivienda:</strong> ${vivienda.pago_vivienda || 'No disponible'}</p>
+             <p><strong>Tipo de Pago:</strong> ${vivienda.tipo_pago_vivienda || 'No disponible'}</p>
+            <p><strong>Valor del Pago:</strong> ${vivienda.valor_pago ? vivienda.valor_pago + ' Lps' : 'No disponible'}</p>
         </div>
         <div class="col-md-6">
-            <p><strong>Aval 3:</strong> ${solicitud.nombre_aval3 || 'No disponible'}</p>
-            <p><strong>Creado por:</strong> ${solicitud.creado_por}</p>
-            <p><strong>Creado en:</strong> ${solicitud.creado_en ? new Date(solicitud.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${solicitud.modificado_por || 'No disponible'}</p>
-            <p><strong>Modificado en:</strong> ${solicitud.modificado_en ? new Date(solicitud.modificado_en).toLocaleString() : 'No disponible'}</p>
+            <p><strong>Dirección Completa:</strong> ${vivienda.direccion_completa || 'No disponible'}</p>
+            <p><strong>Material de Construcción:</strong> ${vivienda.material_construccion}</p>
+            <p><strong>Creado por:</strong> ${vivienda.creado_por}</p>
+            <p><strong>Creado en:</strong> ${vivienda.creado_en ? new Date(vivienda.creado_en).toLocaleString() : 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${vivienda.modificado_por || 'No disponible'}</p>
+            <p><strong>Modificado en:</strong> ${vivienda.modificado_en ? new Date(vivienda.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>
     `;
 
-            var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
-            viewModalElement.show();
-        }
+    var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
+    viewModalElement.show();
+}
+
 
         
         document.addEventListener("DOMContentLoaded", function () {
