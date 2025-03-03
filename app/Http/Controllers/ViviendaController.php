@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Persona;
 
 class ViviendaController extends Controller
 {
@@ -14,8 +15,9 @@ class ViviendaController extends Controller
     {
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/viviendas');
         $viviendas = $response->json();
-        
-        return view('vivienda.index', compact('viviendas'));
+        $personas = Persona::all();
+
+        return view('vivienda.index', compact('viviendas', 'personas'));
     }
 
     /**
@@ -31,7 +33,26 @@ class ViviendaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $usuario_id = auth()->id();
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/viviendas', [
+            'id_persona' => $request->id_persona,
+            'tipo_casa' => $request->tipo_casa,
+            'tiempo_vivir' => $request->tiempo_vivir,
+            'material_construccion' => $request->material_construccion,
+            'pago_vivienda' => $request->pago_vivienda,
+            'dependiente' => $request->dependiente,
+            'tipo_pago_vivienda' => $request->tipo_pago_vivienda,
+            'valor_pago' => $request->valor_pago,
+            'direccion_completa' => $request->direccion_completa,
+            'creado_por' => $usuario_id,
+        ]);
+
+        if ($response->successful()) {
+            return redirect()->route('viviendas.index')->with('success', 'Vivienda creada correctamente');
+        } else {
+            return redirect()->route('viviendas.index')->with('error', 'Ocurrió un error al crear la vivienda');
+        }
     }
 
     /**
