@@ -50,7 +50,7 @@
                             <a href="{{ route('permisos.edit', $permission->id) }}" class="btn btn-warning btn-sm">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <form id="deleteForm{{ $permission->id }}" action="{{ route('permisos.destroy', $permission->id) }}" method="POST" style="display:inline;">
+                            <form id="deleteForm{{ $permission->id }}" action="" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"> {{-- Botón de Borrar MODIFICADO a type="submit" --}}
