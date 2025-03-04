@@ -139,34 +139,43 @@
             <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
             <td>
                 <!-- Botón Ver sin onclick directo -->
-                <button class="btn btn-info btn-sm view-prestamo" data-prestamo='@json($prestamo)'>
-                <i class="fas fa-eye"></i> Ver
+                <button class="btn btn-info btn-sm view-prestamo"
+                data-bs-toggle="modal" 
+                 data-bs-target="#view"
+                data-id="{{ $prestamo['id_prestamo'] }}"
+                data-nombre="{{ $prestamo['nombres_apellidos'] }}"
+                data-identidad="{{ $prestamo['n_identidad'] }}"
+                 data-tipo-persona="{{ $prestamo['tipo_persona'] }}"
+                data-total="{{ $prestamo['total_pagado'] }}"
+                data-inicio="{{ $prestamo['fecha_inicio'] }}"
+                data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
+                data-tipo="{{ $prestamo['tipo'] }}"
+                data-monto="{{ $prestamo['monto'] }}"
+                 data-tasa="{{ $prestamo['tasa'] }}"
+                data-plazo="{{ $prestamo['plazo'] }}"
+                 data-estado="{{ $prestamo['estado'] }}"
+                 data-garantia="{{ $prestamo['tipo_garantia'] }}"
+>
+                <i class="fas fa-eye"></i>
                 </button>
+
 
                 <!-- Botón Editar sin onclick directo 
                 <button class="btn btn-primary btn-sm edit-prestamo" data-prestamo='@json($prestamo)' data-bs-toggle="modal" data-bs-target="#editPrestamoModal">
                     <i class="fas fa-edit"></i>
                 </button>
                 -->
-                <!-- Este botón se usa para abrir el modal -->
-  <!-- Este botón abre el modal sin enviar datos -->
-<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edit">
-    <i class="fas fa-edit"></i>
-</button>
-
-
-
-
-
-
-
-                <!-- Botón Eliminar -->
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edit">
+                 <i class="fas fa-edit"></i>
+                </button>
                 <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
-                        <i class="fa fa-trash"></i>
-                    </button>
+                @csrf
+                @method('DELETE')
+                 <button type="submit" class="btn btn-outline-warning btn-sm delete-btn"
+                onclick="return confirm('¿Está seguro de eliminar este Prestamo?')">
+        
+                  <i class="fa fa-trash"></i>
+                </button>
                 </form>
             </td>
         </tr>
@@ -183,7 +192,7 @@
     </div>
 </div>
 
-<!-- Modal view -->
+<!-- Modal de vista -->
 <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -192,9 +201,19 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <div id="viewModalBody">
-                    <!-- Aquí se insertan los datos -->
-                </div>
+                <p><strong>ID Préstamo:</strong> <span id="view-id"></span></p>
+                <p><strong>Nombre Completo:</strong> <span id="view-nombre"></span></p>
+                <p><strong>Número de Identidad:</strong> <span id="view-identidad"></span></p>
+                <p><strong>Tipo de Persona:</strong> <span id="view-tipo-persona"></span></p>
+                <p><strong>Total Pagado:</strong> <span id="view-total"></span></p>
+                <p><strong>Fecha Inicio:</strong> <span id="view-inicio"></span></p>
+                <p><strong>Fecha Vencimiento:</strong> <span id="view-vencimiento"></span></p>
+                <p><strong>Tipo de Préstamo:</strong> <span id="view-tipo"></span></p>
+                <p><strong>Monto:</strong> L.<span id="view-monto"></span></p>
+                <p><strong>Tasa de Interés:</strong> <span id="view-tasa"></span>%</p>
+                <p><strong>Plazo:</strong> <span id="view-plazo"></span> meses</p>
+                <p><strong>Estado:</strong> <span id="view-estado"></span></p>
+                <p><strong>Tipo de Garantía:</strong> <span id="view-garantia"></span></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -202,6 +221,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 <!-- Modal para Editar Préstamo 
@@ -389,6 +410,27 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".view-prestamo").forEach(button => {
+        button.addEventListener("click", function () {
+            document.getElementById("view-id").textContent = this.getAttribute("data-id");
+            document.getElementById("view-nombre").textContent = this.getAttribute("data-nombre");
+            document.getElementById("view-identidad").textContent = this.getAttribute("data-identidad");
+            document.getElementById("view-tipo-persona").textContent = this.getAttribute("data-tipo-persona");
+            document.getElementById("view-total").textContent = this.getAttribute("data-total");
+            document.getElementById("view-inicio").textContent = this.getAttribute("data-inicio");
+            document.getElementById("view-vencimiento").textContent = this.getAttribute("data-vencimiento");
+            document.getElementById("view-tipo").textContent = this.getAttribute("data-tipo");
+            document.getElementById("view-monto").textContent = this.getAttribute("data-monto");
+            document.getElementById("view-tasa").textContent = this.getAttribute("data-tasa");
+            document.getElementById("view-plazo").textContent = this.getAttribute("data-plazo");
+            document.getElementById("view-estado").textContent = this.getAttribute("data-estado");
+            document.getElementById("view-garantia").textContent = this.getAttribute("data-garantia");
+        });
+    });
+});
+</script>
 
 
 @section('js')
@@ -465,38 +507,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
 @section('js')
 <script src="{{ asset('js/app.js') }}"></script>
-<!--
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".view-prestamo").forEach(button => {
-        button.addEventListener("click", function () {
-            // Obtener el JSON del atributo data-prestamo y decodificarlo
-            let prestamo = JSON.parse(this.getAttribute("data-prestamo"));
+$(document).on('click', '.view-prestamo', function () {
+    let prestamo = $(this).data('prestamo'); // Obtener datos desde el botón
 
-            // Insertar la información en el modal
-            let modalBody = document.getElementById("viewModalBody");
-            modalBody.innerHTML = `
-                <p><strong>ID Préstamo:</strong> ${prestamo.id_prestamo ?? 'N/A'}</p>
-                <p><strong>Nombre:</strong> ${prestamo.nombres_apellidos ?? 'N/A'}</p>
-                <p><strong>Número de Identidad:</strong> ${prestamo.n_identidad ?? 'N/A'}</p>
-                <p><strong>Monto:</strong> ${prestamo.monto ?? 'N/A'}</p>
-                <p><strong>Tasa:</strong> ${prestamo.tasa ?? 'N/A'}%</p>
-                <p><strong>Plazo:</strong> ${prestamo.plazo ?? 'N/A'} meses</p>
-                <p><strong>Estado:</strong> ${prestamo.estado ?? 'N/A'}</p>
-                <p><strong>Tipo:</strong> ${prestamo.tipo ?? 'N/A'}</p>
-                <p><strong>Garantía:</strong> ${prestamo.tipo_garantia ?? 'N/A'}</p>
-                <p><strong>Fecha Inicio:</strong> ${prestamo.fecha_inicio ? new Date(prestamo.fecha_inicio).toLocaleDateString() : 'N/A'}</p>
-                <p><strong>Fecha Vencimiento:</strong> ${prestamo.fecha_vencimiento ? new Date(prestamo.fecha_vencimiento).toLocaleDateString() : 'N/A'}</p>
-            `;
+    // Llenar el modal con los datos del préstamo
+    $('#view-id_prestamo').text(prestamo.id);
+    $('#view-id_persona').text(prestamo.id_persona);
+    $('#view-total_pagado').text(prestamo.total_pagado);
+    $('#view-fecha_inicio').text(prestamo.fecha_inicio);
+    $('#view-fecha_vencimiento').text(prestamo.fecha_vencimiento);
+    $('#view-tipo').text(prestamo.tipo);
+    $('#view-monto').text(prestamo.monto);
+    $('#view-tasa').text(prestamo.tasa);
+    $('#view-plazo').text(prestamo.plazo);
+    $('#view-estado').text(prestamo.estado);
+    $('#view-tipo_garantia').text(prestamo.tipo_garantia);
+    $('#view-modificado_por').text(prestamo.modificado_por);
 
-            // Mostrar el modal con Bootstrap
-            var modal = new bootstrap.Modal(document.getElementById("view"));
-            modal.show();
-        });
-    });
+    // Mostrar el modal
+    $('#viewPrestamoModal').modal('show');
 });
+
 </script>
--->
 <script>
 
 //Modal para Editar Préstamo 
@@ -608,30 +641,28 @@ $("#updatePrestamoForm").submit(function(e) {
 });
 -->
     </script>
-    <script>
-    // Confirmar eliminación con SweetAlert
-    document.querySelectorAll('.delete-btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-            var form = this.closest('form');
-
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function () {
             Swal.fire({
-                title: '¿Está seguro?',
+                title: "¿Estás seguro?",
                 text: "Esta acción no se puede deshacer",
-                icon: 'warning',
+                icon: "warning",
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    form.submit();
+                    this.closest("form").submit(); // Envía el formulario si confirma
                 }
             });
         });
     });
-    </script>
+});
 </script>
 @endsection
 @stop

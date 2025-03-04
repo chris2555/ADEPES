@@ -70,15 +70,24 @@ class PrestamoController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
+{
+    try {
         $response = Http::get("http://localhost:3000/api/prestamo/{$id}");
-        $prestamo = $response->json();
-    
-        // Depura la respuesta de la API para verificar su estructura
-        dd($prestamo);
-        
-        return response()->json($prestamo);
+
+        if ($response->successful()) {
+            $prestamo = $response->json();
+            return view('prestamo.Prestamo', compact('prestamo'));
+        } else {
+            Log::error('Error al obtener el préstamo', ['status' => $response->status()]);
+            return redirect()->back()->with('error', 'No se pudo obtener el préstamo');
+        }
+    } catch (\Exception $e) {
+        Log::error('Excepción al obtener el préstamo', ['error' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Error interno del servidor');
     }
+}
+
+    
     
     /*Show the form for editing the specified resource.
      */
