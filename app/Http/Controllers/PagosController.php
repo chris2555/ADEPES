@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Persona;
-
+use App\Models\Pagos;
 
 class PagosController extends Controller
 {
@@ -13,10 +13,11 @@ class PagosController extends Controller
     public function index()
     {
         $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos");
-        $personas = Persona::where('tipo_persona', 'Solicitante')->get();
-        $avales = Persona::where('tipo_persona', 'Aval')->get();
         
-        return view('pagos.index', compact('solicitudes', 'personas', 'avales', 'conyuges', 'egresos', 'ingresos', 'solicitudesp'));
+        
+        $pagos = $ModelResponse->json(); 
+        //dd($pagos);
+        return view('pagos.pagos', compact('pagos'));
 
 
     }
