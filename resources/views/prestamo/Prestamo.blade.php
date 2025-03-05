@@ -143,6 +143,7 @@
                 data-bs-toggle="modal" 
                  data-bs-target="#view"
                 data-id="{{ $prestamo['id_prestamo'] }}"
+                data-id-persona="{{ $prestamo['id_persona'] }}"
                 data-nombre="{{ $prestamo['nombres_apellidos'] }}"
                 data-identidad="{{ $prestamo['n_identidad'] }}"
                  data-tipo-persona="{{ $prestamo['tipo_persona'] }}"
@@ -165,9 +166,24 @@
                     <i class="fas fa-edit"></i>
                 </button>
                 -->
-                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#edit">
-                 <i class="fas fa-edit"></i>
-                </button>
+                <button class="btn btn-warning btn-sm edit-prestamo"
+    data-bs-toggle="modal"
+    data-bs-target="#edit"
+    data-id="{{ $prestamo['id_prestamo'] }}"
+    data-id-persona="{{ $prestamo['id_persona'] }}"
+    data-total="{{ $prestamo['total_pagado'] }}"
+    data-inicio="{{ $prestamo['fecha_inicio'] }}"
+    data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
+    data-tipo="{{ $prestamo['tipo'] }}"
+    data-monto="{{ $prestamo['monto'] }}"
+    data-tasa="{{ $prestamo['tasa'] }}"
+    data-plazo="{{ $prestamo['plazo'] }}"
+    data-estado="{{ $prestamo['estado'] }}"
+    data-garantia="{{ $prestamo['tipo_garantia'] }}"
+    data-modificado-por="{{ auth()->user()->name }}">
+    <i class="fas fa-edit"></i>
+</button>
+
                 <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
                 @csrf
                 @method('DELETE')
@@ -202,6 +218,7 @@
             </div>
             <div class="modal-body">
                 <p><strong>ID Préstamo:</strong> <span id="view-id"></span></p>
+                <p><strong>ID Persona:</strong> <span id="view-id-persona"></span></p>
                 <p><strong>Nombre Completo:</strong> <span id="view-nombre"></span></p>
                 <p><strong>Número de Identidad:</strong> <span id="view-identidad"></span></p>
                 <p><strong>Tipo de Persona:</strong> <span id="view-tipo-persona"></span></p>
@@ -278,7 +295,6 @@
     </div>
 </div>
 -->
-<!-- Modal de edición -->
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit-title" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -287,75 +303,95 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Formulario de edición -->
-                <form id="form-update-prestamo" action="{{ route('prestamos.update', ['id' => 1]) }}" method="POST">
+                <form id="form-update-prestamo" method="POST">
                     @csrf
                     @method('PUT')
 
+                    <!-- ID Préstamo (readonly) -->
                     <div class="mb-3">
                         <label for="id_prestamo" class="form-label">ID Préstamo</label>
-                        <input type="text" class="form-control" id="id_prestamo" name="id_prestamo" required>
+                        <input type="text" class="form-control" id="id_prestamo" name="id_prestamo" readonly>
                     </div>
 
                     <div class="row">
                         <!-- Primera columna -->
                         <div class="col-md-6">
+                            <!-- ID Persona (readonly) -->
                             <div class="mb-3">
                                 <label for="id_persona" class="form-label">ID Persona</label>
-                                <input type="text" class="form-control" id="id_persona" name="id_persona" required>
+                                <input type="text" class="form-control" id="e-id_persona" name="id_persona" readonly>
                             </div>
+                            
+                            <!-- Total Pagado (editable) -->
                             <div class="mb-3">
                                 <label for="total_pagado" class="form-label">Total Pagado</label>
-                                <input type="text" class="form-control" id="total_pagado" name="total_pagado" required>
+                                <input type="text" class="form-control" id="e.total_pagado" name="total_pagado">
                             </div>
+
+                            <!-- Fecha Inicio (editable) -->
                             <div class="mb-3">
                                 <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
-                                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+                                <input type="date" class="form-control" id="e.fecha_inicio" name="fecha_inicio">
                             </div>
+
+                            <!-- Fecha Vencimiento (editable) -->
                             <div class="mb-3">
                                 <label for="fecha_vencimiento" class="form-label">Fecha Vencimiento</label>
-                                <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
+                                <input type="date" class="form-control" id="e.fecha_vencimiento" name="fecha_vencimiento">
                             </div>
+
+                            <!-- Tipo (editable) -->
                             <div class="mb-3">
                                 <label for="tipo" class="form-label">Tipo</label>
-                                <input type="text" class="form-control" id="tipo" name="tipo" required>
+                                <input type="text" class="form-control" id="e.tipo" name="tipo">
                             </div>
+
+                            <!-- Monto (editable) -->
                             <div class="mb-3">
                                 <label for="monto" class="form-label">Monto</label>
-                                <input type="text" class="form-control" id="monto" name="monto" required>
+                                <input type="text" class="form-control" id="e.monto" name="monto">
                             </div>
                         </div>
 
                         <!-- Segunda columna -->
                         <div class="col-md-6">
+                            <!-- Tasa (editable) -->
                             <div class="mb-3">
                                 <label for="tasa" class="form-label">Tasa</label>
-                                <input type="text" class="form-control" id="tasa" name="tasa" required>
+                                <input type="text" class="form-control" id="e.tasa" name="tasa">
                             </div>
+
+                            <!-- Plazo (editable) -->
                             <div class="mb-3">
                                 <label for="plazo" class="form-label">Plazo</label>
-                                <input type="text" class="form-control" id="plazo" name="plazo" required>
+                                <input type="text" class="form-control" id="e.plazo" name="plazo">
                             </div>
+
+                            <!-- Estado (editable) -->
                             <div class="mb-3">
                                 <label for="estado" class="form-label">Estado</label>
-                                <select class="form-control" id="estado" name="estado" required>
+                                <select class="form-control" id="e.estado" name="estado">
                                     <option value="aprobado">Aprobado</option>
                                     <option value="pendiente">Pendiente</option>
                                     <option value="rechazado">Rechazado</option>
                                 </select>
                             </div>
+
+                            <!-- Tipo de Garantía (editable) -->
                             <div class="mb-3">
                                 <label for="tipo_garantia" class="form-label">Tipo de Garantía</label>
-                                <select class="form-control" id="tipo_garantia" name="tipo_garantia" required>
+                                <select class="form-control" id="e.tipo_garantia" name="tipo_garantia">
                                     <option value="Fiduciaria">Fiduciaria</option>
                                     <option value="Prendaria">Prendaria</option>
                                     <option value="Hipotecaria">Hipotecaria</option>
                                     <option value="Solidaria">Solidaria</option>
                                 </select>
                             </div>
+
+                            <!-- Modificado Por (readonly) -->
                             <div class="mb-3">
                                 <label for="modificado_por" class="form-label">Modificado Por</label>
-                                <input type="text" class="form-control" id="modificado_por" name="modificado_por" required>
+                                <input type="text" class="form-control" id="modificado_por" name="modificado_por" readonly>
                             </div>
                         </div>
                     </div>
@@ -368,6 +404,48 @@
         </div>
     </div>
 </div>
+
+<!-- Script para asignar datos al modal -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".edit-prestamo").forEach(button => {
+        button.addEventListener("click", function () {
+            document.getElementById("id_prestamo").value = this.getAttribute("data-id");
+            document.getElementById("e-id_persona").value = this.getAttribute("data-id-persona");
+            document.getElementById("e.total_pagado").value = parseFloat(this.getAttribute("data-total")).toFixed(2);
+            document.getElementById("e.fecha_inicio").value = this.getAttribute("data-inicio");
+            document.getElementById("e.fecha_vencimiento").value = this.getAttribute("data-vencimiento");
+            document.getElementById("e.tipo").value = this.getAttribute("data-tipo");
+            document.getElementById("e.monto").value = parseFloat(this.getAttribute("data-monto")).toFixed(2);
+            document.getElementById("e.tasa").value = this.getAttribute("data-tasa");
+            document.getElementById("e.plazo").value = this.getAttribute("data-plazo");
+            document.getElementById("e.estado").value = this.getAttribute("data-estado");
+            document.getElementById("e.tipo_garantia").value = this.getAttribute("data-garantia");
+            document.getElementById("modificado_por").value = this.getAttribute("data-modificado-por");
+
+            // Actualiza la acción del formulario con el ID correcto
+            document.getElementById("form-update-prestamo").action = "/prestamos/" + this.getAttribute("data-id");
+        });
+    });
+});
+
+$(document).on('click', '.edit-prestamo', function () {
+    $('#id_prestamo').val($(this).data('id'));
+    $('#id_persona').val($(this).data('id-persona'));
+    $('#total_pagado').val($(this).data('total'));
+    $('#fecha_inicio').val($(this).data('inicio'));
+    $('#fecha_vencimiento').val($(this).data('vencimiento'));
+    $('#tipo').val($(this).data('tipo'));
+    $('#monto').val($(this).data('monto'));
+    $('#tasa').val($(this).data('tasa'));
+    $('#plazo').val($(this).data('plazo'));
+    $('#estado').val($(this).data('estado'));
+    $('#tipo_garantia').val($(this).data('garantia'));
+    $('#modificado_por').val($(this).data('modificado-por'));
+});
+
+</script>
+
 
 
 
@@ -415,6 +493,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".view-prestamo").forEach(button => {
         button.addEventListener("click", function () {
             document.getElementById("view-id").textContent = this.getAttribute("data-id");
+            document.getElementById("view-id-persona").textContent = this.getAttribute("data-id-persona");
             document.getElementById("view-nombre").textContent = this.getAttribute("data-nombre");
             document.getElementById("view-identidad").textContent = this.getAttribute("data-identidad");
             document.getElementById("view-tipo-persona").textContent = this.getAttribute("data-tipo-persona");
