@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
     Route::resource('viviendas',ViviendaController::class)->names('viviendas');
+    
 });
  
 
