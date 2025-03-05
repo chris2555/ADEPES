@@ -389,6 +389,12 @@ return [
                     'can' => 'ver-seguridad' 
                 ],
                 [
+                    'text' => 'Parametros',
+                    'route' => 'Parametros.index', // Ruta al módulo de usuarios
+                    'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
+                    'can' => 'ver-seguridad' 
+                ],
+                [
                     'text' => 'Bitácora',
                     'route' => 'solicitud.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
