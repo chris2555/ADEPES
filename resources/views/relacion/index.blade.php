@@ -4,37 +4,35 @@
 @section('plugins.Sweetalert2', true)
 
 @section('content_header')
-<b></b>
+
 @stop
 
 @section('content')
+<head>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+</head>
 
-    <head>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    </head>
+<div class='row'> 
+    <div class="col-md-12">
+            <div class="card-header">
+                <div class="container-fluid mt-4">
+                    <div class="shadow-lg p-5 bg-white">
+                         <div class="card-header text-success text-center">
+            <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Relaciones de Solicitud</h4>
+                        </div>
+                        <div class="card-header d-flex justify-content-end">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
+                                <i class="fas fa-plus"></i> Añadir Nuevo
+                            </button>
+                        </div>
 
-    <div class="container-fluid mt-4">
-        <div class="shadow-lg p-5 bg-white">
-            <div class="card-header text-success text-center">
-                <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Relaciones de Solicitud</h4>
-
-            </div>
-
-            <div class="d-flex justify-content-end mb-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
-                    <i class="fas fa-plus"></i> Nueva Relación
-                </button>
-            </div>
-
-            <div class="d-flex justify-content-end">
-                <div class="table-responsive ms-auto">
-                    <table id="relacionTable">
-                        <thead>
-                            <tr>
+                        <!-- Contenedor de la tabla -->
+                        <div class="card-body">
+                            <div class="table-responsive table-hover table-striped table-sm">
+                                <table id="relacionTable">
+                                    <thead>
+                                        <tr>
                                 <th>ID Relación</th>
                                 <th>ID Solicitud</th>
                                 <th>Nombre</th>
@@ -75,8 +73,6 @@
                     </table>
                 </div>
             </div>
-        </div>
-    </div>
 
     <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -209,18 +205,7 @@
             </div>
         </div>
     </div>
-
-
-    
-    
-    
-    
-
-
-
 @stop
-
-
 
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -238,34 +223,33 @@
     <script>
         $(document).ready(function() {
             $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
+                pageLength: 5,
                 responsive: true,
                 autoWidth: false,
                 language: {
                     url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
-                    search: "Buscar:"
-                },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6"B><"col-md-3 text-end"f>>rtip',
-                buttons: [{
-                        extend: 'copy',
-                        text: '<i class="fas fa-copy"></i> Copiar',
-                        className: 'btn btn-secondary text-dark'
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fas fa-file-excel"></i> Excel',
-                        className: 'btn btn-success text-dark'
-                    },
-                    {
-                        extend: 'pdf',
-                        text: '<i class="fas fa-file-pdf"></i> PDF',
-                        className: 'btn btn-danger text-dark'
-                    },
-                    {
-                        extend: 'csv',
-                        text: '<i class="fas fa-file-csv"></i> CSV',
-                        className: 'btn btn-info text-dark'
+                    search: "Buscar:",
+                    lengthMenu: "Mostrar _MENU_ entradas",
+                    info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    infoEmpty: "Mostrando 0 a 0 de 0 entradas",
+                    infoFiltered: "(filtrado de _MAX_ entradas en total)",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
                     }
-                ]
+    },
+    dom: '<"row d-flex justify-content-between"<"col-md-3"l><"col-md-3 text-end"f>>' +
+         '<"row"<"col-md-12"B>>' +
+         'rtip',
+    buttons: [
+        { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-dark' },
+      { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
+      { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-warning' },
+      { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-danger' },
+      { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+    ]
             });
         });
 
@@ -314,10 +298,8 @@
             });
         });
     });
-
-
-
     </script>
+@stop
 
 @if(session('success'))
 <script>
@@ -345,8 +327,22 @@
 
 @section('css')
     <style>
+
+#relacionTable_wrapper .btn {
+     
+     justify-content: center;/*Centrar los botenes */
+     gap: 10px;/*Espaciado entre botenes*/
+     margin-bottom: 15px; /*Separar botones de la tabla*/
+   }
+
+   #relacionTable_wrapper .dt-buttons .btn {
+        min-width: 150px;
+        margin-right: 10px;
+        border-radius: 4px;
+        padding: 5px 15px;
+        font-size: 15px;
+}
         #relacionTable_wrapper {
-            margin-left: auto;
             width: 96%;
             /* Ajusta este valor según lo que necesites */
         }
@@ -357,41 +353,7 @@
             padding: 0px;
         }
 
-        .dt-buttons .btn {
-            color: success !important;
-            border: none !important;
-        }
-
-        .dt-buttons .btn:hover {
-            filter: brightness(85%);
-        }
-
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .table {
-            font-size: 24px;
-        }
-
-        .dt-buttons .btn {
-            margin: 5px;
-            font-size: 14px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .dt-buttons .btn:hover {
-            filter: brightness(85%);
-        }
-
-        .btn-sm {
-            border-radius: 5px;
-        }
     </style>
-
-
 @stop
 
-@stop
+

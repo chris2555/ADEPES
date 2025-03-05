@@ -30,8 +30,29 @@ class ClientesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $usuario_id = auth()->id();
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas', [
+            'id_persona' => $request->id_persona,
+            'nombres_apellidos' => $request->nombres_apellidos,
+            'n_identidad' => $request->n_identidad,
+            'fecha_nacimiento' => $request->fecha_nacimiento,
+            'edad' => $request->edad,
+            'nacionalidad' => $request->nacionalidad,
+            'estado_civil' => $request->estado_civil,
+            'genero' => $request->genero,
+            'tipo_persona' => $request->tipo_persona,
+            'email_personal' => $request->email_personal,
+            'email_laboral' => $request->email_laboral,
+            'telefono_secundario' => $request->telefono_secundario,
+            'creado_por' => auth()->id(), 
+        ]);
+        if ($response->successful()) {
+            return redirect()->route('gestionclientes.index')->with('success', 'Cliente creado correctamente');
+        } else {
+            return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al crear el cliente');
+        }
     }
+
 
     /**
      * Display the specified resource.

@@ -12,7 +12,6 @@
     <head>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
         <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     </head>
@@ -31,7 +30,7 @@
             </div>
 
             <div class="d-flex justify-content-end">
-                <div class="table-responsive ms-auto">
+            <div class="table-responsive table-hover table-striped table-sm">
                     <table id="viviendaTable">
                         <thead>
                             <tr>
@@ -56,7 +55,7 @@
                                     <td>{{ $vivienda['direccion_completa'] }}</td>
                                     <td>{{ $vivienda['material_construccion'] }}</td>
                                     <td>
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                                        <a href="javascript:void(0);" class="btn btn-outline-success btn-sm"
                                             onclick="viewModal({{ json_encode($vivienda) }})">
                                             <i class="fa fa-eye"></i>
                                         </a>
@@ -66,7 +65,7 @@
                                         <form action="{{ route('viviendas.destroy', $vivienda['id_vivienda']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
+                                            <button type="button" class="btn btn-outline-danger btn-sm delete-btn">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
