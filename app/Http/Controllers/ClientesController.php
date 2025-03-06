@@ -58,9 +58,12 @@ class ClientesController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
+{
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
+    $personas = $response->json(); // Renombrar a 'persona'
+    return view('gestionclientes.edit', compact('personas')); // Ahora se pasa correctamente
+}
+
 
     /**
      * Show the form for editing the specified resource.
@@ -75,7 +78,26 @@ class ClientesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}", [
+            'id_persona' => $request->id_persona,
+            'nombres_apellidos' => $request->nombres_apellidos,
+            'n_identidad' => $request->n_identidad,
+            'fecha_nacimiento' => $request->fecha_nacimiento,
+            'edad' => $request->edad,
+            'nacionalidad' => $request->nacionalidad,
+            'estado_civil' => $request->estado_civil,
+            'genero' => $request->genero,
+            'tipo_persona' => $request->tipo_persona,
+            'email_personal' => $request->email_personal,
+            'email_laboral' => $request->email_laboral,
+            'telefono_secundario' => $request->telefono_secundario,
+        ]);
+        
+        if ($response->successful()) {
+            return redirect()->route('gestionclientes.index')->with('success', 'Telefono actualizado correctamente');
+        } else {
+            return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al actualizar el telefono');
+        }
     }
 
     /**
@@ -83,6 +105,20 @@ class ClientesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
+    
+        if ($response->successful()) {
+            return redirect()->route('gestionclientes.index')->with('success', 'Cliente eliminado correctamente');
+        } else {
+            return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al eliminar el cliente');
+        }
     }
+
+    //public function destroy(string $id)
+    //{
+      //  $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
+    
+        //dd($response->status(), $response->body()); // Agrega esta línea
+  //  }
+    
 }
