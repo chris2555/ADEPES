@@ -11,6 +11,7 @@ use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\PrestamoController;
+use App\Http\Controllers\ReferenciasFController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\PagosController;
 use App\Http\Controllers\TelefonoController;
@@ -52,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/prestamos/{id}', [PrestamoController::class, 'edit'])->middleware('can:ver-seguridad')->name('prestamos.edit');
     Route::put('/prestamos/{id}', [PrestamoController::class, 'update'])->middleware('can:ver-seguridad')->name('prestamos.update');
     Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->middleware('can:ver-seguridad')->name('prestamos.destroy');
-
+    Route::get('/referencias', [ReferenciasFController::class, 'index'])->middleware('can:ver-seguridad')->name('ReferenciasF.index');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
 });

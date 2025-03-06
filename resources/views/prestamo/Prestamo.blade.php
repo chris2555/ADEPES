@@ -171,6 +171,8 @@
     data-bs-target="#edit"
     data-id="{{ $prestamo['id_prestamo'] }}"
     data-id-persona="{{ $prestamo['id_persona'] }}"
+    data-nombres="{{ $prestamo['nombres_apellidos'] }}"
+    data-dni="{{ $prestamo['n_identidad'] }}"
     data-total="{{ $prestamo['total_pagado'] }}"
     data-inicio="{{ $prestamo['fecha_inicio'] }}"
     data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
@@ -309,8 +311,8 @@
 
                     <!-- ID Préstamo (readonly) -->
                     <div class="mb-3">
-                        <label for="id_prestamo" class="form-label">ID Préstamo</label>
-                        <input type="text" class="form-control" id="id_prestamo" name="id_prestamo" readonly>
+                        <label for="id_prestamo" class="form-label"></label>
+                        <input type="hidden" class="form-control" id="id_prestamo" name="id_prestamo" readonly>
                     </div>
 
                     <div class="row">
@@ -318,16 +320,26 @@
                         <div class="col-md-6">
                             <!-- ID Persona (readonly) -->
                             <div class="mb-3">
-                                <label for="id_persona" class="form-label">ID Persona</label>
-                                <input type="text" class="form-control" id="e-id_persona" name="id_persona" readonly>
+                                <label for="id_persona" class="form-label"></label>
+                                <input type="hidden" class="form-control" id="e.id_persona" name="id_persona" readonly>
                             </div>
                             
+                            <!-- Nombres (readonly) -->
+                            <div class="mb-3">
+                                <label for="nombres_apellidos" class="form-label">Nombres y Apellidos</label>
+                                <input type="text" class="form-control" id="e.nombres_apellidos" name="nombres_apellidos" readonly>
+                            </div>
+                            
+                            <!-- DNI (editable) -->
+                            <div class="mb-3">
+                                <label for="n_identidad" class="form-label">DNI</label>
+                                <input type="text" class="form-control" id="e.n_identidad" name="n_identidad" readonly>
+                            </div>
                             <!-- Total Pagado (editable) -->
                             <div class="mb-3">
-                                <label for="total_pagado" class="form-label">Total Pagado</label>
-                                <input type="text" class="form-control" id="e.total_pagado" name="total_pagado">
+                            <label for="total_pagado" class="form-label">Total Pagado</label>
+                            <input type="text" class="form-control" id="e.total_pagado" name="total_pagado">
                             </div>
-
                             <!-- Fecha Inicio (editable) -->
                             <div class="mb-3">
                                 <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
@@ -411,7 +423,9 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".edit-prestamo").forEach(button => {
         button.addEventListener("click", function () {
             document.getElementById("id_prestamo").value = this.getAttribute("data-id");
-            document.getElementById("e-id_persona").value = this.getAttribute("data-id-persona");
+            document.getElementById("e.id_persona").value = this.getAttribute("data-id-persona");
+            document.getElementById("e.nombres_apellidos").value = this.getAttribute("data-nombres");
+            document.getElementById("e.n_identidad").value = this.getAttribute("data-dni");
             document.getElementById("e.total_pagado").value = parseFloat(this.getAttribute("data-total")).toFixed(2);
             document.getElementById("e.fecha_inicio").value = this.getAttribute("data-inicio");
             document.getElementById("e.fecha_vencimiento").value = this.getAttribute("data-vencimiento");
