@@ -105,7 +105,7 @@ class ClientesController extends Controller
      */
     public function destroy(string $id)
     {
-        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
+        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personass/{$id}");
     
         if ($response->successful()) {
             return redirect()->route('gestionclientes.index')->with('success', 'Cliente eliminado correctamente');
@@ -114,11 +114,4 @@ class ClientesController extends Controller
         }
     }
 
-    //public function destroy(string $id)
-    //{
-      //  $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
-    
-        //dd($response->status(), $response->body()); // Agrega esta línea
-  //  }
-    
 }
