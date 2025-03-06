@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Persona;
 use App\Models\Parametros;
 
-class ParametroController extends Controller
+class ParametrosController extends Controller
 {
     
     public function index()
