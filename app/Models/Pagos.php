@@ -1,4 +1,3 @@
-
 <?php
 
 namespace App\Models;
@@ -10,8 +9,8 @@ class Pagos extends Model
 {
     use HasFactory;
 
-    protected $table = 'pagos';
-    protected $primaryKey = 'id_pagos';
+    protected $table = 'RelacionSolicitudPersona';
+    protected $primaryKey = 'id_relacion';
     public $timestamps = false;
 
     protected $fillable = [
@@ -24,11 +23,8 @@ class Pagos extends Model
         'creado_por',
         'modificado_por',
         'modificado_en',
-        'intereses',
+        'intereses'
     ];
 
     protected $dates = ['creado_en', 'modificado_en'];
 }
-
-
-

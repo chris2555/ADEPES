@@ -17,6 +17,7 @@ use App\Http\Controllers\TelefonoController;
 use App\Http\Controllers\ViviendaController;
 use App\Http\Controllers\ConyugeController;
 use App\Models\Conyuge;
+use App\Http\Controllers\ParametrosController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
     Route::resource('viviendas',ViviendaController::class)->names('viviendas');
     Route::resource('conyuge',ConyugeController::class)->names('conyuge');
+    Route::resource('parametros',parametrosController::class)->names('Parametros');
+    
 });
  
 
