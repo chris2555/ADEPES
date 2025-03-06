@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>FONDO</b> ROTATORIO',
+    'logo' => '<b>ADEPES</b>',
     'logo_img' => 'vendor/adminlte/dist/img/adepes.png',
     'logo_img_class' => 'brand-image img-circle elevation-5',
     'logo_img_xl' => null,
@@ -136,7 +136,7 @@ return [
     'usermenu_enabled' => true,
     'usermenu_header' => true,
     'usermenu_header_class' => 'bg-green',
-    'usermenu_image' => false,
+    'usermenu_image' => true,
     'usermenu_desc' => true,
     'usermenu_profile_url' => false,
 
@@ -191,7 +191,7 @@ return [
     */
 
     'classes_body' => '',
-    'classes_brand' => 'bg-success',
+    'classes_brand' => 'bg-primary',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
     'classes_content_header' => '',
@@ -340,12 +340,6 @@ return [
            
         ],
         [
-            'text' => 'Prestamos',
-            'route' => 'Prestamo.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
-           
-        ],
-        [
             'text' => 'Pagos',
             'route' => 'pagos.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
@@ -357,8 +351,19 @@ return [
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
            
         ],
-      
-        
+        [
+            'text' => 'Gestion de Clientes',
+            'route' => 'solicitud.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+           
+        ],
+
+        [
+            'text' => 'Prestamos',
+            'route' => 'Prestamo.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
+           
+        ],
         [
             'text' => 'Seguridad',
             'icon' => 'fas fa-fw fa-user-lock', // Ícono representativo de usuarios
@@ -398,12 +403,6 @@ return [
                     'text' => 'Bitácora',
                     'route' => 'solicitud.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
-                    'can' => 'ver-seguridad' 
-                ],
-                [
-                    'text' => 'Configuraciones',
-                    'route' => 'configuraciones.index', // Ruta al módulo de usuarios
-                    'icon' => 'fas fa-fw fa-tools', // Ícono de usuarios
                     'can' => 'ver-seguridad' 
                 ],
             ],
@@ -459,63 +458,12 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'location' => '//cdn.datatables.net/2.1.8/js/dataTables.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.4.0/js/dataTables.buttons.min.js',
-                ],
-            
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.4.0/js/buttons.bootstrap4.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.4.0/js/buttons.html5.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.4.0/js/buttons.print.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.4.0/js/buttons.colVis.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.4.0/css/buttons.bootstrap4.min.css',
-                ],           
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => 'https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js',
+                    'location' => '//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css',
                 ],
             ],
         ],
@@ -545,17 +493,12 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => true,
+            'active' => false,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => true,
-                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11.all.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
             ],
         ],

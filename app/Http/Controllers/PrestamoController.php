@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class PrestamoController extends Controller
@@ -11,7 +13,15 @@ class PrestamoController extends Controller
      */
     public function index()
     {
-        return view('prestamo.Prestamo');
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo');
+        $prestamos = $response->json(); // Convertir JSON en un array
+    
+        // Verificar si la API devuelve un array válido
+        if (!is_array($prestamos)) {
+            $prestamos = []; // Asegurar que la variable es un array
+        }
+    
+        return view('prestamo.Prestamo', compact('prestamos'));
     }
 
     /**
@@ -19,7 +29,7 @@ class PrestamoController extends Controller
      */
     public function create()
     {
-        return view('prestamo.create');
+        return view('prestamo.Prestamo');
     }
 
     /**
@@ -27,38 +37,144 @@ class PrestamoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Registrar los datos en los logs sin detener la ejecución
+        Log::info('Datos recibidos en el Controller:', $request->except(['_token']));
+    
+        $usuario_id = auth()->id();
+        
+        // Validar los datos del formulariox
+    
+        // Enviar datos a la API sin incluir el token
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo', [
+            'id_persona' => $request->id_persona,
+            'total_pagado' => $request->total_pagado,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_vencimiento' => $request->fecha_vencimiento,
+            'tipo' => $request->tipo,
+            'monto' => $request->monto,
+            'tasa' => $request->tasa,
+            'plazo' => $request->plazo,
+            'estado' => $request->estado,
+            'tipo_garantia' => $request->tipo_garantia,
+            'creado_por' => $usuario_id,
+        ]);
+    
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Préstamo creado exitosamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al crear el préstamo.');
+        }
     }
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        //
-    }
+{
+    try {
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id}");
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        if ($response->successful()) {
+            $prestamo = $response->json();
+            return view('prestamo.Prestamo', compact('prestamo'));
+        } else {
+            Log::error('Error al obtener el préstamo', ['status' => $response->status()]);
+            return redirect()->back()->with('error', 'No se pudo obtener el préstamo');
+        }
+    } catch (\Exception $e) {
+        Log::error('Excepción al obtener el préstamo', ['error' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Error interno del servidor');
     }
+}
+
+    
+    
+    /*Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        // Llamar a la API para obtener los datos del préstamo por ID
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id}");
+    
+        if ($response->failed()) {
+            return redirect()->route('prestamos.index')->with('error', 'Préstamo no encontrado');
+        }
+    
+        $prestamo = $response->json(); // Obtener los datos del préstamo en formato array
+    
+        // Pasar los datos del préstamo a la vista
+        return view('prestamo.Prestamo', compact('prestamo'));
+    }
+    
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
+    public function update(Request $request, $id)
+{
+    $usuario_id = auth()->id();
+
+    // Usar el id_prestamo del formulario en lugar de la URL
+    $id_prestamo = $request->input('id_prestamo');
+
+    Log::info('ID recibido para actualización:', ['id_prestamo' => $id_prestamo]);
+
+    $validatedData = $request->validate([
+        'id_persona' => 'required|integer',
+        'total_pagado' => 'required|numeric',
+        'fecha_inicio' => 'required|date',
+        'fecha_vencimiento' => 'required|date',
+        'tipo' => 'required|string|max:50',
+        'monto' => 'required|numeric',
+        'tasa' => 'required|numeric',
+        'plazo' => 'required|integer',
+        'estado' => 'required|in:aprobado,pendiente,rechazado',
+        'tipo_garantia' => 'required|in:Fiduciaria,Prendaria,Hipotecaria,Solidaria',
+    ]);
+
+    Log::info('Datos validados para actualizar:', $validatedData);
+
+    try {
+        // Enviar el ID correcto a la API externa
+        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id_prestamo}", [
+            'id_persona' => $request->id_persona,
+            'total_pagado' => $request->total_pagado,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_vencimiento' => $request->fecha_vencimiento,
+            'tipo' => $request->tipo,
+            'monto' => $request->monto,
+            'tasa' => $request->tasa,
+            'plazo' => $request->plazo,
+            'estado' => $request->estado,
+            'tipo_garantia' => $request->tipo_garantia,
+            'modificado_por' => $usuario_id,
+        ]);
+
+        Log::info('Respuesta de la API:', ['status' => $response->status(), 'body' => $response->body()]);
+
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Préstamo actualizado correctamente.');
+        } else {
+            Log::error('Error al actualizar:', ['status' => $response->status(), 'body' => $response->body()]);
+            return redirect()->back()->with('error', 'Error al actualizar el préstamo.');
+        }
+    } catch (\Exception $e) {
+        Log::error('Excepción:', ['error' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Hubo un error al procesar la solicitud.');
     }
+}
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-        //
+        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('prestamos.index')->with('success', 'Prestamo eliminada correctamente.');
+        } else {
+            return redirect()->route('prestamos.index')->with('error', 'No se pudo eliminar la El Prestamo.');
+        }
     }
 }
