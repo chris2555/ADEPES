@@ -101,7 +101,7 @@ class ConyugeController extends Controller
         ]);
 
         if ($response->successful()) {
-            return redirect()->route('Conyuge.index')->with('success', 'solicitud actualizada correctamente.');
+            return redirect()->route('conyuge.index')->with('success', 'solicitud actualizada correctamente.');
         } else {
             return redirect()->back()->with('error', 'Error al actualizar los datos en la API.');
         }
