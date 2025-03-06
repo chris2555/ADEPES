@@ -60,7 +60,11 @@ class ViviendaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/viviendas/{$id}");
+        $vivienda = $response->json();
+        $personas = Persona::all();
+
+        return view('vivienda.edit', compact('vivienda', 'personas'));
     }
 
     /**
@@ -76,7 +80,25 @@ class ViviendaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $usuario_id = auth()->id();
+        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/viviendas/{$id}", [
+            'id_persona' => $request->id_persona,
+            'tipo_casa' => $request->tipo_casa,
+            'tiempo_vivir' => $request->tiempo_vivir,
+            'material_construccion' => $request->material_construccion,
+            'pago_vivienda' => $request->pago_vivienda,
+            'dependiente' => $request->dependiente,
+            'tipo_pago_vivienda' => $request->tipo_pago_vivienda,
+            'valor_pago' => $request->valor_pago,
+            'direccion_completa' => $request->direccion_completa,
+            'modificado_por' => $usuario_id,
+        ]);
+    
+        if ($response->successful()) {
+            return redirect()->route('viviendas.index')->with('success', 'Vivienda actualizada correctamente');
+        } else {
+            return redirect()->route('viviendas.index')->with('error', 'Ocurrió un error al actualizar la vivienda');
+        }
     }
 
     /**
@@ -84,6 +106,12 @@ class ViviendaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/viviendas/{$id}");
+
+        if ($response->successful()) {
+            return redirect()->route('viviendas.index')->with('success', 'Vivienda eliminada correctamente');
+        } else {
+            return redirect()->route('viviendas.index')->with('error', 'Ocurrió un error al eliminar la vivienda');
+        }
     }
 }
