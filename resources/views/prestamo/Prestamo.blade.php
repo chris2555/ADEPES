@@ -388,10 +388,10 @@
                                 </select>
                             </div>
 
-                            <!-- Modificado Por (readonly) -->
+                            <!-- Modificado Por (readonly preguntar) -->
                             <div class="mb-3">
                                 <label for="modificado_por" class="form-label">Modificado Por</label>
-                                <input type="text" class="form-control" id="modificado_por" name="modificado_por" readonly>
+                                <input type="text" class="form-control" id="modificado_por" name="modificado_por" >
                             </div>
                         </div>
                     </div>
@@ -421,7 +421,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("e.plazo").value = this.getAttribute("data-plazo");
             document.getElementById("e.estado").value = this.getAttribute("data-estado");
             document.getElementById("e.tipo_garantia").value = this.getAttribute("data-garantia");
-            document.getElementById("modificado_por").value = this.getAttribute("data-modificado-por");
+            //document.getElementById("modificado_por").value = this.getAttribute("data-modificado-por");
 
             // Actualiza la acción del formulario con el ID correcto
             document.getElementById("form-update-prestamo").action = "/prestamos/" + this.getAttribute("data-id");

@@ -13,7 +13,7 @@ class PrestamoController extends Controller
      */
     public function index()
     {
-        $response = Http::get('http://localhost:3000/api/prestamo');
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo');
         $prestamos = $response->json(); // Convertir JSON en un array
     
         // Verificar si la API devuelve un array válido
@@ -45,7 +45,7 @@ class PrestamoController extends Controller
         // Validar los datos del formulariox
     
         // Enviar datos a la API sin incluir el token
-        $response = Http::post('http://localhost:3000/api/prestamo', [
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo', [
             'id_persona' => $request->id_persona,
             'total_pagado' => $request->total_pagado,
             'fecha_inicio' => $request->fecha_inicio,
@@ -72,7 +72,7 @@ class PrestamoController extends Controller
     public function show(string $id)
 {
     try {
-        $response = Http::get("http://localhost:3000/api/prestamo/{$id}");
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id}");
 
         if ($response->successful()) {
             $prestamo = $response->json();
@@ -94,7 +94,7 @@ class PrestamoController extends Controller
     public function edit($id)
     {
         // Llamar a la API para obtener los datos del préstamo por ID
-        $response = Http::get("http://localhost:3000/api/prestamo/{$id}");
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id}");
     
         if ($response->failed()) {
             return redirect()->route('prestamos.index')->with('error', 'Préstamo no encontrado');
@@ -136,7 +136,7 @@ class PrestamoController extends Controller
 
     try {
         // Enviar el ID correcto a la API externa
-        $response = Http::put("http://localhost:3000/api/prestamo/{$id_prestamo}", [
+        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id_prestamo}", [
             'id_persona' => $request->id_persona,
             'total_pagado' => $request->total_pagado,
             'fecha_inicio' => $request->fecha_inicio,
@@ -169,7 +169,7 @@ class PrestamoController extends Controller
      */
     public function destroy(string $id)
     {
-        $response = Http::delete("http://localhost:3000/api/prestamo/{$id}");
+        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id}");
 
         if ($response->successful()) {
             return redirect()->route('prestamos.index')->with('success', 'Prestamo eliminada correctamente.');
