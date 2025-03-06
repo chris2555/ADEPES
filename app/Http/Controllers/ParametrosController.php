@@ -17,7 +17,7 @@ class ParametrosController extends Controller
         
         $parametros = $ModelResponse->json(); 
         //dd($pagos);
-        return view('parametros.parametros', compact('parametros'));
+        return view('Parametros.parametros', compact('parametros'));
 
 
     }
