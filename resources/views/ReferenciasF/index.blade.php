@@ -3,10 +3,8 @@
 @section('title', 'Gestión de Referencias Familiares')
 @section('plugins.Sweetalert2', true)
 
-@section('content_header')
-@stop
-
 @section('content')
+
 <head>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -42,25 +40,28 @@
                 <tbody>
                     @foreach ($referencias as $referencia)
                         <tr>
-                        <td>{{ $referencia['id_referencia'] }}</td>
-                        <td>{{ $referencia['id_solicitud'] }}</td>
-                        <td>{{ $referencia['nombre_familiar'] }}</td>
-                        <td>{{ $referencia['parentesco'] }}</td>
-                        <td>{{ $referencia['direccion_familiar'] }}</td>
+                            <td>{{ $referencia['id_referencia'] }}</td>
+                            <td>{{ $referencia['id_solicitud'] }}</td>
+                            <td>{{ $referencia['nombre_familiar'] }}</td>
+                            <td>{{ $referencia['parentesco'] }}</td>
+                            <td>{{ $referencia['direccion_familiar'] }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($referencia) }})">
+                                <button class="btn btn-success btn-sm btn-view" data-prestamo="{{ json_encode($referencia) }}">
                                     <i class="fa fa-eye"></i>
-                                </a>
-                                <a href="{{ route('referencias.show', $referencia['id_referencia'])}}" class="btn btn-outline-primary btn-sm">
+                                </button>
+                                <a href="{{ route('referencias.show', $referencia['id_referencia']) }}" class="btn btn-outline-primary btn-sm">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <form action="{{ route('referencias.destroy', $referencia['id_referencia']) }}" method="POST" class="d-inline delete-form">
-                                @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
+
+                <form action="{{ route('referencias.destroy', $referencia['id_referencia']) }}" method="POST" class="d-inline delete-form">
+                @csrf
+                @method('DELETE')
+                 <button type="submit" class="btn btn-outline-warning btn-sm delete-btn"
+                onclick="return confirm('¿Está seguro de eliminar este Prestamo?')">
+        
+                  <i class="fa fa-trash"></i>
+                </button>
+                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -70,7 +71,7 @@
     </div>
 </div>
 
-<!-- Modal de Visualización  include('referencias.modal_create'  include('referencias.modal_view')) -->
+<!-- Modal de Visualización -->
 <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -79,7 +80,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row" id="viewModalBody"></div>
+                <div id="viewModalBody"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -93,115 +94,80 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nuevareferencia">Agregar Nueva Referencia</h5>
+                <h5 class="modal-title">Agregar Nueva Referencia</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="insertForm" action="{{ route('referencias.store') }}" method="POST">
                     @csrf
-                    <x-adminlte-input name="id_referencia" label="ID Referencia" required fgroup-class="mb-3" />
+                    <x-adminlte-input name="id_solicitud" label="ID Solicitud" required fgroup-class="mb-3" />
                     <x-adminlte-input name="nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
                     <x-adminlte-input name="parentesco" label="Parentesco" fgroup-class="mb-3" />
                     <x-adminlte-textarea name="direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3" />
-                    <input type="hidden" name="creado_por" value="{{ auth()->user()->id }}">
+                    <x-adminlte-textarea name="creado_por" label="Creado por" fgroup-class="mb-3" rows="3" />
                     <div class="modal-footer">
-                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button type="submit" label="Guardar Referencia" theme="success" icon="fas fa-save" />
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar Referencia</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Modal de Edición -->
-<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Editar Referencia</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm" action="" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="edit_id_referencia" name="id_referencia">
-                    <x-adminlte-input name="nombre_familiar" id="edit_nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
-                    <x-adminlte-input name="parentesco" id="edit_parentesco" label="Parentesco" fgroup-class="mb-3" />
-                    <x-adminlte-textarea name="direccion_familiar" id="edit_direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3" />
-                    <input type="hidden" name="modificado_por" value="{{ auth()->user()->id }}">
-                    <div class="modal-footer">
-                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button type="submit" label="Actualizar Referencia" theme="success" icon="fas fa-save" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- JavaScript para manejar los modales -->
+@section('js')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".btn-view").forEach(button => {
-        button.addEventListener("click", function () {
-            let referenciaId = this.getAttribute("data-id");
-            fetch(`/referencias/${referenciaId}`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("viewModalBody").innerHTML = data;
-                    new bootstrap.Modal(document.getElementById("view")).show();
-                });
+   $(document).ready(function () {
+        $('#prestamoTable').DataTable({
+            responsive: true,
+            autoWidth: false,
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json' },
+            dom: 'Bfrtip',
+            buttons: ['copy', 'excel', 'pdf', 'csv']
         });
     });
-    document.querySelectorAll(".btn-edit").forEach(button => {
-        button.addEventListener("click", function () {
-            let id = this.getAttribute("data-id");
-            let nombre_familiar = this.getAttribute("data-nombre_familiar");
-            let parentesco = this.getAttribute("data-parentesco");
-            let direccion_familiar = this.getAttribute("data-direccion_familiar");
-            document.getElementById("edit_id_referencia").value = id;
-            document.getElementById("edit_nombre_familiar").value = nombre_familiar;
-            document.getElementById("edit_parentesco").value = parentesco;
-            document.getElementById("edit_direccion_familiar").value = direccion_familiar;
-            document.getElementById("editForm").setAttribute("action", `/referencias/${id}`);
-            new bootstrap.Modal(document.getElementById("edit")).show();
-        });
-    });
-});
 </script>
-
 @stop
 
+@endsection
 @section('js')
 <script>
     $(document).ready(function() {
         $('#referenciasTable').DataTable({
             responsive: true,
             autoWidth: false,
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json'
-            }
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json' }
         });
     });
 
-    function viewModal(referencia) {
-        var modalBody = document.getElementById('viewModalBody');
-        modalBody.innerHTML = `
-            <p><strong>Nombre:</strong> ${referencia.nombre_familiar}</p>
-            <p><strong>Parentesco:</strong> ${referencia.parentesco || 'No especificado'}</p>
-            <p><strong>Dirección:</strong> ${referencia.direccion_familiar || 'No disponible'}</p>
-            <p><strong>Creado por:</strong> ${referencia.creado_por}</p>
-            <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
-        `;
-        var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
-        viewModalElement.show();
-    }
-
     document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
+        document.querySelectorAll(".btn-view").forEach(button => {
+            button.addEventListener("click", function () {
+                let referencia = JSON.parse(this.getAttribute("data-prestamo"));
+                let modalBody = document.getElementById("viewModalBody");
+
+                modalBody.innerHTML = `
+                    <p><strong>Nombre:</strong> ${referencia.nombre_familiar}</p>
+                    <p><strong>Parentesco:</strong> ${referencia.parentesco || 'No especificado'}</p>
+                    <p><strong>Dirección:</strong> ${referencia.direccion_familiar || 'No disponible'}</p>
+                `;
+
+                new bootstrap.Modal(document.getElementById("view")).show();
+            });
+        });
+
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", function () {
                 Swal.fire({
                     title: '¿Está seguro?',
                     text: "Esta acción no se puede deshacer",
@@ -213,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     cancelButtonText: 'Cancelar'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        this.closest('form').submit();
+                        this.closest("form").submit();
                     }
                 });
             });

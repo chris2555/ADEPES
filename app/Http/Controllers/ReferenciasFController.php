@@ -29,41 +29,34 @@ class ReferenciasFController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         $usuario_id = auth()->id();
+    
         // Validar los datos del formulario
         $request->validate([
             'id_solicitud' => 'required|integer',
-            'id_persona' => 'required|integer',
-            'id_conyuge' => 'nullable|integer',
-            'id_ingresos' => 'required|integer',
-            'id_egresos' => 'required|integer',
-            'id_aval1' => 'nullable|integer',
-            'id_aval2' => 'nullable|integer',
-            'id_aval3' => 'nullable|integer',
+            'nombre_familiar' => 'required|string|max:100',
+            'parentesco' => 'nullable|string|max:50',
+            'direccion_familiar' => 'nullable|string',
         ]);
-
+    
         // Enviar datos a la API
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares', [
             'id_solicitud' => $request->id_solicitud,
-            'id_persona' => $request->id_persona,
-            'id_conyuge' => $request->id_conyuge,
-            'id_ingresos' => $request->id_ingresos,
-            'id_egresos' => $request->id_egresos,
-            'id_aval1' => $request->id_aval1,
-            'id_aval2' => $request->id_aval2,
-            'id_aval3' => $request->id_aval3,
+            'nombre_familiar' => $request->nombre_familiar,
+            'parentesco' => $request->parentesco ?? null,
+            'direccion_familiar' => $request->direccion_familiar ?? null,
             'creado_por' => $usuario_id,
+            'creado_en' => now()->format('Y-m-d H:i:s'), // Fecha actual en formato compatible
         ]);
-
+    
         if ($response->successful()) {
-            return redirect()->back()->with('success', 'Relación de solicitud creada correctamente.');
+            return redirect()->back()->with('success', 'Referencia familiar creada correctamente.');
         } else {
             return redirect()->back()->with('error', 'Error al enviar los datos a la API.');
         }
     }
-
     /**
      * Display the specified resource.
      */
@@ -130,9 +123,9 @@ class ReferenciasFController extends Controller
         $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares/{$id}");
 
         if ($response->successful()) {
-            return redirect()->route('relacion.index')->with('success', 'Relación eliminada correctamente.');
+            return redirect()->route('referencias.index')->with('success', 'Referencia eliminada correctamente.');
         } else {
-            return redirect()->route('relacion.index')->with('error', 'No se pudo eliminar la relación.');
+            return redirect()->route('referencias.index')->with('error', 'No se pudo eliminar la Referencia.');
         }
     }
 }
