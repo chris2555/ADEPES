@@ -68,17 +68,22 @@ class ReferenciasFController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        $relacion = RelacionSolicitudPersona::findOrFail($id);
-        $solicitudes = SolicitudPrestamo::all();
-        $personas = Persona::all();
-        $conyuges = Conyuge::all();
-        $ingresos = EstadoIngresos::all();
-        $egresos = EstadoEgresos::all();
-        $avales = Persona::all(); 
+{
+    try {
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliriares/{$id}");
 
-        return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
+        if ($response->successful()) {
+            $prestamo = $response->json();
+            return view('ReferenciaF.index', compact('referencia'));
+        } else {
+            Log::error('Error al obtener el préstamo', ['status' => $response->status()]);
+            return redirect()->back()->with('error', 'No se pudo obtener el préstamo');
+        }
+    } catch (\Exception $e) {
+        Log::error('Excepción al obtener el préstamo', ['error' => $e->getMessage()]);
+        return redirect()->back()->with('error', 'Error interno del servidor');
     }
+}
 
     
     public function update(Request $request, $id)

@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/prestamos/{id}', [PrestamoController::class, 'edit'])->middleware('can:ver-seguridad')->name('prestamos.edit');
     Route::put('/prestamos/{id}', [PrestamoController::class, 'update'])->middleware('can:ver-seguridad')->name('prestamos.update');
     Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->middleware('can:ver-seguridad')->name('prestamos.destroy');
-    Route::get('/referencias', [ReferenciasFController::class, 'index'])->middleware('can:ver-seguridad')->name('ReferenciasF.index');
+    Route::resource('/referencias', ReferenciasFController::class)->names('referencias');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
 });

@@ -22,7 +22,7 @@
         </div>
 
         <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevareferencia">
                 <i class="fas fa-plus"></i> Nueva Referencia
             </button>
         </div>
@@ -70,9 +70,107 @@
     </div>
 </div>
 
+<!-- Modal de Visualización  include('referencias.modal_create'  include('referencias.modal_view')) -->
+<div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewModalLabel">Información de Referencia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="viewModalBody"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-@include('referencias.modal_create')
-@include('referencias.modal_view')
+<!-- Modal para Insertar Nueva Referencia -->
+<div class="modal fade" id="nuevareferencia" tabindex="-1" aria-labelledby="nuevareferenciaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="nuevareferencia">Agregar Nueva Referencia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="insertForm" action="{{ route('referencias.store') }}" method="POST">
+                    @csrf
+                    <x-adminlte-input name="id_referencia" label="ID Referencia" required fgroup-class="mb-3" />
+                    <x-adminlte-input name="nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
+                    <x-adminlte-input name="parentesco" label="Parentesco" fgroup-class="mb-3" />
+                    <x-adminlte-textarea name="direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3" />
+                    <input type="hidden" name="creado_por" value="{{ auth()->user()->id }}">
+                    <div class="modal-footer">
+                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
+                        <x-adminlte-button type="submit" label="Guardar Referencia" theme="success" icon="fas fa-save" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Edición -->
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Referencia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" action="" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="edit_id_referencia" name="id_referencia">
+                    <x-adminlte-input name="nombre_familiar" id="edit_nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
+                    <x-adminlte-input name="parentesco" id="edit_parentesco" label="Parentesco" fgroup-class="mb-3" />
+                    <x-adminlte-textarea name="direccion_familiar" id="edit_direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3" />
+                    <input type="hidden" name="modificado_por" value="{{ auth()->user()->id }}">
+                    <div class="modal-footer">
+                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
+                        <x-adminlte-button type="submit" label="Actualizar Referencia" theme="success" icon="fas fa-save" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript para manejar los modales -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".btn-view").forEach(button => {
+        button.addEventListener("click", function () {
+            let referenciaId = this.getAttribute("data-id");
+            fetch(`/referencias/${referenciaId}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById("viewModalBody").innerHTML = data;
+                    new bootstrap.Modal(document.getElementById("view")).show();
+                });
+        });
+    });
+    document.querySelectorAll(".btn-edit").forEach(button => {
+        button.addEventListener("click", function () {
+            let id = this.getAttribute("data-id");
+            let nombre_familiar = this.getAttribute("data-nombre_familiar");
+            let parentesco = this.getAttribute("data-parentesco");
+            let direccion_familiar = this.getAttribute("data-direccion_familiar");
+            document.getElementById("edit_id_referencia").value = id;
+            document.getElementById("edit_nombre_familiar").value = nombre_familiar;
+            document.getElementById("edit_parentesco").value = parentesco;
+            document.getElementById("edit_direccion_familiar").value = direccion_familiar;
+            document.getElementById("editForm").setAttribute("action", `/referencias/${id}`);
+            new bootstrap.Modal(document.getElementById("edit")).show();
+        });
+    });
+});
+</script>
 
 @stop
 
