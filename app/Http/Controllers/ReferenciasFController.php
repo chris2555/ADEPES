@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Persona;
 
@@ -69,52 +70,58 @@ class ReferenciasFController extends Controller
             $prestamo = $response->json();
             return view('ReferenciaF.index', compact('referencia'));
         } else {
-            Log::error('Error al obtener el préstamo', ['status' => $response->status()]);
+            Log::error('Error al obtener  la Referencia', ['status' => $response->status()]);
             return redirect()->back()->with('error', 'No se pudo obtener el préstamo');
         }
     } catch (\Exception $e) {
-        Log::error('Excepción al obtener el préstamo', ['error' => $e->getMessage()]);
+        Log::error('Excepción al obtener la Referencia', ['error' => $e->getMessage()]);
         return redirect()->back()->with('error', 'Error interno del servidor');
     }
 }
 
     
     public function update(Request $request, $id)
-{
-    $usuario_id = auth()->id();
+    {
+        $usuario_id = auth()->id();
+    
+        // Validar los datos del formulario
+        $request->validate([
+            'id_solicitud' => 'required|integer',
+            'nombre_familiar' => 'required|string|max:100',
+            'parentesco' => 'nullable|string|max:50',
+            'direccion_familiar' => 'nullable|string',
+        ]);
+    
+        // Enviar datos a la API
+        $response = Http::put('https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliriares/{$id}', [
+            'id_solicitud' => $request->id_solicitud,
+            'nombre_familiar' => $request->nombre_familiar,
+            'parentesco' => $request->parentesco ?? null,
+            'direccion_familiar' => $request->direccion_familiar ?? null,
+            'modificado_por' => $usuario_id,
 
-    // Validar los datos del formulario
-    $request->validate([
-        'id_solicitud' => 'required|integer',
-        'id_persona' => 'required|integer',
-        'id_conyuge' => 'nullable|integer',
-        'id_ingresos' => 'required|integer',
-        'id_egresos' => 'required|integer',
-        'id_aval1' => 'nullable|integer',
-        'id_aval2' => 'nullable|integer',
-        'id_aval3' => 'nullable|integer',
-    ]);
-
-    // Enviar datos a la API externa
-    $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares/{$id}", [
-        'id_solicitud' => $request->id_solicitud,
-        'id_persona' => $request->id_persona,
-        'id_conyuge' => $request->id_conyuge,
-        'id_ingresos' => $request->id_ingresos,
-        'id_egresos' => $request->id_egresos,
-        'id_aval1' => $request->id_aval1,
-        'id_aval2' => $request->id_aval2,
-        'id_aval3' => $request->id_aval3,
-        'modificado_por' => $usuario_id,
-    ]);
-
-    if ($response->successful()) {
-        return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
-    } else {
-        return redirect()->back()->with('error', 'Error al actualizar los datos en la API.');
+         ]);
+    
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Referencia familiar creada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al enviar los datos a la API.');
+        }
     }
-}
-
+    public function edit($id)
+    {
+        // Hacer la solicitud a la API para obtener los datos de la referencia
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliriares/{$id}");
+        $referencia = $response->json();
+    
+        // Validar que la respuesta sea un array y tenga datos
+        if (!is_array($referencia) || empty($referencia)) {
+            return redirect()->route('referencias.index')->with('error', 'Referencia no encontrada.');
+        }
+    
+        return view('referencias.edit', compact('referencia'));
+    }
+    
     /**
      * Remove the specified resource from storage.
      */
