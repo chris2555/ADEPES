@@ -64,7 +64,7 @@ class ReferenciasFController extends Controller
     public function show(string $id)
 {
     try {
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliriares/{$id}");
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares/{$id}");
 
         if ($response->successful()) {
             $prestamo = $response->json();
@@ -80,38 +80,37 @@ class ReferenciasFController extends Controller
 }
 
     
-    public function update(Request $request, $id)
-    {
-        $usuario_id = auth()->id();
-    
-        // Validar los datos del formulario
-        $request->validate([
-            'id_solicitud' => 'required|integer',
-            'nombre_familiar' => 'required|string|max:100',
-            'parentesco' => 'nullable|string|max:50',
-            'direccion_familiar' => 'nullable|string',
-        ]);
-    
-        // Enviar datos a la API
-        $response = Http::put('https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliriares/{$id}', [
-            'id_solicitud' => $request->id_solicitud,
-            'nombre_familiar' => $request->nombre_familiar,
-            'parentesco' => $request->parentesco ?? null,
-            'direccion_familiar' => $request->direccion_familiar ?? null,
-            'modificado_por' => $usuario_id,
+public function update(Request $request, $id)
+{
+    $usuario_id = auth()->id();
 
-         ]);
-    
-        if ($response->successful()) {
-            return redirect()->back()->with('success', 'Referencia familiar creada correctamente.');
-        } else {
-            return redirect()->back()->with('error', 'Error al enviar los datos a la API.');
-        }
+    // Validar los datos del formulario
+    $request->validate([
+        'id_solicitud' => 'required|integer',
+        'nombre_familiar' => 'required|string|max:100',
+        'parentesco' => 'nullable|string|max:50',
+        'direccion_familiar' => 'nullable|string',
+    ]);
+
+    // Enviar datos a la API
+    $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares/{$id}", [
+        'id_solicitud' => $request->id_solicitud,
+        'nombre_familiar' => $request->nombre_familiar,
+        'parentesco' => $request->parentesco ?? null,
+        'direccion_familiar' => $request->direccion_familiar ?? null,
+        'modificado_por' => $usuario_id,
+    ]);
+
+    if ($response->successful()) {
+        return response()->json(['success' => true]);
+    } else {
+        return response()->json(['success' => false, 'error' => 'Error al actualizar referencia.']);
     }
+}
     public function edit($id)
     {
         // Hacer la solicitud a la API para obtener los datos de la referencia
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliriares/{$id}");
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares/{$id}");
         $referencia = $response->json();
     
         // Validar que la respuesta sea un array y tenga datos
@@ -119,7 +118,7 @@ class ReferenciasFController extends Controller
             return redirect()->route('referencias.index')->with('error', 'Referencia no encontrada.');
         }
     
-        return view('referencias.edit', compact('referencia'));
+        return view('ReferenciasF.edit', compact('referencia'));
     }
     
     /**

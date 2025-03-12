@@ -51,8 +51,8 @@
                                 <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($referencia) }})">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{ route('referencias.show', $referencia['id_referencia'])}}" class="btn btn-outline-primary btn-sm">
-                                    <i class="fa fa-edit"></i>
+                                <a href="{{ route('referencias.edit', $referencia['id_referencia']) }}" class="btn btn-outline-primary btn-sm">
+                                 <i class="fa fa-edit"></i>
                                 </a>
                                 <form action="{{ route('referencias.destroy', $referencia['id_referencia']) }}" method="POST" class="d-inline delete-form">
                 @csrf

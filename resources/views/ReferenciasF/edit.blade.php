@@ -3,7 +3,7 @@
 @section('title', 'Editar Referencia Familiar')
 
 @section('content_header')
-   <h1>Editar Referencia Familiar</h1>
+    <h1>Editar Referencia Familiar</h1>
 @stop
 
 @section('content')
@@ -16,51 +16,50 @@
                         <h3 class="card-title">Actualizar Información</h3>
                     </div>
                     
-                    <form id="editForm" action="{{ route('referencias.update', $referencia['id_referencia']) }}" method="POST">
+                    <form id="editForm" action="{{ route('referencias.update', $referencia['id_referencia']) }}" method="POST" onsubmit="reloadAfterSubmit(event)">
                         @csrf
                         @method('PUT')
                         <div class="card-body">
                             
                             <div class="row">
-                                <!-- ID de Solicitud -->
+                                <!-- ID de Referencia (readonly) -->
                                 <div class="col-md-6">
-                                    <x-adminlte-select name="id_solicitud" label="Solicitud Asociada" fgroup-class="mb-3" required>
-                                        <option value="">Seleccione una solicitud</option>
-                                        @foreach ($solicitudes as $solicitud)
-                                            <option value="{{ $solicitud->id_solicitud }}" 
-                                                {{ $solicitud->id_solicitud == $referencia->id_solicitud ? 'selected' : '' }}>
-                                                ID: {{ $referencia['id_referencia'] }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+                                    <x-adminlte-input name="id_referencia" label="ID de Referencia" value="{{ $referencia['id_referencia'] }}" readonly fgroup-class="mb-3" />
                                 </div>
 
-                                <!-- Nombre del Familiar -->
+                                <!-- ID de Solicitud -->
                                 <div class="col-md-6">
-                                    <x-adminlte-input name="nombre_familiar" label="Nombre del Familiar" value="{{ $referencia->nombre_familiar }}" required fgroup-class="mb-3" />
+                                    <x-adminlte-input name="id_solicitud" label="ID de Solicitud" value="{{ $referencia['id_solicitud'] }}" required fgroup-class="mb-3" readonly/>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <!-- Parentesco -->
+                                <!-- Nombre del Familiar -->
                                 <div class="col-md-6">
-                                    <x-adminlte-input name="parentesco" label="Parentesco" value="{{ $referencia->parentesco }}" fgroup-class="mb-3" />
+                                    <x-adminlte-input name="nombre_familiar" label="Nombre del Familiar" value="{{ $referencia['nombre_familiar'] }}" required fgroup-class="mb-3" />
                                 </div>
 
-                                <!-- Dirección -->
+                                <!-- Parentesco -->
                                 <div class="col-md-6">
-                                    <x-adminlte-textarea name="direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3">{{ $referencia->direccion_familiar }}</x-adminlte-textarea>
+                                    <x-adminlte-input name="parentesco" label="Parentesco" value="{{ $referencia['parentesco'] }}" fgroup-class="mb-3" />
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <!-- Dirección -->
+                                <div class="col-md-12">
+                                    <x-adminlte-textarea name="direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3">{{ $referencia['direccion_familiar'] }}</x-adminlte-textarea>
                                 </div>
                             </div>
 
                             <!-- Usuario Modificador -->
-                            <input type="hidden" name="modificado_por" value="{{ auth()->user()->id }}">
+                            <input  name="modificado_por" value="{{ auth()->user()->id }}">
                         
                         </div>
 
                         <div class="card-footer">
                             <a href="{{ route('referencias.index') }}" class="btn btn-secondary">Cancelar</a>
-                            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Actualizar Referencia</button>
+                            <x-adminlte-button class="btn-flat" type="post" id="btnActualizar" label="Actualizar Referencia" theme="success" icon="fas fa-lg fa-save" />
                         </div>
                     </form>
 
@@ -75,6 +74,50 @@
 @stop
 
 @section('js')
+<script>
+    function reloadAfterSubmit(event) {
+        event.preventDefault(); // Evita la recarga inmediata
+        let form = event.target;
+
+        fetch(form.action, {
+            method: form.method,
+            body: new FormData(form),
+            headers: {
+                "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value,
+                "Accept": "application/json"  // Asegura que Laravel responda en JSON
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Referencia actualizada',
+                    text: 'Redirigiendo...',
+                    timer: 2000,
+                    showConfirmButton: false
+                }).then(() => {
+                    window.location.href = "{{ route('referencias.index') }}"; // Redirigir a index
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.error || 'No se pudo actualizar la referencia',
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema con la actualización'
+            });
+        });
+    }
+</script>
+
 @if(session('error'))
     <script>
         Swal.fire({
