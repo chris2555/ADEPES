@@ -83,10 +83,10 @@
                 <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($pago) }})">
                     <i class="fa fa-eye"></i>
                 </a>
-                <a href="{{ route('pagos.show', $pago['Fecha_De_Pago']) }}" class="btn btn-outline-primary btn-sm">
+                <a href="{{ route('pagos.show', $pago['ID_Pago']) }}" class="btn btn-outline-primary btn-sm">
                     <i class="fa fa-edit"></i>
                 </a>
-                <form action="{{ route('pagos.destroy', $pago['Fecha_De_Pago']) }}" method="POST" class="d-inline delete-form">
+                <form action="{{ route('pagos.destroy', $pago['ID_Pago']) }}" method="POST" class="d-inline delete-form">
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn btn-outline-warning btn-sm delete-btn">

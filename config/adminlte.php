@@ -346,6 +346,12 @@ return [
            
         ],
         [
+            'text' => 'Estado de Ingresos',
+            'route' => 'ingresos.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-file-invoice-dollar', // Ícono representativo de usuarios
+           
+        ],
+        [
             'text' => 'Evaluacion del negocio',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
