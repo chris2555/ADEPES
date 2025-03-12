@@ -44,7 +44,7 @@
                                             </div>
                                         <input type="text" name="descripcion" class="form-control" placeholder="Escriba aqui..." required>
                                     </div>
-                                    @error('nombre')
+                                    @error('descripcion')
                                             <small style="color: red">{{$message}}</small>
                                             @enderror
                                 </div>
@@ -58,7 +58,7 @@
                                         </div>
                                         <input type="text" name="direccion" class="form-control" placeholder="Escriba aqui..." required>
                                     </div>
-                                    @error('nombre')
+                                    @error('direccion')
                                         <small style="color: red">{{$message}}</small>
                                     @enderror
                                 </div>
@@ -74,7 +74,7 @@
                                             </div>
                                         <input type="text" name="telefono" class="form-control" placeholder="Escriba aqui..." required>
                                     </div>
-                                    @error('nombre')
+                                    @error('telefono')
                                         <small style="color: red">{{$message}}</small>
                                     @enderror
                                 </div>
@@ -115,7 +115,7 @@
                                        <option value="hnl">Lempira Hondureño (HNL)</option>
                                     </select>
                                 </div>
-                                @error('nombre')
+                                @error('moneda')
                                         <small style="color: red">{{$message}}</small>
                                 @enderror
                             </div>
@@ -241,9 +241,4 @@
    });
 
    </script>
-@stop
-<<<<<<< HEAD
-
-
-=======
->>>>>>> dev
+   @stop

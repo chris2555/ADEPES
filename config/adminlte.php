@@ -311,6 +311,30 @@ return [
             'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
         ],
         [
+            'text' => 'Gestion de Clientes',
+            'route' => 'gestionclientes.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+           
+        ],
+        [
+            'text' => 'Telefonos',
+            'route' => 'telefonos.index',
+            'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
+        ],
+        [
+            'text' => 'Relacion solicitudes',
+            'route' => 'relacion.index',
+            'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
+        ],
+        [
+            'text' => 'Viviendas',
+            'route' => 'viviendas.index',
+            'icon' => 'fas fa-fw fa-home', // Ícono de casa para viviendas
+        ],
+        
+
+        [
+
             'text' => 'Solicitudes',
             'route' => 'solicitud.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
@@ -320,6 +344,12 @@ return [
             'text' => 'Pagos',
             'route' => 'pagos.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
+           
+        ],
+        [
+            'text' => 'Estado de Ingresos',
+            'route' => 'ingresos.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-file-invoice-dollar', // Ícono representativo de usuarios
            
         ],
         [
@@ -373,6 +403,12 @@ return [
                 [
                     'text' => 'Usuarios',
                     'route' => 'users.index', // Ruta al módulo de usuarios
+                    'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
+                    'can' => 'ver-seguridad' 
+                ],
+                [
+                    'text' => 'Parametros',
+                    'route' => 'Parametros.index', // Ruta al módulo de usuarios
                     'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
                     'can' => 'ver-seguridad' 
                 ],

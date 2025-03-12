@@ -2,10 +2,12 @@
 
 @section('title', 'Configuraciones - Configuraciones')
 
+
 @section('content_header')
     <h1><b>Listado de Configuraciones</b></h1>
     </hr>
 @stop
+
 
 @section('content')
     <div class='row'> 
@@ -24,39 +26,63 @@
                 <table id="example1" class="table table-bordered table-hover table-striped table-sm" >
                     <thead>
                         <tr>
-                            <th style="text-align: center">Nro</th>
-                            <th style="text-align: center">Nombre</th>
-                            <th style="text-align: center">Descripcion</th>
-                            <th style="text-align: center">Telefono</th>
-                            <th style="text-align: center">E-mail</th>
-                            <th style="text-align: center">Moneda</th>
-                            <th style="text-align: center">Logo</th>
-                            <th style="text-align: center">Web</th>
-                            <th style="text-align: center">Direccion</th>
-                            <th style="text-align: center">Accion</th>
-                           
-                            
-                            
-                        
+                            <th style="...">Nro</th>
+                            <th style="...">Nombre</th>
+                            <th style="...">Descripcion</th>
+                            <th style="...">Telefono</th>
+                            <th style="...">Email</th>
+                            <th style="...">Moneda</th>
+                            <th style="...">Logo</th>
+                            <th style="...">Accion</th>
                         </tr>
                     </thead>
                 <tbody>
               @foreach($configuraciones as $configuracione)
             <tr>
-                <td style ="text-align: center">{{$configuracione->id}}</td>
+                <td style ="...">{{$configuracione->id}}</td>
                 <td>{{$configuracione->nombre}}</td>
                 <td>{{$configuracione->descripcion}}</td>
-                <td>{{$configuracione->telefono}}</td>
+                <td style="text-align: center">{{$configuracione->telefono}}</td>
                 <td>{{$configuracione->email}}</td>
-                <td>{{$configuracione->moneda}}</td>
-                <td>{{$configuracione->logo}}</td>
-              <td>
-
-              </td>
-            </tr>
-
-        @endforeach
-        </tbody>
+                <td style="text-align: center">{{$configuracione->moneda}}</td>
+                <td style="text-align: center">
+                  <img src="{{asset('storage/'.$configuracione->logo)}}" width="100px" alt="imagen">
+                </td>
+              <td style="text-align: center">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <a href="{{url('/configuraciones', $configuracione->id)}}" style="border-radius: 4px 0px 0px 4px" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
+                    <a href="{{url('/configuraciones/'.$configuracione->id.'/edit')}}" style="border-radius: 0px 0px 0px 0px" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                  <form action = "{{url('/configuraciones', $configuracione->id)}}" method="post"
+                      onclick="preguntar{{$configuracione->id}}(event)" id="miFormulario{{$configuracione->id}}">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 4px  4px 0px"><i class="fas fa-trash"></i></button>
+                  </form>
+                  <script>
+                      function preguntar{{$configuracione->id}}(event) {
+                        event.preventDefault();
+                        Swal.fire({
+                          title: 'Desea eliminar este registro?',
+                          text: '',
+                          icon: 'question',
+                          showDenyButton: true,
+                          confirmButtonText: 'Eliminar',
+                          confirmButtonColor: '#a5161d',
+                          denyButtonColor: '#270a0a',
+                          debyButtonText: 'Cancelar',
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            var form = $('#miFormulario{{$configuracione->id}}');
+                            form.submit();
+                          }
+                        });
+                      }
+                      </script>
+                    </div>
+                  </td>
+                </tr>
+              @endforeach
+              </tbody>
       </table>
     </div>
               <!-- /.card-body -->
@@ -100,6 +126,19 @@
 @stop
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        @if(session('mensaje'))
+            Swal.fire({
+                title: "{{ session('mensaje') }}",
+                icon: "{{ session('icono') }}",
+                showConfirmButton: false,
+                timer: 2500
+            });
+        @endif
+    });
+</script>
 <script>
   $(function () {
    $('#example1').DataTable({

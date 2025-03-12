@@ -15,6 +15,9 @@ use App\Http\Controllers\ReferenciasFController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\PagosController;
 use App\Http\Controllers\TelefonoController;
+use App\Http\Controllers\ViviendaController;
+use App\Http\Controllers\ParametrosController;
+use App\Http\Controllers\IngresosController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +59,10 @@ Route::middleware('auth')->group(function () {
     Route::resource('/referencias', ReferenciasFController::class)->names('referencias');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
+    Route::resource('viviendas',ViviendaController::class)->names('viviendas');
+    Route::resource('parametros',parametrosController::class)->names('Parametros');
+    Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
+    
 });
  
 
@@ -72,3 +79,9 @@ require __DIR__.'/auth.php';
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/configuraciones/{id}', [App\Http\Controllers\ConfiguracionController::class, 'show'])->name('configuraciones.show')->middleware('auth');
+Route::get('/configuraciones/{id}/edit', [App\Http\Controllers\ConfiguracionController::class, 'edit'])->name('configuraciones.edit')->middleware('auth');
+Route::put('/configuraciones/{id}', [App\Http\Controllers\ConfiguracionController::class, 'update'])->name('configuraciones.update')->middleware('auth');
+Route::delete('/configuraciones/{id}', [App\Http\Controllers\ConfiguracionController::class, 'destroy'])->name('configuraciones.destroy')->middleware('auth');
+require __DIR__.'/auth.php';

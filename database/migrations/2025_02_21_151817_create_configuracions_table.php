@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->nulllable();
             $table->string('web')->nulllable();
             $table->string('moneda');
-            $table->text('logo')->nulllable();
+            $table->text('logo');
             
             $table->timestamps();
         });
