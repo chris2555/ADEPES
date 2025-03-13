@@ -3,6 +3,8 @@
 @section('title', 'Editar Permiso')
 
 @section('content_header')
+<h1><b>Editar Permiso</b></h1>
+    <hr>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
@@ -10,16 +12,32 @@
             <li class="breadcrumb-item active" aria-current="page">Editar Permiso</li>
         </ol>
     </nav>
-    <h1>Editar Permiso</h1>
+
 @stop
 
 @section('content')
-    <div class="card">
-        <div class="card-body">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+                <h3 class="card-title">Permisos Registrados</h3>
+                <div class="card-tools">
             <form method="POST" action="{{ route('permisos.update', $permission->id) }}">
                 @csrf
                 @method('PUT') {{-- Directiva para indicar que es una petición PUT --}}
-
+                </div>
+                </div>
+                <div class="card-body">
+                <div class="table-responsive">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nombre del Permiso:</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $permission->name) }}" autofocus>
@@ -41,7 +59,7 @@
 
                 <div class="form-group">
                     <a href="{{ route('permisos.index') }}" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-success">Guardar Cambios</button>
                 </div>
             </form>
         </div>

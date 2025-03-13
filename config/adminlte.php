@@ -346,8 +346,8 @@ return [
            
         ],
         [
-            'text' => 'Evaluacion del negocio',
-            'route' => 'dashboard', // Ruta al index del controlador
+            'text' => 'Estado Egresos',
+            'route' => 'egresos.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
            
         ],
@@ -458,12 +458,17 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/2.1.8/js/dataTables.min.js',
+                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/2.1.8/css/dataTables.dataTables.min.css',
+                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
                 ],
             ],
         ],

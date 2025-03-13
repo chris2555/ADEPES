@@ -10,6 +10,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SolicitudController;
 use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\EstadoEgresosController;
 use App\Http\Controllers\PrestamoController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\PagosController;
@@ -48,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
     Route::resource('solicitudes', SolicitudController::class)->middleware('can:ver-seguridad')->names('solicitudes');
     Route::resource('gestionclientes', ClientesController::class)->middleware('can:ver-seguridad')->names('gestionclientes');
+    Route::post('/egresos', [EstadoegresoController::class, 'store'])->name('Estadoegresos.store');
+    Route::resource('egresos', EstadoEgresosController::class)->middleware('can:ver-seguridad')->names('egresos');
     Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
     Route::resource('Prestamo', PrestamoController::class)->middleware('can:ver-seguridad')->names('Prestamo');
     Route::get('/prestamos', [PrestamoController::class, 'index'])->middleware('can:ver-seguridad')->name('prestamos.index');
