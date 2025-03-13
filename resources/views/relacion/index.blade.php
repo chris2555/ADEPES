@@ -22,7 +22,7 @@
             <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Relaciones de Solicitud</h4>
                         </div>
                         <div class="card-header d-flex justify-content-end">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#insert">
                                 <i class="fas fa-plus"></i> Añadir Nuevo
                             </button>
                         </div>
