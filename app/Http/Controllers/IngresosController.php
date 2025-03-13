@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-
+use App\Models\SolicitudPrestamo;
 
 class IngresosController extends Controller
 {
@@ -15,11 +15,11 @@ class IngresosController extends Controller
     {
         $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos");
         
-        
+        $solicitudes = SolicitudPrestamo::all();
         $ingresos = $ModelResponse->json(); 
-    
-        //dd($pagos);
-        return view('ingresos.index', compact('ingresos'));
+        
+       
+        return view('ingresos.index', compact('ingresos', 'solicitudes'));
     }
 
     /**
@@ -35,14 +35,23 @@ class IngresosController extends Controller
      */
     public function store(Request $request)
     {
+
+        // Obtener el ID del usuario autenticado
+        $usuario_id = auth()->id();
+        
+        // Enviar la solicitud HTTP con los datos
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos', [
             'id_solicitud' => $request->id_solicitud,
             'renta_propiedades' => $request->renta_propiedades,
             'remesas' => $request->remesas,
             'aporte_conyuge' => $request->aporte_conyuge,
             'ingresos_sociedad' => $request->ingresos_sociedad,
-            'total_ingresos' => $request->total_ingresos,
-          ]);
+            'total_ingresos' => $request->renta_propiedades + $request->remesas + $request->aporte_conyuge + $request->ingresos_sociedad,
+            'creado_por' => $usuario_id,
+            'creado_por_nombre' => $request->creado_por_nombre
+        ]);
+
+         
          
           if ($response->successful()) {
             return redirect()->route('ingresos.index')->with('success', 'Estado de Ingresos creado correctamente');
@@ -61,8 +70,8 @@ class IngresosController extends Controller
     {
         $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{$id}");
         $ingresos = $response->json();
-         
-        return view('ingresos.edit', compact('ingresos'));
+        $solicitudes = SolicitudPrestamo::all(); 
+        return view('ingresos.edit', compact('ingresos', 'solicitudes'));
     }
 
     /**
@@ -78,15 +87,18 @@ class IngresosController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $usuario_id = auth()->id();
+        
         $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{$id}", [
             'id_solicitud' => $request->id_solicitud,
             'renta_propiedades' => $request->renta_propiedades,
             'remesas' => $request->remesas,
             'aporte_conyuge' => $request->aporte_conyuge,
             'ingresos_sociedad' => $request->ingresos_sociedad,
-            'total_ingresos' => $request->total_ingresos,
-            
+            'total_ingresos' => $request->renta_propiedades + $request->remesas + $request->aporte_conyuge+ $request->ingresos_sociedad,
+            'modificado_por' => $usuario_id
         ]);
+
         
         if ($response->successful()) {
             return redirect()->route('ingresos.index')->with('success', 'Estado de Ingresos actualizado correctamente');
