@@ -114,15 +114,24 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-input name="id_solicitud" label="ID Solicitud" type="number" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="remesas" label="Remesas" type="number" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" fgroup-class="mb-3" required/>
+                        <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
+                        <option value="">Seleccione una solicitud</option>
+                        @foreach ($solicitudes as $solicitud)
+                            <option value="{{ $solicitud->id_solicitud }}">
+                                {{ $solicitud->id_solicitud }}
+                            </option>
+                        @endforeach
+                        </x-adminlte-select>
+
+                            <x-adminlte-input name="remesas" label="Remesas" type="number" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" class="form-control income-field" fgroup-class="mb-3" required />
                         </div>
 
                         <div class="col-md-6">
-                        <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" fgroup-class="mb-3" required />
-                        <x-adminlte-input name="aporte_conyuge" label="Aporte Conyuge" type="number" fgroup-class="mb-3" required/>
-                        <x-adminlte-input name="total_ingresos" label="Total Ingresos" type="number" fgroup-class="mb-3" required/>
+                        <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" class="form-control income-field" fgroup-class="mb-3" required />
+                        <x-adminlte-input name="aporte_conyuge" label="Aporte Conyuge" type="number" class="form-control income-field" fgroup-class="mb-3" required />
+                        <!-- Campo de Total Ingresos (readonly) -->
+                        <x-adminlte-input name="total_ingresos" label="Total Ingresos" type="number" fgroup-class="mb-3" readonly />
 
                         </div>
                     </div>
@@ -150,6 +159,31 @@
 
 
 @section('js')
+
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const incomeFields = document.querySelectorAll('.income-field'); // Recolectar campos
+    const totalField = document.querySelector('input[name="total_ingresos"]');
+
+    function calculateTotal() {
+        let total = 0;
+        incomeFields.forEach(field => {
+            let value = parseFloat(field.value);
+            total += isNaN(value) ? 0 : value; // Asegurar que sea un número
+        });
+        totalField.value = total.toFixed(2); // Mostrar con 2 decimales
+    }
+
+    // Escuchar eventos de input para recalcular dinámicamente
+    incomeFields.forEach(field => {
+        field.addEventListener('input', calculateTotal);
+    });
+
+    // Ejecutar cálculo inicial si ya hay valores en los campos
+    calculateTotal();
+});
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
@@ -207,10 +241,11 @@
             <p><strong>Ingresos Sociedad:</strong> ${ingreso.ingresos_sociedad}</p>
         </div>
         <div class="col-md-6">
-            <p><strong>Creado por:</strong> ${ingreso.creado_por}</p>
+            <p><strong>Creado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
             <p><strong>Creado en:</strong> ${ingreso.creado_en ? new Date(ingreso.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${ingreso.modificado_por || 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
             <p><strong>Modificado en:</strong> ${ingreso.modificado_en ? new Date(ingreso.modificado_en).toLocaleString() : 'No disponible'}</p>
+            
         </div>
     `;
 
