@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#referenciasTable').DataTable({
             responsive: true,
             autoWidth: false,
-            language: { url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json' }
+            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
         });
     });
     function viewModal(referencia) {
