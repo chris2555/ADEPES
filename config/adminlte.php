@@ -340,6 +340,12 @@ return [
            
         ],
         [
+            'text' => 'Informacion Laboral',
+            'route' => 'informacionlaboral.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
+           
+        ],
+        [
             'text' => 'Prestamos',
             'route' => 'Prestamo.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
@@ -390,7 +396,7 @@ return [
                 ],
                 [
                     'text' => 'Parametros',
-                    'route' => 'Parametros.index', // Ruta al módulo de usuarios
+                    'route' => 'parametros.index', // Ruta al módulo de usuarios
                     'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
                     'can' => 'ver-seguridad' 
                 ],

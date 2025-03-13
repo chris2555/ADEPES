@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Gestión de Telefonos
+@section('title', 'Gestión de Telefonos)
 @section('plugins.Sweetalert2', true)
 
 @section('content_header')
@@ -26,7 +26,7 @@
 
             <div class="d-flex justify-content-end mb-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
-                    <i class="fas fa-plus"></i> Nueva Telefono
+                    <i class="fas fa-plus"></i> Nuevo Telefono
                 </button>
             </div>
 
@@ -35,7 +35,7 @@
                     <table id="relacionTable">
                         <thead>
                             <tr>
-                                <th>ID telefono</th>
+                            <th>ID telefono</th>
                                 <th>Telefono</th>
                                 <th>tipo</th>
                                 <th>entidad</th>
@@ -142,7 +142,7 @@
                     </div>
                     <div class="modal-footer">
                         <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Teléfono" theme="success" icon="fas fa-lg fa-save" />
+                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Telefono" theme="success" icon="fas fa-lg fa-save" />
                     </div>
                 </form>
             </div>
@@ -216,7 +216,7 @@
         <div class="col-md-6">
             <p><strong>ID telefono:</strong> ${telefono.id_telefono}</p>
             <p><strong>Telefono:</strong> ${telefono.numero}</p>
-            <p><strong>Tipo telefono:</strong> ${telefono.tipo_telefono}</p>
+            <p><strong>Tipo Telefono:</strong> ${telefono.tipo_telefono}</p>
             <p><strong>Tipo entidad:</strong> ${telefono.tipo_entidad}</p>
             <p><strong>Nombre persona:</strong> ${telefono.nombre_persona}</p>
         </div>
