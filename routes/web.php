@@ -12,6 +12,7 @@ use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\EstadoEgresosController;
 use App\Http\Controllers\PrestamoController;
+use App\Http\Controllers\ReferenciasFController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\PagosController;
 use App\Http\Controllers\TelefonoController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\ViviendaController;
 use App\Http\Controllers\ConyugeController;
 use App\Models\Conyuge;
 use App\Http\Controllers\ParametrosController;
+use App\Http\Controllers\IngresosController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -59,12 +61,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/prestamos/{id}', [PrestamoController::class, 'edit'])->middleware('can:ver-seguridad')->name('prestamos.edit');
     Route::put('/prestamos/{id}', [PrestamoController::class, 'update'])->middleware('can:ver-seguridad')->name('prestamos.update');
     Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->middleware('can:ver-seguridad')->name('prestamos.destroy');
-
+    Route::resource('/referencias', ReferenciasFController::class)->middleware('can:ver-seguridad')->names('referencias');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
     Route::resource('viviendas',ViviendaController::class)->names('viviendas');
     Route::resource('conyuge',ConyugeController::class)->names('conyuge');
     Route::resource('parametros',parametrosController::class)->names('Parametros');
+    Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
     
 });
  

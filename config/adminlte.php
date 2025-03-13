@@ -345,12 +345,7 @@ return [
             'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
            
         ],
-        [
-            'text' => 'Estado Egresos',
-            'route' => 'egresos.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
-           
-        ],
+        
         [
             'text' => 'Gestion de Clientes',
             'route' => 'solicitud.index', // Ruta al index del controlador
@@ -362,6 +357,12 @@ return [
             'text' => 'Prestamos',
             'route' => 'Prestamo.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
+           
+        ],
+        [
+            'text' => 'Referencias Familiares',
+            'route' => 'referencias.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-children', // Ícono representativo de Referencia Familiar
            
         ],
         [
