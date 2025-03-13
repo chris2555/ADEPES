@@ -371,6 +371,12 @@ return [
            
         ],
         [
+            'text' => 'Referencias Familiares',
+            'route' => 'referencias.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-children', // Ícono representativo de Referencia Familiar
+           
+        ],
+        [
             'text' => 'Seguridad',
             'icon' => 'fas fa-fw fa-user-lock', // Ícono representativo de usuarios
             'submenu' => [
