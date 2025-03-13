@@ -3,6 +3,7 @@
 @section('title', 'Configuraciones - Configuraciones')
 
 
+
 @section('content_header')
     <h1><b>Listado de Configuraciones</b></h1>
     </hr>
@@ -10,6 +11,15 @@
 
 
 @section('content')
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
     <div class='row'> 
     <div class="col-md-12">
             <div class="card card-outline card-success">
@@ -50,13 +60,13 @@
                 </td>
               <td style="text-align: center">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                    <a href="{{url('/configuraciones', $configuracione->id)}}" style="border-radius: 4px 0px 0px 4px" class="btn btn-info btn-sm"><i class="fas fa-eye"></i></a>
-                    <a href="{{url('/configuraciones/'.$configuracione->id.'/edit')}}" style="border-radius: 0px 0px 0px 0px" class="btn btn-success btn-sm"><i class="fas fa-pencil-alt"></i></a>
+                    <a href="{{url('/configuraciones', $configuracione->id)}}" style="margin-right: 5px;" class="btn btn-info btn-sm"><i class="bi bi-eye"></i></a>
+                    <a href="{{url('/configuraciones/'.$configuracione->id.'/edit')}}" style="margin-right: 5px;" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
                   <form action = "{{url('/configuraciones', $configuracione->id)}}" method="post"
                       onclick="preguntar{{$configuracione->id}}(event)" id="miFormulario{{$configuracione->id}}">
                       @csrf
                       @method('DELETE')
-                      <button type="submit" class="btn btn-danger btn-sm" style="border-radius: 0px 4px  4px 0px"><i class="fas fa-trash"></i></button>
+                      <button type="submit" class="btn btn-danger btn-sm" style="display:inline;"><i class="bi bi-trash"></i></button>
                   </form>
                   <script>
                       function preguntar{{$configuracione->id}}(event) {
@@ -122,27 +132,47 @@
     .btn-warning { backgroung-color: #ffc107; color: #212529; border: none; }
     .btn-default { backgroung-color: #6e7176; color: #212529; border: none; }
 
+    .dataTables_wrapper .dt-buttons {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: #212529;
+        margin-left: 5px; /* Mueve el botón de editar a la derecha */
+    }
+
+    .dataTables_paginate {
+        text-align: right !important; /* Alinea la paginación a la derecha */
+    }
+
+    .dt-buttons {
+        margin-bottom: 10px; /* Agrega separación a los botones de impresión */
+    }
   </style>
 @stop
 
 @section('js')
+<!-- DataTables -->
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        @if(session('mensaje'))
-            Swal.fire({
-                title: "{{ session('mensaje') }}",
-                icon: "{{ session('icono') }}",
-                showConfirmButton: false,
-                timer: 2500
-            });
-        @endif
-    });
-</script>
 <script>
   $(function () {
    $('#example1').DataTable({
     "pageLength": 5,
+    "responsive": true,
+    "lengthChange": true,
+    "autoWidth": false,
     "language": {
       "emptyTable": "No hay informacion",
       "info": "Mostrando_START_a_END_de_TOTAL_ Configuraciones",
@@ -161,19 +191,22 @@
       }
 
     },
-    "responsive": true,
-    "lengthChange": true,
-    "autoWidth": false,
-    buttons: [
-      { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-dark' },
-      { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
-      { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-warning' },
-      { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-danger' },
-      { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-    ]
+   
+    dom: '<"row d-flex justify-content-between"<"col-md-3"l><"col-md-6"><"col-md-3 d-flex justify-content-end"f>>' + 
+         '<"row"<"col-md-12"B>>' +
+         'rt' +
+         '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+         
+            buttons: [
+                { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-info' },
+                { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
+                { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-info' },
+                { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-info' },
+                { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-info' },
+                ]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
    });
 
+
    </script>
 @stop
-

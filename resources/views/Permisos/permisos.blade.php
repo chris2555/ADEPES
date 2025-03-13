@@ -3,54 +3,57 @@
 @section('title', 'Gestión de Permisos')
 
 @section('content_header')
+<h1><b>Listado de Permisos</b></h1>
+    <hr>
+@stop
+
+@section('content')
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Gestión de Permisos</li>
-        </ol>
-    </nav>
-    <div>
-        <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#crearPermisoModal"> {{-- Botón que abre el modal --}}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+                <h3 class="card-title">Permisos Registrados</h3>
+                <div class="card-tools">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#crearPermisoModal"> {{-- Botón que abre el modal --}}
             Crear Permiso
         </button>
     </div>
 </div>
 
-@stop
-
-@section('content')
-    <div class="table-responsive">
-        <table id="permissionsTable" class="table table-striped">
+            <div class="card-body">
+                <div class="table-responsive">
+        <table id="permissionsTable" class="table table-bordered table-hover table-striped table-sm">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nombre del Permiso</th>
-                    <th>Guard Name</th>
-                    <th>Acciones</th> {{-- Nueva columna Acciones --}}
+                    <th style="text-align: center">ID</th>
+                    <th style="text-align: center">Nombre del Permiso</th>
+                    <th style="text-align: center">Guardar Nombre</th>
+                    <th style="text-align: center">Acciones</th> {{-- Nueva columna Acciones --}}
                 </tr>
             </thead>
             <tbody>
                 @forelse ($permissions as $permission)
                     <tr>
-                        <td>{{ $permission->id }}</td>
-                        <td>{{ $permission->name }}</td>
-                        <td>{{ $permission->guard_name }}</td>
-                        <td>
-                            <a href="{{ route('permisos.edit', $permission->id) }}" class="btn btn-warning btn-sm">
+                        <td style="text-align: center">{{ $permission->id }}</td>
+                        <td style="text-align: center">{{ $permission->name }}</td>
+                        <td style="text-align: center">{{ $permission->guard_name }}</td>
+                        <td style="text-align: center">
+                            <a href="{{ route('permisos.edit', $permission->id) }}" class="btn btn-success btn-sm">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <form id="deleteForm{{ $permission->id }}" action="" method="POST" style="display:inline;">
+                            <form id="deleteForm{{ $permission->id }}" action="" method="POST" style="display:inline;" >
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm"> {{-- Botón de Borrar MODIFICADO a type="submit" --}}
@@ -100,8 +103,8 @@
                         </div>
 
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-primary">Crear Permiso</button>
+                            <button type="button" class="btn btn-info" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">Crear Permiso</button>
                         </div>
                     </form>
                 </div>
@@ -114,14 +117,83 @@
 @stop
 
 @section('js')
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        var table = new DataTable('#permissionsTable', {
-            language: {
-                url: '//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json',
-            },
+        $(function () {
+            $('#permissionsTable').DataTable({
+               "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-info' },
+                ]
+            });
         });
 
-        // Función JavaScript confirmDeletePermission ELIMINADA
-
+        function confirmDelete(userId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Este registro será eliminado permanentemente!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + userId).submit();
+                }
+            });
+        }
     </script>
-@endsection
+
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
+@stop
