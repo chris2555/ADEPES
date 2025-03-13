@@ -438,7 +438,7 @@ document.addEventListener("DOMContentLoaded", function () {
             //document.getElementById("modificado_por").value = this.getAttribute("data-modificado-por");
 
             // Actualiza la acción del formulario con el ID correcto
-            document.getElementById("form-update-prestamo").action = "/prestamo/" + this.getAttribute("data-id");
+            document.getElementById("form-update-prestamo").action = "/prestamos/" + this.getAttribute("data-id");
         });
     });
 });

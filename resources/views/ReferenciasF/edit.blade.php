@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Editar Referencia Familiar')
+@section('plugins.Sweetalert2', true)
 
 @section('content_header')
     <h1>Editar Referencia Familiar</h1>
@@ -15,12 +16,11 @@
                     <div class="card-header">
                         <h3 class="card-title">Actualizar Información</h3>
                     </div>
-                    
+
                     <form id="editForm" action="{{ route('referencias.update', $referencia['id_referencia']) }}" method="POST" onsubmit="reloadAfterSubmit(event)">
                         @csrf
                         @method('PUT')
                         <div class="card-body">
-                            
                             <div class="row">
                                 <!-- ID de Referencia (readonly) -->
                                 <div class="col-md-6">
@@ -29,7 +29,7 @@
 
                                 <!-- ID de Solicitud -->
                                 <div class="col-md-6">
-                                    <x-adminlte-input name="id_solicitud" label="ID de Solicitud" value="{{ $referencia['id_solicitud'] }}" required fgroup-class="mb-3" readonly/>
+                                    <x-adminlte-input name="id_solicitud" label="ID de Solicitud" value="{{ $referencia['id_solicitud'] }}" required fgroup-class="mb-3" readonly />
                                 </div>
                             </div>
 
@@ -53,16 +53,17 @@
                             </div>
 
                             <!-- Usuario Modificador -->
-                            <input  name="modificado_por" value="{{ auth()->user()->id }}">
-                        
+                            <input type="hidden" name="modificado_por" value="{{ auth()->user()->id }}">
                         </div>
 
-                        <div class="card-footer">
-                            <a href="{{ route('referencias.index') }}" class="btn btn-secondary">Cancelar</a>
-                            <x-adminlte-button class="btn-flat" type="post" id="btnActualizar" label="Actualizar Referencia" theme="success" icon="fas fa-lg fa-save" />
+                        <!-- Botones bien alineados -->
+                        <div class="card-footer d-flex justify-content-end gap-2">
+                            <a href="{{ route('referencias.index') }}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Cancelar
+                            </a>
+                            <x-adminlte-button class="btn-flat" type="submit" id="btnActualizar" label="Actualizar Referencia" theme="success" icon="fas fa-lg fa-save" />
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -74,6 +75,7 @@
 @stop
 
 @section('js')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function reloadAfterSubmit(event) {
         event.preventDefault(); // Evita la recarga inmediata
@@ -116,6 +118,25 @@
             });
         });
     }
+
+    document.getElementById('editForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita el envío del formulario
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "¡No podrás revertir esto!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, actualizar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Si el usuario confirma, envía el formulario
+                reloadAfterSubmit(event);
+            }
+        });
+    });
 </script>
 
 @if(session('error'))

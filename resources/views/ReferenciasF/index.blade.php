@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
         $('#referenciaTable').DataTable({
             responsive: true,
             autoWidth: false,
-            language: { url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json' },
+
             dom: 'Bfrtip',
             buttons: ['copy', 'excel', 'pdf', 'csv']
         });
