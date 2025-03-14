@@ -262,22 +262,26 @@
     var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
     viewModalElement.show();
 }
-function confirmDelete(userId) {
-            Swal.fire({
-                title: '¿Estás seguro?',
-                text: "¡Este registro será eliminado permanentemente!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#dc3545',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Sí, eliminar!',
-                cancelButtonText: 'Cancelar'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('delete-form-' + userId).submit();
-                }
+document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "Esta acción no se puede deshacer",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
             });
-        }
+        });
+    });
     </script>
 
 @if(session('success'))
@@ -306,4 +310,3 @@ function confirmDelete(userId) {
 
 
 @stop
-

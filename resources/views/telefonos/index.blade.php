@@ -1,38 +1,39 @@
 @extends('adminlte::page')
 
-@section('title', 'Gestión de Telefonos
-@section('plugins.Sweetalert2', true)
+@section('title', 'Gestión de Telefonos')
 
 @section('content_header')
-
+<h1><b>Listado de Permisos</b></h1>
+    <hr>
 @stop
 
 @section('content')
 
-    <head>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    </head>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
 
-    <div class="container-fluid mt-4">
-        <div class="shadow-lg p-5 bg-white">
-            <div class="card-header text-success text-center">
-                <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Telefonos</h4>
-
-            </div>
-
-            <div class="d-flex justify-content-end mb-3">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+            <h3 class="card-title">Gestion de telefonos</h3>
+            <div class="card-tools">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
                     <i class="fas fa-plus"></i> Nueva Telefono
                 </button>
             </div>
+            </div>
 
-            <div class="d-flex justify-content-end">
-                <div class="table-responsive ms-auto">
-                    <table id="relacionTable">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="relacionTable" class="table table-bordered table-hover table-striped table-sm">
                         <thead>
                             <tr>
                                 <th>ID telefono</th>
@@ -52,18 +53,18 @@
                                     <td>{{ $telefono['tipo_entidad'] }}</td>
                                     <td>{{ $telefono['nombre_persona'] }}</td>
                                     <td>
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($telefono) }})">
-                                            <i class="fa fa-eye"></i>
+                                            <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('telefonos.show', $telefono['id_telefono'])}}" class="btn btn-outline-primary btn-sm">
-                                            <i class="fa fa-edit"></i>
+                                        <a href="{{ route('telefonos.show', $telefono['id_telefono'])}}" class="btn btn-success btn-sm">
+                                            <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('telefonos.destroy', $telefono['id_telefono']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
-                                                <i class="fas fa-trash"></i>
+                                            <button type="button" class="btn btn-danger btn-sm delete-btn">
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -150,62 +151,45 @@
     </div>
 </div>
 
-
-
-    
-    
-    
-    
-
-
-
 @stop
 
 
 
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-    <script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(document).ready(function() {
+        $(function () {
             $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-                responsive: true,
-                autoWidth: false,
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
-                    search: "Buscar:"
-                },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6"B><"col-md-3 text-end"f>>rtip',
-                buttons: [{
-                        extend: 'copy',
-                        text: '<i class="fas fa-copy"></i> Copiar',
-                        className: 'btn btn-secondary text-dark'
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fas fa-file-excel"></i> Excel',
-                        className: 'btn btn-success text-dark'
-                    },
-                    {
-                        extend: 'pdf',
-                        text: '<i class="fas fa-file-pdf"></i> PDF',
-                        className: 'btn btn-danger text-dark'
-                    },
-                    {
-                        extend: 'csv',
-                        text: '<i class="fas fa-file-csv"></i> CSV',
-                        className: 'btn btn-info text-dark'
-                    }
+                "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-info' },
                 ]
             });
         });
