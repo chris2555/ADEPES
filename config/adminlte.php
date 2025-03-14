@@ -345,6 +345,20 @@ return [
             'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
            
         ],
+        [
+            'text' => 'Estado Egresos',
+            'route' => 'egresos.index', // Ruta al index del controlador
+            'text' => 'Estado de Ingresos',
+            'route' => 'ingresos.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-file-invoice-dollar', // Ícono representativo de usuarios
+           
+        ],
+        [
+            'text' => 'Evaluacion del negocio',
+            'route' => 'dashboard', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
+           
+        ],
         
         [
             'text' => 'Gestion de Clientes',

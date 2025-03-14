@@ -1,38 +1,39 @@
 @extends('adminlte::page')
 
 @section('title', 'Gestión de Clientes')
-@section('plugins.Sweetalert2', true)
 
 @section('content_header')
- 
+<h1><b>Listado de Clientes</b></h1>
+    <hr>
 @stop
 
 @section('content')
 <head>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-<div class='row'> 
+
+<div class="row">
     <div class="col-md-12">
         <div class="card card-outline card-success">
             <div class="card-header">
-                <div class="container-fluid mt-4">
-                    <div class="shadow-lg p-5 bg-white">
-                        <div class="card-header text-success text-center">
-            <h4 class="mb-0"><i class="fas fa-users"></i> Gestión de Clientes</h4> 
-                        </div>
-                        <div class="card-header d-flex justify-content-end">
+            <h3 class="card-title">Gestión de Clientes</h3>
+            <div class="card-tools">
                             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
                                 <i class="fas fa-plus"></i> Añadir Nuevo
                             </button>
                         </div>
+                        </div>
 
-                        <!-- Contenedor de la tabla -->
-                        <div class="d-flex justify-content-end">
-                            <div class="table-responsive table-hover table-striped table-sm">
-                                <table id="clienteTable">
+                        <div class="card-body">
+                        <div class="table-responsive">
+                                <table id="clienteTable"  class="table table-bordered table-hover table-striped table-sm">
                                     <thead>
                                         <tr>
                                         <th>Id</th>
@@ -60,18 +61,18 @@
                                         <td>{{ $persona['email_personal'] }}</td>
                                         <td>{{ $persona['email_laboral'] }}</td>
                                         <td>
-                                        <a href="javascript:void(0);" class="btn btn-outline-success btn-sm"
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                         onclick="viewModal({{ json_encode($persona) }})">
-                                        <i class="fa fa-eye"></i>
+                                        <i class="bi bi-eye"></i>
                                         </a>
-                                            <a href="{{ route('gestionclientes.show', $persona['id_persona'])}}" class="btn btn-outline-primary btn-sm">
-                                                <i class="fa fa-edit"></i>
+                                            <a href="{{ route('gestionclientes.show', $persona['id_persona'])}}" class="btn btn-success btn-sm">
+                                                <i class="bi bi-pencil"></i>
                                             </a>
                                         <form action="{{ route('gestionclientes.destroy', $persona['id_persona']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-outline-danger btn-sm delete-btn">
-                                                <i class="fas fa-trash"></i>
+                                            <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                            <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -80,7 +81,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
 
 <!-- Modal para agregar un nuevo cliente -->
 <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
@@ -101,7 +101,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        </div>
 
                         <div class="modal fade" id="nuevoClienteModal" tabindex="-1" aria-labelledby="nuevoClienteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -194,59 +194,45 @@
     </div>
 </div>
 
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
+@stop
 @section('js')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-<script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-   $(document).ready(function () {
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+    $(function () {
         $('#clienteTable').DataTable({
-    pageLength: 5,
-    responsive: true,
-    autoWidth: false,
-    language: {
-        url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
-        search: "Buscar:",
-        lengthMenu: "Mostrar _MENU_ entradas",
-        info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-        infoEmpty: "Mostrando 0 a 0 de 0 entradas",
-        infoFiltered: "(filtrado de _MAX_ entradas en total)",
-        paginate: {
-            first: "Primero",
-            last: "Último",
-            next: "Siguiente",
-            previous: "Anterior"
-        }
-    },
-    dom: '<"row d-flex justify-content-between"<"col-md-3"l><"col-md-3 text-end"f>>' +
-         '<"row"<"col-md-12"B>>' +
-         'rtip',
-    buttons: [
-        { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-dark' },
-      { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
-      { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-warning' },
-      { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-danger' },
-      { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-    ]
-    
-});
-   });
-
+            "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-info' },
+                ]
+            });
+        });
    
    function viewModal(personas) {
     var modalBody = document.getElementById('viewModalLabel');
@@ -276,40 +262,37 @@
     var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
     viewModalElement.show();
 }
-document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                Swal.fire({
-                    title: '¿Está seguro?',
-                    text: "Esta acción no se puede deshacer",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit();
-                    }
-                });
+function confirmDelete(userId) {
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "¡Este registro será eliminado permanentemente!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + userId).submit();
+                }
             });
-        });
-    });
-</script>
-@if(session('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: '{{ session('success') }}',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar'
-    });
-</script>
-@endif
+        }
+    </script>
 
-@if(session('error'))
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
     <script>
         Swal.fire({
             icon: 'error',
@@ -319,51 +302,8 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmButtonText: 'Aceptar'
         });
     </script>
-@endif
+    @endif
 
 
 @stop
 
-@section('css')
-
-<style>
-
-/*Fondo trasnparente y sin borde en el contenedor*/
-
-    /*Estilo personalizado para los botones*/
-    #clienteTable_wrapper .btn {
-     
-      justify-content: center;/*Centrar los botenes */
-      gap: 10px;/*Espaciado entre botenes*/
-      margin-bottom: 15px; /*Separar botones de la tabla*/
-    }
-
-    #clienteTable_wrapper .dt-buttons .btn {
-        min-width: 150px;
-        margin-right: 10px;
-        border-radius: 4px;
-        padding: 5px 15px;
-        font-size: 15px;
-}
-#clienteTable_wrapper {
-        width: 96%;
-    }
-    /*Colores por tipo de botonn*/
-    .btn-danger { backgroung-color: #dc3545; border: none; }
-    .btn-success { backgroung-color: #28a745; border: none; }
-    .btn-info { backgroung-color: #17a2b8; border: none; }
-    .btn-warning { backgroung-color: #ffc107; color: #212529; border: none; }
-    .btn-default { backgroung-color: #6e7176; color: #212529; border: none; }
-
-#clienteTable_wrapper {
-    margin-left: auto;
-    width: 96%; /* Ajusta este valor según lo que necesites */
-}
-    
-    .container-fluid {
-        width: 100vw;
-        height: 100vh;
-        padding: 0px;
-    }
-</style>
-@stop

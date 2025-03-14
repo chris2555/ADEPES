@@ -105,6 +105,7 @@ class ClientesController extends Controller
      */
     public function destroy(string $id)
     {
+       
         $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personass/{$id}");
     
         if ($response->successful()) {
