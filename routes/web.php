@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('conyuge',ConyugeController::class)->names('conyuge');
     Route::resource('parametros',parametrosController::class)->names('Parametros');
     Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
+    Route::delete('/gestionclientes/{id}', [ClienteController::class, 'destroy'])->name('gestionclientes.destroy');
+
     
 });
  
