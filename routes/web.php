@@ -68,8 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('conyuge',ConyugeController::class)->names('conyuge');
     Route::resource('parametros',parametrosController::class)->names('Parametros');
     Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
-    Route::delete('/gestionclientes/{id}', [ClienteController::class, 'destroy'])->name('gestionclientes.destroy');
-
+    Route::delete('/gestionclientes/{id}', [ClientesController::class, 'destroy'])->name('gestionclientes.destroy');
+    Route::get('/amortizacion/{id_solicitud}', [RelacionController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     
 });
  

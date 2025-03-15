@@ -59,6 +59,9 @@
                                         <a href="{{ route('relacion.show', $solicitud['id_relacion'])}}" class="btn btn-outline-primary btn-sm">
                                             <i class="fa fa-edit"></i>
                                         </a>
+                                        <a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-info btn-sm" title="Ver Tabla de Amortización">
+                                            <i class="fas fa-file-alt"></i>
+                                        </a>
                                         <form action="{{ route('relacion.destroy', $solicitud['id_relacion']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
