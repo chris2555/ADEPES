@@ -38,9 +38,6 @@
 </head>
 <body>
 
-    <div class="logo">
-        <img src="{{ public_path('vendor/adminlte/dist/img/adepes.png') }}" alt="ADEPES">
-    </div>
 
     <h1>Resumen de Préstamo</h1>
 
