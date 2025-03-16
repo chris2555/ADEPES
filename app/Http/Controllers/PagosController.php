@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Pago;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 
 class PagosController extends Controller
@@ -121,5 +122,26 @@ class PagosController extends Controller
     return redirect()->route('pagos.index')->with('success', 'Pago eliminado correctamente');
 }
 
+
+public function obtenerPagos($id_persona)
+{
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagado/{$id_persona}");
+
+    if ($response->successful()) {
+        $pagado = $response->json();
+
+        // Verificar si los datos son válidos
+        if (empty($pagado)) {
+            return redirect()->back()->with('error', 'No se encontraron datos de pagos.');
+        }
+
+        // Cargar la vista y generar el PDF
+        $pdf = PDF::loadView('pagos.pagado', compact('pagado'));
+
+        return $pdf->stream();
+    } else {
+        return redirect()->back()->with('error', 'No se pudo obtener los datos de pagos.');
+    }
+}
 
 }

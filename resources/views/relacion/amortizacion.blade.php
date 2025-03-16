@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan de Pagos</title>
+    <title>Plan de Pagos - ADEPES</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -27,14 +27,37 @@
             background-color: #f2f2f2;
             font-weight: bold;
         }
+        .logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 150px;
+        }
+        .cliente-table td {
+            width: 50%;
+            padding-left: 15px;
+        }
     </style>
 </head>
 <body>
-    <div>
-        <strong>Cliente:</strong> {{ $amortizacion[0]['NombrePersona'] ?? 'N/A' }}
-        <br>
-        <strong>ID Cliente:</strong> {{ $amortizacion[0]['IdPersona'] ?? 'N/A' }}
+
+    <div class="logo">
+        <img src="{{ public_path('vendor/adminlte/dist/img/adepes.png') }}" alt="ADEPES">
     </div>
+
+    <h1>Datos del Cliente</h1>
+
+    <table class="cliente-table">
+        <tr>
+            <th>Cliente</th>
+            <td>{{ $amortizacion[0]['NombrePersona'] ?? 'N/A' }}</td>
+        </tr>
+        <tr>
+            <th>ID Cliente</th>
+            <td>{{ $amortizacion[0]['IdPersona'] ?? 'N/A' }}</td>
+        </tr>
+    </table>
 
     <h1>Plan de Pagos</h1>
 
@@ -53,14 +76,15 @@
             @foreach ($amortizacion as $pago)
                 <tr>
                     <td>{{ $pago['NumeroPago'] }}</td>
-                    <td>{{ $pago['SaldoInicial'] }}</td>
-                    <td>{{ $pago['CuotaMensual'] }}</td>
-                    <td>{{ $pago['InteresPagado'] }}</td>
-                    <td>{{ $pago['CapitalPagado'] }}</td>
-                    <td>{{ $pago['SaldoFinal'] }}</td>
+                    <td>L {{ number_format($pago['SaldoInicial'], 2) }}</td>
+                    <td>L {{ number_format($pago['CuotaMensual'], 2) }}</td>
+                    <td>L {{ number_format($pago['InteresPagado'], 2) }}</td>
+                    <td>L {{ number_format($pago['CapitalPagado'], 2) }}</td>
+                    <td>L {{ number_format($pago['SaldoFinal'], 2) }}</td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
 </body>
 </html>
