@@ -59,6 +59,10 @@
                                         <a href="{{ route('pagos.show', $pago['id_pago']) }}" class="btn btn-outline-primary btn-sm">
                                             <i class="fa fa-edit"></i>
                                         </a>
+                                        <a href="{{ route('pagado', $pago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-money-bill-wave"></i>
+                                        </a>
+                                        
                                         <form action="{{ route('pagos.destroy', $pago['id_pago']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
