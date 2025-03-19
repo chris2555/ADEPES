@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Pago;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Persona;
 
 
 class PagosController extends Controller
@@ -14,8 +15,11 @@ class PagosController extends Controller
     public function index()
     {
         $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss");
-        $pagos = $ModelResponse->json(); 
-        return view('pagos.pagos', compact('pagos'));
+        $pagos = $ModelResponse->json();
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo');
+        $prestamos = $response->json(); 
+        $personas = Persona::where('tipo_persona', 'Solicitante')->get(); 
+        return view('pagos.pagos', compact('pagos', 'personas', 'prestamos'));
         
     }
 
