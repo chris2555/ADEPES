@@ -94,10 +94,26 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-input name="id_prestamo" label="ID del Préstamo" type="number" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="id_persona" label="ID de la Persona" type="number" fgroup-class="mb-3" required />
-
-
+                           
+                            <x-adminlte-select name="id_prestamo" label="Seleccionar Préstamo" fgroup-class="mb-3" required>
+                                <option value="">Seleccione un préstamo</option>
+                                @foreach ($prestamos as $prestamo)
+                                    <option value="{{ $prestamo['id_prestamo'] }}">
+                                        {{ $prestamo['id_prestamo'] }} - {{ $prestamo['nombres_apellidos'] }} - L.{{ number_format($prestamo['monto'], 2) }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+                            
+                            
+                            <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                <option value="">Seleccione una persona</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->id_persona }}">
+                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+                            
                             <x-adminlte-input name="monto" label="Monto del Pago" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto" required />
 
                             <x-adminlte-select name="metodo_pago" label="Método de Pago" fgroup-class="mb-3" required>
