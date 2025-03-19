@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Collection;
-use App\Models\Parametros;
+use App\Models\User;
 
 
 class ParametrosController extends Controller
@@ -13,20 +13,27 @@ class ParametrosController extends Controller
 
 
 {
+
+   
+
     
     /**
      * Display a listing of the resource.
      */
     public function index()
+
     {
         // Hacer la petición a la API externa
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Parametros');
         
         // Convertir la respuesta en un array asociativo
         $parametros = $response->json(); 
+        $users = user::all();
     
         // Pasar la variable correctamente a la vista
-        return view('parametros.index', compact('parametros'));
+        return view('parametros.index', compact('parametros', 'users'));
+
+       
     }
     
 
@@ -43,14 +50,10 @@ class ParametrosController extends Controller
      */
     public function store(Request $request)
     {
-      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/Parametros', [
+      $response = Http::post('http://127.0.0.1:3000/api/parametros', [
         'tipo_usuario' => $request->tipo_usuario,
         'clave' => $request->clave,
         'nombre_usuario' => $request->nombre_usuario,
-        'creado_en' => $request->creado_en,
-        'actualizado_en' => $request->actualizado_en,
-        'intento_ingreso' => $request->intento_ingreso,
-        'vencimiento_usuario' => $request->vencimiento_usuario,
         'descripcion' => $request->descripcion,
       ]);
      
@@ -66,7 +69,7 @@ class ParametrosController extends Controller
      */
     public function show(string $id)
     {
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/Parametros/{$id}");
+        $response = Http::get("http://127.0.0.1:3000/api/parametros/{$id}");
         $parametro = $response->json();
         
         return view('Parametros.edit', compact('parametro'));
@@ -85,7 +88,7 @@ class ParametrosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/Parametros/{$id}", [
+        $response = Http::put("http://127.0.0.1:3000/api/parametros/{$id}", [
         'tipo_usuario' => $request->tipo_usuario,
         'clave' => $request->clave,
         'nombre_usuario' => $request->nombre_usuario,
@@ -108,11 +111,13 @@ class ParametrosController extends Controller
      */
     public function destroy(string $id)
     {
-        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/Parametros/{$id}");
+        $response = Http::delete("http://127.0.0.1:3000/api/parametros/{$id}");
+        
         if ($response->successful()) {
-            return redirect()->route('Parametros.index')->with('success', 'Parametro eliminado correctamente');
+            return redirect()->route('parametros.index')->with('success', 'Parametro eliminado correctamente');
         } else {
-            return redirect()->route('Parametros.index')->with('error', 'Ocurrió un error al eliminar el Parametro');
+            return redirect()->route('parametros.index')->with('error', 'Ocurrió un error al eliminar el Parametro');
         }
     }
+    
 }

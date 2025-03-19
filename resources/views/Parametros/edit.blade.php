@@ -45,7 +45,7 @@
                                         <!-- Tipo de Entidad -->
                                         <x-adminlte-input name="Nombre usuario" label="Nombre de Usuario" fgroup-class="mb-3"
                                            value="{{ $parametro['nombre_usuario'] }}" required />
-                                        <x-adminlte-input name="descripciom" label="Descripcion" fgroup-class="mb-3"
+                                        <x-adminlte-input name="descripcion" label="Descripcion" fgroup-class="mb-3"
                                         value="{{ $parametro['descripcion'] }}" required />
                                          
                                                             

@@ -55,7 +55,7 @@
                             <td>{{ $solicitud['monto'] }}</td>
                             <td>
                                 <a href="javascript:void(0);" class="btn btn-success btn-sm"
-                                    onclick="viewModal({{ json_encode($solicitudes) }})">
+                                    onclick="viewModal({{ json_encode($solicitud) }})">
                                     <i class="fa fa-eye"></i>
                                 </a>
                                 <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}"

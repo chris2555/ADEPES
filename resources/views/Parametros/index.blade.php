@@ -49,8 +49,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($parametros as $parametro)
-                                <tr>
+                           
+
+                           @foreach ($parametros as $parametro)
+                                <tr> 
                                     <td>{{ $parametro['id_parametros'] }}</td>
                                     <td>{{ $parametro['tipo_usuario'] }}</td>
                                     <td>{{ $parametro['clave'] }}</td>
@@ -74,11 +76,17 @@
                                             <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                           
+                                    </button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
+
                         </tbody>
+
+
+
                     </table>
                 </div>
             </div>
@@ -139,15 +147,20 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                            <x-adminlte-textarea name="descripcion" label="ingrese descripcion" fgroup-class="mb-3" placeholder="Ingrese la descripcion"/>
-                        </div>
+                           
+                      <x-adminlte-textarea name="descripcion" label="ingrese descripcion" fgroup-class="mb-3" placeholder="Ingrese la descripcion"/>
+                    
+                        
+                        
                     </div>
                     <div class="modal-footer">
                         <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Parametros" theme="success" icon="fas fa-lg fa-save" />
+                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Parametro" theme="success" icon="fas fa-lg fa-save" />
                     </div>
                 </form>
             </div>
+          
+
         </div>
     </div>
 </div>
