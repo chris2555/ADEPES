@@ -1,34 +1,36 @@
 @extends('adminlte::page')
 
 @section('title', 'Gestión de Prestamos')
-@section('plugins.Sweetalert2', true)
 
 @section('content_header')
- 
+<h1><b>Listado de Prestamos</b></h1>
+<hr>
 @stop
 
 @section('content')
 
 <head>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-<div class="container-fluid mt-4">
-    <div class="shadow-lg p-5 bg-white">
-        <div class="card-header text-success text-center">
-            <h4 class="mb-0"><i class="fas fa-money-bill-wave"></i> Gestión de Préstamos</h4>
-        </div>
 
-        <!-- Botón "Nuevo Préstamo" -->
-        <div class="d-flex justify-content-end mb-3">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+            <h3 class="card-title">Gestión de Prestamos</h3>
+            <div class="card-tools">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoPrestamoModal">
             <i class="fas fa-plus"></i> Añadir Nuevo
-        </button>
-    </div>
+            </button>
+                        </div>
+                        </div>
 <!-- Modal para insertar-->
 <div class="modal fade" id="nuevoPrestamoModal" tabindex="-1" aria-labelledby="nuevoPrestamoModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -106,28 +108,29 @@
     </div>
 </div>
         <!-- Tabla de Préstamos -->
-        <div class="table-responsive">
-            <table id="prestamoTable" class="table table-striped">
+        <div class="card-body">
+                        <div class="table-responsive">
+            <table id="prestamoTable" class="table table-bordered table-hover table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>DNI</th>
-                        <th>Monto</th>
-                        <th>Interés</th>
-                        <th>Plazo</th>
-                        <th>Estado</th>
-                        <th>Tipo</th>
-                        <th>Garantia</th>
-                        <th>Fecha Inicio</th>
-                        <th>Acciones</th>
+                        <th style="text-align: center">ID</th>
+                        <th style="text-align: center">Cliente</th>
+                        <th style="text-align: center">DNI</th>
+                        <th style="text-align: center">Monto</th>
+                        <th style="text-align: center">Interés</th>
+                        <th style="text-align: center">Plazo</th>
+                        <th style="text-align: center">Estado</th>
+                        <th style="text-align: center">Tipo</th>
+                        <th style="text-align: center">Garantia</th>
+                        <th style="text-align: center">Fecha Inicio</th>
+                        <th style="text-align: center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                 @if(isset($prestamos) && is_array($prestamos) && count($prestamos) > 0)
     @foreach($prestamos as $prestamo)
         <tr>
-            <td>{{ $prestamo['id_prestamo'] ?? 'N/A' }}</td>
+            <td style="text-align: center">{{ $prestamo['id_prestamo'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['nombres_apellidos'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['n_identidad'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['monto'] ?? 'N/A' }}</td>
@@ -137,9 +140,9 @@
             <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
-            <td>
+            <td style="text-align: center">
                 <!-- Botón Ver sin onclick directo -->
-                <button class="btn btn-info btn-sm view-prestamo"
+                <button class="btn btn-primary btn-sm view-prestamo"
                 data-bs-toggle="modal" 
                  data-bs-target="#view"
                 data-id="{{ $prestamo['id_prestamo'] }}"
@@ -157,7 +160,7 @@
                  data-estado="{{ $prestamo['estado'] }}"
                  data-garantia="{{ $prestamo['tipo_garantia'] }}"
 >
-                <i class="fas fa-eye"></i>
+                <i class="bi bi-eye"></i>
                 </button>
 
 
@@ -166,7 +169,7 @@
                     <i class="fas fa-edit"></i>
                 </button>
                 -->
-                <button class="btn btn-warning btn-sm edit-prestamo"
+                <button class="btn btn-success btn-sm edit-prestamo"
     data-bs-toggle="modal"
     data-bs-target="#edit"
     data-id="{{ $prestamo['id_prestamo'] }}"
@@ -183,16 +186,16 @@
     data-estado="{{ $prestamo['estado'] }}"
     data-garantia="{{ $prestamo['tipo_garantia'] }}"
     data-modificado-por="{{ auth()->user()->name }}">
-    <i class="fas fa-edit"></i>
+    <i class="bi bi-pencil"></i>
 </button>
 
                 <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
                 @csrf
                 @method('DELETE')
-                 <button type="submit" class="btn btn-outline-warning btn-sm delete-btn"
+                 <button type="submit" class="btn btn-danger btn-sm delete-btn"
                 onclick="return confirm('¿Está seguro de eliminar este Prestamo?')">
         
-                  <i class="fa fa-trash"></i>
+                  <i class="bi bi-trash"></i>
                 </button>
                 </form>
             </td>
@@ -527,27 +530,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 @section('js')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-<script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-   $(document).ready(function () {
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+   $(function () {
         $('#prestamoTable').DataTable({
-            responsive: true,
-            autoWidth: false,
-            language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json' },
-            dom: 'Bfrtip',
-            buttons: ['copy', 'excel', 'pdf', 'csv']
+           "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+                ]
+            });
         });
-    });
+   
 </script>
 @stop
 
@@ -555,48 +575,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 @section('css')
 
-<style>
 
-
-#clienteTable_wrapper {
-    margin-left: auto;
-    width: 67%; /* Ajusta este valor según lo que necesites */
-}
-    
-    .container-fluid {
-        width: 100vw;
-        height: 100vh;
-        padding: 0px;
-    }
-
- .dt-buttons .btn {
-    color: success !important;
-    border: none !important;
-}
-.dt-buttons .btn:hover {
-    filter: brightness(85%);
-}
-
-.card {
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-.table {
-    font-size: 24px;
-}
-.dt-buttons .btn {
-    margin: 5px;
-    font-size: 14px;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-.dt-buttons .btn:hover {
-    filter: brightness(85%);
-}
-.btn-sm {
-    border-radius: 5px;
-}
-</style>
 
 @section('js')
 <script src="{{ asset('js/app.js') }}"></script>

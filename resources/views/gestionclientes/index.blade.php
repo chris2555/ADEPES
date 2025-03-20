@@ -23,10 +23,10 @@
     <div class="col-md-12">
         <div class="card card-outline card-success">
             <div class="card-header">
-            <h3 class="card-title">Gestión de Clientes</h3>
+            <h3 class="card-title">DATOS PERSONALES</h3>
             <div class="card-tools">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
-                                <i class="fas fa-plus"></i> Añadir Nuevo
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
+                                <i class="fas fa-plus"></i> Nuevo Cliente
                             </button>
                         </div>
                         </div>
@@ -36,31 +36,31 @@
                                 <table id="clienteTable"  class="table table-bordered table-hover table-striped table-sm">
                                     <thead>
                                         <tr>
-                                        <th>Id</th>
-                                        <th>Nombre</th>
-                                        <th>Identidad</th>
-                                        <th>Edad</th>
-                                        <th>Estado Civil</th>
-                                        <th>Género</th>
-                                        <th>Teléfono</th>
-                                        <th>Email Personal</th>
-                                        <th>Email Laboral</th>
-                                        <th>Acciones</th>
+                                        <th style="text-align: center">Id</th>
+                                        <th style="text-align: center">Nombre</th>
+                                        <th style="text-align: center">Identidad</th>
+                                        <th style="text-align: center">Edad</th>
+                                        <th style="text-align: center">Estado Civil</th>
+                                        <th style="text-align: center">Género</th>
+                                        <th style="text-align: center">Teléfono</th>
+                                        <th style="text-align: center">Email Personal</th>
+                                        <th style="text-align: center">Email Laboral</th>
+                                        <th style="text-align: center">Acciones</th>
                                         </tr>
                                     </thead>
                                 <tbody>
                                     @foreach($personas as $persona)
                                         <tr>
-                                        <td>{{ $persona['id_persona'] }}</td>
+                                        <td style="text-align: center">{{ $persona['id_persona'] }}</td>
                                         <td>{{ $persona['nombres_apellidos'] }}</td>
-                                        <td>{{ $persona['n_identidad'] }}</td>
-                                        <td>{{ $persona['edad'] }}</td>
+                                        <td style="text-align: center">{{ $persona['n_identidad'] }}</td>
+                                        <td style="text-align: center">{{ $persona['edad'] }}</td>
                                         <td>{{ $persona['estado_civil'] }}</td>
                                         <td>{{ $persona['genero'] }}</td>
                                         <td>{{ $persona['telefono_secundario'] }}</td>
                                         <td>{{ $persona['email_personal'] }}</td>
                                         <td>{{ $persona['email_laboral'] }}</td>
-                                        <td>
+                                        <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                         onclick="viewModal({{ json_encode($persona) }})">
                                         <i class="bi bi-eye"></i>
@@ -225,11 +225,11 @@
                      'rt' +
                      '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
                 buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
                 ]
             });
         });
@@ -263,20 +263,23 @@
     viewModalElement.show();
 }
 document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
+        // Selecciona todos los formularios de eliminación
+        document.querySelectorAll(".delete-form").forEach(form => {
+            form.addEventListener("submit", function (event) {
+                event.preventDefault(); // Evita que el formulario se envíe inmediatamente
+                
                 Swal.fire({
-                    title: '¿Está seguro?',
-                    text: "Esta acción no se puede deshacer",
-                    icon: 'warning',
+                    title: "¿Está seguro?",
+                    text: "Esta acción no se puede deshacer.",
+                    icon: "warning",
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        this.closest('form').submit();
+                        form.submit(); // Solo envía el formulario si el usuario confirma
                     }
                 });
             });

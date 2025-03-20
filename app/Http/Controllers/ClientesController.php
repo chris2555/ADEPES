@@ -94,7 +94,7 @@ class ClientesController extends Controller
         ]);
         
         if ($response->successful()) {
-            return redirect()->route('gestionclientes.index')->with('success', 'Telefono actualizado correctamente');
+            return redirect()->route('gestionclientes.index')->with('success', 'Cliente actualizado correctamente');
         } else {
             return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al actualizar el telefono');
         }
