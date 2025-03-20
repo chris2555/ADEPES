@@ -3,7 +3,7 @@
 @section('title', 'Gestión de Telefonos')
 
 @section('content_header')
-<h1><b>Listado de Permisos</b></h1>
+<h1><b>Listado de Telefonos</b></h1>
     <hr>
 @stop
 
@@ -36,23 +36,23 @@
                     <table id="relacionTable" class="table table-bordered table-hover table-striped table-sm">
                         <thead>
                             <tr>
-                                <th>ID telefono</th>
-                                <th>Telefono</th>
-                                <th>tipo</th>
-                                <th>entidad</th>
-                                <th>Nombre</th>
-                                <th>Acciones</th>
+                                <th style="text-align: center">ID telefono</th>
+                                <th style="text-align: center">Telefono</th>
+                                <th style="text-align: center">tipo</th>
+                                <th style="text-align: center">entidad</th>
+                                <th style="text-align: center">Nombre</th>
+                                <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($telefonos as $telefono)
                                 <tr>
-                                    <td>{{ $telefono['id_telefono'] }}</td>
-                                    <td>{{ $telefono['numero'] }}</td>
+                                    <td style="text-align: center">{{ $telefono['id_telefono'] }}</td>
+                                    <td style="text-align: center">{{ $telefono['numero'] }}</td>
                                     <td>{{ $telefono['tipo_telefono'] }}</td>
                                     <td>{{ $telefono['tipo_entidad'] }}</td>
                                     <td>{{ $telefono['nombre_persona'] }}</td>
-                                    <td>
+                                    <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($telefono) }})">
                                             <i class="bi bi-eye"></i>
@@ -65,7 +65,7 @@
                                             @method('DELETE')
                                             <button type="button" class="btn btn-danger btn-sm delete-btn">
                                                 <i class="bi bi-trash"></i>
-                                            </button>
+                                             </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -73,9 +73,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-    </div>
+           
 
     <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -94,6 +92,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
 
@@ -185,11 +184,11 @@
                      'rt' +
                      '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
                 buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-info' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-info' },
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
                 ]
             });
         });
@@ -260,55 +259,5 @@
     </script>
 @endif
 
-@section('css')
-    <style>
-        #relacionTable_wrapper {
-            margin-left: auto;
-            width: 96%;
-            /* Ajusta este valor según lo que necesites */
-        }
-
-        .container-fluid {
-            width: 100vw;
-            height: 100vh;
-            padding: 0px;
-        }
-
-        .dt-buttons .btn {
-            color: success !important;
-            border: none !important;
-        }
-
-        .dt-buttons .btn:hover {
-            filter: brightness(85%);
-        }
-
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .table {
-            font-size: 24px;
-        }
-
-        .dt-buttons .btn {
-            margin: 5px;
-            font-size: 14px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .dt-buttons .btn:hover {
-            filter: brightness(85%);
-        }
-
-        .btn-sm {
-            border-radius: 5px;
-        }
-    </style>
-
-
-@stop
 
 @stop

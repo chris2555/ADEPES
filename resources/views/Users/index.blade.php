@@ -88,7 +88,7 @@
                                     <div class="row">
                                     <div class="col-md-12">
                                     <div class="form-group">
-                                        <label for="name" class="form-label">Nombre de usurio (*)</label>
+                                        <label for="name" class="form-label">Nombre de usuario (*)</label>
                                         <input type="text" class="form-control" id="name" name="name" required>
                                     </div>
                                     <div class="mb-3">

@@ -306,7 +306,7 @@ return [
             'can' => 'manage-blog',
         ],
         [
-            'text' => 'Inicio',
+            'text' => 'Principal',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
         ],
@@ -314,58 +314,81 @@ return [
             'text' => 'Gestion de Clientes',
             'route' => 'gestionclientes.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+           'submenu' => [
+
+                [
+                    'text' => 'Viviendas',
+                    'route' => 'viviendas.index',
+                    'icon' => 'fas fa-fw fa-home', // Ícono de casa para viviendas
+                ],
+                [
+                    'text' => 'Informacion laboral',
+                    'route' => 'referencias.index', // Ruta al index del controlador
+                    'icon' => 'fas fa-fw fa-children', // Ícono representativo de Referencia Familiar
+                   
+                ],
+                [
+                    'text' => 'Conyugues',
+                    'route' => 'conyuge.index', // Ruta al index del controlador
+                    'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios' 
+                ],
+                [
+                    'text' => 'Egresos e Ingresos',
+                    'route' => 'egresos.index', // Ruta al index del controlador
+                    'text' => 'Estado de Ingresos',
+                    'route' => 'ingresos.index', // Ruta al index del controlador
+                    'icon' => 'fas fa-fw fa-file-invoice-dollar', // Ícono representativo de usuarios
+                   
+                ],
+                [
+                    'text' => 'Referencias Familiares',
+                    'route' => 'referencias.index', // Ruta al index del controlador
+                    'icon' => 'fas fa-fw fa-children', // Ícono representativo de Referencia Familiar
+                   
+                ],
+            ],
            
         ],
-        [
-            'text' => 'Telefonos',
-            'route' => 'telefonos.index',
-            'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
-        ],
+       
+        //[
+        //    'text' => 'Telefonos',
+        //    'route' => 'telefonos.index',
+        //    'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
+        //],
         [
             'text' => 'Relacion solicitudes',
             'route' => 'relacion.index',
             'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
         ],
-        [
-            'text' => 'Viviendas',
-            'route' => 'viviendas.index',
-            'icon' => 'fas fa-fw fa-home', // Ícono de casa para viviendas
-        ],
+        
         
 
         [
-            'text' => 'Solicitudes',
-            'route' => 'solicitud.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
+         'text' => 'Solicitudes',
+         'route' => 'solicitud.index', // Ruta al index del controlador
+         'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
            
         ],
-        [
-            'text' => 'Pagos',
-            'route' => 'pagos.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
+        //[
+          //  'text' => 'Pagos',
+            //'route' => 'pagos.index', // Ruta al index del controlador
+            //'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
            
-        ],
-        [
-            'text' => 'Estado Egresos',
-            'route' => 'egresos.index', // Ruta al index del controlador
-            'text' => 'Estado de Ingresos',
-            'route' => 'ingresos.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-file-invoice-dollar', // Ícono representativo de usuarios
-           
-        ],
-        [
-            'text' => 'Evaluacion del negocio',
-            'route' => 'dashboard', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
-           
-        ],
+        //],
         
-        [
-            'text' => 'Gestion de Clientes',
-            'route' => 'solicitud.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+        //[
+        //    'text' => 'Evaluacion del negocio',
+        //    'route' => 'dashboard', // Ruta al index del controlador
+        //    'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
            
-        ],
+        //],
+        
+        //[
+        //    'text' => 'Gestion de Clientes',
+        //    'route' => 'solicitud.index', // Ruta al index del controlador
+        //    'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+           
+        //],
 
         [
             'text' => 'Prestamos',
@@ -373,12 +396,7 @@ return [
             'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
            
         ],
-        [
-            'text' => 'Referencias Familiares',
-            'route' => 'referencias.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-children', // Ícono representativo de Referencia Familiar
-           
-        ],
+      
         [
             'text' => 'Seguridad',
             'icon' => 'fas fa-fw fa-user-lock', // Ícono representativo de usuarios

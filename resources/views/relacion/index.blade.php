@@ -1,63 +1,68 @@
 @extends('adminlte::page')
 
 @section('title', 'Gestión de Relaciones de Solicitud')
-@section('plugins.Sweetalert2', true)
+
 
 @section('content_header')
-
+<h1><b>Relacion Solicitud</b></h1>
+    <hr>
 @stop
 
 @section('content')
 <head>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-<div class='row'> 
+
+<div class="row">
     <div class="col-md-12">
+        <div class="card card-outline card-success">
             <div class="card-header">
-                <div class="container-fluid mt-4">
-                    <div class="shadow-lg p-5 bg-white">
-                         <div class="card-header text-success text-center">
-            <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Relaciones de Solicitud</h4>
-                        </div>
-                        <div class="card-header d-flex justify-content-end">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#insert">
+            <h3 class="card-title">Gestión de Relaciones de Solicitud</h3>
+            <div class="card-tools">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
                                 <i class="fas fa-plus"></i> Añadir Nuevo
-                            </button>
+                                </button>
+                        </div>
                         </div>
 
                         <!-- Contenedor de la tabla -->
                         <div class="card-body">
-                            <div class="table-responsive table-hover table-striped table-sm">
-                                <table id="relacionTable">
+                        <div class="table-responsive">
+                                <table id="relacionTable"  class="table table-bordered table-hover table-striped table-sm">
                                     <thead>
                                         <tr>
-                                <th>ID Relación</th>
-                                <th>ID Solicitud</th>
-                                <th>Nombre</th>
-                                <th>Cónyuge</th>
-                                <th>Ingresos</th>
-                                <th>Egresos</th>
-                                <th>Acciones</th>
+                                <th style="text-align: center">ID Relación</th>
+                                <th style="text-align: center">ID Solicitud</th>
+                                <th style="text-align: center">Nombre</th>
+                                <th style="text-align: center">Cónyuge</th>
+                                <th style="text-align: center">Ingresos</th>
+                                <th style="text-align: center">Egresos</th>
+                                <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($solicitudes as $solicitud)
                                 <tr>
-                                    <td>{{ $solicitud['id_relacion'] }}</td>
+                                    <td style="text-align: center">{{ $solicitud['id_relacion'] }}</td>
                                     <td>{{ $solicitud['id_solicitud'] }}</td>
                                     <td>{{ $solicitud['nombre_persona'] }}</td>
                                     <td>{{ $solicitud['nombre_conyuge'] }}</td>
                                     <td>{{ $solicitud['ingresos'] }}</td>
                                     <td>{{ $solicitud['egresos'] }}</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                                    <td style="text-align: center">
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($solicitud) }})">
-                                            <i class="fa fa-eye"></i>
+                                            <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('relacion.show', $solicitud['id_relacion'])}}" class="btn btn-outline-primary btn-sm">
-                                            <i class="fa fa-edit"></i>
+                                        <a href="{{ route('relacion.show', $solicitud['id_relacion'])}}" class="btn btn-success btn-sm">
+                                            <i class="bi bi-pencil"></i>
                                         </a>
                                         <a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-info btn-sm" title="Ver Tabla de Amortización">
                                             <i class="fas fa-file-alt"></i>
@@ -65,8 +70,8 @@
                                         <form action="{{ route('relacion.destroy', $solicitud['id_relacion']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
-                                                <i class="fas fa-trash"></i>
+                                            <button type="button" class="btn btn-danger btn-sm delete-btn">
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -75,7 +80,6 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
 
     <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -197,50 +201,44 @@
 @stop
 
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-    <script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(document).ready(function() {
+    $(function () {
             $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-                pageLength: 5,
-                responsive: true,
-                autoWidth: false,
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
-                    search: "Buscar:",
-                    lengthMenu: "Mostrar _MENU_ entradas",
-                    info: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                    infoEmpty: "Mostrando 0 a 0 de 0 entradas",
-                    infoFiltered: "(filtrado de _MAX_ entradas en total)",
-                    paginate: {
-                        first: "Primero",
-                        last: "Último",
-                        next: "Siguiente",
-                        previous: "Anterior"
-                    }
-    },
-    dom: '<"row d-flex justify-content-between"<"col-md-3"l><"col-md-3 text-end"f>>' +
-         '<"row"<"col-md-12"B>>' +
-         'rtip',
-    buttons: [
-        { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-dark' },
-      { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-info' },
-      { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-warning' },
-      { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-danger' },
-      { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-    ]
+                "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+                ]
             });
         });
+   
 
         function viewModal(solicitud) {
             var modalBody = document.getElementById('viewModalBody');
@@ -313,36 +311,4 @@
         });
     </script>
 @endif
-
-@section('css')
-    <style>
-
-#relacionTable_wrapper .btn {
-     
-     justify-content: center;/*Centrar los botenes */
-     gap: 10px;/*Espaciado entre botenes*/
-     margin-bottom: 15px; /*Separar botones de la tabla*/
-   }
-
-   #relacionTable_wrapper .dt-buttons .btn {
-        min-width: 150px;
-        margin-right: 10px;
-        border-radius: 4px;
-        padding: 5px 15px;
-        font-size: 15px;
-}
-        #relacionTable_wrapper {
-            width: 96%;
-            /* Ajusta este valor según lo que necesites */
-        }
-
-        .container-fluid {
-            width: 100vw;
-            height: 100vh;
-            padding: 0px;
-        }
-
-    </style>
-@stop
-
 
