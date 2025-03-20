@@ -5,9 +5,7 @@
 @section('subtitle', 'Pagos')
 
 @section('content_body')
-@php
-    use Carbon\Carbon;
-@endphp
+
 <head>
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
@@ -17,105 +15,130 @@
     </head>
 
     <div class="container-fluid mt-4">
-    <div class="shadow-lg p-5 bg-white">
-        <div class="card-header text-success text-center">
-            <h4 class="mb-0"><i class="fas fa-file-contract"></i> Pagos</h4>
+        <div class="shadow-lg p-5 bg-white">
+            <div class="card-header text-success text-center">
+                <h4 class="mb-0"><i class="fas fa-file-invoice-dollar"></i> Gestión de Pagos</h4>
+            </div>
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPago">
+                    <i class="fas fa-plus"></i> Nuevo Pago
+                </button>
+            </div>
+            <div class="d-flex justify-content-end">
+                <div class="table-responsive table-hover table-striped table-sm">
+                    <table id="pagoTable">
+                        <thead>
+                            <tr>
+                                <th>ID Pago</th>
+                                <th>ID Préstamo</th>
+                                <th>Monto Préstamo</th>
+                                <th>Nombre Cliente</th>
+                                <th>Método de Pago</th>
+                                <th>Recibo</th>
+                                <th>Monto</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($pagos as $pago)
+                                <tr>
+                                    <td>{{ $pago['id_pago'] }}</td>
+                                    <td>{{ $pago['id_prestamo'] }}</td>
+                                    <td>{{ $pago['monto_prestamo'] }}</td>
+                                    <td>{{ $pago['nombres_apellidos'] }}</td>
+                                    <td>{{ $pago['metodo_pago'] }}</td>
+                                    <td>{{ $pago['recibo'] }}</td>
+                                    <td>{{ $pago['monto'] }}</td>
+                                    <td>{{ date('d-m-Y', strtotime($pago['fecha'])) }}</td>
+                                    <td>
+                                        <a href="javascript:void(0);" class="btn btn-outline-success btn-sm"
+                                            onclick="viewModal({{ json_encode($pago) }})">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('pagos.show', $pago['id_pago']) }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('pagado', $pago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-money-bill-wave"></i>
+                                        </a>
+                                        
+                                        <form action="{{ route('pagos.destroy', $pago['id_pago']) }}" method="POST" class="d-inline delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-outline-danger btn-sm delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
-                <i class="fas fa-plus"></i> Agregar Pago
-            </button>
-        </div>
-
-        <div class="d-flex justify-content-end">
-            <div class="table-responsive ms-auto">
-                <table id="relacionTable">
-                    <thead>
-                        <tr>
-                            <th>Fecha De Pago</th>
-                            <th>No. de Cuota</th>
-                            <th>Nombre Completo</th>
-                            <th>Cuota Amortización</th>
-                            <th>Pago Capital</th>
-                            <th>Intereses Pagados</th>
-                            <th>Abono</th>
-                            <th>Diferencia de Pago</th>
-                            <th>Estado de Pago</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-    @php
-        // Convertir $pagos en una colección
-        $pagosCollection = collect($pagos);
-
-        // Obtener el nombre filtrado desde el request
-        $nombreFiltrado = request()->query('Nombre_Completo');
-
-        // Filtrar pagos si se ingresó un nombre, ignorando mayúsculas y espacios
-        $pagosFiltrados = $nombreFiltrado 
-            ? $pagosCollection->filter(function ($pago) use ($nombreFiltrado) {
-                return trim(strtolower($pago['Nombre_Completo'])) == trim(strtolower($nombreFiltrado));
-            })->values() // <-- Aquí se restablecen las claves para evitar problemas con sum()
-            : $pagosCollection;
-
-        // Inicializar los totales con los valores filtrados
-        $totalCuota = $pagosFiltrados->sum('Cuota_Amortizacion');
-        $totalCapital = $pagosFiltrados->sum('Pago_Capital');
-        $totalIntereses = $pagosFiltrados->sum('Intereses_Pagados');
-        $totalAbono = $pagosFiltrados->sum('Abono');
-        $totalDiferencia = $pagosFiltrados->sum('Diferencia_de_Pago');
-    @endphp
-
-    @foreach ($pagosFiltrados as $pago)
-        <tr>
-            <td>{{ \Carbon\Carbon::parse($pago['Fecha_De_Pago'])->translatedFormat('d \d\e F \d\e Y') }}</td>
-            <td>{{ $pago['Numero_de_Cuota'] }}</td>
-            <td>{{ $pago['Nombre_Completo'] }}</td>
-            <td>{{ number_format($pago['Cuota_Amortizacion'], 2) }}</td>
-            <td>{{ number_format($pago['Pago_Capital'], 2) }}</td>
-            <td>{{ number_format($pago['Intereses_Pagados'], 2) }}</td>
-            <td>{{ number_format($pago['Abono'], 2) }}</td>
-            <td>{{ number_format($pago['Diferencia_de_Pago'], 2) }}</td>
-            <td>{{ $pago['Estado_de_Pago'] }}</td>
-            <td>
-                <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($pago) }})">
-                    <i class="fa fa-eye"></i>
-                </a>
-                <a href="{{ route('pagos.show', $pago['ID_Pago']) }}" class="btn btn-outline-primary btn-sm">
-                    <i class="fa fa-edit"></i>
-                </a>
-                <form action="{{ route('pagos.destroy', $pago['ID_Pago']) }}" method="POST" class="d-inline delete-form">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </form>
-            </td>
-        </tr>
-    @endforeach
-</tbody>
-
-@if ($pagosFiltrados->isNotEmpty()) 
-    <tfoot>
-        <tr>
-            <td colspan="3" class="text-end fw-bold">
-                Total de {{ $nombreFiltrado ?? 'todos' }}:
-            </td>
-            <td>{{ number_format($totalCuota, 2) }}</td>
-            <td>{{ number_format($totalCapital, 2) }}</td>
-            <td>{{ number_format($totalIntereses, 2) }}</td>
-            <td>{{ number_format($totalAbono, 2) }}</td>
-            <td>{{ number_format($totalDiferencia, 2) }}</td>
-            <td colspan="2"></td>
-        </tr>
-    </tfoot>
-@endif
-
+    </div>
     
-                </table>
+    
+<!-- Modal para Insertar Nuevo Pago -->
+<div class="modal fade" id="insertPago" tabindex="-1" aria-labelledby="insertPagoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="insertPagoLabel">Agregar Nuevo Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('pagos.store') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6">
+                           
+                            <x-adminlte-select name="id_prestamo" label="Seleccionar Préstamo" fgroup-class="mb-3" required>
+                                <option value="">Seleccione un préstamo</option>
+                                @foreach ($prestamos as $prestamo)
+                                    <option value="{{ $prestamo['id_prestamo'] }}">
+                                        {{ $prestamo['id_prestamo'] }} - {{ $prestamo['nombres_apellidos'] }} - L.{{ number_format($prestamo['monto'], 2) }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+                            
+                            
+                            <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                <option value="">Seleccione una persona</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->id_persona }}">
+                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+                            
+                            <x-adminlte-input name="monto" label="Monto del Pago" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto" required />
+
+                            <x-adminlte-select name="metodo_pago" label="Método de Pago" fgroup-class="mb-3" required>
+                                <option value="">Seleccione...</option>
+                                <option value="Efectivo">Efectivo</option>
+                                <option value="Transferencia">Transferencia</option>
+                                <option value="Cheque">Cheque</option>
+                            </x-adminlte-select>
+
+                            <x-adminlte-input name="recibo" label="Número de Recibo" type="text" fgroup-class="mb-3" placeholder="Ingrese el número de recibo" required />
+                        </div>
+
+                        <div class="col-md-6">
+                            <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" required />
+
+                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses" value="0" />
+
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
+                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Pago" theme="success" icon="fas fa-lg fa-save" />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -123,7 +146,7 @@
 
 
 
-
+    {{-- Modal para Ver Información de pagos --}}
     <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -159,7 +182,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
+            $('#pagoTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
                 responsive: true,
                 autoWidth: false,
                 language: {
@@ -192,33 +215,39 @@
         });
 
         function viewModal(pagos) {
-            var DateTime = luxon.DateTime;
-            var fechaFormateada = DateTime.fromISO(pagos.Fecha_De_Pago, { zone: 'utc' }) // Forzar UTC si viene en Zulu time (Z)
-            .setLocale('es') 
-            .toFormat("dd 'de' MMMM 'de' yyyy");
+    var DateTime = luxon.DateTime;
+    var fechaFormateada = DateTime.fromISO(pagos.fecha, { zone: 'utc' }) // Formato de fecha
+        .setLocale('es')
+        .toFormat("dd 'de' MMMM 'de' yyyy");
 
-            var modalBody = document.getElementById('viewModalBody');
-            modalBody.innerHTML = `
-        <div class="col-md-6">
-            <p><strong>Fecha de Pago:</strong> ${fechaFormateada}</p>
-            <p><strong>Metodo de Pago:</strong> ${pagos.Metodo_de_Pago || 'No disponible'}</p>
-            <p><strong>Recibo:</strong> ${pagos.Recibo}</p>
-            <p><strong>Estado de Pago:</strong> ${pagos.egresos}</p>
-            <p><strong>Aval 1:</strong> ${pagos.nombre_aval1 || 'No disponible'}</p>
-            <p><strong>Aval 2:</strong> ${pagos.nombre_aval2 || 'No disponible'}</p>
-        </div>
-        <div class="col-md-6">
-            <p><strong>Aval 3:</strong> ${pagos.nombre_aval3 || 'No disponible'}</p>
-            <p><strong>Creado por:</strong> ${pagos.creado_por}</p>
-            <p><strong>Creado en:</strong> ${pagos.creado_en ? new Date(pagos.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${pagos.modificado_por || 'No disponible'}</p>
-            <p><strong>Modificado en:</strong> ${pagos.modificado_en ? new Date(pagos.modificado_en).toLocaleString() : 'No disponible'}</p>
+    var modalBody = document.getElementById('viewModalBody');
+    modalBody.innerHTML = `
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>ID Pago:</strong> ${pagos.id_pago}</p>
+                <p><strong>ID Préstamo:</strong> ${pagos.id_prestamo}</p>
+                <p><strong>Monto del Préstamo:</strong> ${pagos.monto_prestamo}</p>
+                <p><strong>ID Persona:</strong> ${pagos.id_persona}</p>
+                <p><strong>Nombre del Cliente:</strong> ${pagos.nombres_apellidos}</p>
+                <p><strong>Método de Pago:</strong> ${pagos.metodo_pago}</p>
+                <p><strong>Recibo:</strong> ${pagos.recibo}</p>
+                <p><strong>Monto Pagado:</strong> ${pagos.monto}</p>
+                <p><strong>Fecha de Pago:</strong> ${fechaFormateada}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Intereses:</strong> ${pagos.intereses}</p>
+                <p><strong>Creado por:</strong> ${pagos.creado_por}</p>
+                <p><strong>Creado en:</strong> ${pagos.creado_en ? new Date(pagos.creado_en).toLocaleString() : 'No disponible'}</p>
+                <p><strong>Modificado por:</strong> ${pagos.modificado_por || 'No disponible'}</p>
+                <p><strong>Modificado en:</strong> ${pagos.modificado_en ? new Date(pagos.modificado_en).toLocaleString() : 'No disponible'}</p>
+            </div>
         </div>
     `;
 
-            var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
-            viewModalElement.show();
-        }
+    var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
+    viewModalElement.show();
+}
+
 
         
         document.addEventListener("DOMContentLoaded", function () {
@@ -272,25 +301,37 @@
 
 @section('css')
 <style>
-    /* Contenedor de la tabla */
-    #relacionTable_wrapper {
+    #pagoTable_wrapper {
         margin-left: auto;
-        width: 96%; /* Ajusta este valor según lo que necesites */
+        width: 96%;
+        /* Ajusta este valor según lo que necesites */
     }
 
-    /* Contenedor principal ajustado */
     .container-fluid {
         width: 100vw;
         height: 100vh;
         padding: 0px;
-        overflow-x: hidden; /* Evita desplazamiento horizontal innecesario */
     }
 
-    /* Botones de exportación */
     .dt-buttons .btn {
-        color: #fff !important;
-        background-color: #28a745 !important; /* Verde */
+        color: success !important;
         border: none !important;
+    }
+
+    .dt-buttons .btn:hover {
+        filter: brightness(85%);
+    }
+
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table {
+        font-size: 24px;
+    }
+
+    .dt-buttons .btn {
         margin: 5px;
         font-size: 14px;
         border-radius: 8px;
@@ -298,31 +339,11 @@
     }
 
     .dt-buttons .btn:hover {
-        filter: brightness(90%);
+        filter: brightness(85%);
     }
 
-    /* Tarjetas con mejor diseño */
-    .card {
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Tabla con mejor visibilidad */
-    .table {
-        font-size: 20px;
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    /* Botones pequeños */
     .btn-sm {
         border-radius: 5px;
-        padding: 5px 10px;
-    }
-
-    /* Responsividad de la tabla */
-    .table-responsive {
-        overflow-x: auto;
     }
 </style>
 

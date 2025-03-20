@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
+use App\Models\Pago;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Persona;
 
 
 class PagosController extends Controller
@@ -12,12 +14,12 @@ class PagosController extends Controller
     
     public function index()
     {
-        $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos");
-        
-        
-        $pagos = $ModelResponse->json(); 
-        //dd($pagos);
-        return view('pagos.pagos', compact('pagos'));
+        $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss");
+        $pagos = $ModelResponse->json();
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo');
+        $prestamos = $response->json(); 
+        $personas = Persona::where('tipo_persona', 'Solicitante')->get(); 
+        return view('pagos.pagos', compact('pagos', 'personas', 'prestamos'));
         
     }
 
@@ -34,141 +36,116 @@ class PagosController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Registrar los datos en los logs sin detener la ejecución
-        Log::info('Datos recibidos en el Controller:', $request->except(['_token']));
+{
+    $request->validate([
+        'id_prestamo' => 'required',
+        'id_persona' => 'required',
+        'monto' => 'required|numeric|min:0',
+        'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque',
+        'recibo' => 'required|unique:pagos,recibo',
+        'fecha' => 'required|date',
+        'intereses' => 'nullable|numeric|min:0',
+    ]);
 
-        $usuario_id = auth()->id();
-        
-        // Validar los datos del formularios
-    
-        // Enviar datos a la API sin incluir el token
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos', [
-            [
-                'id_prestamo' => $request->id_prestamo,
-                'id_persona' => $request->id_persona,
-                'metodo_pago' => $request->metodo_pago,
-                'recibo' => $request->recibo,
-                'monto' => $request->monto,
-                'intereses' => $request->intereses,
-                'fecha' => $request->fecha,
-                'creado_por' => $usuario_id,
-            ]
-            
-        ]);
-    
-        if ($response->successful()) {
-            return redirect()->back()->with('success', 'Pago creado exitosamente.');
-        } else {
-            return redirect()->back()->with('error', 'Error al crear el pago.');
-        }
-    }
+    Pago::create([
+        'id_prestamo' => $request->id_prestamo,
+        'id_persona' => $request->id_persona,
+        'monto' => $request->monto,
+        'metodo_pago' => $request->metodo_pago,
+        'recibo' => $request->recibo,
+        'fecha' => $request->fecha,
+        'intereses' => $request->intereses ?? 0,
+        'creado_por' => auth()->id(), // Aquí se asigna automáticamente
+    ]);
+
+    return redirect()->back()->with('success', 'Pago registrado correctamente.');
+}
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        try {
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos/{$id}");
-
-        if ($response->successful()) {
-            $pagos = $response->json();
-            
-            return view('pagos.edit', compact('pagos'));
-        } else {
-            Log::error('Error al obtener el pago', ['status' => $response->status()]);
-            return redirect()->back()->with('error', 'No se pudo obtener el pagos');
-        }
-    } catch (\Exception $e) {
-        Log::error('Excepción al obtener el pago', ['error' => $e->getMessage()]);
-        return redirect()->back()->with('error', 'Error interno del servidor');
+        // Buscar el recurso por su ID
+        $pago = Pago::find($id);
+    
+        // Mostrar la vista con los detalles del recurso
+        return view('pagos.edit', compact('pago'));
     }
-        
-        
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        // Llamar a la API para obtener los datos del préstamo por ID
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos/{$id}");
-    
-        if ($response->failed()) {
-            return redirect()->route('pagos.edit')->with('error', 'Pago no encontrado');
-        }
-    
-        $prestamo = $response->json(); // Obtener los datos del préstamo en formato array
-    
-        // Pasar los datos del préstamo a la vista
-        return view('pagos.pagos', compact('pagos'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        $usuario_id = auth()->id();
-
-    // Usar el id_pagos del formulario en lugar de la URL
-    $id_pagos = $request->input('id_pagos');
-
-    Log::info('ID recibido para actualización:', ['id_pagos' => $id_pagos]);
-
-    $validatedData = $request->validate([
-        'id_prestamo' => 'required|integer',
-        'id_persona' => 'required|integer',
-        'metodo_pago' => 'required|in:Efectivo,Transferencia', 
-        'recibo' => 'required|string', 
-        'monto' => 'required|numeric',
-        'intereses' => 'required|numeric',
-        'fecha_De_Pago' => 'required|date',
-    ]);
-
-    Log::info('Datos validados para actualizar:', $validatedData);
-
-    try {
-        // Enviar el ID correcto a la API externa
-        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos/{$id_pagos}", [
+        $request->validate([
+            'id_prestamo' => 'required',
+            'id_persona' => 'required',
+            'monto' => 'required|numeric|min:0',
+            'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque',
+            'recibo' => 'required',
+            'fecha' => 'required|date',
+            'intereses' => 'nullable|numeric|min:0',
+        ]);
+    
+        // Encontrar el pago que se va a actualizar
+        $pago = Pago::findOrFail($id);
+    
+        // Actualizar los campos del pago
+        $pago->update([
             'id_prestamo' => $request->id_prestamo,
             'id_persona' => $request->id_persona,
+            'monto' => $request->monto,
             'metodo_pago' => $request->metodo_pago,
             'recibo' => $request->recibo,
-            'monto' => $request->monto,
-            'intereses' => $request->intereses,
             'fecha' => $request->fecha,
-            'modificado_por' => $usuario_id,
+            'intereses' => $request->intereses ?? 0,
+            'actualizado_por' => auth()->id(), // Aquí se asigna el usuario que actualizó el pago
         ]);
-
-        Log::info('Respuesta de la API:', ['status' => $response->status(), 'body' => $response->body()]);
-
-        if ($response->successful()) {
-            return redirect()->back()->with('success', 'Pago actualizado correctamente.');
-        } else {
-            Log::error('Error al actualizar:', ['status' => $response->status(), 'body' => $response->body()]);
-            return redirect()->back()->with('error', 'Error al actualizar el pago.');
-        }
-    } catch (\Exception $e) {
-        Log::error('Excepción:', ['error' => $e->getMessage()]);
-        return redirect()->back()->with('error', 'Hubo un error al procesar la solicitud.');
-    }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagos/{$id}");
-
-        if ($response->successful()) {
-            return redirect()->route('pagos.pagos')->with('success', 'Pago eliminado correctamente.');
-        } else {
-            return redirect()->route('pagos.pagos')->with('error', 'No se pudo eliminar la el pago.');
-        }
     
+        return redirect()->route('pagos.index')->with('success', 'Pago actualizado correctamente.');
     }
+    
+    public function destroy(string $id)
+{
+    // Buscar el recurso por su ID
+    $pago = Pago::find($id);
+
+    // Verificar si el recurso existe
+    if (!$pago) {
+        // Enviar mensaje de error y redirigir al índice
+        return redirect()->route('pagos.index')->with('error', 'Pago no encontrado');
+    }
+
+    // Eliminar el recurso
+    $pago->delete();
+
+    // Enviar mensaje de éxito y redirigir al índice
+    return redirect()->route('pagos.index')->with('success', 'Pago eliminado correctamente');
+}
+
+
+public function obtenerPagos($id_persona)
+{
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagado/{$id_persona}");
+
+    if ($response->successful()) {
+        $pagado = $response->json();
+
+        // Verificar si los datos son válidos
+        if (empty($pagado)) {
+            return redirect()->back()->with('error', 'No se encontraron datos de pagos.');
+        }
+
+        // Cargar la vista y generar el PDF
+        $pdf = PDF::loadView('pagos.pagado', compact('pagado'));
+
+        return $pdf->stream();
+    } else {
+        return redirect()->back()->with('error', 'No se pudo obtener los datos de pagos.');
+    }
+}
+
 }
