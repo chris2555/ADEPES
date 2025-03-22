@@ -49,6 +49,7 @@ class ClientesController extends Controller
         if ($response->successful()) {
             return redirect()->route('gestionclientes.index')->with('success', 'Cliente creado correctamente');
         } else {
+            dd($response->status(), $response->body()); // Agregado para depuración
             return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al crear el cliente');
         }
     }

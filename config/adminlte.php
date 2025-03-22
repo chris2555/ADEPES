@@ -315,7 +315,11 @@ return [
             'route' => 'gestionclientes.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
            'submenu' => [
-
+            [
+                'text' => 'Clientes',
+                'route' => 'gestionclientes.index',
+                'icon' => 'fas fa-fw fa-home', // Ícono de casa para viviendas
+            ],
                 [
                     'text' => 'Viviendas',
                     'route' => 'viviendas.index',
@@ -350,53 +354,33 @@ return [
            
         ],
        
-        //[
-        //    'text' => 'Telefonos',
-        //    'route' => 'telefonos.index',
-        //    'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
-        //],
+        [
+        'text' => 'Telefonos',
+        'route' => 'telefonos.index',
+        'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
+        ],
         [
             'text' => 'Relacion solicitudes',
             'route' => 'relacion.index',
             'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
         ],
-        
-        
-
         [
          'text' => 'Solicitudes',
          'route' => 'solicitud.index', // Ruta al index del controlador
          'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
            
         ],
-        //[
-          //  'text' => 'Pagos',
-            //'route' => 'pagos.index', // Ruta al index del controlador
-            //'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
-           
-        //],
-        
-        //[
-        //    'text' => 'Evaluacion del negocio',
-        //    'route' => 'dashboard', // Ruta al index del controlador
-        //    'icon' => 'fas fa-fw fa-chart-line', // Ícono representativo de usuarios
-           
-        //],
-        
-        //[
-        //    'text' => 'Gestion de Clientes',
-        //    'route' => 'solicitud.index', // Ruta al index del controlador
-        //    'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
-           
-        //],
-
+        [
+        'text' => 'Pagos',
+        'route' => 'pagos.index', // Ruta al index del controlador
+        'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
+        ],
         [
             'text' => 'Prestamos',
             'route' => 'Prestamo.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
            
         ],
-      
         [
             'text' => 'Seguridad',
             'icon' => 'fas fa-fw fa-user-lock', // Ícono representativo de usuarios

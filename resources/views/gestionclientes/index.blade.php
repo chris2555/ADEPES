@@ -111,26 +111,29 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="nuevoClienteForm" action="{{ route('gestionclientes.store') }}" method="POST">
+                <form id="nuevoClienteForm" action="{{ route('gestionclientes.store') }}" method="POST" onsubmit="return validarFormulario(event)">
                     @csrf
                     <div class="row">
                         <!-- Primera columna -->
                         <div class="col-md-4">
                             <div class="mb-3">
-                                <label for="nombres_apellidos" class="form-label">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombres_apellidos" name="nombres_apellidos" required>
+                                <label for="nombres_apellidos">Nombre Completo</label>
+                                <input type="text" class="form-control" id="nombres_apellidos" name="nombres_apellidos" class="form-control" placeholder="Ingrese el nombre completo" required>
+                                <div class="text-danger" id="error_nombre"></div>
                             </div>
                             <div class="mb-3">
                                 <label for="n_identidad" class="form-label">Número de Identidad</label>
                                 <input type="text" class="form-control" id="n_identidad" name="n_identidad" required>
+                                <div class="text-danger" id="error_identidad"></div>
                             </div>
                             <div class="mb-3">
-                                <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-                                <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
-                            </div>
+                            <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required oninput="calcularEdad()">
+                            <div class="text-danger" id="error_fecha"></div>
+                        </div>
                             <div class="mb-3">
-                                <label for="edad" class="form-label">Edad</label>
-                                <input type="number" class="form-control" id="edad" name="edad" required>
+                            <label for="edad" class="form-label">Edad</label>
+                                <input type="text" class="form-control" id="edad" name="edad" readonly>
                             </div>
                         </div>
 
@@ -194,6 +197,33 @@
     </div>
 </div>
 
+<script>
+   function validarFormulario(event) {
+    event.preventDefault();
+    let valido = true;
+    document.querySelectorAll(".text-danger").forEach(el => el.textContent = "");
+
+    let nombre = document.getElementById("nombres_apellidos").value;
+    if (nombre.length < 3) {
+        document.getElementById("error_nombre").textContent = "El nombre debe tener al menos 3 caracteres.";
+        valido = false;
+    }
+
+    let identidad = document.getElementById("n_identidad").value;
+    if (!/^\d{13}$/.test(identidad)) {
+        document.getElementById("error_identidad").textContent = "El número de identidad debe contener exactamente 13 dígitos sin guiones.";
+        valido = false;
+    }
+
+    if (!valido) {
+        let modal = new bootstrap.Modal(document.getElementById('nuevoClienteModal'));
+        modal.show();
+    } else {
+        event.target.submit();
+    }
+}
+
+</script>
 @stop
 @section('js')
 <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
