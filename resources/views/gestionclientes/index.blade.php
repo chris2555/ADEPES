@@ -179,8 +179,10 @@
                                 <input type="email" class="form-control" id="email_laboral" name="email_laboral">
                             </div>
                             <div class="mb-3">
-                                <label for="telefono_secundario" class="form-label">Teléfono</label>
-                                <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario">
+                            <label for="telefono_secundario" class="form-label">Teléfono</label>
+    <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario"
+        placeholder="Ej: 0000-0000" pattern="^[23789]{1}\d{3}-\d{4}$" required>
+    <div class="text-danger" id="error_telefono"></div>
                             </div>
                         </div>
                     </div>
