@@ -18,7 +18,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-
 <div class="row">
     <div class="col-md-12">
         <div class="card card-outline card-success">
@@ -132,7 +131,7 @@
                             <div class="text-danger" id="error_fecha"></div>
                         </div>
                             <div class="mb-3">
-                            <label for="edad" class="form-label">Edad</label>
+                                <label for="edad" class="form-label">Edad</label>
                                 <input type="text" class="form-control" id="edad" name="edad" readonly>
                             </div>
                         </div>
@@ -214,6 +213,27 @@
         document.getElementById("error_identidad").textContent = "El número de identidad debe contener exactamente 13 dígitos sin guiones.";
         valido = false;
     }
+    let fechaNacimiento = document.getElementById("fecha_nacimiento").value;
+    if (fechaNacimiento) {
+        let fechaNacimientoDate = new Date(fechaNacimiento);
+        let hoy = new Date();
+        let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        let diferenciaMeses = hoy.getMonth() - fechaNacimientoDate.getMonth();
+        let diferenciaDias = hoy.getDate() - fechaNacimientoDate.getDate();
+
+        // Ajustar edad si el cumpleaños aún no ha ocurrido este año
+        if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
+            edad--;
+        }
+
+        if (edad < 18 || edad > 100) {
+            document.getElementById("error_fecha").textContent = "Debes ingresar una fecha válida para una persona entre 18 y 100 años.";
+            valido = false;
+        }
+    } else {
+        document.getElementById("error_fecha").textContent = "La fecha de nacimiento es obligatoria.";
+        valido = false;
+    }
 
     if (!valido) {
         let modal = new bootstrap.Modal(document.getElementById('nuevoClienteModal'));
@@ -223,6 +243,27 @@
     }
 }
 
+function calcularEdad() {
+    let fechaNacimiento = document.getElementById("fecha_nacimiento").value;
+    let edadInput = document.getElementById("edad");
+
+    if (fechaNacimiento) {
+        let fechaNacimientoDate = new Date(fechaNacimiento);
+        let hoy = new Date();
+        let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        let diferenciaMeses = hoy.getMonth() - fechaNacimientoDate.getMonth();
+        let diferenciaDias = hoy.getDate() - fechaNacimientoDate.getDate();
+
+        // Ajustar edad si el cumpleaños aún no ha ocurrido este año
+        if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
+            edad--;
+        }
+
+        edadInput.value = edad >= 0 ? edad : "";
+    } else {
+        edadInput.value = "";
+    }
+}
 </script>
 @stop
 @section('js')
@@ -341,5 +382,5 @@ document.addEventListener("DOMContentLoaded", function () {
     </script>
     @endif
 
-
 @stop
+
