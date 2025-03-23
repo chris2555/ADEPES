@@ -32,7 +32,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-                            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" value="{{ $personas['fecha_nacimiento'] }}" required>
+                            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento"
+       value="{{ \Carbon\Carbon::parse($personas['fecha_nacimiento'])->format('Y-m-d') }}" required>
                         </div>
                         <div class="mb-3">
                             <label for="edad" class="form-label">Edad</label>
