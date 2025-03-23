@@ -181,7 +181,7 @@
                             <div class="mb-3">
                             <label for="telefono_secundario" class="form-label">Teléfono</label>
     <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario"
-        placeholder="Ej: 0000-0000" pattern="^[23789]{1}\d{3}-\d{4}$" required>
+        placeholder="Ej: 0000-0000" required>
     <div class="text-danger" id="error_telefono"></div>
                             </div>
                         </div>
@@ -236,6 +236,12 @@
         document.getElementById("error_fecha").textContent = "La fecha de nacimiento es obligatoria.";
         valido = false;
     }
+    let telefono = document.getElementById("telefono_secundario").value;
+    let telefonoRegex = /^[23789]{1}\d{3}-\d{4}$/;
+    if (!telefonoRegex.test(telefono)) {
+        document.getElementById("error_telefono").textContent = "El teléfono debe ser válido de Honduras (Ej: 0000-0000)";
+        valido = false;
+    }
 
     if (!valido) {
         let modal = new bootstrap.Modal(document.getElementById('nuevoClienteModal'));
@@ -243,6 +249,7 @@
     } else {
         event.target.submit();
     }
+   
 }
 
 function calcularEdad() {
