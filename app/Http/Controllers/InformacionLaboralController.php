@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Collection;
-use App\Models\InformacionLaboral;
+
 
 
 class InformacionLaboralController extends Controller
@@ -23,10 +23,10 @@ class InformacionLaboralController extends Controller
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral');
         
         // Convertir la respuesta en un array asociativo
-        $informacionlaboral = $response->json(); 
+        $InformacionLaboral = $response->json(); 
     
         // Pasar la variable correctamente a la vista
-        return view('informacionlaboral.index', compact('informacionlaboral'));
+        return view('informacionlaboral.index', compact('InformacionLaboral'));
     }
     
 
@@ -43,22 +43,19 @@ class InformacionLaboralController extends Controller
      */
     public function store(Request $request)
     {
-      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral', [
-        'id_informacion_laboral' => $request->id_informacion_laboral,
+      $response = Http::post('http://127.0.0.1:3000/api/InformacionLaboral', [
+        
         'id_persona' => $request->id_persona,
         'profesion_oficio' => $request->profesion_oficio,
         'actividad' => $request->actividad,
-        'ingresos_negocio' => $request->ingresos_negocio,
-        'direccion_trabajo' => $request->direccion_trabajo,
+       
+
         'patrono_negocio' => $request->patrono_negocio,
         'tiempo_laborar' => $request->tiempo_laborar,
-        'gastos_alimentacion' => $request->gastos_alimentacion,
+        
         'estado_credito' => $request->estado_credito,
         'valor_cuota' => $request->valor_cuota,
-        'creado_por' => $request->creado_por,
-        'creado_en' => $request->creado_en,
-        'modificado_por' => $request->modificado_por,
-        'modificado_en' => $request->modificado_en,
+        
       ]);
      
       if ($response->successful()) {
@@ -73,10 +70,10 @@ class InformacionLaboralController extends Controller
      */
     public function show(string $id)
     {
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/Parametros/{$id}");
+        $response = Http::get("http://127.0.0.1:3000/api/InformacionLaboral/{$id}");
         $informacionlaboral = $response->json();
         
-        return view('InformacionLaboral.edit', compact('informacionlaboral'));
+        return view('informacionlaboral.edit', compact('informacionlaboral'));
     }
 
     /**
@@ -92,7 +89,7 @@ class InformacionLaboralController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral/{$id}", [
+        $response = Http::put("http://127.0.0.1:3000/api/InformacionLaboral/{$id}", [
        'id_informacion_laboral' => $request->id_informacion_laboral,
         'id_persona' => $request->id_persona,
         'profesion_oficio' => $request->profesion_oficio,
@@ -122,7 +119,7 @@ class InformacionLaboralController extends Controller
      */
     public function destroy(string $id)
     {
-        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral/{$id}");
+        $response = Http::delete("http://127.0.0.1:3000/api/InformacionLaboral/{$id}");
         if ($response->successful()) {
             return redirect()->route('InformacionLaboral.index')->with('success', 'Informacion Laboral eliminado correctamente');
         } else {

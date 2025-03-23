@@ -27,7 +27,7 @@
                                             value="{{ $parametro['clave'] }}" required />
 
                                         <!-- Tipo de Usuario -->
-                                        <x-adminlte-select name="tipo usuario" label="Tipo de Uusario" fgroup-class="mb-3"
+                                        <x-adminlte-select name="tipo usuario" label="Tipo de Usuario" fgroup-class="mb-3"
                                             required>
                                             <option value="Administrador"
                                                 {{ $parametro['tipo_usuario'] == 'Administrador' ? 'selected' : '' }}>
@@ -45,6 +45,7 @@
                                         <!-- Tipo de Entidad -->
                                         <x-adminlte-input name="Nombre usuario" label="Nombre de Usuario" fgroup-class="mb-3"
                                            value="{{ $parametro['nombre_usuario'] }}" required />
+                                            <!-- Descripcion -->
                                         <x-adminlte-input name="descripcion" label="Descripcion" fgroup-class="mb-3"
                                         value="{{ $parametro['descripcion'] }}" required />
                                          

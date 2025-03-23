@@ -1,4 +1,3 @@
-
 @extends('adminlte::page')
 
 @section('title', 'Gestión de Parametros')
@@ -40,27 +39,24 @@
                                 <th>Tipo de usuario</th>
                                 <th>clave</th>
                                 <th>Nombre de usuario</th>
-                                <th>Creado en </th>
-                                <th>actualizado en </th>
+                                
                                 <th>intento ingreso</th>
-                                <th>Vencimiento de usuario </th>
+                                
                                 <th>Descripcion </th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                           
 
-                           @foreach ($parametros as $parametro)
+                        @foreach ($parametros as $parametro)
                                 <tr> 
                                     <td>{{ $parametro['id_parametros'] }}</td>
                                     <td>{{ $parametro['tipo_usuario'] }}</td>
                                     <td>{{ $parametro['clave'] }}</td>
                                     <td>{{ $parametro['nombre_usuario'] }}</td>
-                                    <td>{{ $parametro['creado_en'] }}</td>
-                                    <td>{{ $parametro['actualizado_en'] }}</td>
+                                  
                                     <td>{{ $parametro['intento_ingreso'] }}</td>
-                                    <td>{{ $parametro['vencimiento_usuario'] }}</td>
+                                    
                                     <td>{{ $parametro['descripcion'] }}</td>
                                     <td>
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
@@ -83,11 +79,8 @@
                                 </tr>
                             @endforeach
 
-                        </tbody>
-
-
-
-                    </table>
+                            </tbody>
+                            </table>
                 </div>
             </div>
         </div>
@@ -111,11 +104,6 @@
             </div>
         </div>
     </div>
-
-
-
-
- 
     <!-- Modal para Insertar Nuevo  Parametro -->
     <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertParametroLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

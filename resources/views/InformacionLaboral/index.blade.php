@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Gestión de Parametros')
+@section('title', 'Gestión de Informacion Laboral')
 @section('plugins.Sweetalert2', true)
 
 @section('content_header')
@@ -20,54 +20,54 @@
     <div class="container-fluid mt-4">
         <div class="shadow-lg p-5 bg-white">
             <div class="card-header text-success text-center">
-                <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Parametros</h4>
+                <h4 class="mb-0"><i class="fas fa-file-contract"></i> Gestión de Informacion Laboral</h4>
 
             </div>
 
             <div class="d-flex justify-content-end mb-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
-                    <i class="fas fa-plus"></i> Nuevo Parametro
+                    <i class="fas fa-plus"></i> Nueva Informacio Laboral
                 </button>
             </div>
 
             <div class="d-flex justify-content-end">
                 <div class="table-responsive ms-auto">
-                    <table id="ParametrosTable">
+                    <table id="InformacionLaboralTable">
                         <thead>
                             <tr>
-                                <th>ID Parametro</th>
-                                <th>Tipo de usuario</th>
-                                <th>clave</th>
-                                <th>Nombre de usuario</th>
-                                <th>Creado en </th>
-                                <th>actualizado en </th>
-                                <th>intento ingreso</th>
-                                <th>Vencimiento de usuario </th>
-                                <th>Descripcion </th>
+                                <th>ID Informacion Laboral</th>
+                                <th>Id Persona</th>
+                                <th>Profecion u oficio</th>
+                                <th>actividad</th>
+                                <th>Patrono/Negocio</th>
+                                <th>Tiempo de laborar </th>
+                                <th>Estado del Credito </th>
+                                
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($parametros as $parametro)
+                            @foreach ($InformacionLaboral as $informacionlaboral)
+                            
                                 <tr>
-                                    <td>{{ $parametro['id_parametros'] }}</td>
-                                    <td>{{ $parametro['tipo_usuario'] }}</td>
-                                    <td>{{ $parametro['clave'] }}</td>
-                                    <td>{{ $parametro['nombre_usuario'] }}</td>
-                                    <td>{{ $parametro['creado_en'] }}</td>
-                                    <td>{{ $parametro['actualizado_en'] }}</td>
-                                    <td>{{ $parametro['intento_ingreso'] }}</td>
-                                    <td>{{ $parametro['vencimiento_usuario'] }}</td>
-                                    <td>{{ $parametro['descripcion'] }}</td>
+                                    <td>{{ $informacionlaboral['id_informacion_laboral'] }}</td>
+                                    <td>{{ $informacionlaboral['id_persona'] }}</td>
+                                    <td>{{ $informacionlaboral['profesion_oficio'] }}</td>
+                                    <td>{{ $informacionlaboral['actividad'] }}</td>
+                                    <td>{{ $informacionlaboral['patrono_negocio'] }}</td>
+                                    <td>{{ $informacionlaboral['tiempo_laborar'] }}</td>
+                                    <td>{{ $informacionlaboral['estado_credito'] }}</td>
+                                    
+                                   
                                     <td>
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
-                                            onclick="viewModal({{ json_encode($parametro) }})">
+                                            onclick="viewModal({{ json_encode($informacionlaboral) }})">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('parametros.show', $parametro['id_parametros'])}}" class="btn btn-outline-primary btn-sm">
+                                        <a href="{{ route('informacionlaboral.show', $informacionlaboral['id_informacion_laboral'])}}" class="btn btn-outline-primary btn-sm">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <form action="{{ route('parametros.destroy', $parametro['id_parametros']) }}" method="POST" class="d-inline delete-form">
+                                        <form action="{{ route('informacionlaboral.destroy', $informacionlaboral['id_informacion_laboral']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
@@ -88,7 +88,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="viewModalLabel">Información de Parametro</h5>
+                    <h5 class="modal-title" id="viewModalLabel">Información Laboral</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -103,47 +103,43 @@
         </div>
     </div>
 
-
-
-
- 
-    <!-- Modal para Insertar Nuevo  Parametro -->
-    <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertParametroLabel" aria-hidden="true">
+<!-- Modal para Insertar Nuevo  Parametro -->
+<div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertinformacionlaboralLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="insertParametroLabel">Agregar Nuevo Parametro</h5>
+                <h5 class="modal-title" id="insertinformacionlaboralLabel">Agregar Nueva Informacion Laboral</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="insertParametroForm" action="{{ route('parametros.store') }}" method="POST">
+                <form id="insertinformacionlaboralForm" action="{{ route('informacionlaboral.store') }}" method="POST">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
- 
-                            <x-adminlte-select name="tipo_usuario" label="Tipo de Usuario" fgroup-class="mb-3" required>
+
+                            <x-adminlte-input name="id_persona" label="Identificacion" fgroup-class="mb-3" placeholder="Ingrese ID"/>
+                            <x-adminlte-input name="profecion_oficio" label="Profesion u Oficio" fgroup-class="mb-3" placeholder="Ingrese su profesion u oficio"/>
+                           
+                           <x-adminlte-input name="actividad" label="Nombre de actividad" fgroup-class="mb-3" placeholder="Ingrese la Actividad"/>
+                            <x-adminlte-input name="patrono_negocio" label="Nombre del Patrono o Negocio" fgroup-class="mb-3" placeholder="Ingrese el Patrono Oo Negocio"/>
+                            <x-adminlte-input name="tiempo_laborar" label="Tiempo de Laborar" fgroup-class="mb-3" placeholder="Ingrese El tiempo de Laborar"/>
+                           
+
+                            <x-adminlte-select name="estado_credito" label="Estado del Credito" fgroup-class="mb-3" required>
                                 <option value="">Seleccione...</option>
-                                <option value="Administrador">Administrador</option>
-                                <option value="Contrador">Contador</option>
-                                <option value="Tecnico">Tecnico</option>
+                                <option value="Aprobado">Aprobado</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="Rechazado">Rechazado</option>
                             </x-adminlte-select>
 
-                            
-                            <x-adminlte-input name="clave" label="Clave de usuario" fgroup-class="mb-3" placeholder="Ingrese la clave"/>
-                           
-                            <x-adminlte-input name="nombre_usuario" label="Nombre del usuario" fgroup-class="mb-3" placeholder="Ingrese el usuario"/>
-                            
+                            <x-adminlte-input name="valor_cuota" label="Valor de la cuota" fgroup-class="mb-3" placeholder="Ingrese el valor de la cuota"/>
                         </div>
                     </div>
                     
-                    <div class="row">
-                        <div class="col-md-12">
-                            <x-adminlte-textarea name="descripcion" label="ingrese descripcion" fgroup-class="mb-3" placeholder="Ingrese la descripcion"/>
-                        </div>
-                    </div>
+                
                     <div class="modal-footer">
                         <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Parametros" theme="success" icon="fas fa-lg fa-save" />
+                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Informacion Laboral" theme="success" icon="fas fa-lg fa-save" />
                     </div>
                 </form>
             </div>
@@ -174,7 +170,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
-            $('#ParametrosTable').DataTable({ // Inicializa DataTables en tu tabla "ParametrosTable"
+            $('#InformacionLaboralTable').DataTable({ // Inicializa DataTables en tu tabla "InformacionLaboralTable"
                 responsive: true,
                 autoWidth: false,
                 language: {
@@ -206,19 +202,19 @@
             });
         });
 
-        function viewModal(parametro) {
+        function viewModal(informacionlaboral) {
             var modalBody = document.getElementById('viewModalBody');
             modalBody.innerHTML = `
         <div class="col-md-6">
-            <p><strong>ID parametro:</strong> ${parametro.id_parametros}</p>
-            <p><strong>tipo usuario:</strong> ${parametro.tipo_usuario}</p>
-            <p><strong>Clave :</strong> ${parametro.clave}</p>
-            <p><strong>Nombre Usuario:</strong> ${parametro.nombre_usuario}</p>
-            <p><strong>Creado en:</strong> ${parametro.creado_en}</p>
-            <p><strong>Actualizado en:</strong> ${parametro.actualizado_en}</p>
-            <p><strong>Intento ingreso:</strong> ${parametro.intento_ingreso}</p>
-            <p><strong>Vencimiento usuario:</strong> ${parametro.vencimiento_usuario}</p>
-            <p><strong>Descripcion:</strong> ${parametro.descripcion}</p>
+            <p><strong>ID parametro:</strong> ${informacionlaboral.id_informacion_laboral}</p>
+            <p><strong>tipo usuario:</strong> ${informacionlaboral.id_persona}</p>
+            <p><strong>Clave :</strong> ${informacionlaboral.profesion_oficio}</p>
+            <p><strong>Nombre Usuario:</strong> ${informacionlaboral.actividad}</p>
+            <p><strong>Creado en:</strong> ${informacionlaboral.patrono_negocio}</p>
+            <p><strong>Actualizado en:</strong> ${informacionlaboral.tiempo_laboral}</p>
+            <p><strong>Intento ingreso:</strong> ${informacionlaboral.estado_credito}</p>
+            <p><strong>Vencimiento usuario:</strong> ${informacionlaboral.valor_cuota}</p>
+           
         </div>
     `;
 
@@ -278,7 +274,7 @@
 
 @section('css')
     <style>
-        #ParametrosTable_wrapper {
+        #InformacionLaboralTable_wrapper {
             margin-left: auto;
             width: 96%;
             /* Ajusta este valor según lo que necesites */
@@ -328,3 +324,8 @@
 @stop
 
 @stop
+
+
+
+ 
+    
