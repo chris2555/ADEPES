@@ -371,10 +371,16 @@ return [
            
         ],
         [
-        'text' => 'Pagos',
-        'route' => 'pagos.index', // Ruta al index del controlador
-        'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
+            'text' => 'Pagos',
+            'route' => 'pagos.index',
+            'icon' => 'fas fa-fw fa-credit-card',
         ],
+        [
+            'text' => 'Informacion Laboral',
+            'route' => 'informacionlaboral.index',
+            'icon' => 'fas fa-fw fa-file-signature',
+        ],
+        
         [
             'text' => 'Prestamos',
             'route' => 'Prestamo.index', // Ruta al index del controlador
@@ -412,7 +418,7 @@ return [
                 ],
                 [
                     'text' => 'Parametros',
-                    'route' => 'Parametros.index', // Ruta al módulo de usuarios
+                    'route' => 'parametros.index', // Ruta al módulo de usuarios
                     'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
                     'can' => 'ver-seguridad' 
                 ],

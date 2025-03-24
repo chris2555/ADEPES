@@ -3,8 +3,7 @@
 @section('title', 'Gestión de Telefonos')
 
 @section('content_header')
-<h1><b>Listado de Telefonos</b></h1>
-    <hr>
+
 @stop
 
 @section('content')
@@ -52,8 +51,8 @@
                                     <td>{{ $telefono['tipo_telefono'] }}</td>
                                     <td>{{ $telefono['tipo_entidad'] }}</td>
                                     <td>{{ $telefono['nombre_persona'] }}</td>
-                                    <td style="text-align: center">
-                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
+                                    <td>
+                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($telefono) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
@@ -63,9 +62,9 @@
                                         <form action="{{ route('telefonos.destroy', $telefono['id_telefono']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-danger btn-sm delete-btn">
-                                                <i class="bi bi-trash"></i>
-                                             </button>
+                                            <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </form>
                                     </td>
                                 </tr>
@@ -165,30 +164,33 @@
     <script>
         $(function () {
             $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-                "pageLength": 5,
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": false,
-        "language": {
-            "search": "Buscador:",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
-            "lengthMenu": "Mostrar _MENU_ Configuraciones",
-            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
-            "paginate": {
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
-                     'rt' +
-                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-                buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
+                    search: "Buscar:"
+                },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6"B><"col-md-3 text-end"f>>rtip',
+                buttons: [{
+                        extend: 'copy',
+                        text: '<i class="fas fa-copy"></i> Copiar',
+                        className: 'btn btn-secondary text-dark'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-success text-dark'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        className: 'btn btn-danger text-dark'
+                    },
+                    {
+                        extend: 'csv',
+                        text: '<i class="fas fa-file-csv"></i> CSV',
+                        className: 'btn btn-info text-dark'
+                    }
                 ]
             });
         });
