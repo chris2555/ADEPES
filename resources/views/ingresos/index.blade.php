@@ -102,7 +102,7 @@
 
 
     {{-- Modal para Insertar Nuevo Estado de Pago --}}
-<div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertIngresoLabel" aria-hidden="true">
+    <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertIngresoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -114,25 +114,24 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
-                        <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
-                        <option value="">Seleccione una solicitud</option>
-                        @foreach ($solicitudes as $solicitud)
-                            <option value="{{ $solicitud->id_solicitud }}">
-                                {{ $solicitud->id_solicitud }}
-                            </option>
-                        @endforeach
-                        </x-adminlte-select>
+                            <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
+                                <option value="">Seleccione una solicitud</option>
+                                @foreach ($solicitudes as $solicitud)
+                                    <option value="{{ $solicitud->id_solicitud }}">
+                                        {{ $solicitud->id_solicitud }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
 
-                            <x-adminlte-input name="remesas" label="Remesas" type="number" class="form-control income-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="remesas" label="Remesas" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
                         </div>
 
                         <div class="col-md-6">
-                        <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" class="form-control income-field" fgroup-class="mb-3" required />
-                        <x-adminlte-input name="aporte_conyuge" label="Aporte Conyuge" type="number" class="form-control income-field" fgroup-class="mb-3" required />
-                        <!-- Campo de Total Ingresos (readonly) -->
-                        <x-adminlte-input name="total_ingresos" label="Total Ingresos" type="number" fgroup-class="mb-3" readonly />
-
+                            <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="aporte_conyuge" label="Aporte Conyuge" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <!-- Campo de Total Ingresos (readonly) -->
+                            <x-adminlte-input name="total_ingresos" label="Total Ingresos" type="number" fgroup-class="mb-3" readonly />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -144,6 +143,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 

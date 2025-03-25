@@ -7,50 +7,50 @@
 @stop
 
 @section('content')
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-success">
-                        <div class="card-header">
-                            <h3 class="card-title">Actualizar Estado de Ingreso</h3>
-                        </div>
-                        <form id="editForm" action="{{ route('ingresos.update', $ingresos['id_ingresos']) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body"> 
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-success">
+                    <div class="card-header">
+                        <h3 class="card-title">Actualizar Estado de Ingreso</h3>
+                    </div>
+                    <form id="editForm" action="{{ route('ingresos.update', $ingresos['id_ingresos']) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="card-body">
                             <div class="row">
                                 <!-- Columna Izquierda -->
                                 <div class="col-md-6">
                                     <!-- ID Solicitud -->
                                     <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
-                                    <option value="">Seleccione una solicitud</option>
-                                    @foreach ($solicitudes as $solicitud)
-                                        <option value="{{ $solicitud->id_solicitud }}" 
-                                            {{ $solicitud->id_solicitud == $ingresos['id_solicitud'] ? 'selected' : '' }}>
-                                            {{ $solicitud->id_solicitud }} 
-                                        </option>
-                                    @endforeach
-                                </x-adminlte-select>
-                                
+                                        <option value="">Seleccione una solicitud</option>
+                                        @foreach ($solicitudes as $solicitud)
+                                            <option value="{{ $solicitud->id_solicitud }}" 
+                                                {{ $solicitud->id_solicitud == $ingresos['id_solicitud'] ? 'selected' : '' }}>
+                                                {{ $solicitud->id_solicitud }} 
+                                            </option>
+                                        @endforeach
+                                    </x-adminlte-select>
+
                                     <!-- Remesas -->
                                     <x-adminlte-input name="remesas" label="Remesas" fgroup-class="mb-3 income-field"
-                                        value="{{ $ingresos['remesas'] }}" type="number" step="0.01" required />
+                                        value="{{ $ingresos['remesas'] }}" type="number" min="0" step="0.01" required />
 
                                     <!-- Ingresos Sociedad -->
                                     <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" fgroup-class="mb-3 income-field"
-                                        value="{{ $ingresos['ingresos_sociedad'] }}" type="number" required />
+                                        value="{{ $ingresos['ingresos_sociedad'] }}" type="number" min="0" required />
                                 </div>
 
                                 <!-- Columna Derecha -->
                                 <div class="col-md-6">
                                     <!-- Renta de Propiedades -->
                                     <x-adminlte-input name="renta_propiedades" label="Renta de Propiedades" fgroup-class="mb-3 income-field"
-                                        value="{{ $ingresos['renta_propiedades'] }}" type="number" required />
+                                        value="{{ $ingresos['renta_propiedades'] }}" type="number" min="0" required />
 
                                     <!-- Aporte Cónyuge -->
                                     <x-adminlte-input name="aporte_conyuge" label="Aporte Cónyuge" fgroup-class="mb-3 income-field"
-                                        value="{{ $ingresos['aporte_conyuge'] }}" type="number" step="0.01" required />
+                                        value="{{ $ingresos['aporte_conyuge'] }}" type="number" min="0" step="0.01" required />
 
                                     <!-- Total Ingresos (Calculado automáticamente) -->
                                     <x-adminlte-input name="total_ingresos" label="Total Ingresos" fgroup-class="mb-3" 
@@ -63,13 +63,13 @@
                                     label="Actualizar Estado de Ingreso" theme="success" icon="fas fa-lg fa-save" />
                             </div>
                         </div>
-                        </form>
-
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 @stop
 
 @section('js')
