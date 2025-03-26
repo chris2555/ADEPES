@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Models\Persona;
 
 class PrestamoController extends Controller
 {
@@ -20,8 +21,8 @@ class PrestamoController extends Controller
         if (!is_array($prestamos)) {
             $prestamos = []; // Asegurar que la variable es un array
         }
-    
-        return view('prestamo.Prestamo', compact('prestamos'));
+        $personas = Persona::all();
+        return view('prestamo.Prestamo', compact('prestamos', 'personas'));
     }
 
     /**

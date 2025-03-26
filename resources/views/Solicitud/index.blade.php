@@ -30,6 +30,7 @@
                 </button>
             </div>
 
+
             <div class="d-flex justify-content-end">
                 <div class="table-responsive ms-auto">
                     <table id="relacionTable">
@@ -289,6 +290,7 @@
             modalBody.innerHTML = `
         <div class="col-md-6">
             <p><strong>id del Solicitante:</strong> ${solicitud.id_solicitud}</p>
+             <p><strong>id del Solicitante:</strong> ${solicitud.nombre_solicitante}</p>
             <p><strong>Tipo Garantia:</strong> ${solicitud.tipo_garantia || 'No disponible'}</p>
             <p><strong>Tipo de cuota:</strong> ${solicitud.tipo_cuota}</p>
             <p><strong>Tasa:</strong> ${solicitud.tasa}</p>
