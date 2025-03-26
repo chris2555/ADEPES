@@ -33,13 +33,12 @@
                         </div>
 <!-- Modal para insertar-->
 <div class="modal fade" id="nuevoPrestamoModal" tabindex="-1" aria-labelledby="nuevoPrestamoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="nuevoPrestamoModalLabel">Nuevo Préstamo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-
             <div class="modal-body">
                 <form id="nuevoPrestamoForm" action="{{ route('prestamos.store') }}" method="POST">
                     @csrf
@@ -47,13 +46,20 @@
                         <!-- Primera columna -->
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="id_persona" class="form-label">ID Persona</label>
-                                <input type="number" class="form-control" id="id_persona" name="id_persona" min="0" required>
+                                <label for="id_persona" class="form-label">Seleccionar Persona</label>
+                                <select class="form-control" id="id_persona" name="id_persona" required>
+                                    <option value="">Seleccione una persona</option>
+                                    @foreach ($personas as $persona)
+                                        <option value="{{ $persona->id_persona }}">
+                                            {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="mb-3">
                                 <label for="total_pagado" class="form-label">Total Pagado</label>
-                                <input type="number" class="form-control" id="total_pagado" name="total_pagado" min="0" step="0.01" required>
+                                <input type="number" class="form-control" id="total_pagado" name="total_pagado" min="1" step="0.01" required>
                             </div>
 
                             <div class="mb-3">
@@ -68,7 +74,7 @@
 
                             <div class="mb-3">
                                 <label for="tipo" class="form-label">Tipo</label>
-                                <input type="text" class="form-control" id="tipo" name="tipo" pattern="[A-Za-z ]+" title="Solo letras" required>
+                                <input type="text" class="form-control" id="tipo" name="tipo" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" title="Solo letras y espacios" required>
                             </div>
 
                             <div class="mb-3">
@@ -115,12 +121,17 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <!-- Botones alineados -->
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 <script>
     document.getElementById("nuevoPrestamoForm").addEventListener("submit", function(event) {

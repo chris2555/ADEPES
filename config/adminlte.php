@@ -318,7 +318,7 @@ return [
             [
                 'text' => 'Clientes',
                 'route' => 'gestionclientes.index',
-                'icon' => 'fas fa-fw fa-home', // Ícono de casa para viviendas
+                'icon' => 'fas fa-fw fa-user', // Ícono de casa para viviendas
             ],
                 [
                     'text' => 'Viviendas',
@@ -328,26 +328,26 @@ return [
                 [
                     'text' => 'Informacion laboral',
                     'route' => 'referencias.index', // Ruta al index del controlador
-                    'icon' => 'fas fa-fw fa-children', // Ícono representativo de Referencia Familiar
+                    'icon' => 'fas fa-fw fa-briefcase', // Ícono representativo de Referencia Familiar
                    
                 ],
                 [
                     'text' => 'Conyugues',
                     'route' => 'conyuge.index', // Ruta al index del controlador
-                    'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios' 
+                    'icon' => 'fas fa-fw fa-ring', // Ícono representativo de usuarios' 
                 ],
                 [
                     'text' => 'Egresos e Ingresos',
                     'route' => 'egresos.index', // Ruta al index del controlador
                     'text' => 'Estado de Ingresos',
                     'route' => 'ingresos.index', // Ruta al index del controlador
-                    'icon' => 'fas fa-fw fa-file-invoice-dollar', // Ícono representativo de usuarios
+                    'icon' => 'fas fa-fw fa-dollar-sign', // Ícono representativo de usuarios
                    
                 ],
                 [
                     'text' => 'Referencias Familiares',
                     'route' => 'referencias.index', // Ruta al index del controlador
-                    'icon' => 'fas fa-fw fa-children', // Ícono representativo de Referencia Familiar
+                    'icon' => 'fas fa-fw fa-house-user', // Ícono representativo de Referencia Familiar
                    
                 ],
             ],
@@ -371,16 +371,10 @@ return [
            
         ],
         [
-            'text' => 'Pagos',
-            'route' => 'pagos.index',
-            'icon' => 'fas fa-fw fa-credit-card',
+        'text' => 'Pagos',
+        'route' => 'pagos.index', // Ruta al index del controlador
+        'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
         ],
-        [
-            'text' => 'Informacion Laboral',
-            'route' => 'informacionlaboral.index',
-            'icon' => 'fas fa-fw fa-file-signature',
-        ],
-        
         [
             'text' => 'Prestamos',
             'route' => 'Prestamo.index', // Ruta al index del controlador
@@ -413,12 +407,6 @@ return [
                 [
                     'text' => 'Usuarios',
                     'route' => 'users.index', // Ruta al módulo de usuarios
-                    'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
-                    'can' => 'ver-seguridad' 
-                ],
-                [
-                    'text' => 'Parametros',
-                    'route' => 'parametros.index', // Ruta al módulo de usuarios
                     'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
                     'can' => 'ver-seguridad' 
                 ],
