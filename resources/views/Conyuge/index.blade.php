@@ -243,6 +243,7 @@
         <div class="col-md-6">
             <p><strong>id del conyuge:</strong> ${solicitud.id_conyuge}</p>
             <p><strong>Nombre del Conyuge:</strong> ${solicitud.nombres_conyuge  || 'No disponible'}</p>
+            <p><strong>Nombre del Solicitante:</strong> ${solicitud.nombres_persona  || 'No disponible'}</p>
             <p><strong>Fecha de Nacimiento:</strong> ${solicitud.fecha_nacimiento_conyuge }</p>
             <p><strong>Identidad:</strong> ${solicitud.identidad_conyuge }</p>
             <p><strong>Direccion:</strong> ${solicitud.direccion_conyuge  || 'No disponible'}</p>

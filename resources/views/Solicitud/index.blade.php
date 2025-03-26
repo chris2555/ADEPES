@@ -36,6 +36,7 @@
                     <thead>
                         <tr>
                             <th>ID Solicitud</th>
+                            <th>Nombre del Solicitante</th>
                             <th>Garantia</th>
                             <th>Cuota</th>
                             <th>Tasa</th>
@@ -48,6 +49,7 @@
                         @foreach ($solicitudes as $solicitud)
                         <tr>
                             <td>{{ $solicitud['id_solicitud'] }}</td>
+                            <td>{{ $solicitud['nombre_solicitante'] }}</td>
                             <td>{{ $solicitud['tipo_garantia'] }}</td>
                             <td>{{ $solicitud['tipo_cuota'] }}</td>
                             <td>{{ $solicitud['tasa'] }}</td>
@@ -275,6 +277,7 @@
         modalBody.innerHTML = `
         <div class="col-md-6">
             <p><strong>id del Solicitante:</strong> ${solicitud.id_solicitud}</p>
+             <p><strong>id del Solicitante:</strong> ${solicitud.nombre_solicitante}</p>
             <p><strong>Tipo Garantia:</strong> ${solicitud.tipo_garantia || 'No disponible'}</p>
             <p><strong>Tipo de cuota:</strong> ${solicitud.tipo_cuota}</p>
             <p><strong>Tasa:</strong> ${solicitud.tasa}</p>
