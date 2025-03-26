@@ -39,6 +39,7 @@
                             <th style="text-align: center">ID Conyuge</th>
                             <th style="text-align: center">ID persona</th>
                             <th style="text-align: center">Nombre</th>
+                            <th style="text-align: center">Nombre Solicitante</th>
                             <th style="text-align: center">Fecha Nacimiento</th>
                             <th style="text-align: center">Identidad</th>
                             <th style="text-align: center">Direccion</th>
@@ -52,6 +53,7 @@
                             <td>{{ $solicitud['id_conyuge'] }}</td>
                             <td>{{ $solicitud['id_persona'] }}</td>
                             <td>{{ $solicitud['nombres_conyuge'] }}</td>
+                            <td>{{ $solicitud['nombres_persona'] }}</td>
                             <td>{{ $solicitud['fecha_nacimiento_conyuge'] }}</td>
                             <td>{{ $solicitud['identidad_conyuge'] }}</td>
                             <td>{{ $solicitud['direccion_conyuge'] }}</td>
