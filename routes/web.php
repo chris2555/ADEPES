@@ -20,7 +20,11 @@ use App\Http\Controllers\ViviendaController;
 use App\Http\Controllers\ConyugeController;
 use App\Models\Conyuge;
 use App\Http\Controllers\ParametrosController;
+
 use App\Http\Controllers\IngresosController;
+
+use App\Http\Controllers\InformacionLaboralController;
+
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +75,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/gestionclientes/{id}', [ClientesController::class, 'destroy'])->name('gestionclientes.destroy');
     Route::get('/amortizacion/{id_solicitud}', [RelacionController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
+
+
+    Route::resource('parametros',ParametrosController::class)->names('parametros');
+    Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');
 
     
 });

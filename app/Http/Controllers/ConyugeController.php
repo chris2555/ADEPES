@@ -104,9 +104,11 @@ class ConyugeController extends Controller
         ]);
 
         if ($response->successful()) {
+
             return redirect()->route('Conyuge.index')->with('success', 'Conyuge actualizado correctamente.');
         } else {
             return redirect()->route('Conyuge.index')->with('error', 'Error al actualizar los datos del conyuge.');
+
         }
     }
 
@@ -124,3 +126,4 @@ class ConyugeController extends Controller
         }
     }
 }
+

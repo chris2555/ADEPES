@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use App\Models\Persona;
 
 class PrestamoController extends Controller
 {
@@ -20,8 +21,8 @@ class PrestamoController extends Controller
         if (!is_array($prestamos)) {
             $prestamos = []; // Asegurar que la variable es un array
         }
-    
-        return view('prestamo.Prestamo', compact('prestamos'));
+        $personas = Persona::all();
+        return view('prestamo.Prestamo', compact('prestamos', 'personas'));
     }
 
     /**
@@ -43,7 +44,19 @@ class PrestamoController extends Controller
         $usuario_id = auth()->id();
         
         // Validar los datos del formulariox
-    
+        $request->validate([
+            'id_persona' => 'required|integer|min:1',
+            'total_pagado' => 'required|numeric|min:1',
+            'fecha_inicio' => 'required|date',
+            'fecha_vencimiento' => 'required|date|after_or_equal:fecha_inicio',
+            'tipo' => 'required|string',
+            'monto' => 'required|numeric|min:1|max:60000',
+            'tasa' => 'required|numeric|min:1|max:12',
+            'plazo' => 'required|integer|min:1',
+            'estado' => 'required|string',
+            'tipo_garantia' => 'required|string',
+            'creado_por' => 'required|integer',
+        ]);
         // Enviar datos a la API sin incluir el token
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo', [
             'id_persona' => $request->id_persona,

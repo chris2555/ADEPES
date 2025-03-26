@@ -24,7 +24,20 @@
                                     <div class="col-md-6">
                                         <!-- Número de Teléfono -->
                                         <x-adminlte-input name="numero" label="Número de Teléfono" fgroup-class="mb-3"
-                                            value="{{ $telefono['numero'] }}" required />
+                                            value="{{ $telefono['numero'] }}" required maxlength="8" id="numero"
+                                            pattern="[2389][0-9]{7}"
+                                            title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                                        @push('js')
+                                            <script>
+                                                document.addEventListener("DOMContentLoaded", function() {
+                                                    document.getElementById("numero").addEventListener("input", function() {
+                                                        this.value = this.value.replace(/[^0-9]/g, ''); // Solo permite números
+                                                    });
+                                                });
+                                            </script>
+                                        @endpush
+
+
 
                                         <!-- Tipo de Teléfono -->
                                         <x-adminlte-select name="tipo" label="Tipo de Teléfono" fgroup-class="mb-3"
@@ -59,7 +72,7 @@
                                                 Referencia Familiar</option>
                                         </x-adminlte-select>
 
-                                       
+
 
                                         <!-- Selección de Persona -->
                                         <div class="col-md-6">

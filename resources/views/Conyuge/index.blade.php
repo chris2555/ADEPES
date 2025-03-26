@@ -36,14 +36,13 @@
                 <table id="relacionTable" class="table table-bordered table-hover table-striped table-sm">
                     <thead>
                         <tr>
-                            <th style="text-align: center">ID Conyuge</th>
-                            <th style="text-align: center">ID persona</th>
-                            <th style="text-align: center">Nombre</th>
-                            <th style="text-align: center">Fecha Nacimiento</th>
-                            <th style="text-align: center">Identidad</th>
-                            <th style="text-align: center">Direccion</th>
-                            <th style="text-align: center">Profesion</th>
-                            <th style="text-align: center">Acciones</th>
+                            <th>ID Conyuge</th>
+                            <th>Nombre</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>Identidad</th>
+                            <th>Direccion</th>
+                            <th>Profesion</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -52,6 +51,7 @@
                             <td>{{ $solicitud['id_conyuge'] }}</td>
                             <td>{{ $solicitud['id_persona'] }}</td>
                             <td>{{ $solicitud['nombres_conyuge'] }}</td>
+                            <td>{{ $solicitud['nombres_persona'] }}</td>
                             <td>{{ $solicitud['fecha_nacimiento_conyuge'] }}</td>
                             <td>{{ $solicitud['identidad_conyuge'] }}</td>
                             <td>{{ $solicitud['direccion_conyuge'] }}</td>
@@ -241,6 +241,7 @@
         <div class="col-md-6">
             <p><strong>id del conyuge:</strong> ${solicitud.id_conyuge}</p>
             <p><strong>Nombre del Conyuge:</strong> ${solicitud.nombres_conyuge  || 'No disponible'}</p>
+            <p><strong>Nombre del Solicitante:</strong> ${solicitud.nombres_persona  || 'No disponible'}</p>
             <p><strong>Fecha de Nacimiento:</strong> ${solicitud.fecha_nacimiento_conyuge }</p>
             <p><strong>Identidad:</strong> ${solicitud.identidad_conyuge }</p>
             <p><strong>Direccion:</strong> ${solicitud.direccion_conyuge  || 'No disponible'}</p>
