@@ -104,9 +104,9 @@ class ConyugeController extends Controller
         ]);
 
         if ($response->successful()) {
-            return redirect()->route('Conyuge.index')->with('success', 'Conyuge actualizado correctamente.');
+            return redirect()->route('conyuge.index')->with('success', 'Conyuge actualizado correctamente.');
         } else {
-            return redirect()->route('Conyuge.index')->with('error', 'Error al actualizar los datos del conyuge.');
+            return redirect()->route('conyuge.index')->with('error', 'Error al actualizar los datos del conyuge.');
         }
     }
 
