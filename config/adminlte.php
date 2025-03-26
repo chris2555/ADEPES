@@ -327,7 +327,7 @@ return [
                 ],
                 [
                     'text' => 'Informacion laboral',
-                    'route' => 'informacionlaboral.index', // Ruta al index del controlador
+                    'route' => 'referencias.index', // Ruta al index del controlador
                     'icon' => 'fas fa-fw fa-briefcase', // Ícono representativo de Referencia Familiar
                    
                 ],
