@@ -320,6 +320,11 @@ return [
                 'route' => 'gestionclientes.index',
                 'icon' => 'fas fa-fw fa-user', // Ícono de casa para viviendas
             ],
+            [
+                'text' => 'Conyugues',
+                'route' => 'conyuge.index', // Ruta al index del controlador
+                'icon' => 'fas fa-fw fa-ring', // Ícono representativo de usuarios' 
+            ],
                 [
                     'text' => 'Viviendas',
                     'route' => 'viviendas.index',
@@ -331,11 +336,7 @@ return [
                     'icon' => 'fas fa-fw fa-briefcase', // Ícono representativo de Referencia Familiar
                    
                 ],
-                [
-                    'text' => 'Conyugues',
-                    'route' => 'conyuge.index', // Ruta al index del controlador
-                    'icon' => 'fas fa-fw fa-ring', // Ícono representativo de usuarios' 
-                ],
+             
                 [
                     'text' => 'Egresos e Ingresos',
                     'route' => 'egresos.index', // Ruta al index del controlador

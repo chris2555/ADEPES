@@ -36,13 +36,15 @@
                 <table id="relacionTable" class="table table-bordered table-hover table-striped table-sm">
                     <thead>
                         <tr>
-                            <th>ID Conyuge</th>
-                            <th>Nombre</th>
-                            <th>Fecha Nacimiento</th>
-                            <th>Identidad</th>
-                            <th>Direccion</th>
-                            <th>Profesion</th>
-                            <th>Acciones</th>
+                            <th style="text-align: center">ID Conyuge</th>
+                            <th style="text-align: center">ID persona</th>
+                            <th style="text-align: center">Nombre Solicitante</th>
+                            <th style="text-align: center">Nombre Conyuge</th>
+                            <th style="text-align: center">Fecha Nacimiento</th>
+                            <th style="text-align: center">Identidad</th>
+                            <th style="text-align: center">Direccion</th>
+                            <th style="text-align: center">Profesion</th>
+                            <th style="text-align: center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,8 +52,8 @@
                         <tr>
                             <td>{{ $solicitud['id_conyuge'] }}</td>
                             <td>{{ $solicitud['id_persona'] }}</td>
-                            <td>{{ $solicitud['nombres_conyuge'] }}</td>
                             <td>{{ $solicitud['nombres_persona'] }}</td>
+                            <td>{{ $solicitud['nombres_conyuge'] }}</td>
                             <td>{{ $solicitud['fecha_nacimiento_conyuge'] }}</td>
                             <td>{{ $solicitud['identidad_conyuge'] }}</td>
                             <td>{{ $solicitud['direccion_conyuge'] }}</td>
