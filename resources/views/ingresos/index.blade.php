@@ -102,7 +102,7 @@
 
 
     {{-- Modal para Insertar Nuevo Estado de Pago --}}
-    <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertIngresoLabel" aria-hidden="true">
+<div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertIngresoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -125,13 +125,20 @@
 
                             <x-adminlte-input name="remesas" label="Remesas" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="aporte_conyuge" label="Aporte Cónyuge" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="total_ingresos" label="Total Ingresos" type="number" fgroup-class="mb-3" readonly />                       
                         </div>
 
                         <div class="col-md-6">
-                            <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="aporte_conyuge" label="Aporte Conyuge" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
-                            <!-- Campo de Total Ingresos (readonly) -->
-                            <x-adminlte-input name="total_ingresos" label="Total Ingresos" type="number" fgroup-class="mb-3" readonly />
+                            <x-adminlte-input name="cuota_prestamo" label="Cuota de Préstamo en ADEPES" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="cuota_vivienda" label="Cuota de Vivienda" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="alimentacion" label="Alimentación" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="central_riesgo" label="Central de riesgo como Cliente" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="otros_egresos" label="Otros Egresos" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="total_egresos" label="Total Egresos" type="number" fgroup-class="mb-3" readonly />
+                            
+                            <x-adminlte-input name="total_ingresos_netos" label="Ingresos Netos" type="number" fgroup-class="mb-3 text-center" readonly />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -143,6 +150,7 @@
         </div>
     </div>
 </div>
+
 
 
 
@@ -183,6 +191,33 @@
     // Ejecutar cálculo inicial si ya hay valores en los campos
     calculateTotal();
 });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const incomeFields = document.querySelectorAll(".income-field");
+    const expenseFields = document.querySelectorAll(".expense-field");
+    const totalIngresosField = document.querySelector('input[name="total_ingresos"]');
+    const totalEgresosField = document.querySelector('input[name="total_egresos"]');
+    const ingresosNetosField = document.querySelector('input[name="ingresos_netos"]');
+
+    function calculateTotals() {
+        let totalIngresos = 0;
+        let totalEgresos = 0;
+
+        incomeFields.forEach(field => totalIngresos += parseFloat(field.value) || 0);
+        expenseFields.forEach(field => totalEgresos += parseFloat(field.value) || 0);
+
+        totalIngresosField.value = totalIngresos.toFixed(2);
+        totalEgresosField.value = totalEgresos.toFixed(2);
+        ingresosNetosField.value = (totalIngresos - totalEgresos).toFixed(2);
+    }
+
+    incomeFields.forEach(field => field.addEventListener("input", calculateTotals));
+    expenseFields.forEach(field => field.addEventListener("input", calculateTotals));
+});
+
+
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
