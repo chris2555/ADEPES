@@ -11,8 +11,9 @@ class ClientesController extends Controller
      */
     public function index()
     {
-        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas', [
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas?sort=id_persona', [
         ]);
+        
         
             $personas = $response->json();
             return view('gestionclientes.index', compact('personas'));

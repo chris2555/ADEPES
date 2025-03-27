@@ -314,7 +314,6 @@ function calcularEdad() {
                     { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
                 ]
             });
-        "order": [[0, "asc"]]
         });
         
    
