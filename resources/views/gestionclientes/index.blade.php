@@ -48,7 +48,7 @@
                                         </tr>
                                     </thead>
                                 <tbody>
-                                    @foreach($personas as $persona)
+                                @foreach(collect($personas)->sortBy('id_persona') as $persona)
                                         <tr>
                                         <td style="text-align: center">{{ $persona['id_persona'] }}</td>
                                         <td>{{ $persona['nombres_apellidos'] }}</td>
