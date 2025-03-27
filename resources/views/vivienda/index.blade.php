@@ -37,7 +37,7 @@
                         <table id="viviendaTable" class="table table-bordered table-hover table-striped table-sm">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center">ID Vivienda</th>
+                                    <th style="text-align: center" data-order="asc">ID Vivienda</th>
                                     <th style="text-align: center">Nombre</th>
                                     <th style="text-align: center">Tipo de Casa</th>
                                     <th style="text-align: center">Tipo de Pago</th>
@@ -48,9 +48,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($viviendas as $vivienda)
+                            @foreach(collect($viviendas)->sortBy(fn($p) => (int) $p['id_vivienda']) as $vivienda)
                                     <tr>
-                                        <td style="text-align: center">{{ $vivienda['id_vivienda'] }}</td>
+                                        <td style="text-align: center" data-order="asc">{{ $vivienda['id_vivienda'] }}</td>
                                         <td>{{ $vivienda['nombre_persona'] }}</td>
                                         <td>{{ $vivienda['tipo_casa'] }}</td>
                                         <td>{{ $vivienda['tipo_pago_vivienda'] ?? 'N/A' }}</td>
@@ -79,6 +79,15 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <script>
+function sortTable(columnIndex) {
+    let table = document.getElementById("viviendaTable");
+    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
+    let sortedRows = rows.sort((a, b) => {
+        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
+    });
+
+    </script>
                     </div>
                 </div>
 
@@ -207,78 +216,50 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
     @stop
 
 
-
     @section('js')
-        <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-        <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-        <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
             $(function() {
                 $('#viviendaTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-                    "pageLength": 5,
-                    "responsive": true,
-                    "lengthChange": true,
-                    "autoWidth": false,
-                    "language": {
-                        "search": "Buscador:",
-                        "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-                        "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
-                        "lengthMenu": "Mostrar _MENU_ Configuraciones",
-                        "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
-                        "paginate": {
-                            "next": "Siguiente",
-                            "previous": "Anterior"
-                        }
-                    },
+                    "order": [[0, "asc"]],
+            "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+          
                     dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
-                        'rt' +
-                        '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-                    buttons: [{
-                            text: '<i class="fas fa-copy"></i> COPIAR',
-                            extend: 'copy',
-                            className: 'btn btn-success'
-                        },
-                        {
-                            text: '<i class="fas fa-file-csv"></i> CSV',
-                            extend: 'csv',
-                            className: 'btn btn-success'
-                        },
-                        {
-                            text: '<i class="fas fa-print"></i> IMPRIMIR',
-                            extend: 'print',
-                            className: 'btn btn-success'
-                        },
-                        {
-                            text: '<i class="fas fa-file-pdf"></i> PDF',
-                            extend: 'pdf',
-                            className: 'btn btn-success'
-                        },
-                        {
-                            text: '<i class="fas fa-file-excel"></i> EXCEL',
-                            extend: 'excel',
-                            className: 'btn btn-success'
-                        },
-                    ]
-                });
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                        buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+                ]
             });
-
+        });
+   
 
             function viewModal(vivienda) {
                 var modalBody = document.getElementById('viewModalBody');
