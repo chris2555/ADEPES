@@ -286,7 +286,7 @@ function calcularEdad() {
     <script>
     $(function () {
     $('#clienteTable').DataTable({
-        "order": [[0, "asc"]] // Orden ascendente por ID
+        "order": [[0, "asc"]], // Orden ascendente por ID
         "pageLength": 5,        // Número de registros por página
         "responsive": true,
         "lengthChange": true,
