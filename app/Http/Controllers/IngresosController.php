@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\SolicitudPrestamo;
+use App\Models\Persona;
+use App\Models\EstadoEgresos;
 
 class IngresosController extends Controller
 {
@@ -16,10 +18,12 @@ class IngresosController extends Controller
         $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos");
         
         $solicitudes = SolicitudPrestamo::all();
+        $personas = Persona::where('tipo_persona', 'Solicitante')->get();
         $ingresos = $ModelResponse->json(); 
         
        
-        return view('ingresos.index', compact('ingresos', 'solicitudes'));
+        return view('ingresos.index', compact('ingresos', 'solicitudes', 'personas'));
+
     }
 
     /**
@@ -42,6 +46,7 @@ class IngresosController extends Controller
         // Enviar la solicitud HTTP con los datos
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos', [
             'id_solicitud' => $request->id_solicitud,
+            'id_persona' => $request->id_persona,
             'renta_propiedades' => $request->renta_propiedades,
             'remesas' => $request->remesas,
             'aporte_conyuge' => $request->aporte_conyuge,
@@ -51,6 +56,17 @@ class IngresosController extends Controller
             'creado_por_nombre' => $request->creado_por_nombre
         ]);
 
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/EstadoEgresos', [
+            'id_solicitud' => $request->id_solicitud,
+            'cuota_de_prestamo' => $request->cuota_de_prestamo,
+            'cuota_vivienda' => $request->cuota_vivienda,
+            'alimentacion' => $request->alimentacion,
+            'central_riesgo' => $request->central_riesgo,
+            'otro_egresos' => $request->otro_egresos,
+            'total_egresos' => $request->cuota_de_prestamo + $request->remesas + $request->alimentacion + $request->central_riesgo + $request->otro_egresos, 
+            'creado_por' => $usuario_id,
+            'creado_por_nombre' => $request->creado_por_nombre
+        ]);
          
          
           if ($response->successful()) {
@@ -63,6 +79,8 @@ class IngresosController extends Controller
 
     }
 
+    
+
     /**
      * Display the specified resource.
      */
@@ -71,7 +89,8 @@ class IngresosController extends Controller
         $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{$id}");
         $ingresos = $response->json();
         $solicitudes = SolicitudPrestamo::all(); 
-        return view('ingresos.edit', compact('ingresos', 'solicitudes'));
+        $personas = Persona::all();
+        return view('ingresos.edit', compact('ingresos', 'solicitudes', 'personas'));
     }
 
     /**
@@ -91,6 +110,7 @@ class IngresosController extends Controller
         
         $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{$id}", [
             'id_solicitud' => $request->id_solicitud,
+            'id_persona' => $request->id_persona,
             'renta_propiedades' => $request->renta_propiedades,
             'remesas' => $request->remesas,
             'aporte_conyuge' => $request->aporte_conyuge,
