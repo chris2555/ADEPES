@@ -38,8 +38,8 @@
                         <tr>
                             <th style="text-align: center">ID Conyuge</th>
                             <th style="text-align: center">ID persona</th>
-                            <th style="text-align: center">Nombre</th>
                             <th style="text-align: center">Nombre Solicitante</th>
+                            <th style="text-align: center">Nombre Conyuge</th>
                             <th style="text-align: center">Fecha Nacimiento</th>
                             <th style="text-align: center">Identidad</th>
                             <th style="text-align: center">Direccion</th>
@@ -52,8 +52,8 @@
                         <tr>
                             <td>{{ $solicitud['id_conyuge'] }}</td>
                             <td>{{ $solicitud['id_persona'] }}</td>
-                            <td>{{ $solicitud['nombres_conyuge'] }}</td>
                             <td>{{ $solicitud['nombres_persona'] }}</td>
+                            <td>{{ $solicitud['nombres_conyuge'] }}</td>
                             <td>{{ $solicitud['fecha_nacimiento_conyuge'] }}</td>
                             <td>{{ $solicitud['identidad_conyuge'] }}</td>
                             <td>{{ $solicitud['direccion_conyuge'] }}</td>
@@ -131,12 +131,14 @@
 
                             <x-adminlte-input name="nombres_conyuge" label="Nombre del Cónyuge" type="text" fgroup-class="mb-3" required
                                 placeholder="Ingrese el nombre del cónyuge" />
+                                <div class="text-danger" id="error_nombre"></div>
 
                             <x-adminlte-input name="fecha_nacimiento_conyuge" label="Fecha de Nacimiento del Cónyuge" type="date" fgroup-class="mb-3" required />
+                            <div class="text-danger" id="error_fecha"></div>
 
                             <x-adminlte-input name="identidad_conyuge" label="Identidad del Cónyuge" type="text" fgroup-class="mb-3" required
                                 placeholder="Ingrese la identidad del cónyuge" />
-
+                                <div class="text-danger" id="error_identidad"></div>
                             <x-adminlte-textarea name="direccion_conyuge" label="Dirección del Cónyuge" fgroup-class="mb-3" required
                                 placeholder="Ingrese la dirección del cónyuge" />
 
@@ -191,6 +193,94 @@
     </div>
 </div>
 
+<script>
+  function validarFormulario(event) {
+    event.preventDefault();
+    let valido = true;
+
+    // Limpiar mensajes de error previos
+    document.querySelectorAll(".text-danger").forEach(el => el.textContent = "");
+
+    // Validar nombres y apellidos
+    let nombre = document.getElementById("nombres_conyuge").value.trim();
+    let regexNombre = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/; // Solo letras y espacios
+
+    if (nombre.length < 3) {
+        document.getElementById("error_nombre").textContent = "El nombre debe tener al menos 3 caracteres.";
+        valido = false;
+    } else if (!regexNombre.test(nombre)) {
+        document.getElementById("error_nombre").textContent = "El nombre no debe contener números ni caracteres especiales.";
+        valido = false;
+    }
+
+    if (valido) {
+        document.getElementById("miFormulario").submit();
+    }
+
+    let identidad = document.getElementById("identidad_conyuge").value;
+    if (!/^\d{13}$/.test(identidad)) {
+        document.getElementById("error_identidad").textContent = "El número de identidad debe contener exactamente 13 dígitos sin guiones.";
+        valido = false;
+    }
+    let fechaNacimiento = document.getElementById("fecha_nacimiento_conyuge").value;
+    if (fechaNacimiento) {
+        let fechaNacimientoDate = new Date(fechaNacimiento);
+        let hoy = new Date();
+        let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        let diferenciaMeses = hoy.getMonth() - fechaNacimientoDate.getMonth();
+        let diferenciaDias = hoy.getDate() - fechaNacimientoDate.getDate();
+
+        // Ajustar edad si el cumpleaños aún no ha ocurrido este año
+        if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
+            edad--;
+        }
+
+        if (edad < 18 || edad > 100) {
+            document.getElementById("error_fecha").textContent = "Debes ingresar una fecha válida para una persona entre 18 y 100 años.";
+            valido = false;
+        }
+    } else {
+        document.getElementById("error_fecha").textContent = "La fecha de nacimiento es obligatoria.";
+        valido = false;
+    }
+    let telefono = document.getElementById("telefono_secundario").value;
+    let telefonoRegex = /^[23789]{1}\d{3}-\d{4}$/;
+    if (!telefonoRegex.test(telefono)) {
+        document.getElementById("error_telefono").textContent = "El teléfono debe ser válido de Honduras (Ej: 0000-0000)";
+        valido = false;
+    }
+
+    if (!valido) {
+        let modal = new bootstrap.Modal(document.getElementById('nuevoClienteModal'));
+        modal.show();
+    } else {
+        event.target.submit();
+    }
+   
+}
+
+function calcularEdad() {
+    let fechaNacimiento = document.getElementById("fecha_nacimiento").value;
+    let edadInput = document.getElementById("edad");
+
+    if (fechaNacimiento) {
+        let fechaNacimientoDate = new Date(fechaNacimiento);
+        let hoy = new Date();
+        let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+        let diferenciaMeses = hoy.getMonth() - fechaNacimientoDate.getMonth();
+        let diferenciaDias = hoy.getDate() - fechaNacimientoDate.getDate();
+
+        // Ajustar edad si el cumpleaños aún no ha ocurrido este año
+        if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
+            edad--;
+        }
+
+        edadInput.value = edad >= 0 ? edad : "";
+    } else {
+        edadInput.value = "";
+    }
+}
+</script>
 
 @stop
 
