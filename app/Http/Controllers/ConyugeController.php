@@ -36,6 +36,7 @@ class ConyugeController extends Controller
         $usuario_id = auth()->id();
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/conyuge', [
             'id_persona' => $request->id_persona,
+            'nombres_persona' => $request->nombres_persona,
             'nombres_conyuge' => $request->nombres_conyuge,
             'fecha_nacimiento_conyuge' => $request->fecha_nacimiento_conyuge,
             'identidad_conyuge' => $request->identidad_conyuge,
@@ -68,7 +69,7 @@ class ConyugeController extends Controller
         $solicitudes = $response->json();
         $personas = Persona::all();
 
-        return view('conyuge.edit', compact('solicitudes', 'personas'));
+        return view('CConyuge.edit', compact('solicitudes', 'personas'));
     }
 
     /**
@@ -88,6 +89,7 @@ class ConyugeController extends Controller
 
         $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/conyuge/{$id}", [
             'id_persona' => $request->id_persona,
+            'nombres_persona' => $request->nombres_persona,
             'nombres_conyuge' => $request->nombres_conyuge,
             'fecha_nacimiento_conyuge' => $request->fecha_nacimiento_conyuge,
             'identidad_conyuge' => $request->identidad_conyuge,
@@ -104,11 +106,9 @@ class ConyugeController extends Controller
         ]);
 
         if ($response->successful()) {
-
             return redirect()->route('Conyuge.index')->with('success', 'Conyuge actualizado correctamente.');
         } else {
             return redirect()->route('Conyuge.index')->with('error', 'Error al actualizar los datos del conyuge.');
-
         }
     }
 
@@ -126,4 +126,3 @@ class ConyugeController extends Controller
         }
     }
 }
-

@@ -417,6 +417,12 @@ return [
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
                     'can' => 'ver-seguridad' 
                 ],
+                [
+                    'text' => 'Configuraciones',
+                    'route' => 'configuraciones.index', // Ruta al módulo de usuarios
+                    'icon' => 'fas fa-fw fa-tools', // Ícono de usuarios
+                    'can' => 'ver-seguridad' 
+                ],
             ],
         ],
         [
