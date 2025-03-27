@@ -32,11 +32,10 @@
 
                         <div class="card-body">
                         <div class="table-responsive">
-                            
                                 <table id="clienteTable"  class="table table-bordered table-hover table-striped table-sm">
                                     <thead>
                                         <tr>
-                                        <th style="text-align: center" data-order="asc">>Id</th>
+                                        <th style="text-align: center" data-order="asc"">Id</th>
                                         <th style="text-align: center">Nombre</th>
                                         <th style="text-align: center">Identidad</th>
                                         <th style="text-align: center">Edad</th>
@@ -51,7 +50,7 @@
                                 <tbody>
                                 @foreach(collect($personas)->sortBy(fn($p) => (int) $p['id_persona']) as $persona)
                                         <tr>
-                                        <td style="text-align: center">{{ $persona['id_persona'] }}</td>
+                                        <td style="text-align: center" data-order="asc">{{ $persona['id_persona'] }}</td>
                                         <td>{{ $persona['nombres_apellidos'] }}</td>
                                         <td style="text-align: center">{{ $persona['n_identidad'] }}</td>
                                         <td style="text-align: center">{{ $persona['edad'] }}</td>
@@ -80,17 +79,14 @@
                             @endforeach
                         </tbody>
                     </table>
-
-<script>
+                            <script>
 function sortTable(columnIndex) {
     let table = document.getElementById("clienteTable");
     let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
     let sortedRows = rows.sort((a, b) => {
         return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
     });
-
     </script>
-
                 </div>
 
 <!-- Modal para agregar un nuevo cliente -->
@@ -210,10 +206,7 @@ function sortTable(columnIndex) {
     </div>
 </div>
 
-
 <script>
-
-    
    function validarFormulario(event) {
     event.preventDefault();
     let valido = true;
@@ -300,13 +293,12 @@ function calcularEdad() {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     $(function () {
-        $('#clienteTable').DataTable({
-              "order": [[0, "asc"]],
-            "pageLength": 5,
+    $('#clienteTable').DataTable({
+        "order": [[0, "asc"]], // Orden ascendente por ID
+        "pageLength": 5,        // Número de registros por página
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
-        
         "language": {
             "search": "Buscador:",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
@@ -318,18 +310,19 @@ function calcularEdad() {
                 "previous": "Anterior"
             }
         },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
-                     'rt' +
-                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-                buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-                ]
-            });
-        });
+        dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+             'rt' +
+             '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+        buttons: [
+            { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+            { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+            { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+            { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+            { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' }
+        ]
+    });
+});
+   
         
    
    function viewModal(personas) {
@@ -410,6 +403,3 @@ document.addEventListener("DOMContentLoaded", function () {
     @endif
 
 @stop
-
-
-

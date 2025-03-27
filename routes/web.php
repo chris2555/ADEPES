@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
         return view('dashboard', $data);
     })->name('dashboard');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');;
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('roles', AsignarRole::class)->middleware('can:ver-seguridad')->names('roles');
@@ -68,8 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/referencias', ReferenciasFController::class)->middleware('can:ver-seguridad')->names('referencias');
     Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
+    Route::resource('conyuge', ConyugeController::class)->middleware('can:ver-seguridad')->names('conyuge');
     Route::resource('viviendas',ViviendaController::class)->names('viviendas');
-    Route::resource('conyuge',ConyugeController::class)->names('conyuge');
     Route::resource('parametros',parametrosController::class)->names('Parametros');
     Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
     Route::delete('/gestionclientes/{id}', [ClientesController::class, 'destroy'])->name('gestionclientes.destroy');

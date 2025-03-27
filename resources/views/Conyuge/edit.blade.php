@@ -27,8 +27,7 @@
                                         value="{{ old('nombres_conyuge', $solicitudes['nombres_conyuge'] ?? '') }}" />
 
                                     <x-adminlte-input name="fecha_nacimiento_conyuge" label="Fecha de Nacimiento del Cónyuge"
-                                        type="date" fgroup-class="mb-3" required
-                                        value="{{ old('fecha_nacimiento_conyuge', $solicitudes['fecha_nacimiento_conyuge'] ?? '') }}" />
+                                        type="date" fgroup-class="mb-3" class="form-control" id="fecha_nacimiento_conyuge" value="{{ \Carbon\Carbon::parse($solicitudes['fecha_nacimiento_conyuge'])->format('Y-m-d') }}" required/>
 
                                     <x-adminlte-input name="identidad_conyuge" label="Identidad del Cónyuge"
                                         type="text" fgroup-class="mb-3" required
