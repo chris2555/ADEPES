@@ -33,7 +33,7 @@ class ClientesController extends Controller
     public function store(Request $request)
     {
         $usuario_id = auth()->id();
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas', [
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas?sort_by=id_persona&order=asc', [
             'id_persona' => $request->id_persona,
             'nombres_apellidos' => $request->nombres_apellidos,
             'n_identidad' => $request->n_identidad,
