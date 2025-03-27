@@ -35,7 +35,7 @@
                                 <table id="clienteTable"  class="table table-bordered table-hover table-striped table-sm">
                                     <thead>
                                         <tr>
-                                        <th style="text-align: center">Id</th>
+                                        <th style="text-align: center" data-order="asc"">Id</th>
                                         <th style="text-align: center">Nombre</th>
                                         <th style="text-align: center">Identidad</th>
                                         <th style="text-align: center">Edad</th>
@@ -50,7 +50,7 @@
                                 <tbody>
                                 @foreach(collect($personas)->sortBy(fn($p) => (int) $p['id_persona']) as $persona)
                                         <tr>
-                                        <td style="text-align: center">{{ $persona['id_persona'] }}</td>
+                                        <td style="text-align: center" data-order="asc">{{ $persona['id_persona'] }}</td>
                                         <td>{{ $persona['nombres_apellidos'] }}</td>
                                         <td style="text-align: center">{{ $persona['n_identidad'] }}</td>
                                         <td style="text-align: center">{{ $persona['edad'] }}</td>
@@ -79,6 +79,14 @@
                             @endforeach
                         </tbody>
                     </table>
+                            <script>
+function sortTable(columnIndex) {
+    let table = document.getElementById("clienteTable");
+    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
+    let sortedRows = rows.sort((a, b) => {
+        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
+    });
+    </script>
                 </div>
 
 <!-- Modal para agregar un nuevo cliente -->
