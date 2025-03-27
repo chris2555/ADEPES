@@ -144,4 +144,23 @@ class SolicitudController extends Controller
         return redirect()->back()->with('error', 'No se pudo obtener el dictamen.');
     }
 }
+
+public function generarTransunion($id_persona)
+    {
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/transunion/{$id_persona}");
+
+        if ($response->successful()) {
+            $transunionData = $response->json();
+            if (empty($transunionData)) {
+                return redirect()->back()->with('error', 'No se encontraron datos de TransUnion.');
+            }
+            $pdf = PDF::loadView('relacion.transunion', compact('transunionData'));
+            $pdf->setPaper('A3', 'portrait');
+            return $pdf->stream();
+        } else {
+            return redirect()->back()->with('error', 'No se pudo obtener la información de TransUnion.');
+        }
+    }
+
+
 }

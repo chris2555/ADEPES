@@ -366,7 +366,7 @@ return [
         ],
         [
          'text' => 'Solicitudes',
-         'route' => 'solicitud.index', // Ruta al index del controlador
+         'route' => 'solicitudes.index', // Ruta al index del controlador
          'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
            
         ],
