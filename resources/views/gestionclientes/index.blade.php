@@ -290,7 +290,6 @@ function calcularEdad() {
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
-        "order": [[0, "asc"]]
         "language": {
             "search": "Buscador:",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
@@ -312,6 +311,7 @@ function calcularEdad() {
                     { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
                     { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
                 ]
+              "order": [[0, "asc"]]
             });
         });
    
