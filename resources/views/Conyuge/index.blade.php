@@ -83,7 +83,7 @@
                 </table>
                 <script>
 function sortTable(columnIndex) {
-    let table = document.getElementById("clienteTable");
+    let table = document.getElementById("relacionTable");
     let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
     let sortedRows = rows.sort((a, b) => {
         return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
