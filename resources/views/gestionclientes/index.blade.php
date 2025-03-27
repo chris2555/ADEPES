@@ -285,8 +285,10 @@ function calcularEdad() {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     $(function () {
+
         $('#clienteTable').DataTable({
               "order": [[0, "asc"]],
+
             "pageLength": 5,
         "responsive": true,
         "lengthChange": true,
