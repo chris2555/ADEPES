@@ -285,17 +285,10 @@ function calcularEdad() {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     $(function () {
-<<<<<<< HEAD
 
         $('#clienteTable').DataTable({
               "order": [[0, "asc"]],
-
             "pageLength": 5,
-=======
-    $('#clienteTable').DataTable({
-        "order": [[0, "asc"]],  // Orden ascendente por ID
-        "pageLength": 5,        // Número de registros por página
->>>>>>> dev
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
@@ -311,22 +304,17 @@ function calcularEdad() {
                 "previous": "Anterior"
             }
         },
-        dom: '<"row d-flex justify-content-between align-items-center"' +
-             '<"col-md-3"l>' +  // Selector de cantidad de registros
-             '<"col-md-6 text-center"B>' +  // Botones de exportación
-             '<"col-md-3 d-flex justify-content-end"f>>' + // Buscador
-             'rt' +
-             '<"row d-flex align-items-center mt-2"' +
-             '<"col-md-6 text-start"i>' + // Información de registros
-             '<"col-md-6 d-flex justify-content-end"p>>', // Paginación
-        buttons: [
-            { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
-            { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
-            { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
-            { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
-            { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-        ]
-    });
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+                ]
+            });
         });
         
    
