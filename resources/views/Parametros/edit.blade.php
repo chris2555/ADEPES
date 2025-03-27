@@ -23,7 +23,7 @@
                                     <!-- Columna Izquierda -->
                                     <div class="col-md-6">
                                         <!-- Usuario -->
-                                        <x-adminlte-input name="Clave" label="Clave" fgroup-class="mb-3"
+                                        <x-adminlte-input name="clave" label="Clave" fgroup-class="mb-3"
                                             value="{{ $parametro['clave'] }}" required />
 
                                         <!-- Tipo de Usuario -->
