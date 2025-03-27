@@ -403,6 +403,3 @@ document.addEventListener("DOMContentLoaded", function () {
     @endif
 
 @stop
-
-
-

@@ -36,7 +36,7 @@
                 <table id="relacionTable" class="table table-bordered table-hover table-striped table-sm">
                     <thead>
                         <tr>
-                            <th style="text-align: center">ID Conyuge</th>
+                            <th style="text-align: center" data-order="asc">ID Conyuge</th>
                             <th style="text-align: center">ID persona</th>
                             <th style="text-align: center">Nombre Solicitante</th>
                             <th style="text-align: center">Nombre Conyuge</th>
@@ -48,7 +48,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($solicitudes as $solicitud)
+                    @foreach(collect($solicitudes)->sortBy(fn($p) => (int) $p['id_conyuge']) as $solicitud)
+
                         <tr>
                             <td>{{ $solicitud['id_conyuge'] }}</td>
                             <td>{{ $solicitud['id_persona'] }}</td>
@@ -71,9 +72,8 @@
                                     method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm delete-btn"
-                                        onclick="return confirm('¿Está seguro de eliminar esta solicitud?')">
-                                        <i class="bi bi-trash"></i>
+                                    <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                            <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -81,6 +81,15 @@
                         @endforeach
                     </tbody>
                 </table>
+                <script>
+function sortTable(columnIndex) {
+    let table = document.getElementById("clienteTable");
+    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
+    let sortedRows = rows.sort((a, b) => {
+        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
+    });
+
+    </script>
             </div>
         </div>
     </div>
@@ -116,8 +125,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="insertForm" action="{{ route('conyuge.store') }}" method="POST">
-                    @csrf
+                <form id="insertForm" action="{{ route('conyuge.store') }}" method="POST" onsubmit="return validarFormulario(event)">
+                    <form id="nuevoClienteForm" action="{{ route('gestionclientes.store') }}" method="POST" onsubmit="return validarFormulario(event)">
+                @csrf
                     <div class="row">
                         <div class="col-md-6">
                             <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
@@ -139,6 +149,7 @@
                             <x-adminlte-input name="identidad_conyuge" label="Identidad del Cónyuge" type="text" fgroup-class="mb-3" required
                                 placeholder="Ingrese la identidad del cónyuge" />
                                 <div class="text-danger" id="error_identidad"></div>
+
                             <x-adminlte-textarea name="direccion_conyuge" label="Dirección del Cónyuge" fgroup-class="mb-3" required
                                 placeholder="Ingrese la dirección del cónyuge" />
 
@@ -147,8 +158,6 @@
 
                             <x-adminlte-input name="cargo_conyuge" label="Cargo del Cónyuge" type="text" fgroup-class="mb-3" required
                                 placeholder="Ingrese el cargo del cónyuge" />
-
-
                         </div>
                         <div class="col-md-6">
                             <x-adminlte-input name="ingresos_negocio_conyuge" label="Ingresos del Negocio del Cónyuge" type="number" fgroup-class="mb-3" required
@@ -179,13 +188,12 @@
                             <x-adminlte-input name="estado_credito_conyuge" label="Estado de Crédito del Cónyuge" type="text" fgroup-class="mb-3" required
                                 placeholder="Ingrese el estado de crédito del cónyuge" />
 
-
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button class="btn-flat" type="submit" id="btnGuardar" label="Guardar Informacion"
-                            theme="success" icon="fas fa-lg fa-save" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cliente</button>
                     </div>
                 </form>
             </div>
@@ -194,6 +202,7 @@
 </div>
 
 <script>
+
   function validarFormulario(event) {
     event.preventDefault();
     let valido = true;
@@ -243,43 +252,24 @@
         document.getElementById("error_fecha").textContent = "La fecha de nacimiento es obligatoria.";
         valido = false;
     }
-    let telefono = document.getElementById("telefono_secundario").value;
-    let telefonoRegex = /^[23789]{1}\d{3}-\d{4}$/;
-    if (!telefonoRegex.test(telefono)) {
-        document.getElementById("error_telefono").textContent = "El teléfono debe ser válido de Honduras (Ej: 0000-0000)";
-        valido = false;
-    }
-
-    if (!valido) {
-        let modal = new bootstrap.Modal(document.getElementById('nuevoClienteModal'));
-        modal.show();
-    } else {
-        event.target.submit();
-    }
    
 }
+</script>
 
-function calcularEdad() {
-    let fechaNacimiento = document.getElementById("fecha_nacimiento").value;
-    let edadInput = document.getElementById("edad");
-
-    if (fechaNacimiento) {
-        let fechaNacimientoDate = new Date(fechaNacimiento);
-        let hoy = new Date();
-        let edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
-        let diferenciaMeses = hoy.getMonth() - fechaNacimientoDate.getMonth();
-        let diferenciaDias = hoy.getDate() - fechaNacimientoDate.getDate();
-
-        // Ajustar edad si el cumpleaños aún no ha ocurrido este año
-        if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
-            edad--;
-        }
-
-        edadInput.value = edad >= 0 ? edad : "";
-    } else {
-        edadInput.value = "";
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function validarTextoSinNumeros(input) {
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/\d/g, ""); // Elimina cualquier número ingresado
+        });
     }
-}
+
+    // Aplica la validación a los campos específicos
+    validarTextoSinNumeros(document.querySelector("input[name='nombres_conyuge']"));
+    validarTextoSinNumeros(document.querySelector("input[name='profesion_oficio_conyuge']"));
+    validarTextoSinNumeros(document.querySelector("input[name='cargo_conyuge']"));
+    validarTextoSinNumeros(document.querySelector("input[name='estado_credito_conyuge']"));
+});
 </script>
 
 @stop
@@ -298,7 +288,8 @@ function calcularEdad() {
 
     $(function () {
         $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-           "pageLength": 5,
+            "order": [[0, "asc"]],
+            "pageLength": 5,
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
@@ -354,33 +345,34 @@ function calcularEdad() {
         </div>
     `;
 
-        var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
-        viewModalElement.show();
+    var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
+    viewModalElement.show()
     }
 
-document.addEventListener("DOMContentLoaded", function () {
-        // Selecciona todos los formularios de eliminación
-        document.querySelectorAll(".delete-form").forEach(form => {
-            form.addEventListener("submit", function (event) {
-                event.preventDefault(); // Evita que el formulario se envíe inmediatamente
-                
-                Swal.fire({
-                    title: "¿Está seguro?",
-                    text: "Esta acción no se puede deshacer.",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#d33",
-                    cancelButtonColor: "#3085d6",
-                    confirmButtonText: "Sí, eliminar",
-                    cancelButtonText: "Cancelar"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit(); // Solo envía el formulario si el usuario confirma
-                    }
-                });
+    document.addEventListener("DOMContentLoaded", function () {
+    // Selecciona todos los botones de eliminación
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault(); // Evita la eliminación inmediata
+            let form = this.closest("form"); // Encuentra el formulario más cercano
+            
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Envía el formulario solo si el usuario confirma
+                }
             });
         });
     });
+});
     </script>
 
 @if(session('success'))
@@ -408,3 +400,4 @@ document.addEventListener("DOMContentLoaded", function () {
     @endif
 
 @stop
+
