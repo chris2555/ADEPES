@@ -20,13 +20,11 @@ use App\Http\Controllers\ViviendaController;
 use App\Http\Controllers\ConyugeController;
 use App\Models\Conyuge;
 use App\Http\Controllers\ParametrosController;
-
 use App\Http\Controllers\IngresosController;
-
 use App\Http\Controllers\InformacionLaboralController;
-
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Http;
 
 Route::get('/', function () {
     return view('login.Iniciarsesion');
@@ -42,7 +40,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () { 
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/estadisticas');
+        $data = $response->json();
+        return view('dashboard', $data);
     })->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/amortizacion/{id_solicitud}', [RelacionController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
-    
+    Route::get('/transunion/{id_persona}', [SolicitudController::class, 'generarTransunion'])->name('transunion');
     Route::resource('parametros',ParametrosController::class)->names('parametros');
     Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');
 
