@@ -286,10 +286,12 @@ function calcularEdad() {
     <script>
     $(function () {
         $('#clienteTable').DataTable({
+            "order": [[0, "asc"]],
             "pageLength": 5,
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
+        
         "language": {
             "search": "Buscador:",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
@@ -312,8 +314,9 @@ function calcularEdad() {
                     { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
                 ]
             });
-        "order": [[0, "asc"]]
+        
         });
+        
    
    function viewModal(personas) {
     var modalBody = document.getElementById('viewModalLabel');
