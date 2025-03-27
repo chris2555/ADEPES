@@ -63,6 +63,10 @@
                                             class="btn btn-outline-primary btn-sm" title="Generar dictamen PDF">
                                             <i class="fas fa-file-pdf"></i>
                                         </a>
+                                        <a href="{{ route('transunion', $solicitud['id_solicitante']) }}"
+                                            class="btn btn-outline-primary btn-sm" title="Generar Transunion PDF">
+                                            <i class="fas fa-file-contract"></i>
+                                        </a>
                                         <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}"
                                             class="btn btn-outline-primary btn-sm">
                                             <i class="fas fa-edit"></i>

@@ -51,7 +51,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="URL_DE_TU_IMAGEN_LOGO" alt="Logo ADEPES">
+            
             <h2>ASOCIACIÓN DE DESARROLLO PESPIRENSE</h2>
             <h3>"ADEPES"</h3>
         </div>
@@ -75,17 +75,9 @@
                 CONSIDERANDO la informacion proporcionada, el analisis segun la informacion crediticia de
                 la Prestataria <strong>{{ $dictamen['nombre_solicitante'] }}</strong> y la informacion de la garantia <strong>{{ $dictamen['tipo_garantia'] }}</strong>
                 que presenta ante esta institucion este cliente tiene capacidad de pago para un monto de LPS.
-                <strong>{{ $dictamen['monto'] }}</strong> y una forma de pago en cuotas NIVELADA. La inversión se realizara para
-                fortalecer su negocio ya en marcha que consiste en la venta de ropa, calzado y otros
-                accesorios, ubicado en la calle del comercio del Municipio de Pespire, en cuanto al aval el
-                señor <strong>{{ $dictamen['nombre_aval1'] }}</strong> es miembro de la Comunidad de Palo Grande actualmente trabaja
-                como jornalero en la propiedad del señor Carlos Galdames.
-            </p>
-            <p>
+                <strong>{{ $dictamen['monto'] }}</strong> y una forma de pago en cuotas NIVELADA. 
                 La inversión se realizara en el sector de <strong>{{ $dictamen['invierte_en'] }}</strong>, ya que el solicitante trabaja como
                 <strong>{{ $dictamen['actividad'] }}</strong> en <strong>{{ $dictamen['direccion_trabajo_solicitante'] }}</strong>.
-            </p>
-            <p>
                 Los avales son: <strong>{{ $dictamen['nombre_aval1'] }}</strong>, quien trabaja en <strong>{{ $dictamen['direccion_trabajo_aval1'] }}</strong>;
                 <strong>{{ $dictamen['nombre_aval2'] }}</strong>, quien trabaja en <strong>{{ $dictamen['direccion_trabajo_aval2'] }}</strong>;
                 y <strong>{{ $dictamen['nombre_aval3'] }}</strong>, quien trabaja en <strong>{{ $dictamen['direccion_trabajo_aval3'] }}</strong>.
