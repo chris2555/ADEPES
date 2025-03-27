@@ -51,7 +51,7 @@
                     @foreach(collect($solicitudes)->sortBy(fn($p) => (int) $p['id_conyuge']) as $solicitud)
 
                         <tr>
-                            <td>{{ $solicitud['id_conyuge'] }}</td>
+                            <td style="text-align: center" data-order="asc">{{ $solicitud['id_conyuge'] }}</td>
                             <td>{{ $solicitud['id_persona'] }}</td>
                             <td>{{ $solicitud['nombres_persona'] }}</td>
                             <td>{{ $solicitud['nombres_conyuge'] }}</td>
