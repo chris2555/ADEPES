@@ -290,6 +290,7 @@ function calcularEdad() {
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
+        "order": [[0, "asc"]]
         "language": {
             "search": "Buscador:",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
