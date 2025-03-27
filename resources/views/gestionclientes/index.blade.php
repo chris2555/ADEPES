@@ -32,10 +32,11 @@
 
                         <div class="card-body">
                         <div class="table-responsive">
+                            
                                 <table id="clienteTable"  class="table table-bordered table-hover table-striped table-sm">
                                     <thead>
                                         <tr>
-                                        <th style="text-align: center">Id</th>
+                                        <th style="text-align: center" data-order="asc">>Id</th>
                                         <th style="text-align: center">Nombre</th>
                                         <th style="text-align: center">Identidad</th>
                                         <th style="text-align: center">Edad</th>
@@ -79,6 +80,17 @@
                             @endforeach
                         </tbody>
                     </table>
+
+<script>
+function sortTable(columnIndex) {
+    let table = document.getElementById("clienteTable");
+    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
+    let sortedRows = rows.sort((a, b) => {
+        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
+    });
+
+    </script>
+
                 </div>
 
 <!-- Modal para agregar un nuevo cliente -->
@@ -198,7 +210,10 @@
     </div>
 </div>
 
+
 <script>
+
+    
    function validarFormulario(event) {
     event.preventDefault();
     let valido = true;
