@@ -13,6 +13,7 @@ class ClientesController extends Controller
     {
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas', [
         ]);
+        
             $personas = $response->json();
             return view('gestionclientes.index', compact('personas'));
     }
