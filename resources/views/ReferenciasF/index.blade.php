@@ -55,14 +55,15 @@
                                  <i class="fa fa-edit"></i>
                                 </a>
                                 <form action="{{ route('referencias.destroy', $referencia['id_referencia']) }}" method="POST" class="d-inline delete-form">
-                @csrf
+                                @csrf
                 @method('DELETE')
                  <button type="submit" class="btn btn-outline-warning btn-sm delete-btn"
-                onclick="return confirm('¿Está seguro de eliminar este Prestamo?')">
+                 onclick="return confirm('¿Está seguro de eliminar este Prestamo?')">
         
                   <i class="fa fa-trash"></i>
                 </button>
-                </form>
+
+                             </form>
                             </td>
                         </tr>
                     @endforeach
@@ -101,11 +102,21 @@
             <div class="modal-body">
                 <form id="insertForm" action="{{ route('referencias.store') }}" method="POST">
                     @csrf
-                    <x-adminlte-input name="id_solicitud" label="ID solicitud" required fgroup-class="mb-3" />
-                    <x-adminlte-input name="nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
-                    <x-adminlte-input name="parentesco" label="Parentesco" fgroup-class="mb-3" />
-                    <x-adminlte-textarea name="direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3" />
+
+                    <!-- ID Solicitud -->
+                    <x-adminlte-input name="id_solicitud" id="id_solicitud" label="ID solicitud" required fgroup-class="mb-3" />
+
+                    <!-- Nombre del Familiar -->
+                    <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
+
+                    <!-- Parentesco -->
+                    <x-adminlte-input name="parentesco" id="parentesco" label="Parentesco"  required fgroup-class="mb-3" />
+
+                    <!-- Dirección -->
+                    <x-adminlte-textarea name="direccion_familiar" id="direccion_familiar" label="Dirección" required fgroup-class="mb-3" rows="3" />
+
                     <input type="hidden" name="creado_por" value="{{ auth()->user()->id }}">
+
                     <div class="modal-footer">
                         <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
                         <x-adminlte-button type="submit" label="Guardar Referencia" theme="success" icon="fas fa-save" />
@@ -115,6 +126,50 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById("insertForm").addEventListener("submit", function(event) {
+    // Obtener valores de los campos
+    let idSolicitud = document.getElementById("id_solicitud").value.trim();
+    let nombreFamiliar = document.getElementById("nombre_familiar").value.trim();
+    let parentesco = document.getElementById("parentesco").value.trim();
+    let direccionFamiliar = document.getElementById("direccion_familiar").value.trim();
+
+    // Expresiones regulares
+    let soloLetras = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/; // Letras, acentos y espacios
+    let letrasYNumeros = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9\s.,#-]+$/; // Letras, números y caracteres básicos
+
+    // Validación ID Solicitud (debe ser mayor que 0)
+    if (isNaN(idSolicitud) || idSolicitud < 1) {
+        alert("Error: ID Solicitud debe ser un número mayor que 0.");
+        event.preventDefault();
+        return;
+    }
+
+    // Validación Nombre del Familiar (solo letras y espacios)
+    if (!soloLetras.test(nombreFamiliar)) {
+        alert("Error: Nombre del Familiar solo puede contener letras y espacios.");
+        event.preventDefault();
+        return;
+    }
+
+    // Validación Parentesco (solo letras y espacios, si se ingresa)
+    if (parentesco !== "" && !soloLetras.test(parentesco)) {
+        alert("Error: Parentesco solo puede contener letras y espacios.");
+        event.preventDefault();
+        return;
+    }
+
+    // Validación Dirección (letras, números y caracteres especiales permitidos)
+    if (direccionFamiliar !== "" && !letrasYNumeros.test(direccionFamiliar)) {
+        alert("Error: Dirección solo puede contener letras, números y algunos caracteres especiales.");
+        event.preventDefault();
+        return;
+    }
+
+    // Si pasa todas las validaciones, el formulario se enviará
+});
+</script>
 
 <!-- Modal de Edición -->
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -143,6 +198,28 @@
     </div>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.closest("form").submit(); // Envía el formulario si confirma
+                }
+            });
+        });
+    });
+});
+</script>
 <!-- JavaScript para manejar los modales -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -218,27 +295,6 @@ document.addEventListener("DOMContentLoaded", function () {
         var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
         viewModalElement.show();
     }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                Swal.fire({
-                    title: '¿Está seguro?',
-                    text: "Esta acción no se puede deshacer",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit();
-                    }
-                });
-            });
-        });
-    });
 </script>
 @stop
 

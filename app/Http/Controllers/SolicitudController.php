@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SolicitudPrestamo;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitudController extends Controller
 {
@@ -118,4 +119,29 @@ class SolicitudController extends Controller
             return redirect()->route('solicitudes.index')->with('error', 'No se pudo eliminar la solicitud.');
         }
     }
+
+
+    public function generarDictamen($id_solicitud)
+{
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/dictamen/{$id_solicitud}");
+
+    if ($response->successful()) {
+        $dictamen = $response->json();
+
+        // Verificar si los datos del dictamen son válidos
+        if (empty($dictamen)) {
+            return redirect()->back()->with('error', 'No se encontraron datos para el dictamen.');
+        }
+
+        // Cargar la vista que contendrá el contenido del PDF
+        $pdf = PDF::loadView('relacion.dictamen', compact('dictamen'));
+         // Establecer el tamaño del papel
+         $pdf->setPaper('A3', 'portrait'); // Puedes cambia
+
+        return $pdf->stream();
+
+    } else {
+        return redirect()->back()->with('error', 'No se pudo obtener el dictamen.');
+    }
+}
 }

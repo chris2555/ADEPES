@@ -33,59 +33,77 @@
                         </div>
 <!-- Modal para insertar-->
 <div class="modal fade" id="nuevoPrestamoModal" tabindex="-1" aria-labelledby="nuevoPrestamoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="nuevoPrestamoModalLabel">Nuevo Préstamo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                    <form action="{{ route('prestamos.store') }}" method="POST">
+                <form id="nuevoPrestamoForm" action="{{ route('prestamos.store') }}" method="POST">
                     @csrf
                     <div class="row">
+                        <!-- Primera columna -->
                         <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="id_persona" class="form-label">ID Persona</label>
-                            <input type="text" class="form-control" id="id_persona" name="id_persona" required>
-                        </div>
+                            <div class="mb-3">
+                                <label for="id_persona" class="form-label">Seleccionar Persona</label>
+                                <select class="form-control" id="id_persona" name="id_persona" required>
+                                    <option value="">Seleccione una persona</option>
+                                    @foreach ($personas as $persona)
+                                        <option value="{{ $persona->id_persona }}">
+                                            {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="total_pagado" class="form-label">Total Pagado</label>
-                                <input type="text" class="form-control" id="total_pagado" name="total_pagado" required>
+                                <input type="number" class="form-control" id="total_pagado" name="total_pagado" min="1" step="0.01" required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
                                 <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="fecha_vencimiento" class="form-label">Fecha Vencimiento</label>
-                                <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required>
+                                <input type="date" class="form-control" id="fecha_vencimiento" name="fecha_vencimiento" required readonly>
                             </div>
+
                             <div class="mb-3">
                                 <label for="tipo" class="form-label">Tipo</label>
-                                <input type="text" class="form-control" id="tipo" name="tipo" required>
+                                <input type="text" class="form-control" id="tipo" name="tipo" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" title="Solo letras y espacios" required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="monto" class="form-label">Monto</label>
-                                <input type="text" class="form-control" id="monto" name="monto" required>
+                                <input type="number" class="form-control" id="monto" name="monto" min="1" max="60000" required>
                             </div>
                         </div>
+
+                        <!-- Segunda columna -->
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="tasa" class="form-label">Tasa</label>
-                                <input type="text" class="form-control" id="tasa" name="tasa" required>
+                                <label for="tasa" class="form-label">Tasa (%)</label>
+                                <input type="number" class="form-control" id="tasa" name="tasa" min="1" max="12" required>
                             </div>
+
                             <div class="mb-3">
-                                <label for="plazo" class="form-label">Plazo</label>
-                                <input type="text" class="form-control" id="plazo" name="plazo" required>
+                                <label for="plazo" class="form-label">Plazo (meses)</label>
+                                <input type="number" class="form-control" id="plazo" name="plazo" min="1" max="36" required>
                             </div>
+
                             <div class="mb-3">
                                 <label for="estado" class="form-label">Estado</label>
                                 <select class="form-control" id="estado" name="estado" required>
-                                    <option value="aprobado">aprobado</option>
-                                    <option value="pendiente">pendiente</option>
-                                    <option value="rechazado">rechazado</option>
+                                    <option value="aprobado">Aprobado</option>
+                                    <option value="pendiente">Pendiente</option>
+                                    <option value="rechazado">Rechazado</option>
                                 </select>
                             </div>
+
                             <div class="mb-3">
                                 <label for="tipo_garantia" class="form-label">Tipo de Garantía</label>
                                 <select class="form-control" id="tipo_garantia" name="tipo_garantia" required>
@@ -95,18 +113,86 @@
                                     <option value="Solidaria">Solidaria</option>
                                 </select>
                             </div>
+
                             <div class="mb-3">
                                 <label for="creado_por" class="form-label">Creado Por</label>
-                                <input type="text" class="form-control" id="creado_por" name="creado_por" required>
+                                <input type="text" class="form-control" id="creado_por" name="creado_por" value="{{ auth()->user()->id }}" readonly>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+
+                    <!-- Botones alineados -->
+                    <div class="d-flex justify-content-end gap-2">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+<script>
+    document.getElementById("nuevoPrestamoForm").addEventListener("submit", function(event) {
+        let id_persona = document.getElementById("id_persona").value;
+        let total_pagado = document.getElementById("total_pagado").value;
+        let fecha_inicio = document.getElementById("fecha_inicio").value;
+        let fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
+        let tipo = document.getElementById("tipo").value;
+        let monto = document.getElementById("monto").value;
+        let tasa = document.getElementById("tasa").value;
+        let plazo = document.getElementById("plazo").value;
+
+        if (isNaN(id_persona) || id_persona <= 0) {
+            alert("Error: ID Persona debe ser un número mayor que 1");
+            event.preventDefault();
+            return;
+        }
+
+        if (isNaN(total_pagado) || total_pagado < 0) {
+            alert("Error: Total Pagado no puede ser negativo");
+            event.preventDefault();
+            return;
+        }
+
+        if (isNaN(monto) || monto < 1 || monto > 60000) {
+            alert("Error: Monto debe estar entre 1 y 60,000");
+            event.preventDefault();
+            return;
+        }
+
+        if (isNaN(tasa) || tasa < 1 || tasa > 12) {
+            alert("Error: Tasa debe estar entre 1% y 12%");
+            event.preventDefault();
+            return;
+        }
+
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(tipo)) {
+            alert("Error: Tipo debe contener solo letras, espacios y acentos.");
+         event.preventDefault();
+            return;
+        }
+
+
+        if (isNaN(plazo) || plazo < 1 || plazo >  36) {
+            alert("Error: Plazo debe estar entre 1 y 36 meses");
+            event.preventDefault();
+            return;
+        }
+
+        if (new Date(fecha_vencimiento) < new Date(fecha_inicio)) {
+            alert("Error: Fecha de Vencimiento debe ser después de la Fecha de Inicio");
+            event.preventDefault();
+            return;
+        }
+
+        // Calcular fecha de vencimiento automáticamente con base en el plazo
+        let fechaInicioDate = new Date(fecha_inicio);
+        fechaInicioDate.setMonth(fechaInicioDate.getMonth() + parseInt(plazo));
+        document.getElementById("fecha_vencimiento").value = fechaInicioDate.toISOString().split("T")[0];
+    });
+</script>
         <!-- Tabla de Préstamos -->
         <div class="card-body">
                         <div class="table-responsive">
@@ -192,9 +278,7 @@
                 <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
                 @csrf
                 @method('DELETE')
-                 <button type="submit" class="btn btn-danger btn-sm delete-btn"
-                onclick="return confirm('¿Está seguro de eliminar este Prestamo?')">
-        
+                 <button type="button" class="btn btn-danger btn-sm delete-btn">
                   <i class="bi bi-trash"></i>
                 </button>
                 </form>
@@ -312,90 +396,83 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- ID Préstamo (readonly) -->
-                    <div class="mb-3">
-                        <label for="id_prestamo" class="form-label"></label>
-                        <input type="hidden" class="form-control" id="id_prestamo" name="id_prestamo" readonly>
-                    </div>
+                    <!-- ID Préstamo -->
+                    <input type="hidden" id="id_prestamo" name="id_prestamo">
 
                     <div class="row">
-                        <!-- Primera columna -->
                         <div class="col-md-6">
-                            <!-- ID Persona (readonly) -->
+                            <!-- ID Persona -->
                             <div class="mb-3">
-                                <label for="id_persona" class="form-label"></label>
-                                <input type="hidden" class="form-control" id="e.id_persona" name="id_persona" readonly>
+                                <label class="form-label">ID Persona</label>
+                                <input type="number" class="form-control" id="e.id_persona" name="id_persona" readonly>
                             </div>
-                            
-                            <!-- Nombres (readonly) -->
+
+                            <!-- Nombres y DNI -->
                             <div class="mb-3">
-                                <label for="nombres_apellidos" class="form-label">Nombres y Apellidos</label>
+                                <label class="form-label">Nombres y Apellidos</label>
                                 <input type="text" class="form-control" id="e.nombres_apellidos" name="nombres_apellidos" readonly>
                             </div>
-                            
-                            <!-- DNI (editable) -->
                             <div class="mb-3">
-                                <label for="n_identidad" class="form-label">DNI</label>
+                                <label class="form-label">DNI</label>
                                 <input type="text" class="form-control" id="e.n_identidad" name="n_identidad" readonly>
                             </div>
-                            <!-- Total Pagado (editable) -->
+
+                            <!-- Total Pagado -->
                             <div class="mb-3">
-                            <label for="total_pagado" class="form-label">Total Pagado</label>
-                            <input type="text" class="form-control" id="e.total_pagado" name="total_pagado">
-                            </div>
-                            <!-- Fecha Inicio (editable) -->
-                            <div class="mb-3">
-                                <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
-                                <input type="date" class="form-control" id="e.fecha_inicio" name="fecha_inicio">
+                                <label class="form-label">Total Pagado</label>
+                                <input type="number" class="form-control" id="e.total_pagado" name="total_pagado" min="1" required>
                             </div>
 
-                            <!-- Fecha Vencimiento (editable) -->
+                            <!-- Fechas -->
                             <div class="mb-3">
-                                <label for="fecha_vencimiento" class="form-label">Fecha Vencimiento</label>
-                                <input type="date" class="form-control" id="e.fecha_vencimiento" name="fecha_vencimiento">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="e.fecha_inicio" name="fecha_inicio" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fecha Vencimiento</label>
+                                <input type="date" class="form-control" id="e.fecha_vencimiento" name="fecha_vencimiento" required readonly>
                             </div>
 
-                            <!-- Tipo (editable) -->
+                            <!-- Tipo -->
                             <div class="mb-3">
-                                <label for="tipo" class="form-label">Tipo</label>
-                                <input type="text" class="form-control" id="e.tipo" name="tipo">
+                                <label class="form-label">Tipo</label>
+                                <input type="text" class="form-control" id="e.tipo" name="tipo" required>
                             </div>
 
-                            <!-- Monto (editable) -->
+                            <!-- Monto -->
                             <div class="mb-3">
-                                <label for="monto" class="form-label">Monto</label>
-                                <input type="text" class="form-control" id="e.monto" name="monto">
+                                <label class="form-label">Monto</label>
+                                <input type="number" class="form-control" id="e.monto" name="monto" min="1" max="60000" required>
                             </div>
                         </div>
 
-                        <!-- Segunda columna -->
                         <div class="col-md-6">
-                            <!-- Tasa (editable) -->
+                            <!-- Tasa -->
                             <div class="mb-3">
-                                <label for="tasa" class="form-label">Tasa</label>
-                                <input type="text" class="form-control" id="e.tasa" name="tasa">
+                                <label class="form-label">Tasa (%)</label>
+                                <input type="number" class="form-control" id="e.tasa" name="tasa" min="1" max="12" required>
                             </div>
 
-                            <!-- Plazo (editable) -->
+                            <!-- Plazo -->
                             <div class="mb-3">
-                                <label for="plazo" class="form-label">Plazo</label>
-                                <input type="text" class="form-control" id="e.plazo" name="plazo">
+                                <label class="form-label">Plazo (meses)</label>
+                                <input type="number" class="form-control" id="e.plazo" name="plazo" min="1" required>
                             </div>
 
-                            <!-- Estado (editable) -->
+                            <!-- Estado -->
                             <div class="mb-3">
-                                <label for="estado" class="form-label">Estado</label>
-                                <select class="form-control" id="e.estado" name="estado">
+                                <label class="form-label">Estado</label>
+                                <select class="form-control" id="e.estado" name="estado" required>
                                     <option value="aprobado">Aprobado</option>
                                     <option value="pendiente">Pendiente</option>
                                     <option value="rechazado">Rechazado</option>
                                 </select>
                             </div>
 
-                            <!-- Tipo de Garantía (editable) -->
+                            <!-- Tipo de Garantía -->
                             <div class="mb-3">
-                                <label for="tipo_garantia" class="form-label">Tipo de Garantía</label>
-                                <select class="form-control" id="e.tipo_garantia" name="tipo_garantia">
+                                <label class="form-label">Tipo de Garantía</label>
+                                <select class="form-control" id="e.tipo_garantia" name="tipo_garantia" required>
                                     <option value="Fiduciaria">Fiduciaria</option>
                                     <option value="Prendaria">Prendaria</option>
                                     <option value="Hipotecaria">Hipotecaria</option>
@@ -403,10 +480,10 @@
                                 </select>
                             </div>
 
-                            <!-- Modificado Por (readonly preguntar) -->
+                            <!-- Modificado Por -->
                             <div class="mb-3">
-                                <label for="modificado_por" class="form-label">Modificado Por</label>
-                                <input type="text" class="form-control" id="modificado_por" name="modificado_por" >
+                                <label class="form-label">Modificado Por</label>
+                                <input type="text" class="form-control" id="modificado_por" name="modificado_por" value="{{ auth()->user()->id }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -419,7 +496,65 @@
         </div>
     </div>
 </div>
+<script>
+document.getElementById("form-update-prestamo").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita que el formulario se envíe automáticamente
 
+    // Obtener valores
+    let id_persona = document.getElementById("e.id_persona").value;
+    let total_pagado = document.getElementById("e.total_pagado").value;
+    let fecha_inicio = document.getElementById("e.fecha_inicio").value;
+    let fecha_vencimiento = document.getElementById("e.fecha_vencimiento");
+    let tipo = document.getElementById("e.tipo").value.trim();
+    let monto = document.getElementById("e.monto").value;
+    let tasa = document.getElementById("e.tasa").value;
+    let plazo = document.getElementById("e.plazo").value;
+
+    // Validaciones
+    if (isNaN(id_persona) || id_persona < 1) {
+        alert("Error: ID Persona debe ser un número mayor que 1.");
+        return;
+    }
+
+    if (isNaN(total_pagado) || total_pagado < 1) {
+        alert("Error: Total Pagado debe ser un número mayor que 1.");
+        return;
+    }
+
+    if (isNaN(monto) || monto < 1 || monto > 60000) {
+        alert("Error: Monto debe estar entre 1 y 60,000.");
+        return;
+    }
+
+    if (isNaN(tasa) || tasa < 1 || tasa > 12) {
+        alert("Error: Tasa debe estar entre 1% y 12%.");
+        return;
+    }
+
+    if (!/^[a-zA-Z\s]+$/.test(tipo)) {
+        alert("Error: Tipo debe contener solo letras y espacios.");
+        return;
+    }
+
+    if (isNaN(plazo) || plazo < 1 || plazo >36) {
+        alert("Error: Plazo debe estar entre 1 y 36 meses");
+        return;
+    }
+
+    if (new Date(fecha_inicio) > new Date()) {
+        alert("Error: La fecha de inicio no puede estar en el futuro.");
+        return;
+    }
+
+    // Calcular fecha de vencimiento sumando los meses del plazo
+    let fechaInicioDate = new Date(fecha_inicio);
+    fechaInicioDate.setMonth(fechaInicioDate.getMonth() + parseInt(plazo));
+    fecha_vencimiento.value = fechaInicioDate.toISOString().split("T")[0];
+
+    // Enviar formulario después de validaciones
+    event.target.submit();
+});
+</script>
 <!-- Script para asignar datos al modal -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -527,6 +662,29 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.closest("form").submit(); // Envía el formulario si confirma
+                }
+            });
+        });
+    });
+});
+</script>
+
 
 
 @section('js')
@@ -663,78 +821,6 @@ $(document).on('click', '.view-prestamo', function () {
             }
         });
     });
-</script>
-<!--
- <script>
-$("#updatePrestamoForm").submit(function(e) {
-    e.preventDefault();
-
-    let id = $("#edit_id_prestamo").val();
-    let data = {
-        id_persona: $("#edit_id_persona").val(),
-        total_pagado: $("#edit_total_pagado").val(),
-        fecha_inicio: $("#edit_fecha_inicio").val(),
-        fecha_vencimiento: $("#edit_fecha_vencimiento").val(),
-        tipo: $("#edit_tipo").val(),
-        monto: $("#edit_monto").val(),
-        tasa: $("#edit_tasa").val(),
-        plazo: $("#edit_plazo").val(),
-        estado: $("#edit_estado").val(),
-        tipo_garantia: $("#edit_tipo_garantia").val(),
-        modificado_por: $("#edit_modificado_por").val(), // Capturando el ID del usuario autenticado
-    };
-
-    fetch(`http://localhost:3000/api/prestamo/${id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(response => {
-        if (response) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Préstamo actualizado correctamente',
-                confirmButtonText: 'Aceptar'
-            }).then(() => {
-                location.reload(); // Recargar la página después de la actualización
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error al actualizar el préstamo',
-                text: response.error || 'Intenta nuevamente'
-            });
-        }
-    })
-    .catch(error => console.error("Error:", error));
-});
--->
-    </script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".delete-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "Esta acción no se puede deshacer",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Sí, eliminar",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.closest("form").submit(); // Envía el formulario si confirma
-                }
-            });
-        });
-    });
-});
 </script>
 @endsection
 @stop
