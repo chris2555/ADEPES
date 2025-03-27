@@ -13,20 +13,11 @@ class ParametrosController extends Controller
      */
     public function index()
     {
-        // Llamada a la API externa para obtener los parámetros
-        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Parametros');
+        $response = Http::get('http://127.0.0.1:3000/api/parametros');
 
-        // Validar que la respuesta fue exitosa
-        if ($response->successful()) {
-            $parametros = $response->json(); 
-        } else {
-            $parametros = []; // en caso de error
-        }
-
-        // Obtener usuarios del modelo User
+        $parametros = $response->successful() ? $response->json() : [];
         $users = User::all();
-    
-        // Enviar datos a la vista
+
         return view('parametros.index', compact('parametros', 'users'));
     }
 
@@ -43,17 +34,21 @@ class ParametrosController extends Controller
      */
     public function store(Request $request)
     {
-        $response = Http::post('http://127.0.0.1:3000/api/parametros', [
-            'tipo_usuario' => $request->tipo_usuario,
-            'clave' => $request->clave,
-            'nombre_usuario' => $request->nombre_usuario,
-            'descripcion' => $request->descripcion,
-        ]);
+        try {
+            $response = Http::post('http://127.0.0.1:3000/api/parametros', [
+                'tipo_usuario' => $request->input('tipo_usuario'),
+                'clave' => $request->input('clave'),
+                'nombre_usuario' => $request->input('nombre_usuario'),
+                'descripcion' => $request->input('descripcion'),
+            ]);
 
-        if ($response->successful()) {
-            return redirect()->route('parametros.index')->with('success', 'Parámetro creado correctamente.');
-        } else {
-            return redirect()->route('parametros.index')->with('error', 'Ocurrió un error al crear el parámetro.');
+            if ($response->successful()) {
+                return redirect()->route('parametros.index')->with('success', 'Parámetro creado correctamente.');
+            } else {
+                return redirect()->route('parametros.index')->with('error', 'Error al crear el parámetro.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('parametros.index')->with('error', 'Excepción: ' . $e->getMessage());
         }
     }
 
@@ -92,17 +87,21 @@ class ParametrosController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $response = Http::put("http://127.0.0.1:3000/api/parametros/{$id}", [
-            'tipo_usuario' => $request->tipo_usuario,
-            'clave' => $request->clave,
-            'nombre_usuario' => $request->nombre_usuario,
-            'descripcion' => $request->descripcion,
-        ]);
+        try {
+            $response = Http::put("http://127.0.0.1:3000/api/parametros/{$id}", [
+                'tipo_usuario' => $request->input('tipo_usuario'),
+                'clave' => $request->input('clave'),
+                'nombre_usuario' => $request->input('nombre_usuario'),
+                'descripcion' => $request->input('descripcion'),
+            ]);
 
-        if ($response->successful()) {
-            return redirect()->route('parametros.index')->with('success', 'Parámetro actualizado correctamente.');
-        } else {
-            return redirect()->route('parametros.index')->with('error', 'Error al actualizar el parámetro.');
+            if ($response->successful()) {
+                return redirect()->route('parametros.index')->with('success', 'Parámetro actualizado correctamente.');
+            } else {
+                return redirect()->route('parametros.index')->with('error', 'Error al actualizar el parámetro.');
+            }
+        } catch (\Exception $e) {
+            return redirect()->route('parametros.index')->with('error', 'Excepción: ' . $e->getMessage());
         }
     }
 

@@ -97,8 +97,17 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Contraseña</label>
-                                        <input type="text" class="form-control form-control-dark" id="password" name="password" required>
+                                        <input type="password" class="form-control form-control-dark" id="password" name="password" required>
                                     </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="confirm_password" class="form-label">Confirmar Contraseña</label>
+                                        <input type="password" class="form-control form-control-dark" id="confirm_password" name="confirm_password" required>
+                                    </div>
+                                    
+                                   
+                                    
+                                    
                                 </form>
                             </div>
                             <div class="modal-footer">
@@ -156,6 +165,28 @@
 @stop
 
 @section('js')
+<script>
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+    const form = passwordInput.closest('form');
+
+    form.addEventListener('submit', function(event) {
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            event.preventDefault(); // Evita que el formulario se envíe
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Las contraseñas no coinciden.',
+            });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Las contraseñas coinciden.',
+          })
+        }
+    });
+</script>
 <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>

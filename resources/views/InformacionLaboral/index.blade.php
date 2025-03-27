@@ -37,7 +37,7 @@
                             <tr>
                                 <th>ID Informacion Laboral</th>
                                 <th>Id Persona</th>
-                                <th>Profecion u oficio</th>
+                                <th>Profesion u oficio</th>
                                 <th>actividad</th>
                                 <th>Patrono/Negocio</th>
                                 <th>Tiempo de laborar </th>
@@ -103,12 +103,12 @@
         </div>
     </div>
 
-<!-- Modal para Insertar Nuevo  Parametro -->
+<!-- Modal para Insertar Nueva Información Laboral -->
 <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertinformacionlaboralLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="insertinformacionlaboralLabel">Agregar Nueva Informacion Laboral</h5>
+                <h5 class="modal-title" id="insertinformacionlaboralLabel">Agregar Nueva Información Laboral</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -117,38 +117,35 @@
                     <div class="row">
                         <div class="col-md-6">
 
-                            <x-adminlte-input name="id_persona" label="Identificacion" fgroup-class="mb-3" placeholder="Ingrese ID"/>
-                            <x-adminlte-input name="profecion_oficio" label="Profesion u Oficio" fgroup-class="mb-3" placeholder="Ingrese su profesion u oficio"/>
-                           
-                           <x-adminlte-input name="actividad" label="Nombre de actividad" fgroup-class="mb-3" placeholder="Ingrese la Actividad"/>
-                            <x-adminlte-input name="patrono_negocio" label="Nombre del Patrono o Negocio" fgroup-class="mb-3" placeholder="Ingrese el Patrono Oo Negocio"/>
-                            <x-adminlte-input name="tiempo_laborar" label="Tiempo de Laborar" fgroup-class="mb-3" placeholder="Ingrese El tiempo de Laborar"/>
-                           
+                            <x-adminlte-input name="id_persona" label="Identificación" fgroup-class="mb-3" placeholder="Ingrese ID" required />
+                            <x-adminlte-input name="profesion_oficio" label="Profesión u Oficio" fgroup-class="mb-3" placeholder="Ingrese su profesión u oficio" required />
+                            <x-adminlte-input name="actividad" label="Nombre de Actividad" fgroup-class="mb-3" placeholder="Ingrese la Actividad" required />
+                            <x-adminlte-input name="ingresos_negocio" label="Ingresos del Negocio" fgroup-class="mb-3" placeholder="Ingrese ingresos" type="number" step="0.01" />
+                            <x-adminlte-input name="direccion_trabajo" label="Dirección de Trabajo" fgroup-class="mb-3" placeholder="Ingrese dirección del trabajo" />
+                            <x-adminlte-input name="patrono_negocio" label="Nombre del Patrono o Negocio" fgroup-class="mb-3" placeholder="Ingrese Patrono o Negocio" required />
+                            <x-adminlte-input name="tiempo_laborar" label="Tiempo de Laborar" fgroup-class="mb-3" placeholder="Ej. 2 años" required />
+                            <x-adminlte-input name="gastos_alimentacion" label="Gastos de Alimentación" fgroup-class="mb-3" placeholder="Ingrese gastos" type="number" step="0.01" />
 
-                            <x-adminlte-select name="estado_credito" label="Estado del Credito" fgroup-class="mb-3" required>
+                            <x-adminlte-select name="estado_credito" label="Estado del Crédito" fgroup-class="mb-3" required>
                                 <option value="">Seleccione...</option>
                                 <option value="Aprobado">Aprobado</option>
                                 <option value="Pendiente">Pendiente</option>
                                 <option value="Rechazado">Rechazado</option>
                             </x-adminlte-select>
 
-                            <x-adminlte-input name="valor_cuota" label="Valor de la cuota" fgroup-class="mb-3" placeholder="Ingrese el valor de la cuota"/>
+                            <x-adminlte-input name="valor_cuota" label="Valor de la Cuota" fgroup-class="mb-3" placeholder="Ingrese el valor de la cuota" type="number" step="0.01" required />
+
                         </div>
                     </div>
-                    
-                
                     <div class="modal-footer">
                         <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Informacion Laboral" theme="success" icon="fas fa-lg fa-save" />
+                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Información Laboral" theme="success" icon="fas fa-lg fa-save" />
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-
-
 
 
 @stop

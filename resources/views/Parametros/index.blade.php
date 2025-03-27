@@ -63,9 +63,10 @@
                                             onclick="viewModal({{ json_encode($parametro) }})">
                                             <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('parametros.show', $parametro['id_parametros'])}}" class="btn btn-outline-primary btn-sm">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        <a href="{{ route('parametros.edit', $parametro['id_parametros']) }}" class="btn btn-outline-primary btn-sm">
+                                              <i class="fa fa-edit"></i>
+                                          </a>
+
                                         <form action="{{ route('parametros.destroy', $parametro['id_parametros']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
