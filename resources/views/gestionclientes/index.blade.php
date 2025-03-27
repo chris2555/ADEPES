@@ -285,21 +285,12 @@ function calcularEdad() {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
     $(function () {
-<<<<<<< HEAD
-
-        $('#clienteTable').DataTable({
-              "order": [[0, "asc"]],
-
-            "pageLength": 5,
-=======
     $('#clienteTable').DataTable({
-        "order": [[0, "asc"]],  // Orden ascendente por ID
+        "order": [[0, "asc"]] // Orden ascendente por ID
         "pageLength": 5,        // Número de registros por página
->>>>>>> dev
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
-        
         "language": {
             "search": "Buscador:",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
