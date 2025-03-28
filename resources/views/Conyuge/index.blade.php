@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('Conyuge', 'Gestion de Conyuge')
+@section('conyuge', 'Gestion de Conyuge')
 
 @section('content_header')
 <h1><b>Listado de Conyuge</b></h1>
@@ -49,7 +49,6 @@
                     </thead>
                     <tbody>
                     @foreach(collect($solicitudes)->sortBy(fn($p) => (int) $p['id_conyuge']) as $solicitud)
-
                         <tr>
                             <td style="text-align: center" data-order="asc">{{ $solicitud['id_conyuge'] }}</td>
                             <td>{{ $solicitud['id_persona'] }}</td>
@@ -124,12 +123,9 @@ function sortTable(columnIndex) {
                 <h5 class="modal-title" id="insertModalLabel">Insertar Nuevo conyuge</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            
             <div class="modal-body">
                 <form id="insertForm" action="{{ route('conyuge.store') }}" method="POST" onsubmit="return validarFormulario(event)">
-                    <form id="nuevoClienteForm" action="{{ route('gestionclientes.store') }}" method="POST" onsubmit="return validarFormulario(event)">
                 @csrf
-
                     <div class="row">
                         <div class="col-md-6">
                             <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
@@ -223,11 +219,6 @@ function sortTable(columnIndex) {
         document.getElementById("error_nombre").textContent = "El nombre no debe contener números ni caracteres especiales.";
         valido = false;
     }
-
-    if (valido) {
-        document.getElementById("miFormulario").submit();
-    }
-
     let identidad = document.getElementById("identidad_conyuge").value;
     if (!/^\d{13}$/.test(identidad)) {
         document.getElementById("error_identidad").textContent = "El número de identidad debe contener exactamente 13 dígitos sin guiones.";
@@ -254,6 +245,11 @@ function sortTable(columnIndex) {
         document.getElementById("error_fecha").textContent = "La fecha de nacimiento es obligatoria.";
         valido = false;
     }
+    if (valido) {
+        document.getElementById("miFormulario").submit();
+    }
+
+   
    
 }
 </script>
