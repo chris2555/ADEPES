@@ -36,22 +36,7 @@ class EstadoEgresosController extends Controller
     public function store(Request $request)
     {
 
-        $usuario_id = auth()->id();
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/Estadoegresos', [
-            'id_persona' => $request->id_persona,
-            'id_egresos' => $request->id_egresos,
-            'id_solicitud' => $request->id_solicitud,
-            'central_riesgo' => $request->central_riesgo,
-            'otro_egresos' => $request->otro_egresos,
-            'total_egresos' => $request->total_egresos,
-            'creado_por' => $usuario_id,
-        ]);
-
-        if ($response->successful()) {
-            return redirect()->route('egresos.index')->with('success', 'egreso creado correctamente');
-        } else {
-            return redirect()->route('egresos.index')->with('error', 'Ocurrió un error al crear la vivienda');
-        }
+       
     }
 
 

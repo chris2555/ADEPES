@@ -338,11 +338,17 @@ return [
                 ],
              
                 [
-                    'text' => 'Egresos e Ingresos',
-                    'route' => 'egresos.index', // Ruta al index del controlador
+                    
                     'text' => 'Estado de Ingresos',
                     'route' => 'ingresos.index', // Ruta al index del controlador
                     'icon' => 'fas fa-fw fa-dollar-sign', // Ícono representativo de usuarios
+                   
+                ],
+                [
+                    
+                    'text' => 'Estado de Egresos',
+                    'route' => 'egresos.index', // Ruta al index del controlador
+                    'icon' => 'fas fa-fw fa-file-invoice', // Ícono representativo de usuarios
                    
                 ],
                 [
