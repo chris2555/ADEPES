@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Persona;
 
 class InformacionLaboralController extends Controller
 {
     public function index()
     {
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral');
-        $InformacionLaboral = $response->successful() ? $response->json() : [];
+        $InformacionLaboral = $response->json();
+        $personas = Persona::all();
 
-        return view('informacionlaboral.index', compact('InformacionLaboral'));
+        return view('informacionlaboral.index', compact('InformacionLaboral' , 'personas'));
     }
 
     public function create()

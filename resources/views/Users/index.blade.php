@@ -37,7 +37,7 @@
                     <table id="user" class="table table-bordered table-hover table-striped table-sm">
                         <thead>
                             <tr>
-                                <th style="text-align: center">ID</th>
+                                <th style="text-align: center" data-order="asc">ID_Usuario</th>
                                 <th style="text-align: center">Nombre</th>
                                 <th style="text-align: center">Email</th>
                                 <th style="text-align: center">Fecha de Creación</th>
@@ -45,9 +45,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($users as $user)
+                        @forelse(collect($users)->sortBy(fn($p) => (int) $p['id']) as $user)
                                 <tr>
-                                    <td style="text-align: center">{{ $user->id }}</td>
+                                    <td style="text-align: center" data-order="asc">{{ $user->id }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td style="text-align: center">{{ $user->created_at->format('d/m/Y') }}</td>
@@ -72,7 +72,20 @@
                             @endforelse
                         </tbody>
                     </table>
-                </div>
+                    <script>
+                    function sortTable(columnIndex) {
+    let table = document.getElementById("user");
+    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
+    let sortedRows = rows.sort((a, b) => {
+        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
+    });
+
+    </script>
+            </div>
+        </div>
+    </div>
+</div>
+                
 
                 <!-- Modal -->
                 <div class="modal fade" id="nuevoUsuarioModal" tabindex="-1" aria-labelledby="nuevoUsuarioModalLabel" aria-hidden="true">
