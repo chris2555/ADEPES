@@ -124,10 +124,12 @@ function sortTable(columnIndex) {
                 <h5 class="modal-title" id="insertModalLabel">Insertar Nuevo conyuge</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            
             <div class="modal-body">
                 <form id="insertForm" action="{{ route('conyuge.store') }}" method="POST" onsubmit="return validarFormulario(event)">
                     <form id="nuevoClienteForm" action="{{ route('gestionclientes.store') }}" method="POST" onsubmit="return validarFormulario(event)">
                 @csrf
+
                     <div class="row">
                         <div class="col-md-6">
                             <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
