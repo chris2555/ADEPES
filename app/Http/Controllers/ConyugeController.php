@@ -56,9 +56,9 @@ class ConyugeController extends Controller
     ]);
 
     if ($response->successful()) {
-        return redirect()->route('Conyuge.index')->with('success', 'Conyuge creado correctamente.');
+        return redirect()->route('conyuge.index')->with('success', 'Conyuge creado correctamente.');
     } else {
-        return redirect()->route('Conyuge.index')->with('error', 'Error al crear Conyuge.');
+        return redirect()->route('conyuge.index')->with('error', 'Error al crear Conyuge.');
     }
 }
 
