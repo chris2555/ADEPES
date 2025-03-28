@@ -26,7 +26,7 @@
 
             <div class="d-flex justify-content-end mb-3">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
-                    <i class="fas fa-plus"></i> Nuevo Estado de Ingreso
+                    <i class="fas fa-plus"></i> Nuevo Estado de Ingreso y Egreso
                 </button>
             </div>
 
@@ -38,6 +38,7 @@
                                 <th>ID Ingresos</th>
                                 <th>ID Solicitud</th>
                                 <th>ID Persona</th>
+                                <th>Sueldo Base</th>
                                 <th>Renta Propiedad</th>
                                 <th>Remesas</th>
                                 <th>Aporte Conyuge</th>
@@ -52,6 +53,7 @@
                                     <td>{{ $ingreso['id_ingresos'] }}</td>
                                     <td>{{ $ingreso['id_solicitud'] }}</td>
                                     <td>{{ $ingreso['id_persona'] }}</td>
+                                    <td>{{ $ingreso['sueldo_base'] }}</td>
                                     <td>{{ $ingreso['renta_propiedades'] }}</td>
                                     <td>{{ $ingreso['remesas'] }}</td>
                                     <td>{{ $ingreso['aporte_conyuge'] }}</td>
@@ -108,7 +110,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="insertIngresoLabel">Agregar Nuevo Estado de Ingreso</h5>
+                <h5 class="modal-title" id="insertIngresoLabel">Agregar Nuevo Estado de Ingreso y Egreso</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -124,14 +126,8 @@
                                     </option>
                                 @endforeach
                             </x-adminlte-select>
-                            <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
-                                <option value="">Seleccione Una Persona</option>
-                                @foreach ($personas as $persona)
-                                    <option value="{{ $persona->id_persona }}">
-                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
-                                    </option>
-                                @endforeach
-                            </x-adminlte-select>
+                            
+                            <x-adminlte-input name="sueldo_base" label="Sueldo Base" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="remesas" label="Remesas" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
@@ -140,6 +136,14 @@
                         </div>
 
                         <div class="col-md-6">
+                        <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                <option value="">Seleccione Una Persona</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->id_persona }}">
+                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
                             <x-adminlte-input name="cuota_de_prestamo" label="Cuota de Préstamo en ADEPES" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="cuota_vivienda" label="Cuota de Vivienda" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="alimentacion" label="Alimentación" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />

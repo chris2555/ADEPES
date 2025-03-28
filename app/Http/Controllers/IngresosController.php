@@ -44,7 +44,7 @@ class IngresosController extends Controller
         $usuario_id = auth()->id();
         
         // Enviar la solicitud HTTP con los datos
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos', [
+        $responseIngresos = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos', [
             'id_solicitud' => $request->id_solicitud,
             'id_persona' => $request->id_persona,
             'renta_propiedades' => $request->renta_propiedades,
@@ -55,21 +55,36 @@ class IngresosController extends Controller
             'creado_por' => $usuario_id,
             'creado_por_nombre' => $request->creado_por_nombre
         ]);
+        
+        
+        //dd($responseIngresos->json());
 
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/EstadoEgresos', [
-            'id_solicitud' => $request->id_solicitud,
+        // Obtener el id_solicitud generado en estadoingresos
+        $id_solicitud = $responseIngresos->json()['id_solicitud'] ?? null;
+        $id_persona = $responseIngresos->json()['id_persona'] ?? null;
+        
+
+        $usuario_id = auth()->id();
+        $responseEgresos = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/EstadoEgresos', [
+            'id_solicitud' => $id_solicitud,  // Aquí usamos el mismo id_solicitud
+            'id_persona' => $id_persona,
             'cuota_de_prestamo' => $request->cuota_de_prestamo,
             'cuota_vivienda' => $request->cuota_vivienda,
             'alimentacion' => $request->alimentacion,
             'central_riesgo' => $request->central_riesgo,
             'otro_egresos' => $request->otro_egresos,
-            'total_egresos' => $request->cuota_de_prestamo + $request->remesas + $request->alimentacion + $request->central_riesgo + $request->otro_egresos, 
+            'total_egresos' => $request->cuota_de_prestamo + $request->cuota_vivienda + $request->alimentacion + $request->central_riesgo + $request->otro_egresos, 
             'creado_por' => $usuario_id,
             'creado_por_nombre' => $request->creado_por_nombre
         ]);
+        
+        // se ingreso correctamente el estadoEgresos
+        if (!$responseEgresos->successful()) {
+            dd('Error en EstadoEgresos:', $responseEgresos->json());
+        }
+    
          
-         
-          if ($response->successful()) {
+          if ($responseIngresos->successful()) {
             return redirect()->route('ingresos.index')->with('success', 'Estado de Ingresos creado correctamente');
           } else {
             return redirect()->route('ingresos.index')->with('error', 'Ocurrió un error al crear el Estado de Ingresos');
