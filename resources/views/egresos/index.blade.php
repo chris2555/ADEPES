@@ -32,7 +32,7 @@
                         <thead>
                             <tr>
                                 <th>ID Egresos</th>
-                                <th>ID Solicitud</th>
+                               
                                 <th>ID Persona</th>
                                 <th>Cuota de Préstamo</th>
                                 <th>Cuota Vivienda</th>
@@ -47,7 +47,7 @@
                         @foreach ($Estadoegresos as $Estadoegreso)
                                 <tr>
                                     <td>{{ $Estadoegreso['id_egresos'] }}</td>
-                                    <td>{{ $Estadoegreso['id_solicitud'] }}</td>
+                                    
                                     <td>{{ $Estadoegreso['id_persona'] }}</td>
                                     <td>{{ $Estadoegreso['cuota_de_prestamo'] }}</td>
                                     <td>{{ $Estadoegreso['cuota_vivienda'] }}</td>
