@@ -79,6 +79,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/transunion/{id_persona}', [SolicitudController::class, 'generarTransunion'])->name('transunion');
     Route::resource('parametros',ParametrosController::class)->names('parametros');
     Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');
+    Route::get('/informacionlaboral', [InformacionLaboralController::class, 'index'])->name('informacionlaboral.index');
+    Route::put('/informacionlaboral/{id}', [InformacionLaboralController::class, 'update'])->name('informacionlaboral.update');
 
     
 });

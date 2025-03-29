@@ -77,6 +77,8 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    
                     <script>
 function sortTable(columnIndex) {
     let table = document.getElementById("InformacionLaboralTable");
@@ -90,6 +92,9 @@ function sortTable(columnIndex) {
         </div>
     </div>
 </div>
+
+
+
     <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -114,6 +119,7 @@ function sortTable(columnIndex) {
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
+
                 <h5 class="modal-title" id="insertinformacionlaboralLabel">Agregar Nueva Información Laboral</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -134,16 +140,24 @@ function sortTable(columnIndex) {
 
                             <x-adminlte-input name="profesion_oficio" label="Profesión u Oficio" fgroup-class="mb-3" 
                             placeholder="Ingrese su profesión u oficio" required />
+
                             <x-adminlte-input name="actividad" label="Nombre de Actividad" fgroup-class="mb-3" 
                             placeholder="Ingrese la Actividad" required />
+
                             <x-adminlte-input name="ingresos_negocio" label="Ingresos del Negocio" fgroup-class="mb-3" 
                             placeholder="Ingrese ingresos" type="number" step="0.01" />
+
                             <x-adminlte-input name="direccion_trabajo" label="Dirección de Trabajo" fgroup-class="mb-3" 
                             placeholder="Ingrese dirección del trabajo" />
+
                             <x-adminlte-input name="patrono_negocio" label="Nombre del Patrono o Negocio" fgroup-class="mb-3" 
                             placeholder="Ingrese Patrono o Negocio" required />
+                            </div>
+                            <div class="col-md-6">
+
                             <x-adminlte-input name="tiempo_laborar" label="Tiempo de Laborar" fgroup-class="mb-3" 
                             placeholder="Ej. 2 años" required />
+
                             <x-adminlte-input name="gastos_alimentacion" label="Gastos de Alimentación" fgroup-class="mb-3" 
                             placeholder="Ingrese gastos" type="number" step="0.01" />
 
@@ -156,7 +170,7 @@ function sortTable(columnIndex) {
 
                             <x-adminlte-input name="valor_cuota" label="Valor de la Cuota" fgroup-class="mb-3" 
                             placeholder="Ingrese el valor de la cuota" type="number" step="0.01" required />
-
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -169,6 +183,20 @@ function sortTable(columnIndex) {
     </div>
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function validarTextoSinNumeros(input) {
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/\d/g, ""); // Elimina cualquier número ingresado
+        });
+    }
+
+    // Aplica la validación a los campos específicos
+    validarTextoSinNumeros(document.querySelector("input[name='profesion_oficio']"));
+    validarTextoSinNumeros(document.querySelector("input[name='actividad']"));
+    validarTextoSinNumeros(document.querySelector("input[name='patrono_negocio']"));
+});
+</script>
 
 @stop
 
@@ -223,6 +251,8 @@ function sortTable(columnIndex) {
             <p><strong>tipo usuario:</strong> ${informacionlaboral.id_persona}</p>
             <p><strong>Clave :</strong> ${informacionlaboral.profesion_oficio}</p>
             <p><strong>Nombre Usuario:</strong> ${informacionlaboral.actividad}</p>
+            </div>
+        <div class="col-md-6">
             <p><strong>Creado en:</strong> ${informacionlaboral.patrono_negocio}</p>
             <p><strong>Actualizado en:</strong> ${informacionlaboral.tiempo_laboral}</p>
             <p><strong>Intento ingreso:</strong> ${informacionlaboral.estado_credito}</p>
@@ -285,5 +315,7 @@ function sortTable(columnIndex) {
         });
     </script>
     @endif
+    
 @stop
+
 
