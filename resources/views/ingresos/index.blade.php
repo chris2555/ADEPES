@@ -15,6 +15,13 @@
         <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
         <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+        <style>
+            .negativo {
+                color: red;
+                font-weight: bold;
+            }
+        </style>
+    
     </head>
 
     <div class="container-fluid mt-4">
@@ -36,7 +43,6 @@
                         <thead>
                             <tr>
                                 <th>ID Ingresos</th>
-                                <th>ID Solicitud</th>
                                 <th>ID Persona</th>
                                 <th>Sueldo Base</th>
                                 <th>Renta Propiedad</th>
@@ -44,14 +50,21 @@
                                 <th>Aporte Conyuge</th>
                                 <th>Ingresos Sociedad</th>
                                 <th>Total Ingresos</th>
+                                <th>central_riesgo</th>
+                                <th>otro_egresos</th>
+                                <th>cuota_de_prestamo</th>
+                                <th>cuota_vivienda</th>
+                                <th>alimentacion</th>
+                                <th>total_egresos</th>
+                                <th>ingreso_neto</th>
                                 <th>Acciones</th>
+                                <th>Dictamen</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($ingresos as $ingreso)
                                 <tr>
                                     <td>{{ $ingreso['id_ingresos'] }}</td>
-                                    <td>{{ $ingreso['id_solicitud'] }}</td>
                                     <td>{{ $ingreso['id_persona'] }}</td>
                                     <td>{{ $ingreso['sueldo_base'] }}</td>
                                     <td>{{ $ingreso['renta_propiedades'] }}</td>
@@ -59,6 +72,15 @@
                                     <td>{{ $ingreso['aporte_conyuge'] }}</td>
                                     <td>{{ $ingreso['ingresos_sociedad'] }}</td>
                                     <td>{{ $ingreso['total_ingresos'] }}</td>
+
+
+                                    <td>{{ $ingreso['cuota_de_prestamo'] }}</td>
+                                    <td>{{ $ingreso['cuota_vivienda'] }}</td>
+                                    <td>{{ $ingreso['alimentacion'] }}</td>
+                                    <td>{{ $ingreso['central_riesgo'] }}</td>
+                                    <td>{{ $ingreso['otro_egresos'] }}</td>
+                                    <td>{{ $ingreso['total_egresos'] }}</td>
+                                    <td>{{ $ingreso['ingreso_neto'] }}</td>
                                     <td>
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($ingreso) }})">
@@ -73,10 +95,13 @@
                                             <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
                                                 <i class="fas fa-trash"></i>
                                             </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                            </form>
+            </td>
+            <td class="{{ $ingreso['total_ingresos'] < 0 ? 'negativo' : '' }}">
+                {{ $ingreso['total_ingresos'] >= 0 ? 'Positivo' : 'Negativo' }}
+            </td>
+        </tr>
+    @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -118,11 +143,11 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
-                                <option value="">Seleccione una solicitud</option>
-                                @foreach ($solicitudes as $solicitud)
-                                    <option value="{{ $solicitud->id_solicitud }}">
-                                        {{ $solicitud->id_solicitud }}
+                        <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                <option value="">Seleccione Una Persona</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->id_persona }}">
+                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
                                     </option>
                                 @endforeach
                             </x-adminlte-select>
@@ -136,14 +161,7 @@
                         </div>
 
                         <div class="col-md-6">
-                        <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
-                                <option value="">Seleccione Una Persona</option>
-                                @foreach ($personas as $persona)
-                                    <option value="{{ $persona->id_persona }}">
-                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
-                                    </option>
-                                @endforeach
-                            </x-adminlte-select>
+                       
                             <x-adminlte-input name="cuota_de_prestamo" label="Cuota de Préstamo en ADEPES" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="cuota_vivienda" label="Cuota de Vivienda" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
                             <x-adminlte-input name="alimentacion" label="Alimentación" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />

@@ -37,6 +37,8 @@
                         <thead>
                             <tr>
                                 <th>ID Solicitud</th>
+                                <th style="text-align: center">ID persona</th>
+                                <th style="text-align: center">Nombre Solicitante</th>
                                 <th>Garantia</th>
                                 <th>Cuota</th>
                                 <th>Tasa</th>
@@ -49,6 +51,8 @@
                             @foreach ($solicitudes as $solicitud)
                                 <tr>
                                     <td>{{ $solicitud['id_solicitud'] }}</td>
+                                    <td>{{ $solicitud['id_solicitante'] }}</td>
+                                    <td>{{ $solicitud['nombre_solicitante'] }}</td>
                                     <td>{{ $solicitud['tipo_garantia'] }}</td>
                                     <td>{{ $solicitud['tipo_cuota'] }}</td>
                                     <td>{{ $solicitud['tasa'] }}</td>
@@ -124,6 +128,15 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-6">
+
+                            <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                <option value="">Seleccione una persona</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->id_persona }}">
+                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
 
                                 <x-adminlte-select name="tipo_garantia" label="Seleccionar Tipo de Garantía"
                                     fgroup-class="mb-3" required>

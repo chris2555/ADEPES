@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SolicitudPrestamo;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use App\Models\Persona;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class SolicitudController extends Controller
@@ -14,11 +15,10 @@ class SolicitudController extends Controller
      */
     public function index()
     {
-        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', [
-        ]);
-
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', []);
             $solicitudes = $response->json();
-            return view('Solicitud.index', compact('solicitudes'));
+            $personas = Persona::all();
+            return view('Solicitud.index', compact('solicitudes' , 'personas'));
     }
 
     /**
@@ -39,6 +39,8 @@ class SolicitudController extends Controller
 
         // Enviar datos a la API
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', [
+            'id_solicitante' => $request->id_persona,
+            'nombre_solicitante' => $request->nombres_persona,
             'tipo_garantia' => $request->tipo_garantia,
             'tipo_cuota' => $request->tipo_cuota,
             'tasa' => $request->tasa,
@@ -66,8 +68,8 @@ class SolicitudController extends Controller
     public function show(string $id)
     {
         $solicitudes = SolicitudPrestamo::findOrFail($id);
-
-        return view('Solicitud.edit', compact( 'solicitudes'));
+        $personas = Persona::all();
+        return view('Solicitud.edit', compact( 'solicitudes' , 'personas'));
     }
 
     /**
@@ -86,6 +88,8 @@ class SolicitudController extends Controller
         $usuario_id = auth()->id();
         
         $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}", [
+            'id_solicitante' => $request->id_persona,
+            'nombre_solicitante' => $request->nombres_persona,
             'tipo_garantia' => $request->tipo_garantia,
             'tipo_cuota' => $request->tipo_cuota,
             'tasa' => $request->tasa,
