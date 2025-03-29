@@ -298,23 +298,41 @@
         });
 
         function viewModal(ingreso) {
-            var modalBody = document.getElementById('viewModalBody');
-            modalBody.innerHTML = `
-        <div class="col-md-6">
+    var modalBody = document.getElementById('viewModalBody');
+    modalBody.innerHTML = `
+    <div class="row">
+        <div class="col-md-4">
             <p><strong>ID Ingreso:</strong> ${ingreso.id_ingresos}</p>
+            <p><strong>Sueldo Base:</strong> ${ingreso.sueldo_base}</p>
             <p><strong>Rentapropiedad:</strong> ${ingreso.renta_propiedades}</p>
             <p><strong>Remesas:</strong> ${ingreso.remesas}</p>
             <p><strong>Aporte Conyugue:</strong> ${ingreso.aporte_conyuge}</p>
             <p><strong>Ingresos Sociedad:</strong> ${ingreso.ingresos_sociedad}</p>
+            <p><strong>Total Ingresos:</strong> ${ingreso.total_ingresos}</p>
         </div>
-        <div class="col-md-6">
+        
+         <div class="col-md-4">
+            <p><strong>Cuota de Préstamo:</strong> ${ingreso.cuota_de_prestamo}</p>
+            <p><strong>Cuota Vivienda:</strong> ${ingreso.cuota_vivienda}</p>
+            <p><strong>Alimentación:</strong> ${ingreso.alimentacion}</p>
+            <p><strong>Central de Riesgo:</strong> ${ingreso.central_riesgo}</p>
+            <p><strong>Otros Egresos:</strong> ${ingreso.otro_egresos}</p>
+            <p><strong>Total Egresos:</strong> ${ingreso.total_egresos}</p>
+            <p><strong>Ingreso Neto:</strong> ${ingreso.ingreso_neto}</p>
+        </div>
+
+        <div class="col-md-4">
             <p><strong>Creado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
             <p><strong>Creado en:</strong> ${ingreso.creado_en ? new Date(ingreso.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${ingreso.modificado_por_nombre || 'No disponible'}</p>
             <p><strong>Modificado en:</strong> ${ingreso.modificado_en ? new Date(ingreso.modificado_en).toLocaleString() : 'No disponible'}</p>
-            
         </div>
+
+       
+    </div>
     `;
+
+
 
             var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
             viewModalElement.show();
