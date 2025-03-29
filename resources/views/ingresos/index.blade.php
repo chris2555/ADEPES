@@ -1,113 +1,100 @@
 @extends('adminlte::page')
 
-@section('title', 'Estado de Ingresos)
-@section('plugins.Sweetalert2', true)
+@section('title', 'Estado de Ingresos')
 
 @section('content_header')
-
+<h1><b>Listado de Ingreso y Egresos</b></h1>
+    <hr>
 @stop
 
 @section('content')
-
     <head>
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-        <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-        <style>
-            .negativo {
-                color: red;
-                font-weight: bold;
-            }
-        </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     </head>
 
-    <div class="container-fluid mt-4">
-        <div class="shadow-lg p-5 bg-white">
-            <div class="card-header text-success text-center">
-                <h4 class="mb-0"><i class="fas fa-file-contract"></i> Estado de Ingresos</h4>
-
-            </div>
-
-            <div class="d-flex justify-content-end mb-3">
+    <div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+            <h3 class="card-title">Estado de Ingresos</h3>
+            <div class="card-tools">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
                     <i class="fas fa-plus"></i> Nuevo Estado de Ingreso y Egreso
                 </button>
-            </div>
+                </div>
+                </div>
 
-            <div class="d-flex justify-content-end">
-                <div class="table-responsive ms-auto">
-                    <table id="relacionTable">
+            <div class="card-body">
+            <div class="table-responsive">
+                    <table id="relacionTable" class="table table-bordered table-hover table-striped table-sm">
                         <thead>
                             <tr>
-                                <th>ID Ingresos</th>
-                                <th>ID Persona</th>
-                                <th>Sueldo Base</th>
-                                <th>Renta Propiedad</th>
-                                <th>Remesas</th>
-                                <th>Aporte Conyuge</th>
-                                <th>Ingresos Sociedad</th>
-                                <th>Total Ingresos</th>
-                                <th>central_riesgo</th>
-                                <th>otro_egresos</th>
-                                <th>cuota_de_prestamo</th>
-                                <th>cuota_vivienda</th>
-                                <th>alimentacion</th>
-                                <th>total_egresos</th>
-                                <th>ingreso_neto</th>
-                                <th>Acciones</th>
-                                <th>Dictamen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($ingresos as $ingreso)
+                                <th style="text-align: center" data-order="asc">ID Ingresos</th>
+                                <th style="text-align: center">Solicitante</th>
+                                <th style="text-align: center">Total Ingresos</th>
+                                <th style="text-align: center">total_egresos</th>
+                                <th style="text-align: center">ingreso_neto</th>
+                                <th style="text-align: center">Acciones</th>
+                                <th style="text-align: center">Dictamen</th>
+                                </tr>
+                    </thead>
+                    <tbody>
+                    @foreach(collect($ingresos)->sortBy(fn($p) => (int) $p['id_ingresos']) as $ingreso)
                                 <tr>
-                                    <td>{{ $ingreso['id_ingresos'] }}</td>
-                                    <td>{{ $ingreso['id_persona'] }}</td>
-                                    <td>{{ $ingreso['sueldo_base'] }}</td>
-                                    <td>{{ $ingreso['renta_propiedades'] }}</td>
-                                    <td>{{ $ingreso['remesas'] }}</td>
-                                    <td>{{ $ingreso['aporte_conyuge'] }}</td>
-                                    <td>{{ $ingreso['ingresos_sociedad'] }}</td>
+                                    <td style="text-align: center" data-order="asc">{{ $ingreso['id_ingresos'] }}</td>
+                                    <td>{{ $ingreso['nombres_persona'] }}</td>
                                     <td>{{ $ingreso['total_ingresos'] }}</td>
-
-
-                                    <td>{{ $ingreso['cuota_de_prestamo'] }}</td>
-                                    <td>{{ $ingreso['cuota_vivienda'] }}</td>
-                                    <td>{{ $ingreso['alimentacion'] }}</td>
-                                    <td>{{ $ingreso['central_riesgo'] }}</td>
-                                    <td>{{ $ingreso['otro_egresos'] }}</td>
                                     <td>{{ $ingreso['total_egresos'] }}</td>
                                     <td>{{ $ingreso['ingreso_neto'] }}</td>
-                                    <td>
+                                    <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($ingreso) }})">
-                                            <i class="fa fa-eye"></i>
+                                            <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('ingresos.show', $ingreso['id_ingresos'])}}" class="btn btn-outline-primary btn-sm">
-                                            <i class="fa fa-edit"></i>
+                                        <a href="{{ route('ingresos.show', $ingreso['id_ingresos'])}}" 
+                                        class="btn btn-primary btn-sm">
+                                            <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="{{ route('ingresos.destroy', $ingreso['id_ingresos']) }}" method="POST" class="d-inline delete-form">
+                                        <form action="{{ route('ingresos.destroy', $ingreso['id_ingresos']) }}" 
+                                        method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-outline-warning btn-sm delete-btn">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
+                                            <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                            <i class="bi bi-trash"></i>
+                                    </button>
                                             </form>
             </td>
-            <td class="{{ $ingreso['total_ingresos'] < 0 ? 'negativo' : '' }}">
-                {{ $ingreso['total_ingresos'] >= 0 ? 'Positivo' : 'Negativo' }}
-            </td>
-        </tr>
-    @endforeach
-                        </tbody>
-                    </table>
-                </div>
+            <td>
+    @if ($ingreso['ingreso_neto'] >= 0)
+        <span class="badge bg-success p-2">Favorable</span>
+    @else
+        <span class="badge bg-danger p-2">Desfavorable</span>
+    @endif
+    </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                    <script>
+function sortTable(columnIndex) {
+    let table = document.getElementById("relacionTable");
+    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
+    let sortedRows = rows.sort((a, b) => {
+        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
+    });
+
+    </script>
             </div>
         </div>
     </div>
+</div>
 
     <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -127,7 +114,6 @@
             </div>
         </div>
     </div>
-
 
 
     {{-- Modal para Insertar Nuevo Estado de Pago --}}
@@ -173,32 +159,15 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button class="btn-flat" type="submit" label="Guardar Estado de Ingreso" theme="success" icon="fas fa-lg fa-save" />
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar Cliente</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
-
-
-
-
-
-
-    
-    
-    
-    
-
-
-
-@stop
-
-
-
-@section('js')
+</div>
 
 <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -247,52 +216,45 @@
     incomeFields.forEach(field => field.addEventListener("input", calculateTotals));
     expenseFields.forEach(field => field.addEventListener("input", calculateTotals));
 });
+</script>
+@stop
 
-
-    </script>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+@section('js')
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-    <script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-                responsive: true,
-                autoWidth: false,
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
-                    search: "Buscar:"
-                },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6"B><"col-md-3 text-end"f>>rtip',
-                buttons: [{
-                        extend: 'copy',
-                        text: '<i class="fas fa-copy"></i> Copiar',
-                        className: 'btn btn-secondary text-dark'
-                    },
-                    {
-                        extend: 'excel',
-                        text: '<i class="fas fa-file-excel"></i> Excel',
-                        className: 'btn btn-success text-dark'
-                    },
-                    {
-                        extend: 'pdf',
-                        text: '<i class="fas fa-file-pdf"></i> PDF',
-                        className: 'btn btn-danger text-dark'
-                    },
-                    {
-                        extend: 'csv',
-                        text: '<i class="fas fa-file-csv"></i> CSV',
-                        className: 'btn btn-info text-dark'
-                    }
+                "order": [[0, "asc"]],
+            "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
                 ]
             });
         });
@@ -303,6 +265,13 @@
     <div class="row">
         <div class="col-md-4">
             <p><strong>ID Ingreso:</strong> ${ingreso.id_ingresos}</p>
+            <p><strong>Nombre del Solicitante:</strong> ${ingreso.nombres_persona  || 'No disponible'}</p>
+            <p><strong>Creado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
+            <p><strong>Creado en:</strong> ${ingreso.creado_en ? new Date(ingreso.creado_en).toLocaleString() : 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${ingreso.modificado_por_nombre || 'No disponible'}</p>
+            <p><strong>Modificado en:</strong> ${ingreso.modificado_en ? new Date(ingreso.modificado_en).toLocaleString() : 'No disponible'}</p>
+        </div>
+        <div class="col-md-4">
             <p><strong>Sueldo Base:</strong> ${ingreso.sueldo_base}</p>
             <p><strong>Rentapropiedad:</strong> ${ingreso.renta_propiedades}</p>
             <p><strong>Remesas:</strong> ${ingreso.remesas}</p>
@@ -321,62 +290,51 @@
             <p><strong>Ingreso Neto:</strong> ${ingreso.ingreso_neto}</p>
         </div>
 
-        <div class="col-md-4">
-            <p><strong>Creado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
-            <p><strong>Creado en:</strong> ${ingreso.creado_en ? new Date(ingreso.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${ingreso.modificado_por_nombre || 'No disponible'}</p>
-            <p><strong>Modificado en:</strong> ${ingreso.modificado_en ? new Date(ingreso.modificado_en).toLocaleString() : 'No disponible'}</p>
-        </div>
-
-       
-    </div>
+        
     `;
-
-
-
             var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
             viewModalElement.show();
         }
 
-        
         document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                Swal.fire({
-                    title: '¿Está seguro?',
-                    text: "Esta acción no se puede deshacer",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit();
-                    }
-                });
+    // Selecciona todos los botones de eliminación
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault(); // Evita la eliminación inmediata
+            let form = this.closest("form"); // Encuentra el formulario más cercano
+            
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Envía el formulario solo si el usuario confirma
+                }
             });
         });
     });
-
-
-
+});
     </script>
 
 @if(session('success'))
-<script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: '{{ session('success') }}',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar'
-    });
-</script>
-@endif
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
 
-@if(session('error'))
+    @if(session('error'))
     <script>
         Swal.fire({
             icon: 'error',
@@ -386,58 +344,7 @@
             confirmButtonText: 'Aceptar'
         });
     </script>
-@endif
-
-@section('css')
-    <style>
-        #relacionTable_wrapper {
-            margin-left: auto;
-            width: 96%;
-            /* Ajusta este valor según lo que necesites */
-        }
-
-        .container-fluid {
-            width: 100vw;
-            height: 100vh;
-            padding: 0px;
-        }
-
-        .dt-buttons .btn {
-            color: success !important;
-            border: none !important;
-        }
-
-        .dt-buttons .btn:hover {
-            filter: brightness(85%);
-        }
-
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .table {
-            font-size: 24px;
-        }
-
-        .dt-buttons .btn {
-            margin: 5px;
-            font-size: 14px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .dt-buttons .btn:hover {
-            filter: brightness(85%);
-        }
-
-        .btn-sm {
-            border-radius: 5px;
-        }
-    </style>
-
+    @endif
 
 @stop
 
-
-@stop
