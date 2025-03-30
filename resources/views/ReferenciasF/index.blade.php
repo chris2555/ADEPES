@@ -1,79 +1,94 @@
 @extends('adminlte::page')
 
-@section('title', 'Gestión de Referencias Familiares')
+@section('Referencias Familiares', 'Gestión de Referencias Familiares')
 @section('plugins.Sweetalert2', true)
 
 @section('content_header')
+<h1><b>Listado de Referencias Familiares</b></h1>
+    <hr>
 @stop
 
 @section('content')
 <head>
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-<div class="container-fluid mt-4">
-    <div class="shadow-lg p-5 bg-white">
-        <div class="card-header text-success text-center">
-            <h4 class="mb-0"><i class="fas fa-users"></i> Gestión de Referencias Familiares</h4>
-        </div>
-
-        <div class="d-flex justify-content-end mb-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevareferencia">
-                <i class="fas fa-plus"></i> Nueva Referencia
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+            <h3 class="card-title">DATOS REFERENCIAS FAMILIARES</h3>
+            <div class="card-tools">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
+                <i class="fas fa-plus"></i> Nueva Referencia Familiar
             </button>
-        </div>
+            </div>
+            </div>
 
-        <div class="table-responsive">
-            <table id="referenciasTable" class="table table-striped">
+            <div class="card-body">
+            <div class="table-responsive">
+            <table id="referenciasTable" class="table table-bordered table-hover table-striped table-sm">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>ID Solicitud</th>
-                        <th>Nombre</th>
-                        <th>Parentesco</th>
-                        <th>Dirección</th>
-                        <th>Acciones</th>
+                        <th style="text-align: center" data-order="asc">ID</th>
+                        <th style="text-align: center">ID Solicitud</th>
+                        <th style="text-align: center">Nombre</th>
+                        <th style="text-align: center">Parentesco</th>
+                        <th style="text-align: center">Dirección</th>
+                        <th style="text-align: center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($referencias as $referencia)
-                        <tr>
-                        <td>{{ $referencia['id_referencia'] }}</td>
+                 @foreach ($referencias as $referencia)
+                    <tr>
+                        <td style="text-align: center" data-order="asc">{{ $referencia['id_referencia'] }}</td>
                         <td>{{ $referencia['id_solicitud'] }}</td>
                         <td>{{ $referencia['nombre_familiar'] }}</td>
                         <td>{{ $referencia['parentesco'] }}</td>
                         <td>{{ $referencia['direccion_familiar'] }}</td>
-                            <td>
-                                <a href="javascript:void(0);" class="btn btn-success btn-sm" onclick="viewModal({{ json_encode($referencia) }})">
-                                    <i class="fa fa-eye"></i>
-                                </a>
-                                <a href="{{ route('referencias.edit', $referencia['id_referencia']) }}" class="btn btn-outline-primary btn-sm">
-                                 <i class="fa fa-edit"></i>
-                                </a>
-                                <form action="{{ route('referencias.destroy', $referencia['id_referencia']) }}" method="POST" class="d-inline delete-form">
+                        <td>
+                            <a href="javascript:void(0);" class="btn btn-success btn-sm" 
+                                onclick="viewModal({{ json_encode($referencia) }})">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                            <a href="{{ route('referencias.show', $referencia['id_referencia']) }}" 
+                                class="btn btn-primary btn-sm">
+                                 <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ route('referencias.destroy', $referencia['id_referencia']) }}" 
+                                method="POST" class="d-inline ">
                                 @csrf
-                @method('DELETE')
-                 <button type="submit" class="btn btn-outline-warning btn-sm delete-btn"
-                 onclick="return confirm('¿Está seguro de eliminar este Prestamo?')">
-        
-                  <i class="fa fa-trash"></i>
-                </button>
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                        <i class="bi bi-trash"></i>
+                                </button>
 
-                             </form>
-                            </td>
-                        </tr>
+                            </form>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
+            <script>
+function sortTable(columnIndex) {
+    let table = document.getElementById("relacionTable");
+    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
+    let sortedRows = rows.sort((a, b) => {
+        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
+    });
+
+    </script>
         </div>
     </div>
 </div>
 
-<!-- Modal de Visualización  include('referencias.modal_create'  include('referencias.modal_view')) -->
+
 <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -82,7 +97,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row" id="viewModalBody"></div>
+                <div class="row" id="viewModalBody">
+                     {{-- El contenido del modal se carga aquí con JavaScript --}}
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -176,119 +193,49 @@ document.getElementById("insertForm").addEventListener("submit", function(event)
     // Si pasa todas las validaciones, el formulario se enviará
 });
 </script>
-
-<!-- Modal de Edición -->
-<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Editar Referencia</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editForm" action="" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="edit_id_referencia" name="id_referencia">
-                    <x-adminlte-input name="nombre_familiar" id="edit_nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
-                    <x-adminlte-input name="parentesco" id="edit_parentesco" label="Parentesco" fgroup-class="mb-3" />
-                    <x-adminlte-textarea name="direccion_familiar" id="edit_direccion_familiar" label="Dirección" fgroup-class="mb-3" rows="3" />
-                    <input type="hidden" name="modificado_por" value="{{ auth()->user()->id }}">
-                    <div class="modal-footer">
-                        <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button type="submit" label="Actualizar Referencia" theme="success" icon="fas fa-save" />
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".delete-btn").forEach(button => {
-        button.addEventListener("click", function () {
-            Swal.fire({
-                title: "¿Estás seguro?",
-                text: "Esta acción no se puede deshacer",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Sí, eliminar",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    this.closest("form").submit(); // Envía el formulario si confirma
-                }
-            });
-        });
-    });
-});
-</script>
-<!-- JavaScript para manejar los modales -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".btn-view").forEach(button => {
-        button.addEventListener("click", function () {
-            let referenciaId = this.getAttribute("data-id");
-            fetch(/referencias/${referenciaId})
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById("viewModalBody").innerHTML = data;
-                    new bootstrap.Modal(document.getElementById("view")).show();
-                });
-        });
-    });
-    document.querySelectorAll(".btn-edit").forEach(button => {
-        button.addEventListener("click", function () {
-            let id = this.getAttribute("data-id");
-            let nombre_familiar = this.getAttribute("data-nombre_familiar");
-            let parentesco = this.getAttribute("data-parentesco");
-            let direccion_familiar = this.getAttribute("data-direccion_familiar");
-            document.getElementById("edit_id_referencia").value = id;
-            document.getElementById("edit_nombre_familiar").value = nombre_familiar;
-            document.getElementById("edit_parentesco").value = parentesco;
-            document.getElementById("edit_direccion_familiar").value = direccion_familiar;
-            document.getElementById("editForm").setAttribute("action", /referencias/${id});
-            new bootstrap.Modal(document.getElementById("edit")).show();
-        });
-    });
-});
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
-<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-<script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-   $(document).ready(function () {
-        $('#referenciaTable').DataTable({
-            responsive: true,
-            autoWidth: false,
-
-            dom: 'Bfrtip',
-            buttons: ['copy', 'excel', 'pdf', 'csv']
-        });
-    });
-</script>
-
+@stop
 
 @section('js')
-<script>
-    $(document).ready(function() {
-        $('#referenciasTable').DataTable({
-            responsive: true,
-            autoWidth: false,
-            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+
+    $(function () {
+        $('#relacionTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
+            "order": [[0, "asc"]],
+            "pageLength": 5,
+        "responsive": true,
+        "lengthChange": true,
+        "autoWidth": false,
+        "language": {
+            "search": "Buscador:",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
+            "lengthMenu": "Mostrar _MENU_ Configuraciones",
+            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
+            "paginate": {
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+                     'rt' +
+                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+                buttons: [
+                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
+                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+                ]
+            });
         });
-    });
+
     function viewModal(referencia) {
         var modalBody = document.getElementById('viewModalBody');
         modalBody.innerHTML = `
@@ -301,8 +248,55 @@ document.addEventListener("DOMContentLoaded", function () {
         var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
         viewModalElement.show();
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+    // Selecciona todos los botones de eliminación
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function (event) {
+            event.preventDefault(); // Evita la eliminación inmediata
+            let form = this.closest("form"); // Encuentra el formulario más cercano
+            
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Envía el formulario solo si el usuario confirma
+                }
+            });
+        });
+    });
+});
+    </script>
+
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+    @endif
 </script>
-@stop
-
-
 @stop
