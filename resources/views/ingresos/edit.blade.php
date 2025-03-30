@@ -26,9 +26,6 @@
 
                                 <x-adminlte-input name="id_persona" label="Id persona" fgroup-class="mb-3" required
                                         value="{{ old('id_persona', $ingresos['id_persona'] ?? '') }}"  readonly/>
-
-                                <x-adminlte-input name="nombres_persona" label="Nombre de la persona" fgroup-class="mb-3" required
-                                        value="{{ old('nombres_persona', $ingresos['nombres_persona'] ?? '') }}"  readonly/>
                                 
                                 <!--Sueldo Base -->
                                 <x-adminlte-input name="sueldo_base" label="Sueldo Base" fgroup-class="mb-3 income-field"
@@ -57,6 +54,9 @@
                                 <!-- Columna Derecha -->
                                 <div class="col-md-6">
                                     <!-- Renta de Propiedades -->
+                                    <x-adminlte-input name="nombres_persona" label="Nombre de la persona" fgroup-class="mb-3" required
+                                    value="{{ old('nombres_persona', $ingresos['nombres_persona'] ?? '') }}"  readonly/>
+                                    
                                     <x-adminlte-input name="cuota_de_prestamo" label="Cuota de prestamo" fgroup-class="mb-3 expense-field" 
                                     value="{{ $ingresos['cuota_de_prestamo'] }}" type="number" step="0.01" required />
 
