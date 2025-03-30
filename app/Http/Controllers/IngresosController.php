@@ -67,8 +67,9 @@ class IngresosController extends Controller
             'creado_por_nombre' => $request->creado_por_nombre
         ]);
         
-         
+
           if ($response->successful()) {
+            
             return redirect()->route('ingresos.index')->with('success', 'Estado de Ingresos creado correctamente');
           } else {
             return redirect()->route('ingresos.index')->with('error', 'Ocurrió un error al crear el Estado de Ingresos');
@@ -106,27 +107,33 @@ class IngresosController extends Controller
     {
         $usuario_id = auth()->id();
         
+        $total_ingresos = $request->sueldo_base + $request->renta_propiedades + $request->remesas + $request->aporte_conyuge + $request->ingresos_sociedad;
+        $total_egresos = $request->cuota_de_prestamo + $request->cuota_vivienda + $request->alimentacion + $request->central_riesgo + $request->otro_egresos;
+        $ingreso_neto = $total_ingresos - $total_egresos;
+
+        
         $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{$id}", [
             //'id_solicitud' => $request->id_solicitud,
             'id_persona' => $request->id_persona,
             'nombres_persona' => $request->nombres_persona,
+            'sueldo_base' => $request->sueldo_base,
             'renta_propiedades' => $request->renta_propiedades,
             'remesas' => $request->remesas,
             'aporte_conyuge' => $request->aporte_conyuge,
             'ingresos_sociedad' => $request->ingresos_sociedad,
             'total_ingresos' => $request->sueldo_base + $request->renta_propiedades + $request->remesas + $request->aporte_conyuge + $request->ingresos_sociedad,
-            'central_riesgo' => $request->central_riesgo,
-            'otro_egresos' => $request->otro_egresos,
-            'total_egresos' => $total_egresos,
             'cuota_de_prestamo' => $request->cuota_de_prestamo,
             'cuota_vivienda' => $request->cuota_vivienda,
             'alimentacion' => $request->alimentacion,
-            'ingreso_neto' => $ingreso_neto,
+            'central_riesgo' => $request->central_riesgo,
+            'otro_egresos' => $request->otro_egresos,
+            'total_egresos' =>  $request->cuota_de_prestamo + $request->cuota_vivienda + $request->alimentacion + $request->central_riesgo + $request->otro_egresos,
+            'ingreso_neto' => $total_ingresos - $total_egresos,
             'modificado_por' => $usuario_id
         ]);
-
-        
+               
         if ($response->successful()) {
+            
             return redirect()->route('ingresos.index')->with('success', 'Estado de Ingresos actualizado correctamente');
         } else {
             return redirect()->route('ingresos.index')->with('error', 'Ocurrió un error al actualizar el Estado de Ingresos');
