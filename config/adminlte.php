@@ -321,6 +321,11 @@ return [
                 'icon' => 'fas fa-fw fa-user', // Ícono de casa para viviendas
             ],
             [
+                'text' => 'Telefonos',
+                'route' => 'telefonos.index',
+                'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
+                ],
+            [
                 'text' => 'Conyugues',
                 'route' => 'conyuge.index', // Ruta al index del controlador
                 'icon' => 'fas fa-fw fa-ring', // Ícono representativo de usuarios' 
@@ -345,38 +350,30 @@ return [
                    
                 ],
                 [
-                    
-                    'text' => 'Estado de Egresos',
-                    'route' => 'egresos.index', // Ruta al index del controlador
-                    'icon' => 'fas fa-fw fa-file-invoice', // Ícono representativo de usuarios
-                   
-                ],
-                [
                     'text' => 'Referencias Familiares',
                     'route' => 'referencias.index', // Ruta al index del controlador
                     'icon' => 'fas fa-fw fa-house-user', // Ícono representativo de Referencia Familiar
                    
                 ],
+                
             ],
            
         ],
-       
         [
-        'text' => 'Telefonos',
-        'route' => 'telefonos.index',
-        'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
+            'text' => 'Solicitud',
+            'route' => 'solicitudes.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
+              
         ],
+       
         [
             'text' => 'Relacion solicitudes',
             'route' => 'relacion.index',
             'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
         ],
-        [
-         'text' => 'Solicitudes',
-         'route' => 'solicitudes.index', // Ruta al index del controlador
-         'icon' => 'fas fa-fw fa-file-signature', // Ícono representativo de usuarios
-           
-        ],
+        
+        
+       
         [
         'text' => 'Pagos',
         'route' => 'pagos.index', // Ruta al index del controlador
