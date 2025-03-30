@@ -17,7 +17,7 @@ class ConyugeController extends Controller
         $solicitudes = $response->json();
         $personas = Persona::all();
         
-        return view('Conyuge.index', compact('solicitudes' , 'personas'));
+        return view('conyuge.index', compact('solicitudes' , 'personas'));
     }
 
     /**
@@ -33,10 +33,8 @@ class ConyugeController extends Controller
      */
     public function store(Request $request)
 {
+
     $usuario_id = auth()->id();
-
-    // Muestra los datos que se enviarán
-
     $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/conyuge', [
         'id_persona' => $request->id_persona,
         'nombres_persona' => $request->nombres_persona,
