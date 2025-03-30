@@ -59,7 +59,7 @@
 
                             <div class="mb-3">
                                 <label for="total_pagado" class="form-label">Total Pagado</label>
-                                <input type="number" class="form-control" id="total_pagado" name="total_pagado" min="1" step="0.01" required>
+                                <input type="number" class="form-control" id="total_pagado" name="total_pagado" min="1" step="0.01" max ="61000"required>
                             </div>
 
                             <div class="mb-3">

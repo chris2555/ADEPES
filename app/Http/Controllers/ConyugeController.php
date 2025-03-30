@@ -17,7 +17,7 @@ class ConyugeController extends Controller
         $solicitudes = $response->json();
         $personas = Persona::all();
         
-        return view('conyuge.index', compact('solicitudes' , 'personas'));
+        return view('Conyuge.index', compact('solicitudes' , 'personas'));
     }
 
     /**
