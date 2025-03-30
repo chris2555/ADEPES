@@ -104,8 +104,14 @@
                     @csrf
 
                     <!-- ID Solicitud -->
-                    <x-adminlte-input name="id_solicitud" id="id_solicitud" label="ID solicitud" required fgroup-class="mb-3" />
-
+                    <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
+                                <option value="">Seleccione una solicitud</option>
+                                @foreach ($solicitudes as $solicitud)
+                                    <option value="{{ $solicitud->id_solicitud }}">
+                                        ID: {{ $solicitud->id_solicitud }} - Monto: {{ number_format($solicitud->monto, 2) }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
                     <!-- Nombre del Familiar -->
                     <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
 
