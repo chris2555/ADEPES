@@ -26,11 +26,13 @@
             <div class="card-header">
             <h3 class="card-title">Gestión de Prestamos</h3>
             <div class="card-tools">
+                <!-- 
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoPrestamoModal">
             <i class="fas fa-plus"></i> Añadir Nuevo
             </button>
                         </div>
                         </div>
+                        -->
 <!-- Modal para insertar-->
 <div class="modal fade" id="nuevoPrestamoModal" tabindex="-1" aria-labelledby="nuevoPrestamoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

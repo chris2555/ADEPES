@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use App\Models\Persona;
+use App\Models\PersonaSolicitud;
 use App\Models\SolicitudPrestamo;
+use Illuminate\Support\Facades\DB;
 
 class ReferenciasFController extends Controller
 {
@@ -14,13 +15,17 @@ class ReferenciasFController extends Controller
      */
     public function index()
     {
-        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares');
-        //$personas = Persona::all;
-        $referencias = $response->json();
-        $solicitudes = SolicitudPrestamo::all();
+        // Realizar la primera solicitud HTTP
+        $responseReferencias = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares');
+        $referencias = $responseReferencias->json();
+
+        // Realizar la segunda solicitud HTTP
+        $responseSolicitudes = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas-solicitudes');
+        $solicitudes = $responseSolicitudes->json();
+       //dd($referencias, $solicitudes);
+        // Pasar ambas variables a la vista
         return view('ReferenciasF.index', compact('referencias', 'solicitudes'));
     }
-
     /**
      * Show the form for creating a new resource.
      */

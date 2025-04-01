@@ -28,6 +28,7 @@
         </div>
 
         <div class="table-responsive">
+        @if(isset($referencias))
             <table id="referenciasTable" class="table table-striped">
                 <thead>
                     <tr>
@@ -69,6 +70,8 @@
                     @endforeach
                 </tbody>
             </table>
+            @endif
+
         </div>
     </div>
 </div>
@@ -104,14 +107,16 @@
                     @csrf
 
                     <!-- ID Solicitud -->
-                    <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
-                                <option value="">Seleccione una solicitud</option>
-                                @foreach ($solicitudes as $solicitud)
-                                    <option value="{{ $solicitud->id_solicitud }}">
-                                        ID: {{ $solicitud->id_solicitud }} - Monto: {{ number_format($solicitud->monto, 2) }}
-                                    </option>
-                                @endforeach
-                            </x-adminlte-select>
+                    @if(isset($solicitudes))
+    <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
+        <option value="">Seleccione una solicitud</option>
+        @foreach ($solicitudes as $solicitud)
+            <option value="{{ $solicitud['id_solicitud'] }}">
+                ID Solicitud: {{ $solicitud['id_solicitud'] }} - Nombre: {{ $solicitud['nombres_apellidos'] }} - ID Persona: {{ $solicitud['id_persona'] }}
+            </option>
+        @endforeach
+    </x-adminlte-select>
+@endif
                     <!-- Nombre del Familiar -->
                     <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar" required fgroup-class="mb-3" />
 
