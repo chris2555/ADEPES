@@ -90,9 +90,7 @@ function sortTable(columnIndex) {
 
     </script>
             </div>
-        </div>
-    </div>
-</div>
+    
 
 <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -108,12 +106,11 @@ function sortTable(columnIndex) {
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+                </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
 
 <!-- Modal para Insertar Nuevo Conyuge -->
 <div class="modal fade" id="insert" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
@@ -124,7 +121,7 @@ function sortTable(columnIndex) {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="insertForm" action="{{ route('conyuge.store') }}" method="POST" onsubmit="return validarFormulario(event)">
+            <form id="insertForm" action="{{ route('conyuge.store') }}" method="POST" onsubmit="return validarFormulario(event)">
                 @csrf
                     <div class="row">
                         <div class="col-md-6">
@@ -190,25 +187,23 @@ function sortTable(columnIndex) {
                         </div>
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Guardar Cliente</button>
-                    </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                        </div>
                 </form>
-            </div>
+                </div>
         </div>
     </div>
 </div>
 
-<script>
 
+    <script>
   function validarFormulario(event) {
     event.preventDefault();
     let valido = true;
-
-    // Limpiar mensajes de error previos
     document.querySelectorAll(".text-danger").forEach(el => el.textContent = "");
 
-    // Validar nombres y apellidos
+   
     let nombre = document.getElementById("nombres_conyuge").value.trim();
     let regexNombre = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/; // Solo letras y espacios
 
@@ -219,11 +214,15 @@ function sortTable(columnIndex) {
         document.getElementById("error_nombre").textContent = "El nombre no debe contener números ni caracteres especiales.";
         valido = false;
     }
-    let identidad = document.getElementById("identidad_conyuge").value;
+
+    // Validar número de identidad
+    let identidad = document.getElementById("identidad_conyuge").value.trim();
     if (!/^\d{13}$/.test(identidad)) {
         document.getElementById("error_identidad").textContent = "El número de identidad debe contener exactamente 13 dígitos sin guiones.";
         valido = false;
     }
+
+    // Validar fecha de nacimiento
     let fechaNacimiento = document.getElementById("fecha_nacimiento_conyuge").value;
     if (fechaNacimiento) {
         let fechaNacimientoDate = new Date(fechaNacimiento);
@@ -245,13 +244,14 @@ function sortTable(columnIndex) {
         document.getElementById("error_fecha").textContent = "La fecha de nacimiento es obligatoria.";
         valido = false;
     }
-    if (valido) {
-        document.getElementById("miFormulario").submit();
+
+    if (!valido) {
+        let modal = new bootstrap.Modal(document.getElementById('insert'));
+        modal.show();
+    } else {
+        event.target.submit();
     }
-
-   
-
-}
+  }
 </script>
 
 <script>
@@ -262,11 +262,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Aplica la validación a los campos específicos
+    // Aplicar la validación a los campos específicos
     validarTextoSinNumeros(document.querySelector("input[name='nombres_conyuge']"));
     validarTextoSinNumeros(document.querySelector("input[name='profesion_oficio_conyuge']"));
     validarTextoSinNumeros(document.querySelector("input[name='cargo_conyuge']"));
     validarTextoSinNumeros(document.querySelector("input[name='estado_credito_conyuge']"));
+
+    // Agregar evento submit al formulario
+    document.getElementById("insert").addEventListener("submit", validarFormulario);
 });
 </script>
 
