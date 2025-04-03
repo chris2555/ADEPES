@@ -33,6 +33,35 @@ class RelacionController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function getConyuge($id)
+{
+    $conyuge = Conyuge::where('id_persona', $id)->first();
+
+    if ($conyuge) {
+        return response()->json([
+            'id_conyuge' => $conyuge->id_conyuge,
+            'nombres_conyuge' => $conyuge->nombres_conyuge,
+            'identidad_conyuge' => $conyuge->identidad_conyuge
+        ]);
+    } else {
+        return response()->json([]);
+    }
+}
+
+
+public function getSolicitudes($id_persona)
+{
+    $solicitudes = SolicitudPrestamo::where('id_persona', $id_persona)->get(['id_solicitud', 'monto']);
+    return response()->json($solicitudes);
+}
+
+public function getIngresos($id_persona)
+    {
+        $ingresos = EstadoIngresos::where('id_persona', $id_persona)->get();
+        return response()->json($ingresos);
+    }
+
+
     public function create()
     {
         //

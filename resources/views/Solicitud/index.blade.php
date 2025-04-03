@@ -50,7 +50,7 @@
                         @foreach(collect($solicitudes)->sortBy(fn($p) => (int) $p['id_solicitud']) as $solicitud)
                                 <tr>
                                     <td style="text-align: center" data-order="asc">{{ $solicitud['id_solicitud'] }}</td>
-                                    <td>{{ $solicitud['id_solicitante'] }}</td>
+                                    <td>{{ $solicitud['id_persona'] }}</td>
                                     <td>{{ $solicitud['nombre_solicitante'] }}</td>
                                     <td>{{ $solicitud['tipo_garantia'] }}</td>
                                     <td>{{ $solicitud['tipo_cuota'] }}</td>
@@ -66,10 +66,7 @@
                                             class="btn btn-outline-primary btn-sm" title="Generar dictamen PDF">
                                             <i class="fas fa-file-pdf"></i>
                                         </a>
-                                        <a href="{{ route('transunion', $solicitud['id_solicitante']) }}"
-                                            class="btn btn-outline-primary btn-sm" title="Generar Transunion PDF">
-                                            <i class="fas fa-file-contract"></i>
-                                        </a>
+                                        
                                         <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}"
                                         class="btn btn-primary btn-sm">
                                     <i class="bi bi-pencil"></i>

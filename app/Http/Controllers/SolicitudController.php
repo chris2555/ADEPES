@@ -33,13 +33,12 @@ class SolicitudController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        
+    {    
         $usuario_id = auth()->id();
-
+         
         // Enviar datos a la API
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', [
-            'id_solicitante' => $request->id_persona,
+            'id_persona' => $request->id_persona,
             'nombre_solicitante' => $request->nombres_persona,
             'tipo_garantia' => $request->tipo_garantia,
             'tipo_cuota' => $request->tipo_cuota,
@@ -50,17 +49,22 @@ class SolicitudController extends Controller
             'tipo_credito' => $request->tipo_credito,
             'estado_solicitud' => $request->estado_solicitud,
             'valor_cuota' => $request->valor_cuota,
+            'capital' => $request->capital,
+            'interes' => $request->interes,
             'es_aval' => $request->es_aval,
             'creado_por' => $usuario_id,
         ]);
-
+    
 
         if ($response->successful()) {
-            return redirect()->back()->with('success', 'solicitud creada correctamente.');
+            return redirect()->back()->with('success', 'Solicitud creada correctamente.');
         } else {
-            return redirect()->back()->with('error', 'Error al enviar los datos a la API.');
+            $errorMessage = $response->json()['error'] ?? 'Error desconocido al enviar los datos a la API.';
+            return redirect()->back()->with('error', "Error: $errorMessage");
         }
     }
+
+   
 
     /**
      * Display the specified resource.
@@ -88,7 +92,7 @@ class SolicitudController extends Controller
         $usuario_id = auth()->id();
         
         $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}", [
-            'id_solicitante' => $request->id_persona,
+            'id_persona' => $request->id_persona,
             'nombre_solicitante' => $request->nombres_persona,
             'tipo_garantia' => $request->tipo_garantia,
             'tipo_cuota' => $request->tipo_cuota,
@@ -99,6 +103,8 @@ class SolicitudController extends Controller
             'tipo_credito' => $request->tipo_credito,
             'estado_solicitud' => $request->estado_solicitud,
             'valor_cuota' => $request->valor_cuota,
+            'capital' => $request->capital,
+            'interes' => $request->interes,
             'es_aval' => $request->es_aval,
             'modificado_por' => $usuario_id,
         ]);
@@ -150,21 +156,22 @@ class SolicitudController extends Controller
 }
 
 public function generarTransunion($id_persona)
-    {
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/transunion/{$id_persona}");
+{
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/transunion/{$id_persona}");
 
-        if ($response->successful()) {
-            $transunionData = $response->json();
-            if (empty($transunionData)) {
-                return redirect()->back()->with('error', 'No se encontraron datos de TransUnion.');
-            }
-            $pdf = PDF::loadView('relacion.transunion', compact('transunionData'));
-            $pdf->setPaper('A3', 'portrait');
-            return $pdf->stream();
-        } else {
-            return redirect()->back()->with('error', 'No se pudo obtener la información de TransUnion.');
+    if ($response->successful()) {
+        $transunionData = $response->json();
+        if (empty($transunionData)) {
+            return redirect()->back()->with('error', 'No se encontraron datos de TransUnion.');
         }
+        $pdf = PDF::loadView('relacion.transunion', compact('transunionData'));
+        $pdf->setPaper('A3', 'portrait');
+        return $pdf->stream();
+    } else {
+        return redirect()->back()->with('error', 'No se pudo obtener la información de TransUnion.');
     }
+}
+
 
 
 }
