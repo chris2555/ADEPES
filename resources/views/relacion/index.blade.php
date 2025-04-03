@@ -225,35 +225,35 @@
         let personaSelect = document.getElementById("id_persona");
         let solicitudSelect = document.getElementById("id_solicitud");
 
-    if (personaSelect) {
-        personaSelect.addEventListener("change", function () {
-            let idPersona = this.value;
+        if (personaSelect) {
+            personaSelect.addEventListener("change", function () {
+                let idPersona = this.value;
 
-            // Limpiar el select antes de cargar datos nuevos
-            solicitudSelect.innerHTML = '<option value="">Cargando...</option>';
+                // Limpiar el select antes de cargar datos nuevos
+                solicitudSelect.innerHTML = '<option value="">Cargando...</option>';
 
-            if (idPersona) {
-                console.log("Buscando solicitudes para:", idPersona);
+                if (idPersona) {
+                    console.log("Buscando solicitudes para:", idPersona);
 
-                fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/${idPersona}`)
-                    .then(response => {
-                        console.log("Respuesta recibida:", response);
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Datos recibidos:", data);
-                        solicitudSelect.innerHTML = '<option value="">Seleccione una solicitud</option>';
+                    fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/${idPersona}`)
+                        .then(response => {
+                            console.log("Respuesta recibida:", response);
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("Datos recibidos:", data);
+                            solicitudSelect.innerHTML = '<option value="">Seleccione una solicitud</option>';
 
-                        if (data.error) {
-                            solicitudSelect.innerHTML = `<option value="">${data.error}</option>`;
-                            return;
-                        }
+                            if (data.error) {
+                                solicitudSelect.innerHTML = `<option value="">${data.error}</option>`;
+                                return;
+                            }
 
                             if (Array.isArray(data) && data.length > 0) {
                                 data.forEach(solicitud => {
                                     let option = document.createElement("option");
                                     option.value = solicitud.id_solicitud;
-                                    option.textContent = `ID: ${solicitud.id_solicitud} - Monto: ${Number(solicitud.monto).toFixed(2)}`;
+                                    option.textContent = `ID: ${solicitud.id_solicitud}`; // Solo se muestra el ID
                                     solicitudSelect.appendChild(option);
                                 });
                             } else {
