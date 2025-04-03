@@ -76,13 +76,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/amortizacion/{id_solicitud}', [RelacionController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
-    Route::get('/transunion/{id_persona}', [SolicitudController::class, 'generarTransunion'])->name('transunion');
     Route::resource('parametros',ParametrosController::class)->names('parametros');
     Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');
     Route::get('/informacionlaboral', [InformacionLaboralController::class, 'index'])->name('informacionlaboral.index');
     Route::put('/informacionlaboral/{id}', [InformacionLaboralController::class, 'update'])->name('informacionlaboral.update');
-
-    
+    Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/Conyuge/{id}', [RelacionController::class, 'getConyuge']);
+    Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}', [SolicitudController::class, 'getSolicitudes']);
+    Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{id}', [IngresoController::class, 'getIngresos']);
 });
  
 

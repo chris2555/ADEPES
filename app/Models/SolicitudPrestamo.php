@@ -14,6 +14,7 @@ class SolicitudPrestamo extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'nombre_solicitante',
         'tipo_garantia',
         'tipo_cuota',
         'tasa',

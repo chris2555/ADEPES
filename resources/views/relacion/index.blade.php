@@ -115,23 +115,27 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
-                                <option value="">Seleccione una solicitud</option>
-                                @foreach ($solicitudesp as $solicitud)
-                                    <option value="{{ $solicitud->id_solicitud }}">
-                                        ID: {{ $solicitud->id_solicitud }} - Monto: {{ number_format($solicitud->monto, 2) }}
-                                    </option>
-                                @endforeach
-                            </x-adminlte-select>
 
-                            <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
-                                <option value="">Seleccione una persona</option>
-                                @foreach ($personas as $persona)
-                                    <option value="{{ $persona->id_persona }}">
-                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
-                                    </option>
-                                @endforeach
-                            </x-adminlte-select>
+                        <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" id="id_persona" required>
+                        <option value="">Seleccione una persona</option>
+                        @foreach ($personas as $persona)
+                         <option value="{{ $persona->id_persona }}">
+                         {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                        </option>
+                        @endforeach
+
+
+                        </x-adminlte-select>
+                        <x-adminlte-select name="id_solicitud" id="id_solicitud" label="ID Solicitud" fgroup-class="mb-3" required>
+                        <option value="">Selecciona una solicitud</option>
+                        </x-adminlte-select>
+
+                            
+
+                        <label for="id_ingresos">ID Ingresos</label>
+                        <select name="id_ingresos" id="id_ingresos" class="form-control" required>
+                        <option value="">Seleccione un ingreso</option>
+                    </select>
 
                             <x-adminlte-select name="id_ingresos" label="Seleccione un ingreso" fgroup-class="mb-3" required>
                                 <option value="">Seleccione...</option>
@@ -140,7 +144,21 @@
                                 @endforeach
                             </x-adminlte-select>
 
-                            <x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
+                            
+                        </div>
+                        <div class="col-md-6">
+                        <div class="form-group mb-3">
+                        <label for="id_conyuge">ID Cónyuge</label>
+                        <select name="id_conyuge" id="id_conyuge" class="form-control" required>
+       
+                        </select>
+                        <div class="form-group mb-3">
+    
+       
+                        </select>
+                    </div>
+                        
+<x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
                                 <option value="">Seleccione un aval</option>
                                 @foreach ($avales as $aval)
                                     <option value="{{ $aval->id_persona }}">
@@ -148,27 +166,6 @@
                                     </option>
                                 @endforeach
                             </x-adminlte-select>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label for="id_conyuge">ID Cónyuge</label>
-                                <select name="id_conyuge" class="form-control" required>
-                                    <option value="">Selecciona un cónyuge</option>
-                                    @foreach ($conyuges as $conyuge)
-                                        <option value="{{ $conyuge->id_conyuge }}">
-                                            {{ $conyuge->nombres_conyuge }} - {{ $conyuge->identidad_conyuge }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <x-adminlte-select name="id_egresos" label="Seleccione un egreso" fgroup-class="mb-3" required>
-                                <option value="">Seleccione...</option>
-                                @foreach ($egresos as $egreso)
-                                    <option value="{{ $egreso->id_egresos }}">{{ $egreso->id_egresos }} - {{ $egreso->total_egresos }}</option>
-                                @endforeach
-                            </x-adminlte-select>
-
                             <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
                                 <option value="">Seleccione un aval</option>
                                 @foreach ($avales as $aval)
@@ -198,6 +195,109 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("id_persona").addEventListener("change", function () {
+            let idPersona = this.value;
+            let conyugeSelect = document.getElementById("id_conyuge");
+
+            // Limpiar el select antes de cargar nuevos datos
+            conyugeSelect.innerHTML = '<option value="">Buscando cónyuge</option>';
+
+            if (idPersona) {
+                fetch(`/https://goldfish-app-q3ucp.ondigitalocean.app/api/Conyuge/${idPersona}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.id_conyuge) {
+                            conyugeSelect.innerHTML += `<option value="${data.id_conyuge}" selected>
+                                ${data.nombres_conyuge} - ${data.identidad_conyuge}
+                            </option>`;
+                        }
+                    })
+                    .catch(error => console.error("Error obteniendo el cónyuge:", error));
+            }
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let personaSelect = document.getElementById("id_persona");
+        let solicitudSelect = document.getElementById("id_solicitud");
+
+        if (personaSelect) {
+            personaSelect.addEventListener("change", function () {
+                let idPersona = this.value;
+
+                // Limpiar el select antes de cargar datos nuevos
+                solicitudSelect.innerHTML = '<option value="">Cargando...</option>';
+
+                if (idPersona) {
+                    console.log("Buscando solicitudes para:", idPersona);
+
+                    fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/${idPersona}`)
+                        .then(response => {
+                            console.log("Respuesta recibida:", response);
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log("Datos recibidos:", data);
+                            solicitudSelect.innerHTML = '<option value="">Seleccione una solicitud</option>';
+
+                            if (data.error) {
+                                solicitudSelect.innerHTML = `<option value="">${data.error}</option>`;
+                                return;
+                            }
+
+                            if (Array.isArray(data) && data.length > 0) {
+                                data.forEach(solicitud => {
+                                    let option = document.createElement("option");
+                                    option.value = solicitud.id_solicitud;
+                                    option.textContent = `ID: ${solicitud.id_solicitud} - Monto: ${Number(solicitud.monto).toFixed(2)}`;
+                                    solicitudSelect.appendChild(option);
+                                });
+                            } else {
+                                solicitudSelect.innerHTML = '<option value="">No hay solicitudes</option>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error al cargar solicitudes:", error);
+                            solicitudSelect.innerHTML = '<option value="">Error al cargar</option>';
+                        });
+                } else {
+                    solicitudSelect.innerHTML = '<option value="">Seleccione una persona</option>';
+                }
+            });
+        } else {
+            console.error("El elemento con id 'id_persona' no fue encontrado.");
+        }
+    });
+</script>
+
+
+
+
+
+<script>
+document.getElementById("id_persona").addEventListener("change", function() {
+    let idPersona = this.value;
+    let ingresosSelect = document.getElementById("id_ingresos");
+
+    if (idPersona) {
+        fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
+            .then(response => response.json())
+            .then(data => {
+                ingresosSelect.innerHTML = '<option value="">Seleccione un ingreso</option>';
+                data.forEach(ingreso => {
+                    ingresosSelect.innerHTML += `<option value="${ingreso.id_ingresos}">${ingreso.id_ingresos} - ${ingreso.total_ingresos}</option>`;
+                });
+            })
+            .catch(error => console.error('Error al obtener ingresos:', error));
+    } else {
+        ingresosSelect.innerHTML = '<option value="">Seleccione un ingreso</option>';
+    }
+});
+</script>
 @stop
 
 @section('js')
