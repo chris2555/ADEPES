@@ -283,19 +283,30 @@
             let ingresosSelect = document.getElementById("id_ingresos");
 
             // Limpiar el select antes de cargar nuevos datos
-            ingresosSelect.innerHTML = '<option value="">Buscando ingreso</option>';
+            ingresosSelect.innerHTML = '<option value="">Buscando ingreso...</option>';
 
             if (idPersona) {
                 fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
-                    .then(response => response.json())
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Error HTTP: ${response.status}`);
+                        }
+                        return response.json();
+                    })
                     .then(data => {
+                        ingresosSelect.innerHTML = ''; // Limpia el select antes de agregar opciones
                         if (data.id_ingresos) {
                             ingresosSelect.innerHTML += `<option value="${data.id_ingresos}" selected>
                                 ${data.id_ingresos} - ${data.total_ingresos}
                             </option>`;
+                        } else {
+                            ingresosSelect.innerHTML = '<option value="">No se encontraron ingresos</option>';
                         }
                     })
-                    .catch(error => console.error("Error obteniendo el ingreso:", error));
+                    .catch(error => {
+                        console.error("Error obteniendo el ingreso:", error);
+                        ingresosSelect.innerHTML = '<option value="">Error al cargar ingresos</option>';
+                    });
             }
         });
     });
