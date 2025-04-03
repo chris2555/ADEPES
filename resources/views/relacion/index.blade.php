@@ -286,7 +286,7 @@
             ingresosSelect.innerHTML = '<option value="">Buscando ingreso</option>';
 
             if (idPersona) {
-                fetch(`/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
+                fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.id_ingresos) {
