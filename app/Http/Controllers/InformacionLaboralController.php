@@ -15,7 +15,7 @@ class InformacionLaboralController extends Controller
         $InformacionLaboral = $response->json();
         $personas = Persona::all();
 
-        return view('informacionlaboral.index', compact('InformacionLaboral' , 'personas'));
+        return view('InformacionLaboral.index', compact('InformacionLaboral' , 'personas'));
     }
 
     public function create()
