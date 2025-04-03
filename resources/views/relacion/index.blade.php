@@ -125,6 +125,8 @@
                         @endforeach
 
 
+
+                        
                         </x-adminlte-select>
                         <x-adminlte-select name="id_solicitud" id="id_solicitud" label="ID Solicitud" fgroup-class="mb-3" required>
                         <option value="">Selecciona una solicitud</option>
@@ -137,12 +139,7 @@
                         <option value="">Seleccione un ingreso</option>
                     </select>
 
-                            <x-adminlte-select name="id_ingresos" label="Seleccione un ingreso" fgroup-class="mb-3" required>
-                                <option value="">Seleccione...</option>
-                                @foreach ($ingresos as $ingreso)
-                                    <option value="{{ $ingreso->id_ingresos }}">{{ $ingreso->id_ingresos }} - {{ $ingreso->total_ingresos }}</option>
-                                @endforeach
-                            </x-adminlte-select>
+
 
                             
                         </div>
@@ -152,6 +149,8 @@
                         <select name="id_conyuge" id="id_conyuge" class="form-control" required>
        
                         </select>
+
+                        
                         
                         <div class="form-group mb-3">
     
