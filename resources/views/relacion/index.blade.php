@@ -274,60 +274,32 @@
     });
 </script>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    let personaSelect = document.getElementById("id_persona");
-    let ingresosSelect = document.getElementById("id_ingresos");
 
-    if (personaSelect) {
-        personaSelect.addEventListener("change", function () {
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("id_persona").addEventListener("change", function () {
             let idPersona = this.value;
+            let ingresosSelect = document.getElementById("id_ingresos");
 
             // Limpiar el select antes de cargar nuevos datos
-            ingresosSelect.innerHTML = '<option value="">Cargando...</option>';
-            console.log("ID Persona seleccionado:", idPersona);
+            ingresosSelect.innerHTML = '<option value="">Buscando ingreso</option>';
 
             if (idPersona) {
-                fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
-                .then(response => {
-                console.log("Respuesta de la API:", response);
-                return response.json();
-                })
-                .then(data => {
-                    console.log("Datos recibidos:", data);
-                    ingresosSelect.innerHTML = '<option value="">Seleccione un Ingreso</option>';
-                
-                    if (data.error){
-                    ingresosSelect.innerHTML = `<option value="">${data.error}</option>`;
-                    return;
-                }
-                    if (Array.isArray(data) && data.length > 0) {
-                        data.forEach(ingreso => {
-                            let option = document.createElement("option");
-                            option.value = ingreso.id_ingresos;
-                            option.textContent = `ID: ${ingreso.id_ingresos} - Total: ${ingreso.total_ingresos}`;
-                            ingresosSelect.appendChild(option);
-                        });
-                    } else {
-                        ingresosSelect.innerHTML = '<option value="">No hay ingresos registrados</option>';
-                    }
-                })
-                .catch(error => {
-                    console.error("Error al cargar ingresos:", error);
-                    ingresosSelect.innerHTML = '<option value="">Error al cargar</option>';
-                });
-            } else {
-                ingresosSelect.innerHTML = '<option value="">Seleccione una persona</option>';
+                fetch(`/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.id_ingresos) {
+                            ingresosSelect.innerHTML += `<option value="${data.id_ingresos}" selected>
+                                ${data.id_ingresos} - ${data.total_ingresos}
+                            </option>`;
+                        }
+                    })
+                    .catch(error => console.error("Error obteniendo el ingreso:", error));
             }
         });
-    } else {
-            console.error("El elemento con id 'id_persona' no fue encontrado.");
-        }
     });
-
 </script>
-
-
 
 
 
