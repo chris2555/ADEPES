@@ -152,6 +152,7 @@
                         <select name="id_conyuge" id="id_conyuge" class="form-control" required>
        
                         </select>
+                        
                         <div class="form-group mb-3">
     
        
@@ -273,6 +274,48 @@
         }
     });
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let personaSelect = document.getElementById("id_persona");
+    let ingresosSelect = document.getElementById("id_ingresos");
+
+    if (personaSelect) {
+        personaSelect.addEventListener("change", function () {
+            let idPersona = this.value;
+
+            // Limpiar el select antes de cargar nuevos datos
+            ingresosSelect.innerHTML = '<option value="">Cargando...</option>';
+
+            if (idPersona) {
+                fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        ingresosSelect.innerHTML = '<option value="">Seleccione un Ingreso</option>';
+
+                        if (data.length > 0) {
+                            data.forEach(ingreso => {
+                                let option = document.createElement("option");
+                                option.value = ingreso.id_ingresos;
+                                option.textContent = `ID: ${ingreso.id_ingresos} - Total: ${ingreso.total_ingresos}`;
+                                ingresosSelect.appendChild(option);
+                            });
+                        } else {
+                            ingresosSelect.innerHTML = '<option value="">No hay ingresos registrados</option>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error al cargar ingresos:", error);
+                        ingresosSelect.innerHTML = '<option value="">Error al cargar</option>';
+                    });
+            } else {
+                ingresosSelect.innerHTML = '<option value="">Seleccione una persona</option>';
+            }
+        });
+    }
+});
+</script>
+
 
 
 
