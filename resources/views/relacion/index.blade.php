@@ -288,18 +288,19 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("ID Persona seleccionado:", idPersona);
 
             if (idPersona) {
-                fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`, {
-                    method: "GET",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    }
+                fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
+                .then(response => {
+                console.log("Respuesta de la API:", response);
+                return response.json();
                 })
-                .then(response => response.json())
                 .then(data => {
-                    console.log("Respuesta de la API:", data);
+                    console.log("Datos recibidos:", data);
                     ingresosSelect.innerHTML = '<option value="">Seleccione un Ingreso</option>';
-
+                
+                    if (data.error){
+                    ingresosSelect.innerHTML = `<option value="">${data.error}</option>`;
+                    return;
+                }
                     if (Array.isArray(data) && data.length > 0) {
                         data.forEach(ingreso => {
                             let option = document.createElement("option");
@@ -319,10 +320,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 ingresosSelect.innerHTML = '<option value="">Seleccione una persona</option>';
             }
         });
-    }
-});
+    } else {
+            console.error("El elemento con id 'id_persona' no fue encontrado.");
+        }
+    });
 
 </script>
+
 
 
 
