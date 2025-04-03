@@ -222,8 +222,8 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-    let personaSelect = document.getElementById("id_persona");
-    let solicitudSelect = document.getElementById("id_solicitud");
+        let personaSelect = document.getElementById("id_persona");
+        let solicitudSelect = document.getElementById("id_solicitud");
 
     if (personaSelect) {
         personaSelect.addEventListener("change", function () {
@@ -249,30 +249,29 @@
                             return;
                         }
 
-                        if (Array.isArray(data) && data.length > 0) {
-                            data.forEach(solicitud => {
-                                let option = document.createElement("option");
-                                option.value = solicitud.id_solicitud;
-                                option.textContent = `ID: ${solicitud.id_solicitud}`;
-                                solicitudSelect.appendChild(option);
-                            });
-                        } else {
-                            solicitudSelect.innerHTML = '<option value="">No hay solicitudes</option>';
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error al cargar solicitudes:", error);
-                        solicitudSelect.innerHTML = '<option value="">Error al cargar</option>';
-                    });
-            } else {
-                solicitudSelect.innerHTML = '<option value="">Seleccione una persona</option>';
-            }
-        });
-    } else {
-        console.error("El elemento con id 'id_persona' no fue encontrado.");
-    }
-});
-
+                            if (Array.isArray(data) && data.length > 0) {
+                                data.forEach(solicitud => {
+                                    let option = document.createElement("option");
+                                    option.value = solicitud.id_solicitud;
+                                    option.textContent = `ID: ${solicitud.id_solicitud} - Monto: ${Number(solicitud.monto).toFixed(2)}`;
+                                    solicitudSelect.appendChild(option);
+                                });
+                            } else {
+                                solicitudSelect.innerHTML = '<option value="">No hay solicitudes</option>';
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error al cargar solicitudes:", error);
+                            solicitudSelect.innerHTML = '<option value="">Error al cargar</option>';
+                        });
+                } else {
+                    solicitudSelect.innerHTML = '<option value="">Seleccione una persona</option>';
+                }
+            });
+        } else {
+            console.error("El elemento con id 'id_persona' no fue encontrado.");
+        }
+    });
 </script>
 
 
