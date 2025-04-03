@@ -83,7 +83,6 @@ public function getIngresosByPersona($id)
      */
     public function store(Request $request)
     {
-
         $usuario_id = auth()->id();
         // Validar los datos del formulario
         $request->validate([
