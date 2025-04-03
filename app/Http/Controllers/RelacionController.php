@@ -55,11 +55,12 @@ public function getSolicitudes($id_persona)
     return response()->json($solicitudes);
 }
 
-public function getIngresos($id_persona)
-    {
-        $ingresos = EstadoIngresos::where('id_persona', $id_persona)->get();
-        return response()->json($ingresos);
-    }
+public function getIngresosByPersona($id_persona)
+{
+    $ingresos = EstadoIngresos::where('id_persona', $id_persona)->get();
+
+    return response()->json($ingresos);
+}
 
     
 
