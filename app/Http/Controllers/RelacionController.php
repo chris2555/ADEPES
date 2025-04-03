@@ -61,6 +61,8 @@ public function getIngresos($id_persona)
         return response()->json($ingresos);
     }
 
+    
+
 
     public function create()
     {

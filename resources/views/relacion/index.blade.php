@@ -275,29 +275,6 @@
 </script>
 
 
-
-
-
-<script>
-document.getElementById("id_persona").addEventListener("change", function() {
-    let idPersona = this.value;
-    let ingresosSelect = document.getElementById("id_ingresos");
-
-    if (idPersona) {
-        fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/${idPersona}`)
-            .then(response => response.json())
-            .then(data => {
-                ingresosSelect.innerHTML = '<option value="">Seleccione un ingreso</option>';
-                data.forEach(ingreso => {
-                    ingresosSelect.innerHTML += `<option value="${ingreso.id_ingresos}">${ingreso.id_ingresos} - ${ingreso.total_ingresos}</option>`;
-                });
-            })
-            .catch(error => console.error('Error al obtener ingresos:', error));
-    } else {
-        ingresosSelect.innerHTML = '<option value="">Seleccione un ingreso</option>';
-    }
-});
-</script>
 @stop
 
 @section('js')
