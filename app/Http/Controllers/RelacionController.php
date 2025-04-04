@@ -110,10 +110,14 @@ public function getIngresosByPersona($id)
         ]);
 
         if ($response->successful()) {
-            return redirect()->back()->with('success', 'Relación de solicitud creada correctamente.');
-        } else {
-            return redirect()->back()->with('error', 'Error al enviar los datos a la API.');
-        }
+    return redirect()->back()->with('success', 'Relación de solicitud creada correctamente.');
+} else {
+    // Captura el mensaje de error que devuelve la API
+    $status = $response->status();
+    $error = $response->json(); // o $response->body();
+
+    return redirect()->back()->with('error', "Error {$status}: " . json_encode($error));
+}
     }
 
     /**
