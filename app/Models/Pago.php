@@ -21,7 +21,9 @@ class Pago extends Model
         'recibo',
         'fecha',
         'intereses',
-        'creado_por'
+        'creado_por',
+        'abono_capital',
+        'estado'
     ];
 
 

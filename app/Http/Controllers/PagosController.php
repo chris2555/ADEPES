@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Pago;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Persona;
+use Illuminate\Support\Facades\DB;
 
 
 class PagosController extends Controller
@@ -38,27 +39,50 @@ class PagosController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'id_prestamo' => 'required',
-        'id_persona' => 'required',
-        'monto' => 'required|numeric|min:0',
-        'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque',
-        'recibo' => 'required|unique:pagos,recibo',
-        'fecha' => 'required|date',
-        'intereses' => 'nullable|numeric|min:0',
+        'id_prestamo'   => 'required|integer',
+        'id_persona'    => 'required|integer',
+        'monto'         => 'required|numeric|min:0',
+        'metodo_pago'   => 'required|in:Efectivo,Transferencia,Cheque',
+        'recibo'        => 'required|unique:pagos,recibo',
+        'fecha'         => 'required|date',
+        'intereses'     => 'nullable|numeric|min:0',
+        'abono_capital' => 'nullable|numeric|min:0'
     ]);
 
-    Pago::create([
-        'id_prestamo' => $request->id_prestamo,
-        'id_persona' => $request->id_persona,
-        'monto' => $request->monto,
-        'metodo_pago' => $request->metodo_pago,
-        'recibo' => $request->recibo,
-        'fecha' => $request->fecha,
-        'intereses' => $request->intereses ?? 0,
-        'creado_por' => auth()->id(), // Aquí se asigna automáticamente
-    ]);
+    DB::beginTransaction(); // Inicia la transacción
 
-    return redirect()->back()->with('success', 'Pago registrado correctamente.');
+    try {
+        // Insertar el pago y obtener el ID
+        $id_pago = DB::table('pagos')->insertGetId([
+            'id_prestamo'   => $request->id_prestamo,
+            'id_persona'    => $request->id_persona,
+            'monto'         => $request->monto,
+            'metodo_pago'   => $request->metodo_pago,
+            'recibo'        => $request->recibo,
+            'fecha'         => $request->fecha,
+            'intereses'     => $request->intereses ?? 0,
+            'abono_capital' => $request->abono_capital ?? 0, 
+            'creado_por'    => auth()->id(),
+            'estado'        => 'pendiente',
+            'creado_en'     => now(),
+        ]);
+
+        // Llamar al procedimiento almacenado
+        DB::statement("CALL verificar_pago(?)", [$id_pago]);
+
+        DB::commit(); // Confirma la transacción
+
+        // Responder en función del tipo de solicitud (JSON o redirección)
+        if ($request->ajax()) {
+            return response()->json(['message' => 'Pago registrado correctamente', 'id_pago' => $id_pago], 201);
+        }
+
+        return redirect()->back()->with('success', 'Pago registrado correctamente.');
+        
+    } catch (\Exception $e) {
+        DB::rollback(); // Revierte la transacción en caso de error
+        return response()->json(['error' => 'Error al registrar el pago: ' . $e->getMessage()], 500);
+    }
 }
 
 
