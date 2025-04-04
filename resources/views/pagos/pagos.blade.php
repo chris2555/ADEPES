@@ -27,31 +27,30 @@
             <div class="d-flex justify-content-end">
                 <div class="table-responsive table-hover table-striped table-sm">
                     <table id="pagoTable">
-                        <thead>
-                            <tr>
-                                <th>ID Pago</th>
-                                <th>ID Préstamo</th>
-                                <th>Monto Préstamo</th>
-                                <th>Nombre Cliente</th>
-                                <th>Método de Pago</th>
-                                <th>Recibo</th>
-                                <th>Monto</th>
-                                <th>Fecha</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($pagos as $pago)
+                    <thead>
                                 <tr>
-                                    <td>{{ $pago['id_pago'] }}</td>
-                                    <td>{{ $pago['id_prestamo'] }}</td>
-                                    <td>{{ $pago['monto_prestamo'] }}</td>
-                                    <td>{{ $pago['nombres_apellidos'] }}</td>
-                                    <td>{{ $pago['metodo_pago'] }}</td>
-                                    <td>{{ $pago['recibo'] }}</td>
-                                    <td>{{ $pago['monto'] }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($pago['fecha'])) }}</td>
-                                    <td>
+                                    <th>Fecha</th>
+                                    <th>Nombre Cliente</th>
+                                    <th>Monto Préstamo</th>
+                                    <th>Monto</th>
+                                    <th>Intereses</th>
+                                    <th>Abono a Capital</th>
+                                    <th>Excedente/Déficit</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($pagos as $pago)
+                                    <tr>
+                                        <td>{{ date('d-m-Y', strtotime($pago['fecha'])) }}</td>
+                                        <td>{{ $pago['nombres_apellidos'] }}</td>
+                                        <td>{{ $pago['monto_prestamo'] }}</td>
+                                        <td>{{ $pago['monto'] }}</td>
+                                        <td>{{ $pago['intereses'] }}</td>
+                                        <td>{{ $pago['abono_capital'] }}</td>
+                                        <td>{{ $pago['estado'] }}</td>
+                                        
+                                        <td>
                                         <a href="javascript:void(0);" class="btn btn-outline-success btn-sm"
                                             onclick="viewModal({{ json_encode($pago) }})">
                                             <i class="fa fa-eye"></i>
@@ -129,8 +128,8 @@
                         <div class="col-md-6">
                             <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" required />
 
-                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses" value="0" />
-
+                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses"  required />
+                            <x-adminlte-input name="abono_capital" label="Abono Capital" type="number" fgroup-class="mb-3" readonly /> 
                         </div>
                     </div>
 
@@ -167,6 +166,35 @@
     </div>
 
     @section('js')
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Campos relevantes
+        const montoField = document.querySelector('input[name="monto"]');
+        const interesesField = document.querySelector('input[name="intereses"]');
+        const abonoCapitalField = document.querySelector('input[name="abono_capital"]');
+
+        function calculateAbonoCapital() {
+            // Convertir valores a números y validar
+            const monto = parseFloat(montoField.value) || 0; // Monto del pago
+            const intereses = parseFloat(interesesField.value) || 0; // Intereses
+
+            // Calcular abono capital
+            const abonoCapital = monto - intereses;
+
+            // Mostrar resultado (asegurarse de que no sea negativo)
+            abonoCapitalField.value = abonoCapital > 0 ? abonoCapital.toFixed(2) : 0.00;
+        }
+
+        // Escuchar cambios en los campos monto e intereses
+        [montoField, interesesField].forEach(field => {
+            field.addEventListener('input', calculateAbonoCapital);
+        });
+
+        // Ejecutar cálculo inicial si hay valores preestablecidos
+        calculateAbonoCapital();
+    });
+</script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
     <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
