@@ -86,11 +86,10 @@ public function getIngresosByPersona($id)
         $usuario_id = auth()->id();
         // Validar los datos del formulario
         $request->validate([
-            'id_solicitud' => 'required|integer',
+            'id_solicitud' => 'nullable|integer',
             'id_persona' => 'required|integer',
             'id_conyuge' => 'nullable|integer',
-            'id_ingresos' => 'required|integer',
-            'id_egresos' => 'required|integer',
+            'id_ingresos' => 'nullable|integer',
             'id_aval1' => 'nullable|integer',
             'id_aval2' => 'nullable|integer',
             'id_aval3' => 'nullable|integer',
@@ -102,7 +101,6 @@ public function getIngresosByPersona($id)
             'id_persona' => $request->id_persona,
             'id_conyuge' => $request->id_conyuge,
             'id_ingresos' => $request->id_ingresos,
-            'id_egresos' => $request->id_egresos,
             'id_aval1' => $request->id_aval1,
             'id_aval2' => $request->id_aval2,
             'id_aval3' => $request->id_aval3,
@@ -143,11 +141,10 @@ public function getIngresosByPersona($id)
 
     // Validar los datos del formulario
     $request->validate([
-        'id_solicitud' => 'required|integer',
+        'id_solicitud' => 'nullable|integer',
         'id_persona' => 'required|integer',
         'id_conyuge' => 'nullable|integer',
-        'id_ingresos' => 'required|integer',
-        'id_egresos' => 'required|integer',
+        'id_ingresos' => 'nullable|integer',
         'id_aval1' => 'nullable|integer',
         'id_aval2' => 'nullable|integer',
         'id_aval3' => 'nullable|integer',

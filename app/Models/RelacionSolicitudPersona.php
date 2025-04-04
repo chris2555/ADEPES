@@ -18,7 +18,6 @@ class RelacionSolicitudPersona extends Model
         'id_persona',
         'id_conyuge',
         'id_ingresos',
-        'id_egresos',
         'id_aval1',
         'id_aval2',
         'id_aval3',
