@@ -28,12 +28,15 @@
                 <i class="fas fa-plus"></i> Nuevo Pago
             </button>
             </div>
-            <div class="d-flex justify-content-end">
-                <div class="table-responsive table-hover table-striped table-sm">
-                    <table id="pagoTable">
-                        <thead>
+            </div>
+
+
+            <div class="card-body">
+            <div class="table-responsive">
+                    <table id="pagoTable" class="table table-bordered table-hover table-striped table-sm">
+                        <thead class="text-center">
                             <tr>
-                                <th>ID Pago</th>
+                                <th style="text-align: center" data-order="asc">ID Pago</th>
                                 <th>ID Préstamo</th>
                                 <th>Monto Préstamo</th>
                                 <th>Nombre Cliente</th>
@@ -45,8 +48,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pagos as $pago)
-                                <tr>
+                            @foreach(collect($pagos)->sortBy(fn($p) => (int) $p['id_pago']) as $pago)
+                                <tr class="text-center align-middle">
                                     <td>{{ $pago['id_pago'] }}</td>
                                     <td>{{ $pago['id_prestamo'] }}</td>
                                     <td>{{ $pago['monto_prestamo'] }}</td>
@@ -56,9 +59,9 @@
                                     <td>{{ $pago['monto'] }}</td>
                                     <td>{{ date('d-m-Y', strtotime($pago['fecha'])) }}</td>
                                     <td>
-                                        <a href="javascript:void(0);" class="btn btn-outline-success btn-sm"
-                                            onclick="viewModal({{ json_encode($pago) }})">
-                                            <i class="fa fa-eye"></i>
+                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary" 
+                                        onclick="viewModal({{ json_encode($pago) }})">
+                                            <i class="bi bi-eye"></i>
                                         </a>
                                         <a href="{{ route('pagos.show', $pago['id_pago']) }}" 
                                         class="btn btn-sm btn-success">
@@ -159,8 +162,8 @@ function sortTable(columnIndex) {
                         <div class="col-md-6">
                             <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" required />
 
-                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses"  required />
-                            <x-adminlte-input name="abono_capital" label="Abono Capital" type="number" fgroup-class="mb-3" readonly /> 
+                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses" value="0" />
+
                         </div>
                     </div>
 
@@ -177,10 +180,8 @@ function sortTable(columnIndex) {
 @stop
 
     @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
-    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
@@ -306,6 +307,4 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     </script>
     @endif
-
 @stop
-
