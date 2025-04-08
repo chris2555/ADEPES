@@ -15,6 +15,8 @@ class PagosController extends Controller
     
     public function index()
     {
+       
+
         $ModelResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss");
         $pagos = $ModelResponse->json();
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo');
@@ -44,13 +46,14 @@ class PagosController extends Controller
         'monto'         => 'required|numeric|min:0',
         'metodo_pago'   => 'required|in:Efectivo,Transferencia,Cheque',
         'recibo'        => 'required|unique:pagos,recibo',
-        'fecha'         => 'required|date',
+        'fecha'         => 'required|date|',
         'intereses'     => 'nullable|numeric|min:0',
         'abono_capital' => 'nullable|numeric|min:0'
     ]);
 
     DB::beginTransaction(); // Inicia la transacción
 
+    
     try {
         // Insertar el pago y obtener el ID
         $id_pago = DB::table('pagos')->insertGetId([
@@ -67,9 +70,11 @@ class PagosController extends Controller
             'creado_en'     => now(),
         ]);
 
+    
         // Llamar al procedimiento almacenado
-        DB::statement("CALL verificar_pago(?)", [$id_pago]);
+        DB::statement("CALL verificar_pago(?, ?);", [$id_pago, $request->id_persona]);
 
+        //dd($request->all(), $id_pago);
         DB::commit(); // Confirma la transacción
 
         // Responder en función del tipo de solicitud (JSON o redirección)
@@ -103,34 +108,54 @@ class PagosController extends Controller
      * Show the form for editing the specified resource.
      */
     public function update(Request $request, string $id)
-    {
-        $request->validate([
-            'id_prestamo' => 'required',
-            'id_persona' => 'required',
-            'monto' => 'required|numeric|min:0',
-            'metodo_pago' => 'required|in:Efectivo,Transferencia,Cheque',
-            'recibo' => 'required',
-            'fecha' => 'required|date',
-            'intereses' => 'nullable|numeric|min:0',
-        ]);
-    
-        // Encontrar el pago que se va a actualizar
+{
+    $request->validate([
+        'id_prestamo'   => 'required|integer',
+        'id_persona'    => 'required|integer',
+        'monto'         => 'required|numeric|min:0',
+        'metodo_pago'   => 'required|in:Efectivo,Transferencia,Cheque',
+        'recibo'        => 'required', // no se puede poner 'unique' directamente aquí
+        'fecha'         => 'required|date',
+        'intereses'     => 'nullable|numeric|min:0',
+        'abono_capital' => 'nullable|numeric|min:0'
+    ]);
+
+    DB::beginTransaction();
+
+    try {
         $pago = Pago::findOrFail($id);
-    
-        // Actualizar los campos del pago
+
+        // Calcular abono_capital automáticamente si no viene en la request
+        $abonoCapital = $request->abono_capital ?? ($request->monto - ($request->intereses ?? 0));
+
         $pago->update([
-            'id_prestamo' => $request->id_prestamo,
-            'id_persona' => $request->id_persona,
-            'monto' => $request->monto,
-            'metodo_pago' => $request->metodo_pago,
-            'recibo' => $request->recibo,
-            'fecha' => $request->fecha,
-            'intereses' => $request->intereses ?? 0,
-            'actualizado_por' => auth()->id(), // Aquí se asigna el usuario que actualizó el pago
+            'id_prestamo'     => $request->id_prestamo,
+            'id_persona'      => $request->id_persona,
+            'monto'           => $request->monto,
+            'metodo_pago'     => $request->metodo_pago,
+            'recibo'          => $request->recibo,
+            'fecha'           => $request->fecha,
+            'intereses'       => $request->intereses ?? 0,
+            'abono_capital'   => $abonoCapital,
+            'actualizado_por' => auth()->id(),
+            //'actualizado_en'  => now(), // si usas esta columna
         ]);
-    
+        dd($request->all(), $id);
+        // Llamada al procedimiento almacenado equivalente al de store
+        DB::statement('CALL verificar_pago(?, ?)', [$id, $request->id_persona]);
+
+        DB::commit();
+
         return redirect()->route('pagos.index')->with('success', 'Pago actualizado correctamente.');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return redirect()->back()->with('error', 'Error al actualizar el pago: ' . $e->getMessage());
     }
+}
+
+
+
+
     
     public function destroy(string $id)
 {
