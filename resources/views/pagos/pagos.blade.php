@@ -122,11 +122,12 @@
                                 <option value="Cheque">Cheque</option>
                             </x-adminlte-select>
 
-                            <x-adminlte-input name="recibo" label="Número de Recibo" type="text" fgroup-class="mb-3" placeholder="Ingrese el número de recibo" required />
+                            <x-adminlte-input name="recibo" label="Número de Recibo" type="text" fgroup-class="mb-3" placeholder="Ingrese el número de recibo"  />
                         </div>
 
                         <div class="col-md-6">
-                            <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" required />
+                        <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" required />
+
 
                             <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses"  required />
                             <x-adminlte-input name="abono_capital" label="Abono Capital" type="number" fgroup-class="mb-3" readonly /> 
