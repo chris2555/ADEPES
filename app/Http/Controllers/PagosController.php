@@ -198,3 +198,4 @@ public function obtenerPagos($id_persona)
 }
 
 }
+
