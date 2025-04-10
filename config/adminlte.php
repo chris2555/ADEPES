@@ -416,9 +416,9 @@ return [
                 ],
                 [
                     'text' => 'Bitácora',
-                    'route' => 'solicitud.index', // Ruta al módulo de bitácora
+                    'route' => 'bitacoras.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
-                    'can' => 'ver-seguridad' 
+                  
                 ],
                 [
                     'text' => 'Configuraciones',
