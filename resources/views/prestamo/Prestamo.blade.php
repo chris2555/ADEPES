@@ -26,6 +26,111 @@
             <div class="card-header">
             <h3 class="card-title">Gestión de Prestamos</h3>
             <div class="card-tools">
+            </div>
+            </div>
+            
+            <div class="card-body">
+                        <div class="table-responsive">
+            <table id="prestamoTable" class="table table-bordered table-hover table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">ID</th>
+                        <th style="text-align: center">Cliente</th>
+                        <th style="text-align: center">DNI</th>
+                        <th style="text-align: center">Monto</th>
+                        <th style="text-align: center">Interés</th>
+                        <th style="text-align: center">Plazo</th>
+                        <th style="text-align: center">Estado</th>
+                        <th style="text-align: center">Tipo</th>
+                        <th style="text-align: center">Garantia</th>
+                        <th style="text-align: center">Fecha Inicio</th>
+                        <th style="text-align: center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if(isset($prestamos) && is_array($prestamos) && count($prestamos) > 0)
+    @foreach($prestamos as $prestamo)
+        <tr>
+            <td style="text-align: center">{{ $prestamo['id_prestamo'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['nombres_apellidos'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['n_identidad'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['monto'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['tasa'] ?? 'N/A' }}%</td>
+            <td>{{ $prestamo['plazo'] ?? 'N/A' }} meses</td>
+            <td>{{ $prestamo['estado'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
+            <td style="text-align: center">
+                <!-- Botón Ver sin onclick directo -->
+                <button class="btn btn-primary btn-sm view-prestamo"
+                data-bs-toggle="modal" 
+                 data-bs-target="#view"
+                data-id="{{ $prestamo['id_prestamo'] }}"
+                data-id-persona="{{ $prestamo['id_persona'] }}"
+                data-nombre="{{ $prestamo['nombres_apellidos'] }}"
+                data-identidad="{{ $prestamo['n_identidad'] }}"
+                 data-tipo-persona="{{ $prestamo['tipo_persona'] }}"
+                data-total="{{ $prestamo['total_pagado'] }}"
+                data-inicio="{{ $prestamo['fecha_inicio'] }}"
+                data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
+                data-tipo="{{ $prestamo['tipo'] }}"
+                data-monto="{{ $prestamo['monto'] }}"
+                 data-tasa="{{ $prestamo['tasa'] }}"
+                data-plazo="{{ $prestamo['plazo'] }}"
+                 data-estado="{{ $prestamo['estado'] }}"
+                 data-garantia="{{ $prestamo['tipo_garantia'] }}"
+>
+                <i class="bi bi-eye"></i>
+                </button>
+
+
+                <!-- Botón Editar sin onclick directo 
+                <button class="btn btn-primary btn-sm edit-prestamo" data-prestamo='@json($prestamo)' data-bs-toggle="modal" data-bs-target="#editPrestamoModal">
+                    <i class="fas fa-edit"></i>
+                </button>
+                -->
+                <button class="btn btn-success btn-sm edit-prestamo"
+    data-bs-toggle="modal"
+    data-bs-target="#edit"
+    data-id="{{ $prestamo['id_prestamo'] }}"
+    data-id-persona="{{ $prestamo['id_persona'] }}"
+    data-nombres="{{ $prestamo['nombres_apellidos'] }}"
+    data-dni="{{ $prestamo['n_identidad'] }}"
+    data-total="{{ $prestamo['total_pagado'] }}"
+    data-inicio="{{ $prestamo['fecha_inicio'] }}"
+    data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
+    data-tipo="{{ $prestamo['tipo'] }}"
+    data-monto="{{ $prestamo['monto'] }}"
+    data-tasa="{{ $prestamo['tasa'] }}"
+    data-plazo="{{ $prestamo['plazo'] }}"
+    data-estado="{{ $prestamo['estado'] }}"
+    data-garantia="{{ $prestamo['tipo_garantia'] }}"
+    data-modificado-por="{{ auth()->user()->name }}">
+    <i class="bi bi-pencil"></i>
+</button>
+
+                <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
+                @csrf
+                @method('DELETE')
+                 <button type="button" class="btn btn-danger btn-sm delete-btn">
+                  <i class="bi bi-trash"></i>
+                </button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+@else
+    <tr>
+        <td colspan="11" class="text-center">No hay préstamos disponibles</td>
+    </tr>
+@endif
+</tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
                 <!-- 
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoPrestamoModal">
             <i class="fas fa-plus"></i> Añadir Nuevo
@@ -196,108 +301,7 @@
     });
 </script>
         <!-- Tabla de Préstamos -->
-        <div class="card-body">
-                        <div class="table-responsive">
-            <table id="prestamoTable" class="table table-bordered table-hover table-striped table-sm">
-                <thead>
-                    <tr>
-                        <th style="text-align: center">ID</th>
-                        <th style="text-align: center">Cliente</th>
-                        <th style="text-align: center">DNI</th>
-                        <th style="text-align: center">Monto</th>
-                        <th style="text-align: center">Interés</th>
-                        <th style="text-align: center">Plazo</th>
-                        <th style="text-align: center">Estado</th>
-                        <th style="text-align: center">Tipo</th>
-                        <th style="text-align: center">Garantia</th>
-                        <th style="text-align: center">Fecha Inicio</th>
-                        <th style="text-align: center">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @if(isset($prestamos) && is_array($prestamos) && count($prestamos) > 0)
-    @foreach($prestamos as $prestamo)
-        <tr>
-            <td style="text-align: center">{{ $prestamo['id_prestamo'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['nombres_apellidos'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['n_identidad'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['monto'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['tasa'] ?? 'N/A' }}%</td>
-            <td>{{ $prestamo['plazo'] ?? 'N/A' }} meses</td>
-            <td>{{ $prestamo['estado'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
-            <td style="text-align: center">
-                <!-- Botón Ver sin onclick directo -->
-                <button class="btn btn-primary btn-sm view-prestamo"
-                data-bs-toggle="modal" 
-                 data-bs-target="#view"
-                data-id="{{ $prestamo['id_prestamo'] }}"
-                data-id-persona="{{ $prestamo['id_persona'] }}"
-                data-nombre="{{ $prestamo['nombres_apellidos'] }}"
-                data-identidad="{{ $prestamo['n_identidad'] }}"
-                 data-tipo-persona="{{ $prestamo['tipo_persona'] }}"
-                data-total="{{ $prestamo['total_pagado'] }}"
-                data-inicio="{{ $prestamo['fecha_inicio'] }}"
-                data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
-                data-tipo="{{ $prestamo['tipo'] }}"
-                data-monto="{{ $prestamo['monto'] }}"
-                 data-tasa="{{ $prestamo['tasa'] }}"
-                data-plazo="{{ $prestamo['plazo'] }}"
-                 data-estado="{{ $prestamo['estado'] }}"
-                 data-garantia="{{ $prestamo['tipo_garantia'] }}"
->
-                <i class="bi bi-eye"></i>
-                </button>
-
-
-                <!-- Botón Editar sin onclick directo 
-                <button class="btn btn-primary btn-sm edit-prestamo" data-prestamo='@json($prestamo)' data-bs-toggle="modal" data-bs-target="#editPrestamoModal">
-                    <i class="fas fa-edit"></i>
-                </button>
-                -->
-                <button class="btn btn-success btn-sm edit-prestamo"
-    data-bs-toggle="modal"
-    data-bs-target="#edit"
-    data-id="{{ $prestamo['id_prestamo'] }}"
-    data-id-persona="{{ $prestamo['id_persona'] }}"
-    data-nombres="{{ $prestamo['nombres_apellidos'] }}"
-    data-dni="{{ $prestamo['n_identidad'] }}"
-    data-total="{{ $prestamo['total_pagado'] }}"
-    data-inicio="{{ $prestamo['fecha_inicio'] }}"
-    data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
-    data-tipo="{{ $prestamo['tipo'] }}"
-    data-monto="{{ $prestamo['monto'] }}"
-    data-tasa="{{ $prestamo['tasa'] }}"
-    data-plazo="{{ $prestamo['plazo'] }}"
-    data-estado="{{ $prestamo['estado'] }}"
-    data-garantia="{{ $prestamo['tipo_garantia'] }}"
-    data-modificado-por="{{ auth()->user()->name }}">
-    <i class="bi bi-pencil"></i>
-</button>
-
-                <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
-                @csrf
-                @method('DELETE')
-                 <button type="button" class="btn btn-danger btn-sm delete-btn">
-                  <i class="bi bi-trash"></i>
-                </button>
-                </form>
-            </td>
-        </tr>
-    @endforeach
-@else
-    <tr>
-        <td colspan="11" class="text-center">No hay préstamos disponibles</td>
-    </tr>
-@endif
-</tbody>
-
-            </table>
-        </div>
-    </div>
-</div>
+        
 
 <!-- Modal de vista -->
 <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">

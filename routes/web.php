@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Middleware\BitacoraMiddleware;
 use App\Http\Controllers\HorasController;
 use App\Http\Controllers\AsignarRole;
 use App\Http\Controllers\PermisosController;
@@ -22,6 +22,7 @@ use App\Models\Conyuge;
 use App\Http\Controllers\ParametrosController;
 use App\Http\Controllers\IngresosController;
 use App\Http\Controllers\InformacionLaboralController;
+use App\Http\Controllers\BitacoraController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
         return view('dashboard', $data);
     })->name('dashboard');
 
+
+    Route::middleware(['web', BitacoraMiddleware::class])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');;
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -83,7 +86,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/Conyuge/{id}', [RelacionController::class, 'getConyuge']);
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}', [SolicitudController::class, 'getSolicitudes']);
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{id}', [IngresosController::class, 'getIngresosByPersona']);
-
+    Route::resource('bitacoras',BitacoraController::class)->names('bitacoras');
+});
 });
  
 
