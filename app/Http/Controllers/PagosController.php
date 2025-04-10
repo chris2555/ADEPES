@@ -140,7 +140,7 @@ class PagosController extends Controller
             'actualizado_por' => auth()->id(),
             //'actualizado_en'  => now(), // si usas esta columna
         ]);
-        dd($request->all(), $id);
+        //dd($request->all(), $id);
         // Llamada al procedimiento almacenado equivalente al de store
         DB::statement('CALL verificar_pago(?, ?)', [$id, $request->id_persona]);
 
