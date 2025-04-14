@@ -49,8 +49,20 @@ class ViviendaController extends Controller
         ]);
 
         if ($response->successful()) {
+            $data = $response->json();
+            $idCreado = $data['id_vivienda'] ?? 'desconocido';
+        
+            $persona = Persona::find($request->id_persona);
+            $nombrePersona = $persona ? $persona->nombres_apellidos : 'registro';
+        
+            $request->merge([
+                '_id_creado_api' => $idCreado,
+                '_nombre_creado_api' => $nombrePersona,
+            ]);
+        
             return redirect()->route('viviendas.index')->with('success', 'Vivienda creada correctamente');
-        } else {
+        }
+         else {
             return redirect()->route('viviendas.index')->with('error', 'Ocurrió un error al crear la vivienda');
         }
     }

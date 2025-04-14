@@ -80,7 +80,7 @@ function sortTable(columnIndex) {
             $(function() {
                 $('#bitacoraTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
                     "order": [[0, "asc"]],
-            "pageLength": 5,
+            "pageLength": 10,
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,

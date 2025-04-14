@@ -43,14 +43,26 @@ class ClientesController extends Controller
             'estado_civil' => $request->estado_civil,
             'genero' => $request->genero,
             'tipo_persona' => $request->tipo_persona,
-            'email_personal' => $request->email_personal,
-            'email_laboral' => $request->email_laboral,
+            'email_personal' => $request->filled('email_personal') ? $request->email_personal : null,
+            'email_laboral' => $request->filled('email_laboral') ? $request->email_laboral : null,
             'telefono_secundario' => $request->telefono_secundario,
             'creado_por' => auth()->id(), 
         ]);
         if ($response->successful()) {
+            // 1️⃣ Extraer el ID desde la respuesta de la API
+            $data = $response->json();
+            $idCreado = $data['id_persona' ] ?? 'desconocido';
+        
+            // 2️⃣ Inyectar el ID al request para que lo use el middleware
+            $request->merge([
+                '_id_creado_api' => $idCreado,
+                '_nombre_creado_api' => $request->nombres_apellidos,
+            ]);
+            
+        
             return redirect()->route('gestionclientes.index')->with('success', 'Cliente creado correctamente');
-        } else {
+        }
+         else {
             dd($response->status(), $response->body()); // Agregado para depuración
             return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al crear el cliente');
         }
@@ -91,8 +103,8 @@ class ClientesController extends Controller
             'estado_civil' => $request->estado_civil,
             'genero' => $request->genero,
             'tipo_persona' => $request->tipo_persona,
-            'email_personal' => $request->email_personal,
-            'email_laboral' => $request->email_laboral,
+            'email_personal' => $request->filled('email_personal') ? $request->email_personal : null,
+            'email_laboral' => $request->filled('email_laboral') ? $request->email_laboral : null,
             'telefono_secundario' => $request->telefono_secundario,
         ]);
         
