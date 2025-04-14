@@ -54,7 +54,7 @@ public function getByPersona($id)
     $ingreso = DB::table('EstadoIngresos')
         ->where('id_persona', $id)
         ->select('id_ingresos', 'total_ingresos')
-        ->first();
+        ->get(); 
 
     if (!$ingreso) {
         return response()->json([]);
