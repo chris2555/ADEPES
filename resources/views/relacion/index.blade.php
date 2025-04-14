@@ -275,7 +275,6 @@
 </script>
 
 
-
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("id_persona").addEventListener("change", function () {

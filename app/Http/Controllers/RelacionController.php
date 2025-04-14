@@ -55,10 +55,9 @@ public function getSolicitudes($id_persona)
     return response()->json($solicitudes);
 }
 
-public function getIngresosByPersona($id)
+public function getIngresosByPersona($id_persona)
 {
-    $ingresos = EstadoIngresos::where('id_persona', $id)->first();
-
+    $ingresos = EstadoIngresos::where('id_persona', $id_persona)->get(['id_ingresos']);
     if ($ingresos) {
         return response()->json([
             'id_ingresos' => $ingresos->id_ingresos,
