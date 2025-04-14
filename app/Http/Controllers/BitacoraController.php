@@ -28,25 +28,35 @@ public function create()
  */
 public function store(Request $request)
 {
-
     $usuario_id = auth()->id();
+    $fecha = now();
+
+    // Paso 1: Crear la bitácora en la API externa
     $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/bitacora', [
-        'id' => $request->id,
-        'nombre_usuario' => $request->nombre_usuario,
-        'accion' => $request->accion,
+        'id' => $usuario_id,
+        'accion' => 'Se creó en ' . $request->modulo . ': ID pendiente',
         'modulo' => $request->modulo,
-        'fecha_hora' => $request->fecha_hora,
     ]);
 
     if ($response->successful()) {
-        return redirect()->route('bitacoras.index')->with('success', 'Vivienda creada correctamente');
+        $data = $response->json();
+        $idCreado = $data['id_bitacora'] ?? 'desconocido';
+
+        // Paso 2: Registrar también en la BD local (si es necesario)
+        DB::table('Bitacora')->insert([
+            'fecha_hora' => $fecha,
+            'id' => $usuario_id,
+            'accion' => "Se creó en {$request->modulo}: ID {$idCreado}",
+            'modulo' => $request->modulo,
+        ]);
+
+        return redirect()->route('bitacoras.index')->with('success', 'Bitácora creada correctamente');
     } else {
-        return redirect()->route('bitacoras.index')->with('error', 'Ocurrió un error al crear la vivienda');
+        return redirect()->route('bitacoras.index')->with('error', 'Ocurrió un error al registrar en la bitácora');
     }
+}
 }
 
 /**
  * Display the specified resource.
- */
-}
-
+ **/

@@ -130,7 +130,7 @@ function sortTable(columnIndex) {
                             </div>
                             <div class="mb-3">
                                 <label for="n_identidad" class="form-label">Número de Identidad</label>
-                                <input type="text" class="form-control" id="n_identidad" name="n_identidad" required>
+                                <input type="text" class="form-control" id="n_identidad" name="n_identidad" required maxlength="13" oninput="soloNumeros(this)">
                                 <div class="text-danger" id="error_identidad"></div>
                             </div>
                             <div class="mb-3">
@@ -188,8 +188,7 @@ function sortTable(columnIndex) {
                             </div>
                             <div class="mb-3">
                             <label for="telefono_secundario" class="form-label">Teléfono</label>
-    <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario"
-        placeholder="Ej: 0000-0000" required>
+                            <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario" required maxlength="9" oninput="soloNumeros(this)" placeholder="Ej: 0000-0000" required>
     <div class="text-danger" id="error_telefono"></div>
                             </div>
                         </div>
@@ -207,7 +206,7 @@ function sortTable(columnIndex) {
 </div>
 
 <script>
-   function validarFormulario(event) {
+function validarFormulario(event) {
     event.preventDefault();
     let valido = true;
     document.querySelectorAll(".text-danger").forEach(el => el.textContent = "");
@@ -223,6 +222,7 @@ function sortTable(columnIndex) {
         document.getElementById("error_identidad").textContent = "El número de identidad debe contener exactamente 13 dígitos sin guiones.";
         valido = false;
     }
+
     let fechaNacimiento = document.getElementById("fecha_nacimiento").value;
     if (fechaNacimiento) {
         let fechaNacimientoDate = new Date(fechaNacimiento);
@@ -231,7 +231,6 @@ function sortTable(columnIndex) {
         let diferenciaMeses = hoy.getMonth() - fechaNacimientoDate.getMonth();
         let diferenciaDias = hoy.getDate() - fechaNacimientoDate.getDate();
 
-        // Ajustar edad si el cumpleaños aún no ha ocurrido este año
         if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
             edad--;
         }
@@ -244,6 +243,7 @@ function sortTable(columnIndex) {
         document.getElementById("error_fecha").textContent = "La fecha de nacimiento es obligatoria.";
         valido = false;
     }
+
     let telefono = document.getElementById("telefono_secundario").value;
     let telefonoRegex = /^[23789]{1}\d{3}-\d{4}$/;
     if (!telefonoRegex.test(telefono)) {
@@ -257,9 +257,9 @@ function sortTable(columnIndex) {
     } else {
         event.target.submit();
     }
-   
 }
 
+// ✅ ESTA FUNCIÓN DEBE ESTAR FUERA
 function calcularEdad() {
     let fechaNacimiento = document.getElementById("fecha_nacimiento").value;
     let edadInput = document.getElementById("edad");
@@ -271,7 +271,6 @@ function calcularEdad() {
         let diferenciaMeses = hoy.getMonth() - fechaNacimientoDate.getMonth();
         let diferenciaDias = hoy.getDate() - fechaNacimientoDate.getDate();
 
-        // Ajustar edad si el cumpleaños aún no ha ocurrido este año
         if (diferenciaMeses < 0 || (diferenciaMeses === 0 && diferenciaDias < 0)) {
             edad--;
         }
@@ -282,6 +281,52 @@ function calcularEdad() {
     }
 }
 </script>
+<script>
+    function validarIdentidad(input) {
+        let valor = input.value;
+
+        // Remueve cualquier carácter que no sea número
+        valor = valor.replace(/\D/g, '');
+
+        // Limita el valor a 13 dígitos
+        if (valor.length > 13) {
+            valor = valor.slice(0, 13);
+        }
+
+        input.value = valor;
+
+        // Validación visual opcional
+        const errorDiv = document.getElementById('error_identidad');
+        if (valor.length !== 13) {
+            errorDiv.textContent = 'La identidad debe tener exactamente 13 dígitos.';
+        } else {
+            errorDiv.textContent = '';
+        }
+    }
+
+    function validarTelefono(input) {
+        let valor = input.value;
+
+        // Remueve cualquier carácter que no sea número
+        valor = valor.replace(/\D/g, '');
+
+        // Limita el valor a 9 dígitos
+        if (valor.length > 9) {
+            valor = valor.slice(0, 9);
+        }
+
+        input.value = valor;
+
+        // Validación visual opcional
+        const errorDiv = document.getElementById('error_telefono');
+        if (valor.length !== 9) {
+            errorDiv.textContent = 'El teléfono debe tener exactamente 9 dígitos.';
+        } else {
+            errorDiv.textContent = '';
+        }
+    }
+</script>
+
 @stop
 @section('js')
 <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>

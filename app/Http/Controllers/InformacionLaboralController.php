@@ -44,6 +44,17 @@ class InformacionLaboralController extends Controller
         ]);
 
         if ($response->successful()) {
+            $data = $response->json();
+            $idCreado = $data['id_informacion_laboral'] ?? 'desconocido';
+        
+            $persona = Persona::find($request->id_persona);
+            $nombrePersona = $persona ? $persona->nombres_apellidos : 'registro';
+        
+            $request->merge([
+                '_id_creado_api' => $idCreado,
+                '_nombre_creado_api' => $nombrePersona,
+            ]);
+        
             return redirect()->route('informacionlaboral.index')->with('success', 'Datos laborales creados correctamente.');
         }
 

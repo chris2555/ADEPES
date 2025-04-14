@@ -46,34 +46,41 @@ class BitacoraMiddleware
 
     switch ($method) {
         case 'POST':
-            return "Se creó en $modulo: $datoClave";
+            $idCreado = $request->input('_id_creado_api') ?? 'desconocido';
+            $nombreCreado = $request->input('_nombre_creado_api') ?? 'registro';
+            return "Se creó en $modulo: $nombreCreado (ID $idCreado)";
+    
         case 'PUT':
         case 'PATCH':
-            return "Se editó en $modulo: $datoClave";
+            $parametros = $request->route()->parameters();
+            $idEditado = reset($parametros) ?? 'desconocido';
+            $datoClave = $this->extraerDatoClave($request);
+            return "Se editó en $modulo: $datoClave (ID $idEditado)";
+    
         case 'DELETE':
-            // Obtener el primer parámetro de la ruta
             $parametros = $request->route()->parameters();
             $id = reset($parametros) ?? 'desconocido';
             return "Se eliminó en $modulo: ID $id";
+    
         default:
             return null;
     }
+    
 }
 
 
-    private function extraerDatoClave(Request $request)
-    {
-        // Acá podés personalizar según los campos que mandás en cada módulo
-        if ($request->has('nombre')) {
-            return $request->input('nombre');
-        } elseif ($request->has('telefono')) {
-            return $request->input('telefono');
-        } elseif ($request->has('descripcion')) {
-            return $request->input('descripcion');
-        } elseif ($request->route('id')) {
-            return 'ID ' . $request->route('id');
-        }
-
-        return 'datos desconocidos';
+private function extraerDatoClave(Request $request)
+{
+    // Extrae el dato más representativo del módulo
+    if ($request->has('nombre')) {
+        return $request->input('nombre');
+    } elseif ($request->has('telefono')) {
+        return 'Teléfono ' . $request->input('telefono');
+    } elseif ($request->has('descripcion')) {
+        return $request->input('descripcion');
     }
+
+    return 'registro';
+}
+
 }

@@ -57,6 +57,18 @@ class SolicitudController extends Controller
     
 
         if ($response->successful()) {
+            // 1️⃣ Extraer el ID desde la respuesta de la API
+            $data = $response->json();
+            $idCreado = $data['id_solicitud' ] ?? 'desconocido';
+        
+            // 2️⃣ Inyectar el ID al request para que lo use el middleware
+            $persona = Persona::find($request->id_persona);
+            $nombrePersona = $persona ? $persona->nombres_apellidos : 'registro';
+        
+            $request->merge([
+                '_id_creado_api' => $idCreado,
+                '_nombre_creado_api' => $nombrePersona,
+            ]);
             return redirect()->back()->with('success', 'Solicitud creada correctamente.');
         } else {
             $errorMessage = $response->json()['error'] ?? 'Error desconocido al enviar los datos a la API.';

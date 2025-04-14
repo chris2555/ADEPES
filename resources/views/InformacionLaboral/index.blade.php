@@ -38,6 +38,7 @@
                             <tr>
                                 <th style="text-align: center" data-order="asc">ID Informacion Laboral</th>
                                 <th style="text-align: center">Id Persona</th>
+                                <th style="text-align: center">Nombre cliente</th>
                                 <th style="text-align: center">Profesion u oficio</th>
                                 <th style="text-align: center">actividad</th>
                                 <th style="text-align: center">Patrono/Negocio</th>
@@ -51,6 +52,7 @@
                                 <tr>
                                     <td style="text-align: center" data-order="asc">{{ $informacionlaboral['id_informacion_laboral'] }}</td>
                                     <td>{{ $informacionlaboral['id_persona'] }}</td>
+                                    <td>{{ $informacionlaboral['nombres_persona'] }}</td>
                                     <td>{{ $informacionlaboral['profesion_oficio'] }}</td>
                                     <td>{{ $informacionlaboral['actividad'] }}</td>
                                     <td>{{ $informacionlaboral['patrono_negocio'] }}</td>
