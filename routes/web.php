@@ -85,7 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/informacionlaboral/{id}', [InformacionLaboralController::class, 'update'])->name('informacionlaboral.update');
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/Conyuge/{id}', [RelacionController::class, 'getConyuge']);
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}', [SolicitudController::class, 'getSolicitudes']);
-    Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{id}', [IngresosController::class, 'getIngresosByPersona']);
+    Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{id}', [IngresosController::class, 'getByPersona']);
     Route::resource('bitacoras',BitacoraController::class)->names('bitacoras');
 });
 });
