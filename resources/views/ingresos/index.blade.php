@@ -46,7 +46,7 @@
                                 </tr>
                     </thead>
                     <tbody>
-                    @foreach(collect($ingresos)->sortBy(fn($p) => (int) $p['id_ingresos']) as $ingreso)
+                    @foreach(collect($ingresos)->sortBy(fn($p) => (int) $p->id_ingresos) as $ingreso)
                                 <tr>
                                     <td style="text-align: center" data-order="asc">{{ $ingreso['id_ingresos'] }}</td>
                                     <td>{{ $ingreso['nombres_persona'] }}</td>
