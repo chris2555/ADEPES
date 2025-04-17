@@ -124,6 +124,7 @@ class SolicitudController extends Controller
          if ($response->successful()) {
             return redirect()->route('solicitudes.index')->with('success', 'solicitud actualizada correctamente.');
         } else {
+            dd($response->status(), $response->body());
             return redirect()->back()->with('error', 'Error al actualizar los datos en la API.');
         }
     }

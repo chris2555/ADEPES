@@ -53,7 +53,7 @@
                                     <!-- Tasa -->
                                     <x-adminlte-select name="tasa" label="Seleccionar Tasa de Interés" fgroup-class="mb-3" required>
                                         <option value="">Seleccione una tasa</option>
-                                        @for ($tasa = 1.00; $tasa <= 10.00; $tasa +=0.5)
+                                        @for ($tasa = 1.00; $tasa <= 12.00; $tasa +=0.5)
                                             <option value="{{ number_format($tasa, 2) }}"
                                             {{ old('tasa', $solicitudes->tasa) == number_format($tasa, 2) ? 'selected' : '' }}>
                                             {{ number_format($tasa, 2) }}%
@@ -63,11 +63,11 @@
 
                                     <x-adminlte-select name="plazo" label="Seleccionar Plazo (Meses)" fgroup-class="mb-3" required>
                                         <option value="">Seleccione un plazo</option>
-                                        @for ($plazo = 6; $plazo <= 60; $plazo +=6)
+                                        @foreach ([12, 24, 36, 48] as $plazo)
                                             <option value="{{ $plazo }}" {{ old('plazo', $solicitudes->plazo) == $plazo ? 'selected' : '' }}>
-                                            {{ $plazo }} meses
+                                                {{ $plazo }} meses
                                             </option>
-                                            @endfor
+                                        @endforeach
                                     </x-adminlte-select>
 
                                     <x-adminlte-input name="monto" type="number" label="Monto del Préstamo"
@@ -76,6 +76,9 @@
                                         value="{{ old('monto', $solicitudes->monto) }}" />
 
 
+                                        <x-adminlte-input name="capital" type="number" label="Capital"
+                                            placeholder="Ingrese el capital" fgroup-class="mb-3" step="0.01" min="0"
+                                            value="{{ $solicitudes->capital }}" readonly />
 
                                 </div>
 
@@ -124,6 +127,10 @@
                                     <option value="Avala mas de 2 personas" {{ old('es_aval', $solicitudes->es_aval) == 'Avala mas de 2 personas' ? 'selected' : '' }}>Avala más de 2 personas</option>
                                 </x-adminlte-select>
 
+                                <x-adminlte-input name="interes" type="number" label="Interés"
+                                    placeholder="Ingrese el interés" fgroup-class="mb-3" step="0.01" min="0"
+                                    value="{{ $solicitudes->interes }}" readonly />
+
 
                             </div>
                         </div>
@@ -147,4 +154,68 @@
 
 @section('js')
 
+<script>
+    function viewModal(solicitud) {
+        document.getElementById('capital').innerText = 'L ' + solicitud.monto.toLocaleString('es-HN', { minimumFractionDigits: 2 });
+        let interesCalculado = (solicitud.monto * solicitud.tasa / 100) * solicitud.plazo;
+        document.getElementById('interes').innerText = 'L ' + interesCalculado.toFixed(2).toLocaleString('es-HN');
+        new bootstrap.Modal(document.getElementById('view')).show();
+    }
+</script>
+
+    
+
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const tipoCuota = document.querySelector("select[name='tipo_cuota']");
+    const tasa = document.querySelector("select[name='tasa']");
+    const plazo = document.querySelector("select[name='plazo']");
+    const monto = document.querySelector("input[name='monto']");
+    const valorCuota = document.querySelector("input[name='valor_cuota']");
+    const capital = document.querySelector("input[name='capital']");
+    const interes = document.querySelector("input[name='interes']");
+
+    function calcularCuota() {
+        const tipo = tipoCuota.value;
+        const tasaInteres = parseFloat(tasa.value) / 100;
+        const plazoMeses = parseInt(plazo.value);
+        let montoPrestamo = parseFloat(monto.value);
+
+        if (!tipo || isNaN(tasaInteres) || isNaN(plazoMeses) || isNaN(montoPrestamo)) {
+            valorCuota.value = "";
+            capital.value = "";
+            interes.value = "";
+            return;
+        }
+
+        let cuotaFija, interesMensual, capitalMensual;
+        
+        if (tipo === "Nivelada") {
+            const r = tasaInteres / 12;
+            cuotaFija = (montoPrestamo * r * Math.pow(1 + r, plazoMeses)) / (Math.pow(1 + r, plazoMeses) - 1);
+            
+            interesMensual = montoPrestamo * r;
+            capitalMensual = cuotaFija - interesMensual;
+        } else {
+            interesMensual = (montoPrestamo * tasaInteres / 12);
+            capitalMensual = montoPrestamo / plazoMeses;
+            cuotaFija = interesMensual + capitalMensual;
+        }
+
+        valorCuota.value = cuotaFija.toFixed(2);
+        capital.value = capitalMensual.toFixed(2);
+        interes.value = interesMensual.toFixed(2);
+    }
+
+    tipoCuota.addEventListener("change", calcularCuota);
+    tasa.addEventListener("change", calcularCuota);
+    plazo.addEventListener("change", calcularCuota);
+    monto.addEventListener("input", calcularCuota);
+});
+    </script>
+
+
 @stop
+
+

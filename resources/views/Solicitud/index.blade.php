@@ -249,29 +249,7 @@ function sortTable(columnIndex) {
     }
 </script>
 
-    {{-- Modal para Editar Solicitud --}}
-    <x-adminlte-modal id="edit" size="lg" title="Modificar Relación de Solicitud">
-        <form id="updateForm">
-            <div class="row">
-                <x-adminlte-input name="UPDATE_PI_COD_SUCURSAL" id="cod" readonly label="Codigo de la Sucursal"
-                    placeholder="Ingresa el Codigo de la Sucursal" fgroup-class="col-md-6" />
-
-                <x-adminlte-input name="UPDATE_PV_NOM_SUCURSAL" label="Nombre de la Sucursal"
-                    placeholder="Ingresa el Nombre de la Sucursal" fgroup-class="col-md-6" />
-
-                <x-adminlte-input name="UPDATE_PI_COD_GERENTE" type="number" label="Codigo de Gerente"
-                    placeholder="Ingresa el Codigo del Gerente" fgroup-class="col-md-6" />
-
-                <x-adminlte-input name="UPDATE_PI_COD_UBICACION" type="number" label="Codigo de Ubicacion"
-                    placeholder="Ingresa el codigo de la ubicacion" fgroup-class="col-md-6" />
-            </div>
-            <x-adminlte-button class="btn-flat" type="submit" label="Guardar Cambios" theme="success"
-                icon="fas fa-lg fa-save" />
-        </form>
-    </x-adminlte-modal>
-
-
-
+    
 
 
     <script>
