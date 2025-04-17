@@ -141,7 +141,7 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="fecha_nacimiento_conyuge" label="Fecha de Nacimiento del Cónyuge" type="date" fgroup-class="mb-3" required />
                             <div class="text-danger" id="error_fecha"></div>
 
-                            <x-adminlte-input name="identidad_conyuge" label="Identidad del Cónyuge" type="text" fgroup-class="mb-3" required
+                            <x-adminlte-input name="identidad_conyuge" label="Identidad del Cónyuge" type="text" fgroup-class="mb-3" required maxlength="13" oninput="soloNumeros(this)" required
                                 placeholder="Ingrese la identidad del cónyuge" />
                                 <div class="text-danger" id="error_identidad"></div>
 
@@ -155,8 +155,11 @@ function sortTable(columnIndex) {
                                 placeholder="Ingrese el cargo del cónyuge" />
                         </div>
                         <div class="col-md-6">
-                            <x-adminlte-input name="ingresos_negocio_conyuge" label="Ingresos del Negocio del Cónyuge" type="number" fgroup-class="mb-3" required
+                            <x-adminlte-input name="ingresos_negocio_conyuge" label="Ingresos del Cónyuge" type="number" fgroup-class="mb-3" required
                                 placeholder="Ingrese los ingresos" step="0.01" min="0" />
+
+                                <x-adminlte-input name="gastos_alimentacion_conyuge" label="Gastos de Alimentación del Cónyuge" type="number" fgroup-class="mb-3" required
+                                placeholder="Ingrese los gastos de alimentación" step="0.01" min="0" />
 
                             <x-adminlte-textarea name="direccion_trabajo_conyuge" label="Dirección de Trabajo del Cónyuge" fgroup-class="mb-3" required
                                 placeholder="Ingrese la dirección de trabajo del cónyuge" />
@@ -177,18 +180,15 @@ function sortTable(columnIndex) {
                                 <option value="Más de 5 años">Más de 5 años</option>
                             </x-adminlte-select>
 
-                            <x-adminlte-input name="gastos_alimentacion_conyuge" label="Gastos de Alimentación del Cónyuge" type="number" fgroup-class="mb-3" required
-                                placeholder="Ingrese los gastos de alimentación" step="0.01" min="0" />
-
-                            <x-adminlte-input name="estado_credito_conyuge" label="Estado de Crédito del Cónyuge" type="text" fgroup-class="mb-3" required
-                                placeholder="Ingrese el estado de crédito del cónyuge" />
+                            <x-adminlte-input name="estado_credito_conyuge" label="Creditos en ADEPES" type="text" fgroup-class="mb-3" required
+                                placeholder="sin credito o con credito" />
 
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                        <button type="submit" class="btn btn-success">Guardar Conyuge</button>
                         </div>
                 </form>
                 </div>
@@ -272,6 +272,30 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("insert").addEventListener("submit", validarFormulario);
 });
 </script>
+<script>
+    function validarIdentidad(input) {
+        let valor = input.value;
+
+        // Remueve cualquier carácter que no sea número
+        valor = valor.replace(/\D/g, '');
+
+        // Limita el valor a 13 dígitos
+        if (valor.length > 13) {
+            valor = valor.slice(0, 13);
+        }
+
+        input.value = valor;
+
+        // Validación visual opcional
+        const errorDiv = document.getElementById('error_identidad');
+        if (valor.length !== 13) {
+            errorDiv.textContent = 'La identidad debe tener exactamente 13 dígitos.';
+        } else {
+            errorDiv.textContent = '';
+        }
+    }
+</script>
+
 
 @stop
 

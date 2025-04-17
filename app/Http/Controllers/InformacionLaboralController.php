@@ -34,8 +34,6 @@ class InformacionLaboralController extends Controller
             'actividad' => $request->actividad,
             'patrono_negocio' => $request->patrono_negocio,
             'tiempo_laborar' => $request->tiempo_laborar,
-            'estado_credito' => $request->estado_credito,
-            'valor_cuota' => $request->valor_cuota,
             'ingresos_negocio' => $request->ingresos_negocio,
             'direccion_trabajo' => $request->direccion_trabajo,
             'gastos_alimentacion' => $request->gastos_alimentacion,
@@ -54,7 +52,6 @@ class InformacionLaboralController extends Controller
                 '_id_creado_api' => $idCreado,
                 '_nombre_creado_api' => $nombrePersona,
             ]);
-        
             return redirect()->route('informacionlaboral.index')->with('success', 'Datos laborales creados correctamente.');
         }
 
@@ -84,8 +81,6 @@ class InformacionLaboralController extends Controller
         'actividad' => $request->actividad,
         'patrono_negocio' => $request->patrono_negocio,
         'tiempo_laborar' => $request->tiempo_laborar,
-        'estado_credito' => $request->estado_credito,
-        'valor_cuota' => $request->valor_cuota,
         'ingresos_negocio' => $request->ingresos_negocio,
         'direccion_trabajo' => $request->direccion_trabajo,
         'gastos_alimentacion' => $request->gastos_alimentacion,
