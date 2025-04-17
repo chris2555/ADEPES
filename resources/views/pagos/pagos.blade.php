@@ -1,82 +1,71 @@
-@extends('adminlte::page')
+@extends('layout.app')
 
-@section('title', 'Gestión de Pagos')
 
-@section('content_header')
-<h1><b>Listado de Pagos</b></h1>
-    <hr>
-@stop
+@section('subtitle', 'Pagos')
 
-@section('content')
+@section('content_body')
+
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+        <link rel="stylesheet" href="//cdn.datatables.net/responsive/2.4.1/css/responsive.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    </head>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="card card-outline card-success">
-            <div class="card-header">
-            <h3 class="card-title">Gestion de pagos</h3>
-            <div class="card-tools">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPago">
-                <i class="fas fa-plus"></i> Nuevo Pago
-            </button>
+    <div class="container-fluid mt-4">
+        <div class="shadow-lg p-5 bg-white">
+            <div class="card-header text-success text-center">
+                <h4 class="mb-0"><i class="fas fa-file-invoice-dollar"></i> Gestión de Pagos</h4>
             </div>
+            <div class="d-flex justify-content-end mb-3">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPago">
+                    <i class="fas fa-plus"></i> Nuevo Pago
+                </button>
             </div>
-
-
-            <div class="card-body">
-            <div class="table-responsive">
-                    <table id="pagoTable" class="table table-bordered table-hover table-striped table-sm">
-                        <thead class="text-center">
-                            <tr>
-                                <th style="text-align: center" data-order="asc">ID Pago</th>
-                                <th>ID Préstamo</th>
-                                <th>Monto Préstamo</th>
-                                <th>Nombre Cliente</th>
-                                <th>Método de Pago</th>
-                                <th>Recibo</th>
-                                <th>Monto</th>
-                                <th>Fecha</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach(collect($pagos)->sortBy(fn($p) => (int) $p['id_pago']) as $pago)
-                                <tr class="text-center align-middle">
-                                    <td>{{ $pago['id_pago'] }}</td>
-                                    <td>{{ $pago['id_prestamo'] }}</td>
-                                    <td>{{ $pago['monto_prestamo'] }}</td>
-                                    <td>{{ $pago['nombres_apellidos'] }}</td>
-                                    <td>{{ $pago['metodo_pago'] }}</td>
-                                    <td>{{ $pago['recibo'] }}</td>
-                                    <td>{{ $pago['monto'] }}</td>
-                                    <td>{{ date('d-m-Y', strtotime($pago['fecha'])) }}</td>
-                                    <td>
-                                        <a href="javascript:void(0);" class="btn btn-sm btn-primary" 
-                                        onclick="viewModal({{ json_encode($pago) }})">
-                                            <i class="bi bi-eye"></i>
+            <div class="d-flex justify-content-end">
+                <div class="table-responsive table-hover table-striped table-sm">
+                    <table id="pagoTable">
+                    <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Nombre Cliente</th>
+                                    <th>Monto Préstamo</th>
+                                    <th>Monto</th>
+                                    <th>Intereses</th>
+                                    <th>Abono a Capital</th>
+                                    <th>Excedente/Déficit</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($pagos as $pago)
+                                    <tr>
+                                        <td>{{ date('d-m-Y', strtotime($pago['fecha'])) }}</td>
+                                        <td>{{ $pago['nombres_apellidos'] }}</td>
+                                        <td>{{ $pago['monto_prestamo'] }}</td>
+                                        <td>{{ $pago['monto'] }}</td>
+                                        <td>{{ $pago['intereses'] }}</td>
+                                        <td>{{ $pago['abono_capital'] }}</td>
+                                        <td>{{ $pago['estado'] }}</td>
+                                        
+                                        <td>
+                                        <a href="javascript:void(0);" class="btn btn-outline-success btn-sm"
+                                            onclick="viewModal({{ json_encode($pago) }})">
+                                            <i class="fa fa-eye"></i>
                                         </a>
-                                        <a href="{{ route('pagos.show', $pago['id_pago']) }}" 
-                                        class="btn btn-sm btn-success">
-                                            <i class="bi bi-pencil"></i>
+                                        <a href="{{ route('pagos.show', $pago['id_pago']) }}" class="btn btn-outline-primary btn-sm">
+                                            <i class="fa fa-edit"></i>
                                         </a>
-                                        <a href="{{ route('pagado', $pago['id_persona']) }}" 
-                                        class="btn btn-sm btn-info">
+                                        <a href="{{ route('pagado', $pago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
                                             <i class="fa fa-money-bill-wave"></i>
                                         </a>
-                                        <form action="{{ route('pagos.destroy', $pago['id_pago']) }}" 
-                                        method="POST" class="d-inline delete-form">
+                                        
+                                        <form action="{{ route('pagos.destroy', $pago['id_pago']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="button" class="btn btn-sm btn-danger delete-btn">
-                                                <i class="bi bi-trash"></i>
+                                            <button type="button" class="btn btn-outline-danger btn-sm delete-btn">
+                                                <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
                                     </td>
@@ -84,60 +73,36 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <script>
-function sortTable(columnIndex) {
-    let table = document.getElementById("pagoTable");
-    let rows = Array.from(table.rows).slice(1); // Omitimos el encabezado
-    let sortedRows = rows.sort((a, b) => {
-        return a.cells[columnIndex].innerText - b.cells[columnIndex].innerText;
-    });
-
-    </script>
                 </div>
-
-    <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="viewModalLabel">Información del Pago</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row" id="viewModalBody">
-                        {{-- El contenido del modal se carga aquí con JavaScript --}}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
-
+            </div>
+        </div>
+    </div>
+    
+    
 <!-- Modal para Insertar Nuevo Pago -->
 <div class="modal fade" id="insertPago" tabindex="-1" aria-labelledby="insertPagoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="insertModalLabel">Agregar Nuevo Pago</h5>
+                <h5 class="modal-title" id="insertPagoLabel">Agregar Nuevo Pago</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                 <form id="insertForm" action="{{ route('pagos.store') }}" method="POST">
-                     @csrf
+                <form action="{{ route('pagos.store') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-md-6">
                            
-                        <x-adminlte-select name="id_prestamo" label="Seleccionar Préstamo" fgroup-class="mb-3" required>
-    <option value="">Seleccione un préstamo</option>
-    @foreach ($prestamos as $prestamo)
-        <option value="{{ $prestamo['id_prestamo'] }}">
-            {{ $prestamo['id_prestamo'] }} - {{ $prestamo['nombres_apellidos'] }} - L.{{ number_format($prestamo['monto'], 2) }}
-        </option>
-    @endforeach
-</x-adminlte-select>
-
+                            <x-adminlte-select name="id_prestamo" label="Seleccionar Préstamo" fgroup-class="mb-3" required>
+                                <option value="">Seleccione un préstamo</option>
+                                @foreach ($prestamos as $prestamo)
+                                    <option value="{{ $prestamo['id_prestamo'] }}">
+                                        {{ $prestamo['id_prestamo'] }} - {{ $prestamo['nombres_apellidos'] }} - L.{{ number_format($prestamo['monto'], 2) }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+                            
+                            
                             <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
                                 <option value="">Seleccione una persona</option>
                                 @foreach ($personas as $persona)
@@ -163,8 +128,8 @@ function sortTable(columnIndex) {
                         <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" required />
 
 
-                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses" value="0" />
-
+                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses"  required />
+                            <x-adminlte-input name="abono_capital" label="Abono Capital" type="number" fgroup-class="mb-3" readonly /> 
                         </div>
                     </div>
 
@@ -178,51 +143,105 @@ function sortTable(columnIndex) {
     </div>
 </div>
 
-@stop
+
+
+    {{-- Modal para Ver Información de pagos --}}
+    <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewModalLabel">Información del Pago</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row" id="viewModalBody">
+                        {{-- El contenido del modal se carga aquí con JavaScript --}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
-<script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Campos relevantes
+        const montoField = document.querySelector('input[name="monto"]');
+        const interesesField = document.querySelector('input[name="intereses"]');
+        const abonoCapitalField = document.querySelector('input[name="abono_capital"]');
+
+        function calculateAbonoCapital() {
+            // Convertir valores a números y validar
+            const monto = parseFloat(montoField.value) || 0; // Monto del pago
+            const intereses = parseFloat(interesesField.value) || 0; // Intereses
+
+            // Calcular abono capital
+            const abonoCapital = monto - intereses;
+
+            // Mostrar resultado (asegurarse de que no sea negativo)
+            abonoCapitalField.value = abonoCapital > 0 ? abonoCapital.toFixed(2) : 0.00;
+        }
+
+        // Escuchar cambios en los campos monto e intereses
+        [montoField, interesesField].forEach(field => {
+            field.addEventListener('input', calculateAbonoCapital);
+        });
+
+        // Ejecutar cálculo inicial si hay valores preestablecidos
+        calculateAbonoCapital();
+    });
+</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-    
+    <script src="//cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/3.4.3/luxon.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-
-    $(function () {
-        $('#pagoTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-            "order": [[0, "asc"]],
-            "pageLength": 5,
-        "responsive": true,
-        "lengthChange": true,
-        "autoWidth": false,
-        "language": {
-            "search": "Buscador:",
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
-            "infoFiltered": "(Filtrado de _MAX_ total de entradas)",
-            "lengthMenu": "Mostrar _MENU_ Configuraciones",
-            "url": "//cdn.datatables.net/plug-ins/2.1.8/i18n/es-MX.json",
-            "paginate": {
-                "next": "Siguiente",
-                "previous": "Anterior"
-            }
-        },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
-                     'rt' +
-                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-                buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+        $(document).ready(function() {
+            $('#pagoTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
+                responsive: true,
+                autoWidth: false,
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-MX.json',
+                    search: "Buscar:"
+                },
+                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6"B><"col-md-3 text-end"f>>rtip',
+                buttons: [{
+                        extend: 'copy',
+                        text: '<i class="fas fa-copy"></i> Copiar',
+                        className: 'btn btn-secondary text-dark'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        className: 'btn btn-success text-dark'
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        className: 'btn btn-danger text-dark'
+                    },
+                    {
+                        extend: 'csv',
+                        text: '<i class="fas fa-file-csv"></i> CSV',
+                        className: 'btn btn-info text-dark'
+                    }
                 ]
             });
         });
-   
+
         function viewModal(pagos) {
     var DateTime = luxon.DateTime;
     var fechaFormateada = DateTime.fromISO(pagos.fecha, { zone: 'utc' }) // Formato de fecha
@@ -259,45 +278,44 @@ function sortTable(columnIndex) {
 
 
         
-document.addEventListener("DOMContentLoaded", function () {
-    // Selecciona todos los botones de eliminación
-    document.querySelectorAll(".delete-btn").forEach(button => {
-        button.addEventListener("click", function (event) {
-            event.preventDefault(); // Evita la eliminación inmediata
-            let form = this.closest("form"); // Encuentra el formulario más cercano
-            
-            Swal.fire({
-                title: "¿Está seguro?",
-                text: "Esta acción no se puede deshacer.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Sí, eliminar",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Envía el formulario solo si el usuario confirma
-                }
+        document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                Swal.fire({
+                    title: '¿Está seguro?',
+                    text: "Esta acción no se puede deshacer",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.closest('form').submit();
+                    }
+                });
             });
         });
     });
-});
+
+
+
     </script>
 
 @if(session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: '{{ session('success') }}',
-            confirmButtonColor: '#3085d6',
-            confirmButtonText: 'Aceptar'
-        });
-    </script>
-    @endif
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: '{{ session('success') }}',
+        confirmButtonColor: '#3085d6',
+        confirmButtonText: 'Aceptar'
+    });
+</script>
+@endif
 
-    @if(session('error'))
+@if(session('error'))
     <script>
         Swal.fire({
             icon: 'error',
@@ -307,5 +325,70 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmButtonText: 'Aceptar'
         });
     </script>
-    @endif
+@endif
+
+@section('css')
+<style>
+    #pagoTable_wrapper {
+        margin-left: auto;
+        width: 96%;
+        /* Ajusta este valor según lo que necesites */
+    }
+
+    .container-fluid {
+        width: 100vw;
+        height: 100vh;
+        padding: 0px;
+    }
+
+    .dt-buttons .btn {
+        color: success !important;
+        border: none !important;
+    }
+
+    .dt-buttons .btn:hover {
+        filter: brightness(85%);
+    }
+
+    .card {
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table {
+        font-size: 24px;
+    }
+
+    .dt-buttons .btn {
+        margin: 5px;
+        font-size: 14px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .dt-buttons .btn:hover {
+        filter: brightness(85%);
+    }
+
+    .btn-sm {
+        border-radius: 5px;
+    }
+</style>
+
+
+
+
 @stop
+
+
+
+
+
+
+
+
+
+
+
+@stop
+

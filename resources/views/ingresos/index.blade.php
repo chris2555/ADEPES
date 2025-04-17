@@ -46,7 +46,7 @@
                                 </tr>
                     </thead>
                     <tbody>
-                    @foreach(collect($ingresos)->sortBy(fn($p) => (int) $p['id_ingresos']) as $ingreso)
+                     @foreach(collect($ingresos)->sortBy(fn($p) => (int) $p['id_ingresos']) as $ingreso)
                                 <tr>
                                     <td style="text-align: center" data-order="asc">{{ $ingreso['id_ingresos'] }}</td>
                                     <td>{{ $ingreso['nombres_persona'] }}</td>
@@ -71,7 +71,7 @@
                                     </button>
                                             </form>
             </td>
-            <td>
+            <td style="text-align: center">
     @if ($ingreso['ingreso_neto'] >= 0)
         <span class="badge bg-success p-2">Favorable</span>
     @else
@@ -138,29 +138,29 @@ function sortTable(columnIndex) {
                                 @endforeach
                             </x-adminlte-select>
                             
-                            <x-adminlte-input name="sueldo_base" label="Sueldo Base" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="remesas" label="Remesas" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="aporte_conyuge" label="Aporte Cónyuge" type="number" min="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="sueldo_base" label="Sueldo Base" type="number" min="0" value="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="remesas" label="Remesas" type="number" min="0" value="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="ingresos_sociedad" label="Ingresos Sociedad" type="number" min="0" value="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="renta_propiedades" label="Renta Propiedad" type="number" min="0" value="0" class="form-control income-field" fgroup-class="mb-3" required />
+                            <x-adminlte-input name="aporte_conyuge" label="Aporte Cónyuge" type="number" min="0" value="0" class="form-control income-field" fgroup-class="mb-3" required />
+
                             <x-adminlte-input name="total_ingresos" label="Total Ingresos" type="number" fgroup-class="mb-3" readonly />                       
                         </div>
 
                         <div class="col-md-6">
                        
-                            <x-adminlte-input name="cuota_de_prestamo" label="Cuota de Préstamo en ADEPES" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="cuota_vivienda" label="Cuota de Vivienda" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="alimentacion" label="Alimentación" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="central_riesgo" label="Central de riesgo como Cliente" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="otro_egresos" label="Otros Egresos" type="number" min="0" class="form-control expense-field" fgroup-class="mb-3" required />
-                            <x-adminlte-input name="total_egresos" label="Total Egresos" type="number" fgroup-class="mb-3" readonly />
-                            
-                            <x-adminlte-input name="total_ingresos_netos" label="Ingresos Netos" type="number" fgroup-class="mb-3 text-center" readonly />
+                        <x-adminlte-input name="cuota_de_prestamo" label="Cuota de Préstamo en ADEPES" type="number" min="0" value="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                        <x-adminlte-input name="cuota_vivienda" label="Cuota de Vivienda" type="number" min="0" value="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                        <x-adminlte-input name="alimentacion" label="Alimentación" type="number" min="0" value="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                        <x-adminlte-input name="central_riesgo" label="Central de riesgo como Cliente" type="number" min="0" value="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                        <x-adminlte-input name="otro_egresos" label="Otros Egresos" type="number" min="0" value="0" class="form-control expense-field" fgroup-class="mb-3" required />
+                        <x-adminlte-input name="total_egresos" label="Total Egresos" type="number" fgroup-class="mb-3" readonly />
+                        <x-adminlte-input name="total_ingresos_netos" label="Ingresos Netos" type="number" fgroup-class="mb-3 text-center" readonly />
                         </div>
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                     </div>
                 </form>
             </div>

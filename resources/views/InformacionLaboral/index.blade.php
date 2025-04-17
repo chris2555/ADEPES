@@ -38,11 +38,11 @@
                             <tr>
                                 <th style="text-align: center" data-order="asc">ID Informacion Laboral</th>
                                 <th style="text-align: center">Id Persona</th>
+                                <th style="text-align: center">Nombre cliente</th>
                                 <th style="text-align: center">Profesion u oficio</th>
                                 <th style="text-align: center">actividad</th>
                                 <th style="text-align: center">Patrono/Negocio</th>
                                 <th style="text-align: center">Tiempo de laborar </th>
-                                <th style="text-align: center">Estado del Credito </th>
                                 <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
@@ -51,11 +51,11 @@
                                 <tr>
                                     <td style="text-align: center" data-order="asc">{{ $informacionlaboral['id_informacion_laboral'] }}</td>
                                     <td>{{ $informacionlaboral['id_persona'] }}</td>
+                                    <td>{{ $informacionlaboral['nombres_persona'] }}</td>
                                     <td>{{ $informacionlaboral['profesion_oficio'] }}</td>
                                     <td>{{ $informacionlaboral['actividad'] }}</td>
                                     <td>{{ $informacionlaboral['patrono_negocio'] }}</td>
                                     <td>{{ $informacionlaboral['tiempo_laborar'] }}</td>
-                                    <td>{{ $informacionlaboral['estado_credito'] }}</td>
                                     <td>
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($informacionlaboral) }})">
@@ -141,14 +141,14 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="profesion_oficio" label="Profesión u Oficio" fgroup-class="mb-3" 
                             placeholder="Ingrese su profesión u oficio" required />
 
-                            <x-adminlte-input name="actividad" label="Nombre de Actividad" fgroup-class="mb-3" 
-                            placeholder="Ingrese la Actividad" required />
+                            <x-adminlte-input name="actividad" label="Cargo que desempeña" fgroup-class="mb-3" 
+                            placeholder="Ingrese el cargo que desempeña" required />
 
                             <x-adminlte-input name="ingresos_negocio" label="Ingresos del Negocio" fgroup-class="mb-3" 
-                            placeholder="Ingrese ingresos" type="number" step="0.01" />
+                            placeholder="Ingrese ingresos" type="number" step="0.01" required />
 
                             <x-adminlte-input name="direccion_trabajo" label="Dirección de Trabajo" fgroup-class="mb-3" 
-                            placeholder="Ingrese dirección del trabajo" />
+                            placeholder="Ingrese dirección del trabajo"  required/>
 
                             <x-adminlte-input name="patrono_negocio" label="Nombre del Patrono o Negocio" fgroup-class="mb-3" 
                             placeholder="Ingrese Patrono o Negocio" required />
@@ -161,21 +161,12 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="gastos_alimentacion" label="Gastos de Alimentación" fgroup-class="mb-3" 
                             placeholder="Ingrese gastos" type="number" step="0.01" />
 
-                            <x-adminlte-select name="estado_credito" label="Estado del Crédito" fgroup-class="mb-3" required>
-                                <option value="">Seleccione...</option>
-                                <option value="Aprobado">Aprobado</option>
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="Rechazado">Rechazado</option>
-                            </x-adminlte-select>
-
-                            <x-adminlte-input name="valor_cuota" label="Valor de la Cuota" fgroup-class="mb-3" 
-                            placeholder="Ingrese el valor de la cuota" type="number" step="0.01" required />
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-success">Guardar Cliente</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                     </div>
                 </form>
             </div>
@@ -255,8 +246,6 @@ document.addEventListener("DOMContentLoaded", function () {
         <div class="col-md-6">
             <p><strong>Creado en:</strong> ${informacionlaboral.patrono_negocio}</p>
             <p><strong>Actualizado en:</strong> ${informacionlaboral.tiempo_laboral}</p>
-            <p><strong>Intento ingreso:</strong> ${informacionlaboral.estado_credito}</p>
-            <p><strong>Vencimiento usuario:</strong> ${informacionlaboral.valor_cuota}</p>
            
         </div>
     `;

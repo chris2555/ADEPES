@@ -54,6 +54,15 @@ class ConyugeController extends Controller
     ]);
 
     if ($response->successful()) {
+        // 1️⃣ Extraer el ID desde la respuesta de la API
+        $data = $response->json();
+        $idCreado = $data['id_conyuge' ] ?? 'desconocido';
+    
+        // 2️⃣ Inyectar el ID al request para que lo use el middleware
+        $request->merge([
+            '_id_creado_api' => $idCreado,
+            '_nombre_creado_api' => $request->nombres_conyuge,
+        ]);
         return redirect()->route('conyuge.index')->with('success', 'Conyuge creado correctamente.');
     } else {
         return redirect()->route('conyuge.index')->with('error', 'Error al crear Conyuge.');

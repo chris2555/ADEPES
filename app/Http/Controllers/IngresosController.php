@@ -68,7 +68,19 @@ class IngresosController extends Controller
         ]);
         
 
-          if ($response->successful()) {
+        if ($response->successful()) {
+            // 1️⃣ Extraer el ID desde la respuesta de la API
+            $data = $response->json();
+            $idCreado = $data['id_ingresos' ] ?? 'desconocido';
+        
+            // 2️⃣ Inyectar el ID al request para que lo use el middleware
+            $persona = Persona::find($request->id_persona);
+            $nombrePersona = $persona ? $persona->nombres_apellidos : 'registro';
+        
+            $request->merge([
+                '_id_creado_api' => $idCreado,
+                '_nombre_creado_api' => $nombrePersona,
+            ]);
             
             return redirect()->route('ingresos.index')->with('success', 'Estado de Ingresos creado correctamente');
           } else {

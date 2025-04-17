@@ -144,6 +144,31 @@ function sortTable(columnIndex) {
                                         <option value="Familiar">Familiar</option>
                                     </x-adminlte-select>
 
+                                    <x-adminlte-select name="pago_vivienda" label="Pago de Vivienda" fgroup-class="mb-3"
+                                        required>
+                                        <option value="">Seleccione...</option>
+                                        <option value="SI">Sí</option>
+                                        <option value="NO">No</option>
+                                    </x-adminlte-select>
+
+                                    <x-adminlte-select name="tipo_pago_vivienda" label="Tipo de Pago"
+                                        fgroup-class="mb-3">
+                                        <option value="">Seleccione...</option>
+                                        <option value="Semanal">Semanal</option>
+                                        <option value="Quincenal">Quincenal</option>
+                                        <option value="Mensual">Mensual</option>
+                                    </x-adminlte-select>
+
+                                    <x-adminlte-input name="valor_pago" label="Valor del Pago" type="number"
+                                        fgroup-class="mb-3" placeholder="Ingrese el monto" />
+
+                                    
+                                </div>
+                                <div class="col-md-6">
+                                    
+                                   
+
+
                                     <x-adminlte-select name="tiempo_vivir" label="Tiempo de Vivir" fgroup-class="mb-3"
                                         required>
                                         <option value="">Seleccione...</option>
@@ -154,6 +179,8 @@ function sortTable(columnIndex) {
                                         <option value="Más de 5 años">Más de 5 años</option>
                                     </x-adminlte-select>
 
+                                    
+
                                     <x-adminlte-select name="material_construccion" label="Material de Construcción"
                                         fgroup-class="mb-3" required>
                                         <option value="">Seleccione...</option>
@@ -161,14 +188,7 @@ function sortTable(columnIndex) {
                                         <option value="Madera">Madera</option>
                                         <option value="Mixto">Mixto</option>
                                     </x-adminlte-select>
-                                </div>
-                                <div class="col-md-6">
-                                    <x-adminlte-select name="pago_vivienda" label="Pago de Vivienda" fgroup-class="mb-3"
-                                        required>
-                                        <option value="">Seleccione...</option>
-                                        <option value="SI">Sí</option>
-                                        <option value="NO">No</option>
-                                    </x-adminlte-select>
+
                                     <x-adminlte-input name="dependiente" label="Dependiente" type="number"
                                         fgroup-class="mb-3" placeholder="Ingrese la cantidad de dependientes"
                                         min="1" max="10" id="dependiente" required />
@@ -183,28 +203,15 @@ function sortTable(columnIndex) {
                                             });
                                         </script>
                                     @endpush
-
-
-
-                                    <x-adminlte-select name="tipo_pago_vivienda" label="Tipo de Pago"
-                                        fgroup-class="mb-3">
-                                        <option value="">Seleccione...</option>
-                                        <option value="Semanal">Semanal</option>
-                                        <option value="Quincenal">Quincenal</option>
-                                        <option value="Mensual">Mensual</option>
-                                    </x-adminlte-select>
-
-                                    <x-adminlte-input name="valor_pago" label="Valor del Pago" type="number"
-                                        fgroup-class="mb-3" placeholder="Ingrese el monto" />
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
+                                    
                                     <x-adminlte-textarea name="direccion_completa" label="Dirección Completa"
-                                        fgroup-class="mb-3" placeholder="Ingrese la dirección" />
+                                    fgroup-class="mb-3" placeholder="Ingrese la dirección" required/>
+
+
+                                   
                                 </div>
                             </div>
+
                             <div class="modal-footer">
                                 <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
                                 <x-adminlte-button class="btn-flat" type="submit" label="Guardar Vivienda"
@@ -333,5 +340,32 @@ function sortTable(columnIndex) {
                 });
             </script>
         @endif
+
+
+
+        <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const pagoVivienda = document.querySelector('select[name="pago_vivienda"]');
+        const tipoPago = document.querySelector('select[name="tipo_pago_vivienda"]');
+        const valorPago = document.querySelector('input[name="valor_pago"]');
+
+        function toggleRequiredFields() {
+            if (pagoVivienda.value === 'SI') {
+                tipoPago.setAttribute('required', 'required');
+                valorPago.setAttribute('required', 'required');
+            } else {
+                tipoPago.removeAttribute('required');
+                valorPago.removeAttribute('required');
+            }
+        }
+
+        // Ejecutar al cargar
+        toggleRequiredFields();
+
+        // Ejecutar al cambiar
+        pagoVivienda.addEventListener('change', toggleRequiredFields);
+    });
+</script>
+
 
     @stop

@@ -49,25 +49,21 @@ class RelacionController extends Controller
 }
 
 
-public function getSolicitudes($id_persona)
+public function getByPersona($id)
 {
-    $solicitudes = SolicitudPrestamo::where('id_persona', $id_persona)->get(['id_solicitud', 'monto']);
-    return response()->json($solicitudes);
-}
+    $ingreso = DB::table('EstadoIngresos')
+        ->where('id_persona', $id)
+        ->select('id_ingresos', 'total_ingresos')
+        ->get();
 
-public function getIngresosByPersona($id)
-{
-    $ingresos = EstadoIngresos::where('id_persona', $id)->first();
 
-    if ($ingresos) {
-        return response()->json([
-            'id_ingresos' => $ingresos->id_ingresos,
-            'total_ingresos' => $ingresos->total_ingresos,
-        ]);
-    } else {
+    if (!$ingreso) {
         return response()->json([]);
     }
+
+    return response()->json($ingreso);
 }
+
 
 
     
