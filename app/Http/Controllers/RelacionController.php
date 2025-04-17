@@ -56,6 +56,7 @@ public function getByPersona($id)
         ->select('id_ingresos', 'total_ingresos')
         ->get();
 
+
     if (!$ingreso) {
         return response()->json([]);
     }
