@@ -295,7 +295,7 @@
             ingresosSelect.innerHTML = '';
             if (data.id_ingresos) {
               ingresosSelect.innerHTML += `<option value="${data.id_ingresos}" selected>
-                ${data.id_ingresos} - ${data.total_ingresos}
+                ${data.id_ingresos} - ${data.total_ingresos} - ${data.total_egresos}
               </option>`;
             } else {
               ingresosSelect.innerHTML = '<option value="">No se encontraron ingresos</option>';
