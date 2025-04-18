@@ -17,7 +17,7 @@ class SolicitudController extends Controller
     {
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes', []);
             $solicitudes = $response->json();
-            $personas = Persona::all();
+            $personas = Persona::where('tipo_persona', 'Solicitante')->get();
             return view('Solicitud.index', compact('solicitudes' , 'personas'));
     }
 
