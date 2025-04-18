@@ -253,7 +253,7 @@
                                 data.forEach(solicitud => {
                                     let option = document.createElement("option");
                                     option.value = solicitud.id_solicitud;
-                                    option.textContent = `ID: ${solicitud.id_solicitud}`; // Solo se muestra el ID
+                                    option.textContent = `ID: ${solicitud.id_solicitud}- Monto: L. ${solicitud.monto}`; // Solo se muestra el ID
                                     solicitudSelect.appendChild(option);
                                 });
                             } else {
