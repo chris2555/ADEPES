@@ -23,10 +23,11 @@ class RelacionController extends Controller
         $personas = Persona::where('tipo_persona', 'Solicitante')->get();
         $conyuges = Conyuge::all();
         $solicitudesp = SolicitudPrestamo::all();
+        $egresos = EstadoEgresos::all();
         $ingresos = EstadoIngresos::all();
         $avales = Persona::where('tipo_persona', 'Aval')->get();
         $solicitudes = $response->json();
-        return view('relacion.index', compact('solicitudes', 'personas', 'avales', 'conyuges', 'ingresos', 'solicitudesp'));
+        return view('relacion.index', compact('solicitudes', 'personas', 'avales', 'conyuges', 'egresos', 'ingresos', 'solicitudesp'));
     }
 
     /**
@@ -123,9 +124,10 @@ public function getByPersona($id)
         $personas = Persona::all();
         $conyuges = Conyuge::all();
         $ingresos = EstadoIngresos::all();
+        $egresos = EstadoEgresos::all();
         $avales = Persona::all(); 
 
-        return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'avales'));
+        return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
     }
 
     
