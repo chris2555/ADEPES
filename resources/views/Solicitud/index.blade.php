@@ -38,25 +38,37 @@
                                 <th style="text-align: center" data-order="asc">ID Solicitud</th>
                                 <th style="text-align: center">ID persona</th>
                                 <th style="text-align: center">Nombre Solicitante</th>
-                                <th>Garantia</th>
-                                <th>Cuota</th>
-                                <th>Tasa</th>
-                                <th>Plazo</th>
-                                <th>Monto</th>
-                                <th>Acciones</th>
+                                <th style="text-align: center">Garantia</th>
+                                <th style="text-align: center">Cuota</th>
+                                <th style="text-align: center">Tasa</th>
+                                <th style="text-align: center">Plazo</th>
+                                <th style="text-align: center">Monto</th>
+                                <th style="text-align: center">Estado</th>
+                                <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                         @foreach(collect($solicitudes)->sortBy(fn($p) => (int) $p['id_solicitud']) as $solicitud)
                                 <tr>
                                     <td style="text-align: center" data-order="asc">{{ $solicitud['id_solicitud'] }}</td>
-                                    <td>{{ $solicitud['id_persona'] }}</td>
+                                    <td style="text-align: center">{{ $solicitud['id_persona'] }}</td>
                                     <td>{{ $solicitud['nombre_solicitante'] }}</td>
-                                    <td>{{ $solicitud['tipo_garantia'] }}</td>
-                                    <td>{{ $solicitud['tipo_cuota'] }}</td>
-                                    <td>{{ $solicitud['tasa'] }}</td>
-                                    <td>{{ $solicitud['plazo'] }}</td>
-                                    <td>{{ $solicitud['monto'] }}</td>
+                                    <td style="text-align: center">{{ $solicitud['tipo_garantia'] }}</td>
+                                    <td style="text-align: center">{{ $solicitud['tipo_cuota'] }}</td>
+                                    <td style="text-align: center">{{ $solicitud['tasa'] }}</td>
+                                    <td style="text-align: center">{{ $solicitud['plazo'] }}</td>
+                                    <td style="text-align: center">{{ $solicitud['monto'] }}</td>
+                                    <td style="text-align: center"> @php
+        $estado = $solicitud['estado_solicitud'];
+        $claseEstado = match ($estado) {
+            'Aprobado' => 'badge bg-success',
+            'Pendiente' => 'badge bg-primary',
+            'Rechazado' => 'badge bg-danger',
+            default => 'badge bg-secondary',
+        };
+    @endphp
+    <span class="{{ $claseEstado }}" style="font-size: 0.975rem;">{{ $estado }}</span>
+</td>
                                     <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($solicitud) }})">

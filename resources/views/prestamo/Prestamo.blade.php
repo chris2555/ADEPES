@@ -181,7 +181,12 @@
 
                             <div class="mb-3">
                                 <label for="tipo" class="form-label">Tipo</label>
-                                <input type="text" class="form-control" id="tipo" name="tipo" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" title="Solo letras y espacios" required>
+                                <select class="form-control" id="tipo" name="tipo" required>
+                                <option value="Reingreso">Reingreso</option>
+                                    <option value="Refinanciamiento">Refinanciamiento</option>
+                                    <option value="Novacion">Novación</option>
+                                    <option value="Primera Vez">Primera Vez</option>
+                                    </select>
                             </div>
 
                             <div class="mb-3">
@@ -199,7 +204,7 @@
 
                             <div class="mb-3">
                                 <label for="plazo" class="form-label">Plazo (meses)</label>
-                                <input type="number" class="form-control" id="plazo" name="plazo" min="1" max="36" required>
+                                <input type="number" class="form-control" id="plazo" name="plazo" min="1" max="48" required>
                             </div>
 
                             <div class="mb-3">
