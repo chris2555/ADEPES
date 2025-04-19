@@ -4,7 +4,7 @@
 
 
 @section('content_header')
-<h1><b>Relacion Solicitud</b></h1>
+<h1><b>Relacion Solicitud y Aval</b></h1>
     <hr>
 @stop
 
@@ -24,7 +24,7 @@
     <div class="col-md-12">
         <div class="card card-outline card-success">
             <div class="card-header">
-            <h3 class="card-title">Gestión de Relaciones de Solicitud</h3>
+            <h3 class="card-title">Gestión de Relaciones de Solicitud y Aval</h3>
             <div class="card-tools">
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
                                 <i class="fas fa-plus"></i> Añadir Nuevo
@@ -43,7 +43,10 @@
                                 <th style="text-align: center">Nombre</th>
                                 <th style="text-align: center">Cónyuge</th>
                                 <th style="text-align: center">Ingresos</th>
-                                <th style="text-align: center">Egresos</th>
+                                <th style="text-align: center">Aval 1</th>
+                                <th style="text-align: center">Aval 2</th>
+                                <th style="text-align: center">Aval 3</th>
+                                <th style="text-align: center">Amortizacion</th>
                                 <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
@@ -55,7 +58,13 @@
                                     <td>{{ $solicitud['nombre_persona'] }}</td>
                                     <td>{{ $solicitud['nombre_conyuge'] }}</td>
                                     <td>{{ $solicitud['ingresos'] }}</td>
-                                    <td>{{ $solicitud['egresos'] }}</td>
+                                    <td>{{ $solicitud['nombre_aval1'] }}</td>
+                                    <td>{{ $solicitud['nombre_aval2'] }}</td>
+                                    <td>{{ $solicitud['nombre_aval3'] }}</td>
+                                    <td style="text-align: center"><a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-dark btn-sm" title="Ver Tabla de Amortización">
+                                            <i class="fas fa-file-alt"> Tabla de amortizacion </i>
+                                        </a>
+</td>
                                     <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($solicitud) }})">
@@ -64,9 +73,7 @@
                                         <a href="{{ route('relacion.show', $solicitud['id_relacion'])}}" class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-info btn-sm" title="Ver Tabla de Amortización">
-                                            <i class="fas fa-file-alt"></i>
-                                        </a>
+                                        
                                         <form action="{{ route('relacion.destroy', $solicitud['id_relacion']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
