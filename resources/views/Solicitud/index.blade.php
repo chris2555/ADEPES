@@ -44,6 +44,7 @@
                                 <th style="text-align: center">Plazo</th>
                                 <th style="text-align: center">Monto</th>
                                 <th style="text-align: center">Estado</th>
+                                <th style="text-align: center">Dictamen</th>
                                 <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
@@ -69,14 +70,21 @@
     @endphp
     <span class="{{ $claseEstado }}" style="font-size: 0.975rem;">{{ $estado }}</span>
 </td>
+<td style="text-align: center">
+    @if($solicitud['estado_solicitud'] === 'Aprobado')
+        <a href="{{ route('dictamen', $solicitud['id_solicitud']) }}"
+            class="btn btn-outline-primary btn-sm" title="Generar dictamen PDF">
+            <i class="fas fa-file-pdf"> Dictamen </i>
+        </a>
+    @else
+        <span class="text-muted">No disponible</span>
+    @endif
+</td>
+
                                     <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($solicitud) }})">
                                             <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="{{ route('dictamen', $solicitud['id_solicitud']) }}"
-                                            class="btn btn-outline-primary btn-sm" title="Generar dictamen PDF">
-                                            <i class="fas fa-file-pdf"></i>
                                         </a>
                                         
                                         <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}"
