@@ -39,8 +39,6 @@
                                     </div>
                                     <!-- Columna Derecha -->
                                     <div class="col-md-6">
-                                        <x-adminlte-input name="valor_cuota" label="Valor de Cuota" fgroup-class="mb-3"
-                                           value="{{ $informacionlaboral['valor_cuota'] ?? '' }}" required />
 
                                         <x-adminlte-input name="tiempo_laborar" label="Tiempo de Laborar" fgroup-class="mb-3"
                                             value="{{ $informacionlaboral['tiempo_laborar'] ?? '' }}" required />
@@ -48,11 +46,6 @@
                                         <x-adminlte-input name="gastos_alimentacion" label="Gastos de Alimentación" fgroup-class="mb-3"
                                             value="{{ $informacionlaboral['gastos_alimentacion'] ?? '' }}" required />
 
-                                        <x-adminlte-select name="estado_credito" label="Estado de Crédito" fgroup-class="mb-3">
-                                            <option value="Aprobado" {{ $informacionlaboral['estado_credito'] == 'Aprobado' ? 'selected' : '' }}>Aprobado</option>
-                                            <option value="Pendiente" {{ $informacionlaboral['estado_credito'] == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
-                                            <option value="Rechazado" {{ $informacionlaboral['estado_credito'] == 'Rechazado' ? 'selected' : '' }}>Rechazado</option>
-                                        </x-adminlte-select>
                                     </div>
                                 </div>
                             </div> <!-- Fin de card-body -->

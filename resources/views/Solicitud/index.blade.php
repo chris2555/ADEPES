@@ -81,6 +81,7 @@
     @endif
 </td>
 
+
                                     <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($solicitud) }})">

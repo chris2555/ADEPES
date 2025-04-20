@@ -45,8 +45,8 @@
                                 <th style="text-align: center">Ingresos</th>
                                 <th style="text-align: center">Aval 1</th>
                                 <th style="text-align: center">Aval 2</th>
-                                <th style="text-align: center">Aval 3</th>
                                 <th style="text-align: center">Amortizacion</th>
+                                <th style="text-align: center">Solicitud</th>
                                 <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
@@ -60,10 +60,16 @@
                                     <td>{{ $solicitud['ingresos'] }}</td>
                                     <td>{{ $solicitud['nombre_aval1'] }}</td>
                                     <td>{{ $solicitud['nombre_aval2'] }}</td>
-                                    <td>{{ $solicitud['nombre_aval3'] }}</td>
-                                    <td style="text-align: center"><a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-dark btn-sm" title="Ver Tabla de Amortización">
+                                    <td style="text-align: center"><a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-primary btn-sm" title="Ver Tabla de Amortización">
                                             <i class="fas fa-file-alt"> Tabla de amortizacion </i>
                                         </a>
+                                        <td style="text-align: center">
+        <a href="{{ route('solicitud', $solicitud['id_solicitud']) }}"
+            class="btn btn-outline-primary btn-sm" title="Generar solicitud PDF">
+            <i class="fas fa-file-pdf"> Solicitud </i>
+        </a>
+
+                                        </td>
 </td>
                                     <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-primary btn-sm"
