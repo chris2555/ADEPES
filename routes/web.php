@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('verroles', RoleController::class)->middleware('can:ver-seguridad')->names('verroles');
     Route::resource('permisos', PermisosController::class)->middleware('can:ver-seguridad')->names('permisos');
     Route::resource('users', UserController::class)->middleware('can:ver-seguridad')->names('users');
-    Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
+    //Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
     Route::resource('solicitudes', SolicitudController::class)->middleware('can:ver-seguridad')->names('solicitudes');
     Route::resource('gestionclientes', ClientesController::class)->middleware('can:ver-seguridad')->names('gestionclientes');
     Route::post('/egresos', [EstadoegresoController::class, 'store'])->name('Estadoegresos.store');
@@ -79,6 +79,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/amortizacion/{id_solicitud}', [RelacionController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
+    Route::get('/solicitud/{id_solicitud}', [RelacionController::class, 'generarSolicitudPDF'])->name('solicitud');
     Route::resource('parametros',ParametrosController::class)->names('parametros');
     Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');
     Route::get('/informacionlaboral', [InformacionLaboralController::class, 'index'])->name('informacionlaboral.index');

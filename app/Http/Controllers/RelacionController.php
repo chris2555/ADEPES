@@ -202,4 +202,66 @@ public function getByPersona($id)
         return redirect()->back()->with('error', 'No se pudo obtener la tabla de amortización.');
     }
 }
+
+public function generarSolicitudPDF($id_solicitud)
+{
+    // Obtener todas las relaciones desde la API
+    $relaciones = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona')->json();
+
+    // Buscar la relación que coincida con el id_solicitud dado
+    $relacion = collect($relaciones)->firstWhere('id_solicitud', (int) $id_solicitud);
+
+    if (!$relacion) {
+        abort(404, 'Solicitud no encontrada.');
+    }
+
+    // Asegurarte de que el id_persona esté presente
+    if (!isset($relacion['id_persona'])) {
+        abort(500, 'La relación no contiene id_persona.');
+    }
+
+    $id_persona = $relacion['id_persona'];
+
+    // Obtener datos de persona
+    $persona = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id_persona}")->json();
+
+    // Buscar cónyuge
+    $conyuges = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/Conyuge")->json();
+    $conyuge = collect($conyuges)->firstWhere('id_persona', $id_persona);
+
+      // Buscar cónyuge
+      $viviendas = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/viviendas")->json();
+      $vivienda = collect($viviendas)->firstWhere('id_persona', $id_persona);
+
+    $InformacionLaboral = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral")->json();
+    $informacionlaboral = collect($InformacionLaboral)->firstWhere('id_persona', $id_persona);
+
+    // Buscar ingresos y egresos
+    $ingresos = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos")->json();
+    $ingreso = collect($ingresos)->firstWhere('id_persona', $id_persona);
+
+    $referencias = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares")->json();
+    $referencia = collect($referencias)->firstWhere('id_persona', $id_persona);
+
+    $datos = [
+        'persona' => $persona,
+        'conyuge' => $conyuge,
+        'informacionlaboral' => $informacionlaboral,
+        'vivienda' => $vivienda,
+        'estado_ingresos' => $ingreso,
+        'referencias_familiares' => $referencia,
+    ];
+    
+    // Cargar PDF con los datos
+    $pdf = PDF::loadView('relacion.solicitud', compact('datos'));
+
+    $pdf->setPaper('A3', 'portrait');
+
+    return $pdf->stream("solicitud_persona_{$id_solicitud}.pdf");
 }
+
+
+}
+
+
+
