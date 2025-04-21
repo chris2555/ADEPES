@@ -257,6 +257,7 @@ public function generarSolicitudPDF($id_solicitud)
 
     $pdf->setPaper('A3', 'portrait');
 
+
     return $pdf->stream("solicitud_persona_{$id_solicitud}.pdf");
 }
 

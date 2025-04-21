@@ -1,126 +1,216 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Solicitud</title>
+    <meta charset="UTF-8">
+    <title>Solicitud Fondo Rotatorio</title>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
+            margin-bottom: 60px; /* espacio para el footer */
         }
+
         .container {
-            width: 800px;
+            width: 850px;
             margin: 0 auto;
-            border: 1px solid #ddd;
-            padding: 20px;
+            padding: 30px;
+            border: 1px solid #ccc;
         }
+
         .header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .header img {
-            max-width: 150px;
-            margin-bottom: 10px;
-        }
-        .title {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .info {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 20px;
         }
-        .info div {
-            flex: 1;
-            margin-right: 10px;
-        }
-        .info div:last-child {
-            margin-right: 0;
-        }
-        .analysis {
-            margin-bottom: 20px;
-        }
-        .footer {
+
+        .header .info {
             text-align: left;
+            font-size: 13px;
+        }
+
+        .header img {
+            width: 100px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            background-color: #f0f0f0;
+            padding: 8px;
             margin-top: 20px;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 8px 10px;
+            border: 1px solid #000;
+            text-align: left;
+        }
+
+        .label {
+            font-weight: bold;
+        }
+
+        .no-info {
+            font-style: italic;
+            color: #666;
+        }
+
+
     </style>
 </head>
 <body>
-    <div class="container">
+    
         <div class="header">
-            
-            <h2>ASOCIACIÓN DE DESARROLLO PESPIRENSE</h2>
-            <h3>"ADEPES"</h3>
-        </div>
-        <div class="title">SOLICITUD FONDO ROTATORIO</div>
-        <div class="info">
-        <h2>Datos Personales</h2>
+            <div class="info">
 
- <strong>Nombre:</strong> {{ $datos['persona']['nombres_apellidos'] }} <br>
-<strong>Identidad:</strong> {{ $datos['persona']['n_identidad'] }}<br>
-<strong>Fecha de nacimiento:</strong> {{ $datos['persona']['fecha_nacimiento'] }}<br>
-<strong>Edad:</strong> {{ $datos['persona']['edad'] }}<br>
-<strong>Nacionalidad:</strong> {{ $datos['persona']['nacionalidad'] }}<br>
-<strong>Estado Civil:</strong> {{ $datos['persona']['estado_civil'] }}<br>
-<strong>Genero:</strong> {{ $datos['persona']['genero'] }}<br>
-<strong>Email Personal:</strong> {{ $datos['persona']['email_personal'] }}<br>
-<strong>Email Laboral:</strong> {{ $datos['persona']['email_laboral'] }}<br>
-<strong>Telefono:</strong> {{ $datos['persona']['telefono_secundario'] }}<br>
+            <table width="100%" style="margin-bottom: 20px; border: none; border-collapse: collapse;">
+    <tr>
+    <td style="text-align: left; vertical-align: top; border: none;">
+            <h2 style="margin: 0;">ADEPES</h2>
+            <p style="margin: 0;">Programa de Desarrollo Sostenible con Enfoque a Derecho</p>
+            <p style="margin: 0;">Fondo Rotatorio</p>
+            <p style="margin: 0;">Pespire, Choluteca</p>
+            <p style="margin: 0;">Tel:2226-2345</p>
+            <strong>Solicitud creada por:</strong> {{ $datos['estado_ingresos']['creado_por_nombre'] ?? 'N/A' }}<br>
+        </td>
+        <td style="text-align: right; vertical-align: top; border: none;">
+        <img src="{{ public_path('img/adepeslogo.jpg') }}" width="150" alt="Logo ADEPES">
+        </td>
+    </tr>
+</table>
 
+                
+
+<div class="title"><span style="text-decoration: underline;">SOLICITUD FONDO ROTATORIO</span></div>
+
+        
+
+
+<h2>Datos Personales</h2>
 <hr>
-<h4>Cónyuge</h4>
-@if ($datos['conyuge'])
-<strong>Nombre:</strong> {{ $datos['conyuge']['nombres_conyuge'] }}<br>
-<strong>Conyuge:</strong> {{ $datos['conyuge']['identidad_conyuge'] }}<br>
-<strong>Direccion:</strong> {{ $datos['conyuge']['direccion_conyuge'] }}<br>
-<strong>Fecha de nacimiento:</strong> {{ $datos['conyuge']['fecha_nacimiento_conyuge'] }}<br>
-<strong>Direccion de Trabajo:</strong> {{ $datos['conyuge']['direccion_trabajo_conyuge'] }}<br>
-<strong>Tiempo de laborar:</strong> {{ $datos['conyuge']['tiempo_laborar_conyuge'] }}<br>
-<strong>Ingresos por negocio:</strong> {{ $datos['conyuge']['ingresos_negocio_conyuge'] }}<br>
-<strong>Gastos de alimentacion:</strong> {{ $datos['conyuge']['gastos_alimentacion_conyuge'] }}<br>
+<style>
+    .tabla-datos td {
+        border: 1px solid #000;
+        padding: 6px;
+    }
 
-@else
-<p>No hay información registrada.</p>
-@endif
+    .tabla-datos .encabezado {
+        background-color:rgb(133, 245, 122); /* Verde claro */
+        font-weight: bold;
+    }
+</style>
+       
+<table class="tabla-datos" width="100%">
+    <tr>
+        <td class="encabezado">Nombre:</td> <td>{{ $datos['persona']['nombres_apellidos'] }}</td>
+        <td class="encabezado">Identidad:</td> <td>{{ $datos['persona']['n_identidad'] }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Fecha de nacimiento:</td> <td>{{ $datos['persona']['fecha_nacimiento'] }}</td>
+        <td class="encabezado">Edad:</td> <td>{{ $datos['persona']['edad'] }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Nacionalidad:</td> <td>{{ $datos['persona']['nacionalidad'] }}</td>
+        <td class="encabezado">Estado Civil:</td> <td>{{ $datos['persona']['estado_civil'] }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Género:</td> <td>{{ $datos['persona']['genero'] }}</td>
+        <td class="encabezado">Teléfono:</td> <td>{{ $datos['persona']['telefono_secundario'] }}</td>
+        
+    </tr>
+    <tr>
+    <td class="encabezado">Email Personal:</td> <td>{{ $datos['persona']['email_personal'] }}</td>
+    <td class="encabezado">Email Laboral:</td> <td>{{ $datos['persona']['email_laboral'] }}</td>
+        
+    </tr>
+</table>
 
 
+<h2>Datos del cónyuge</h2>
 <hr>
-<h4>Vivienda</h4>
-@if ($datos['vivienda'])
-<strong>Dirección:</strong> {{ $datos['vivienda']['direccion_completa'] ?? 'N/A' }}<br>
-<strong>Dependiente:</strong> {{ $datos['vivienda']['dependiente'] ?? 'N/A' }}<br>
-<strong>Tipo de casa:</strong> {{ $datos['vivienda']['tipo_casa'] ?? 'N/A' }}<br>
+
+<table class="tabla-datos" width="100%">
+    <tr>
+    <td class="encabezado">Nombre:</td> <td>{{ $datos['conyuge']['nombres_conyuge'] }}</td>
+    <td class="encabezado">Conyuge:</td> <td>{{ $datos['conyuge']['identidad_conyuge'] }}</td>
+    </tr>
+    <tr>
+    <td class="encabezado">Direccion:</td> <td>{{ $datos['conyuge']['direccion_conyuge'] }}</td>
+    <td class="encabezado">Fecha de nacimiento:</td> <td> {{ $datos['conyuge']['fecha_nacimiento_conyuge'] }}</td>
+    </tr>
+    <tr>
+    <td class="encabezado">Direccion de Trabajo:</td> <td> {{ $datos['conyuge']['direccion_trabajo_conyuge'] }}</td>
+    <td class="encabezado">Tiempo de laborar:</td> <td>{{ $datos['conyuge']['tiempo_laborar_conyuge'] }}</td>
+    </tr>
+    <tr>
+    <td class="encabezado">Ingresos por negocio:</td> <td> {{ $datos['conyuge']['ingresos_negocio_conyuge'] }}</td>
+    <td class="encabezado">Gastos de alimentacion:</td> <td> {{ $datos['conyuge']['gastos_alimentacion_conyuge'] }}</td>
+    </tr>
+    </table>
+
+
+<h2>Vivienda</h2>
+<hr>
+
+<div style="font-size: 14px;">
+  <div style="display: inline-block; width: 48%; vertical-align: top;">
+<strong>Dirección:</strong>{{ $datos['vivienda']['direccion_completa'] ?? 'N/A' }}<br>
 <strong>Tiempo de vivir:</strong> {{ $datos['vivienda']['tiempo_vivir'] ?? 'N/A' }}<br>
-<strong>Pago de vivienda:</strong> {{ $datos['vivienda']['pago_vivienda'] ?? 'N/A' }}<br>
-<strong>Tipo de pago:</strong> {{ $datos['vivienda']['tipo_pago_vivienda'] ?? 'N/A' }}<br>
+<strong>Tipo de casa:</strong>{{ $datos['vivienda']['tipo_casa'] ?? 'N/A' }}<br>
+<strong>Pago de vivienda:</strong>{{ $datos['vivienda']['pago_vivienda'] ?? 'N/A' }}<br>
+</div>
+
+  <div style="display: inline-block; width: 48%; vertical-align: top;">
+<strong>Tipo de pago:</strong>{{ $datos['vivienda']['tipo_pago_vivienda'] ?? 'N/A' }}<br>
 <strong>Valor del pago:</strong> {{ $datos['vivienda']['valor_pago'] ?? 'N/A' }}<br>
 <strong>Material de construccion:</strong> {{ $datos['vivienda']['material_construccion'] ?? 'N/A' }}<br>
+<strong>Dependiente:</strong> {{ $datos['vivienda']['dependiente'] ?? 'N/A' }}<br>
+</div>
+</div>
 
-@else
-<p>No hay información registrada.</p>
-@endif
 
+    <h2>Información Laboral</h2>
 <hr>
-<h4>Información Laboral</h4>
-@if ($datos['informacionlaboral'])
-<strong>Profesión:</strong> {{ $datos['informacionlaboral']['profesion_oficio'] ?? 'N/A' }}<br>
-<strong>Actividad:</strong> {{ $datos['informacionlaboral']['actividad'] ?? 'N/A' }}<br>
 
-<strong>Ingresos del negocio:</strong> {{ $datos['informacionlaboral']['ingresos_negocio'] ?? 'N/A' }}<br>
-<strong>Direccion de trabajo:</strong> {{ $datos['informacionlaboral']['direccion_trabajo'] ?? 'N/A' }}<br>
+<div style="font-size: 14px;">
+  <div style="display: inline-block; width: 48%; vertical-align: top;">
+    <strong>Profesión:</strong> {{ $datos['informacionlaboral']['profesion_oficio'] ?? 'N/A' }}<br>
+    <strong>Actividad:</strong> {{ $datos['informacionlaboral']['actividad'] ?? 'N/A' }}<br>
+    <strong>Ingresos del negocio:</strong> {{ $datos['informacionlaboral']['ingresos_negocio'] ?? 'N/A' }}<br>
+    <strong>Dirección de trabajo:</strong> {{ $datos['informacionlaboral']['direccion_trabajo'] ?? 'N/A' }}<br>
+  </div>
 
-<strong>Nombre del patrono o del negocio:</strong> {{ $datos['informacionlaboral']['patrono_negocio'] ?? 'N/A' }}<br>
-<strong>Tiempo de laborar:</strong> {{ $datos['informacionlaboral']['tiempo_laborar'] ?? 'N/A' }}<br>
-<strong>Gastos de alimentacion:</strong> {{ $datos['informacionlaboral']['gastos_alimentacion'] ?? 'N/A' }}<br>
-@else
-<p>No hay información registrada.</p>
-@endif
+  <div style="display: inline-block; width: 48%; vertical-align: top;">
+    <strong>Nombre del patrono o del negocio:</strong> {{ $datos['informacionlaboral']['patrono_negocio'] ?? 'N/A' }}<br>
+    <strong>Tiempo de laborar:</strong> {{ $datos['informacionlaboral']['tiempo_laborar'] ?? 'N/A' }}<br>
+    <strong>Gastos de alimentación:</strong> {{ $datos['informacionlaboral']['gastos_alimentacion'] ?? 'N/A' }}<br>
+  </div>
+</div>
 
+
+
+
+<div style="position: fixed; bottom: 20px; right: 20px; font-size: 12px;">
+    Página 1 de 2
+</div>
+
+<h2>Estado de Ingresos</h2>
 <hr>
-<h4>Estado de Ingresos</h4>
 <strong>Sueldo Base:</strong> L {{ $datos['estado_ingresos']['sueldo_base'] ?? '0.00' }}<br>
 <strong>Ingresos por renta de propiedades:</strong> L {{ $datos['estado_ingresos']['renta_propiedades'] ?? '0.00' }}<br>
 <strong>Ingresos por Remesas:</strong> L {{ $datos['estado_ingresos']['remesas'] ?? '0.00' }}<br>
@@ -136,17 +226,46 @@
 
 
 
+
+<h2>Referencias Familiares</h2>
 <hr>
-<h4>Referencias Familiares</h4>
 <strong>Referencia 1:</strong><br>
-<strong>Nombre del Familiar:</strong> {{ $datos['referencias_familiares']['nombre_familiar'] ?? 'N/A' }}<br>
-<strong>Direccion Familiar:</strong> {{ $datos['referencias_familiares']['parentesco'] ?? 'N/A' }}<br>
-<strong>Direccion Familiar:</strong> {{ $datos['referencias_familiares']['direccion_familiar'] ?? 'N/A' }}<br>
+<table class="tabla-datos" width="100%">
+    <tr>
+<td class="encabezado">Nombre del Familiar:</td> <td> {{ $datos['referencias_familiares']['nombre_familiar'] ?? 'N/A' }}</td>
+<td class="encabezado">Parentesco:</td> <td> {{ $datos['referencias_familiares']['parentesco'] ?? 'N/A' }}</td>
+<td class="encabezado">Direccion Familiar:</td> <td>{{ $datos['referencias_familiares']['direccion_familiar'] ?? 'N/A' }}</td>
+</tr>
+    </table>
 
 <strong>Referencia 2:</strong><br>
-<strong>Nombre del Familiar:</strong> {{ $datos['referencias_familiares']['nombre_familiardos'] ?? 'N/A' }}<br>
-<strong>Direccion Familiar:</strong> {{ $datos['referencias_familiares']['parentesco_dos'] ?? 'N/A' }}<br>
-<strong>Direccion Familiar:</strong> {{ $datos['referencias_familiares']['direccion_familiardos'] ?? 'N/A' }}<br>
+<table class="tabla-datos" width="100%">
+<td class="encabezado">Nombre del Familiar:</td> <td> {{ $datos['referencias_familiares']['nombre_familiardos'] ?? 'N/A' }}</td>
+<td class="encabezado">Parentesco:</td> <td> {{ $datos['referencias_familiares']['parentesco_dos'] ?? 'N/A' }}</td>
+<td class="encabezado">Direccion Familiar:</td> <td> {{ $datos['referencias_familiares']['direccion_familiardos'] ?? 'N/A' }}</td>
+</tr>
+    </table>
+<div style="position: fixed; bottom: 20px; right: 20px; font-size: 12px;">
+    Página 2 de 2
+</div>
+
+
+<div class="footer">
+    <script type="text/php">
+        if (isset($pdf)) {
+            $pdf->page_script('
+                if ($PAGE_COUNT > 1) {
+                    $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+                    $size = 10;
+                    $pageText = "Página " . $PAGE_NUM . " de " . $PAGE_COUNT;
+                    $x = 520;
+                    $y = 820;
+                    $pdf->text($x, $y, $pageText, $font, $size);
+                }
+            ');
+        }
+    </script>
+</div>
 
 </body>
 </html>
