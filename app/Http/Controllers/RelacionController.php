@@ -105,15 +105,12 @@ public function getByPersona($id)
         ]);
 
         if ($response->successful()) {
-    return redirect()->back()->with('success', 'Relación de solicitud creada correctamente.');
-} else {
-    // Captura el mensaje de error que devuelve la API
-    $status = $response->status();
-    $error = $response->json(); // o $response->body();
-
-    return redirect()->back()->with('error', "Error {$status}: " . json_encode($error));
+            return redirect()->back()->with('success', 'Relacion creada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al crear relacion.');
+        }
 }
-    }
+   
 
     /**
      * Display the specified resource.
@@ -163,7 +160,7 @@ public function getByPersona($id)
     if ($response->successful()) {
         return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
     } else {
-        return redirect()->back()->with('error', 'Error al actualizar los datos en la API.');
+        return redirect()->back()->with('relacion.index')->with('error', 'Error al actualizar la solicitud.');
     }
 }
 
@@ -253,7 +250,14 @@ public function generarSolicitudPDF($id_solicitud)
     $solicitudes = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona")->json();
     $solicitudr = collect($solicitudes)->firstWhere('id_persona', $id_persona);
 
-    
+    $todas_las_personas = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas")->json();
+    $personas = collect($todas_las_personas);
+
+    // Buscar avales por nombre
+    $aval1 = $personas->firstWhere('nombres_apellidos', $relacion['nombre_aval1']);
+    $aval2 = $personas->firstWhere('nombres_apellidos', $relacion['nombre_aval2']);
+    $aval3 = $personas->firstWhere('nombres_apellidos', $relacion['nombre_aval3']);
+
 
     $datos = [
         'persona' => $persona,
@@ -264,6 +268,7 @@ public function generarSolicitudPDF($id_solicitud)
         'referencias_familiares' => $referencia,
         'solicitud' => $solicitud,
         'relacion' => $solicitudr,
+        'avales' => collect([$aval1, $aval2, $aval3])->filter(),
     ];
     
     // Cargar PDF con los datos

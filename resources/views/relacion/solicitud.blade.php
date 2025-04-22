@@ -369,33 +369,55 @@
 
 <h2>Avales</h2>
 <hr>
-<table width="100%" cellspacing="0" cellpadding="8"  
-    style="font-family: Arial, sans-serif; border-collapse: collapse; border: none; line-height: 1.5;">
+
+@foreach ($datos['avales'] as $index => $aval)
+<table class="tabla-datos" width="100%" cellspacing="0" cellpadding="8"  
+    style="font-family: Arial, sans-serif; border-collapse: collapse; border: none; line-height: 1.5; margin-bottom: 30px;">
     <tr>
-        <td style="width: 50%; vertical-align: top; padding-right: 15px; border: none;">
-            <div><strong>Aval 1:</strong> {{ $datos['relacion']['nombre_aval1'] ?? 'N/A' }}</div>
-        </td>
-        <td style="width: 50%; vertical-align: top; padding-left: 15px; border: none;">
-            <div><strong>Aval2:</strong> {{ $datos['relacion']['nombre_aval2'] ?? 'N/A' }}</div>
-        </td>
+        <td colspan="4" style="font-weight: bold;">Aval {{ $index + 1 }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Nombre:</td>
+        <td>{{ $aval['nombres_apellidos'] ?? 'N/A' }}</td>
+        <td class="encabezado">Identidad:</td>
+        <td>{{ $aval['n_identidad'] ?? 'N/A' }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Fecha de nacimiento:</td>
+        <td>{{ isset($aval['fecha_nacimiento']) ? \Carbon\Carbon::parse($aval['fecha_nacimiento'])->format('d-m-Y') : 'N/A' }}</td>
+        <td class="encabezado">Edad:</td>
+        <td>{{ $aval['edad'] ?? 'N/A' }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Nacionalidad:</td>
+        <td>{{ $aval['nacionalidad'] ?? 'N/A' }}</td>
+        <td class="encabezado">Estado Civil:</td>
+        <td>{{ $aval['estado_civil'] ?? 'N/A' }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Género:</td>
+        <td>{{ $aval['genero'] ?? 'N/A' }}</td>
+        <td class="encabezado">Teléfono:</td>
+        <td>{{ $aval['telefono_secundario'] ?? 'N/A' }}</td>
+    </tr>
+    <tr>
+        <td class="encabezado">Email Personal:</td>
+        <td>{{ $aval['email_personal'] ?? 'N/A' }}</td>
+        <td class="encabezado">Email Laboral:</td>
+        <td>{{ $aval['email_laboral'] ?? 'N/A' }}</td>
     </tr>
 </table>
+@endforeach
 
-
-
-
-<div style="margin-top: 50px; width: 80%; margin-left: auto; margin-right: auto;">
+<div style="margin-top: 1px; width: 80%; margin-left: auto; margin-right: auto;">
     <p><strong>Observaciones:</strong></p>
-    <div style="border: 1px solid #000; height: 80px; padding: 5px;"></div>
+    <div style="border: 1px solid #000; height: 60px; padding: 2px;"></div>
 </div>
 
-
-<div style="margin-top: 50px; text-align: center;">
+<div style="margin-top: 10px; text-align: center;">
     <p>_______________________________________________________</p>
     <p><strong>Nombre o Firma del Solicitante</strong></p>
 </div>
-
-
 
 <div style="position: fixed; bottom: 20px; right: 20px; font-size: 12px;">
     Página 2 de 2
