@@ -9,6 +9,7 @@ use App\Models\EstadoEgresos;
 use App\Models\EstadoIngresos;
 use App\Models\SolicitudPrestamo;
 use App\Models\RelacionSolicitudPersona;
+use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -243,6 +244,17 @@ public function generarSolicitudPDF($id_solicitud)
     $referencias = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares")->json();
     $referencia = collect($referencias)->firstWhere('id_persona', $id_persona);
 
+    $solicitudes = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes")->json();
+    $solicitud = collect($solicitudes)->firstWhere('id_persona', $id_persona);
+
+    $solicitudes = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes")->json();
+    $solicitud = collect($solicitudes)->firstWhere('id_persona', $id_persona);
+
+    $solicitudes = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona")->json();
+    $solicitudr = collect($solicitudes)->firstWhere('id_persona', $id_persona);
+
+    
+
     $datos = [
         'persona' => $persona,
         'conyuge' => $conyuge,
@@ -250,6 +262,8 @@ public function generarSolicitudPDF($id_solicitud)
         'vivienda' => $vivienda,
         'estado_ingresos' => $ingreso,
         'referencias_familiares' => $referencia,
+        'solicitud' => $solicitud,
+        'relacion' => $solicitudr,
     ];
     
     // Cargar PDF con los datos

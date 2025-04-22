@@ -51,20 +51,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($solicitudes as $solicitud)
+                            @foreach ($solicitudes as $solicitudr)
                                 <tr>
-                                    <td style="text-align: center">{{ $solicitud['id_relacion'] }}</td>
-                                    <td>{{ $solicitud['id_solicitud'] }}</td>
-                                    <td>{{ $solicitud['nombre_persona'] }}</td>
-                                    <td>{{ $solicitud['nombre_conyuge'] }}</td>
-                                    <td>{{ $solicitud['ingresos'] }}</td>
-                                    <td>{{ $solicitud['nombre_aval1'] }}</td>
-                                    <td>{{ $solicitud['nombre_aval2'] }}</td>
-                                    <td style="text-align: center"><a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-primary btn-sm" title="Ver Tabla de Amortización">
+                                    <td style="text-align: center">{{ $solicitudr['id_relacion'] }}</td>
+                                    <td>{{ $solicitudr['id_solicitud'] }}</td>
+                                    <td>{{ $solicitudr['nombre_persona'] }}</td>
+                                    <td>{{ $solicitudr['nombre_conyuge'] }}</td>
+                                    <td>{{ $solicitudr['ingresos'] }}</td>
+                                    <td>{{ $solicitudr['nombre_aval1'] }}</td>
+                                    <td>{{ $solicitudr['nombre_aval2'] }}</td>
+                                    <td style="text-align: center"><a href="{{ route('amortizacion', $solicitudr['id_solicitud']) }}" class="btn btn-outline-primary btn-sm" title="Ver Tabla de Amortización">
                                             <i class="fas fa-file-alt"> Tabla de amortizacion </i>
                                         </a>
                                         <td style="text-align: center">
-        <a href="{{ route('solicitud', $solicitud['id_solicitud']) }}"
+        <a href="{{ route('solicitud', $solicitudr['id_solicitud']) }}"
             class="btn btn-outline-primary btn-sm" title="Generar solicitud PDF">
             <i class="fas fa-file-pdf"> Solicitud </i>
         </a>
@@ -73,14 +73,14 @@
 </td>
                                     <td style="text-align: center">
                                         <a href="javascript:void(0);" class="btn btn-primary btn-sm"
-                                            onclick="viewModal({{ json_encode($solicitud) }})">
+                                            onclick="viewModal({{ json_encode($solicitudr) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('relacion.show', $solicitud['id_relacion'])}}" class="btn btn-success btn-sm">
+                                        <a href="{{ route('relacion.show', $solicitudr['id_relacion'])}}" class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         
-                                        <form action="{{ route('relacion.destroy', $solicitud['id_relacion']) }}" method="POST" class="d-inline delete-form">
+                                        <form action="{{ route('relacion.destroy', $solicitudr['id_relacion']) }}" method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button" class="btn btn-danger btn-sm delete-btn">
