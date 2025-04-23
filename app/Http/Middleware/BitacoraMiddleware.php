@@ -55,7 +55,8 @@ class BitacoraMiddleware
             $parametros = $request->route()->parameters();
             $idEditado = reset($parametros) ?? 'desconocido';
             $datoClave = $this->extraerDatoClave($request);
-            return "Se editó en $modulo: $datoClave (ID $idEditado)";
+            $nombreEditado = $request->input('_nombre_editado_api') ?? 'registro';
+            return "Se edito en $modulo: $nombreEditado (ID $idEditado)";
     
         case 'DELETE':
             $parametros = $request->route()->parameters();
