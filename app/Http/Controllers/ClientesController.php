@@ -107,8 +107,18 @@ class ClientesController extends Controller
             'email_laboral' => $request->filled('email_laboral') ? $request->email_laboral : null,
             'telefono_secundario' => $request->telefono_secundario,
         ]);
-        
+
         if ($response->successful()) {
+            // 1️⃣ Extraer el ID desde la respuesta de la API
+            $data = $response->json();
+            $idEditado = $data['id_persona' ] ?? 'desconocido';
+        
+            // 2️⃣ Inyectar el ID al request para que lo use el middleware
+            $request->merge([
+                '_id_editado_api' => $idEditado,
+                '_nombre_editado_api' => $request->nombres_apellidos,
+            ]);
+        
             return redirect()->route('gestionclientes.index')->with('success', 'Cliente actualizado correctamente');
         } else {
             return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al actualizar el telefono');
@@ -119,15 +129,13 @@ class ClientesController extends Controller
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
-    {
-       
-        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personass/{$id}");
-    
-        if ($response->successful()) {
-            return redirect()->route('gestionclientes.index')->with('success', 'Cliente eliminado correctamente');
-        } else {
-            return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al eliminar el cliente');
-        }
-    }
+{
+    $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
 
+    if ($response->successful()) {
+        return redirect()->route('gestionclientes.index')->with('success', 'Cliente eliminado correctamente.');
+    } else {
+        return redirect()->route('gestionclientes.index')->with('error', 'No se pudo eliminar el cliente.');
+    }
+}
 }

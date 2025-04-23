@@ -60,14 +60,17 @@
                                         <td>{{ $persona['email_personal'] }}</td>
                                         <td>{{ $persona['email_laboral'] }}</td>
                                         <td style="text-align: center">
+
                                         <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                         onclick="viewModal({{ json_encode($persona) }})">
                                         <i class="bi bi-eye"></i>
                                         </a>
-                                            <a href="{{ route('gestionclientes.show', $persona['id_persona'])}}" class="btn btn-success btn-sm">
+                                            <a href="{{ route('gestionclientes.show', $persona['id_persona'])}}" 
+                                            class="btn btn-success btn-sm">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                        <form action="{{ route('gestionclientes.destroy', $persona['id_persona']) }}" method="POST" class="d-inline delete-form">
+                                        <form action="{{ route('gestionclientes.destroy', $persona['id_persona']) }}" 
+                                        method="POST" class="d-inline delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm delete-btn">
