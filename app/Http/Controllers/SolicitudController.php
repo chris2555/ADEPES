@@ -139,7 +139,7 @@ class SolicitudController extends Controller
         if ($response->successful()) {
             return redirect()->route('solicitudes.index')->with('success', 'solicitud eliminada correctamente.');
         } else {
-            return redirect()->route('solicitudes.index')->with('error', 'No se pudo eliminar la solicitud.');
+            return redirect()->route('solicitudes.index')->with('error', 'No se puede eliminar una solicitud aprobada.');
         }
     }
 
