@@ -54,7 +54,7 @@
                             <td>{{ $solicitud['id_persona'] }}</td>
                             <td>{{ $solicitud['nombres_persona'] }}</td>
                             <td>{{ $solicitud['nombres_conyuge'] }}</td>
-                            <td>{{ $solicitud['fecha_nacimiento_conyuge'] }}</td>
+                            <td>{{ \Carbon\Carbon::parse($solicitud['fecha_nacimiento_conyuge'])->format('d/m/Y') }}</td>
                             <td>{{ $solicitud['identidad_conyuge'] }}</td>
                             <td>{{ $solicitud['direccion_conyuge'] }}</td>
                             <td>{{ $solicitud['profesion_oficio_conyuge'] }}</td>
