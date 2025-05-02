@@ -7,112 +7,109 @@
 @stop
 
 @section('content')
-    <div class='row'> 
+    <div class='row'>
     <div class="col-md-12">
-            <div class="card card-outline card-success">
-              <div class="card-header">
+        <div class="card card-outline card-success">
+            <div class="card-header">
                 <h3 class="card-title">Datos Registrados</h3>
-                
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-9">
                         <div class="row">
-                            <div class="col-md-9">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">Nombre de la institucion</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="fas fa-home"></i></span>
-                                                </div>
-                                                <input type="text" class="form-control" value="{{$configuraciones->nombre}}" name="nombre" placeholder="Escriba aqui..." disabled>
-                                            </div>
-                                            @error('nombre')
-                                            <small style="color: red">{{$message}}</small>
-                                            @enderror
+                            <div class="col-md-4"> <div class="form-group">
+                                    <label for="nombre">Nombre de la institución</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-home"></i></span>
                                         </div>
+                                        <input type="text" class="form-control" value="{{$configuraciones->nombre}}" name="nombre" id="nombre" placeholder="Escriba aqui..." disabled>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="">Descripcion de la institucion</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-university"></i></span>
-                                            </div>
-                                        <input type="text" value="{{$configuraciones->descripcion}}" name="descripcion" class="form-control" placeholder="Escriba aqui..." disabled>
-                                    </div>
-                                    @error('descripcion')
-                                            <small style="color: red">{{$message}}</small>
-                                            @enderror
+                                    @error('nombre')
+                                    <small style="color: red">{{$message}}</small>
+                                    @enderror
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="form-group">
-                                    <label for="">Direccion</label>
+                                    <label for="descripcion">Descripción de la institución</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-university"></i></span>
+                                        </div>
+                                        <input type="text" value="{{$configuraciones->descripcion}}" name="descripcion" id="descripcion" class="form-control" placeholder="Escriba aqui..." disabled>
+                                    </div>
+                                    @error('descripcion')
+                                    <small style="color: red">{{$message}}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4"> <div class="form-group">
+                                    <label for="direccion">Dirección</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-map-marked"></i></span>
                                         </div>
-                                        <input type="text" value="{{$configuraciones->direccion}}" name="direccion" class="form-control" placeholder="Escriba aqui..." disabled>
+                                        <input type="text" value="{{$configuraciones->direccion}}" name="direccion" id="direccion" class="form-control" placeholder="Escriba aqui..." disabled>
                                     </div>
                                     @error('direccion')
-                                        <small style="color: red">{{$message}}</small>
+                                    <small style="color: red">{{$message}}</small>
                                     @enderror
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Telefono</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
+                            <div class="col-md-4"> <div class="form-group">
+                                    <label for="telefono">Teléfono</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                            </div>
-                                        <input type="text" value="{{$configuraciones->telefono}}" name="telefono" class="form-control" placeholder="Escriba aqui..." disabled>
+                                        </div>
+                                        <input type="text" value="{{$configuraciones->telefono}}" name="telefono" id="telefono" class="form-control" placeholder="Escriba aqui..." disabled>
                                     </div>
                                     @error('telefono')
-                                        <small style="color: red">{{$message}}</small>
+                                    <small style="color: red">{{$message}}</small>
                                     @enderror
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Email</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
+                            <div class="col-md-4"> <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                            </div>
-                                        <input type="email" value="{{$configuraciones->email}}" name="email" class="form-control" placeholder="Escriba aqui..." disabled>
+                                        </div>
+                                        <input type="email" value="{{$configuraciones->email}}" name="email" id="email" class="form-control" placeholder="Escriba aqui..." disabled>
                                     </div>
+                                    @error('email')
+                                    <small style="color: red">{{$message}}</small>
+                                    @enderror
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Pagina web</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
+                            <div class="col-md-4"> <div class="form-group">
+                                    <label for="web">Página web</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-pager"></i></span>
-                                            </div>
-                                        <input type="text" value="{{$configuraciones->web}}" name="web" class="form-control" placeholder="Escriba aqui..." disabled>
+                                        </div>
+                                        <input type="text" value="{{$configuraciones->web}}" name="web" id="web" class="form-control" placeholder="Escriba aqui..." disabled>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Moneda</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4"> <div class="form-group">
+                                    <label for="moneda">Moneda</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-coins"></i></span>
-                                            </div>
-                                       <select  name="moneda" id="" class="form-control" disabled>
-                                       <option value="{{$configuraciones->moneda}}">{{$configuraciones->moneda}}</option>
-                                    </select>
+                                        </div>
+                                        <select name="moneda" id="moneda" class="form-control" disabled>
+                                            <option value="{{$configuraciones->moneda}}">{{$configuraciones->moneda}}</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
-                                <div class="col-md-3">
-                                <div class="form-group">
+                            <div class="col-md-4"> <div class="form-group">
                                     <label for="cartera">Cartera</label>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -122,30 +119,30 @@
                                     </div>
                                 </div>
                             </div>
+                             <div class="col-md-4">
+                                 </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="logo">Logo</label> <img src="{{asset('storage/'.$configuraciones->logo)}}" width="100px" alt="Logo de la institución"> </div>
+                    </div>
+                </div>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="logo"></label>
-                        <img src="{{asset('storage/'.$configuraciones->logo)}}" width="100px" alt="imagen">
-                        </div>
-                    </div>
-                </div>
                 <hr>
-                <div class =  "row">
+
+                <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                        <a href="{{url('/configuraciones')}}" class="btn btn-dark">Volver</a>
+                            <a href="{{url('/configuraciones')}}" class="btn btn-dark">Volver</a>
+                        </div>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
-</div>
+
             
 
 @stop
