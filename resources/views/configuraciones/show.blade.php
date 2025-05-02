@@ -111,6 +111,19 @@
                                     </select>
                                 </div>
                             </div>
+                                <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="cartera">Cartera</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                        </div>
+                                        <select name="cartera" id="cartera" class="form-control" disabled>
+                                            <option value="{{$configuraciones->cartera}}">{{$configuraciones->cartera}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
