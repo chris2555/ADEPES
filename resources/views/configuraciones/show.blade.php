@@ -118,11 +118,11 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-coins"></i></span>
                                         </div>
-                                        <select name="cartera" id="cartera" class="form-control" disabled>
-                                            <option value="{{$configuraciones->cartera}}">{{$configuraciones->cartera}}</option>
-                                        </select>
+                                        <input type="text" name="cartera" id="cartera" class="form-control" value="{{$configuraciones->cartera}}" disabled>
                                     </div>
                                 </div>
+                            </div>
+
                             </div>
                         </div>
                     </div>
