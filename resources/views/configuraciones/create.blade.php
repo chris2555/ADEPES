@@ -7,168 +7,187 @@
 @stop
 
 @section('content')
-    <div class='row'> 
+    <div class='row'>
     <div class="col-md-12">
-            <div class="card card-outline card-success">
-              <div class="card-header">
+        <div class="card card-outline card-success">
+            <div class="card-header">
                 <h3 class="card-title">Llene los datos del formulario</h3>
-                
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <form action="{{url('configuraciones/create')}}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label for="">Nombre de la institucion (*)  </label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"><i class="fas fa-home"></i></span>
-                                                </div>
-                                                <input type="text" class="form-control" name="nombre" placeholder="Escriba aqui..." required>
+            </div>
+            <div class="card-body">
+                <form action="{{url('configuraciones/create')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-4"> <div class="form-group">
+                                        <label for="nombre">Nombre de la institución (*)</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-home"></i></span>
                                             </div>
-                                            @error('nombre')
-                                            <small style="color: red">{{$message}}</small>
-                                            @enderror
+                                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Escriba aqui..." required>
+                                        </div>
+                                        @error('nombre')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="descripcion">Descripción de la institución (*)</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-university"></i></span>
+                                            </div>
+                                            <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Escriba aqui..." required>
+                                        </div>
+                                        @error('descripcion')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4"> <div class="form-group">
+                                        <label for="direccion">Dirección (*)</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-map-marked"></i></span>
+                                            </div>
+                                            <input type="text" name="direccion" id="direccion" class="form-control" placeholder="Escriba aqui..." required>
+                                        </div>
+                                        @error('direccion')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4"> <div class="form-group">
+                                        <label for="telefono">Teléfono (*)</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                                            </div>
+                                            <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Escriba aqui..." required>
+                                        </div>
+                                        @error('telefono')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4"> <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                            </div>
+                                            <input type="email" name="email" id="email" class="form-control" placeholder="Escriba aqui...">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label for="">Descripcion de la institucion (*) </label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-university"></i></span>
-                                            </div>
-                                        <input type="text" name="descripcion" class="form-control" placeholder="Escriba aqui..." required>
-                                    </div>
-                                    @error('descripcion')
-                                            <small style="color: red">{{$message}}</small>
-                                            @enderror
                                 </div>
-                            </div>
-                            <div class="col-md-5">
-                                <div class="form-group">
-                                    <label for="">Direccion (*)</label>
-                                    <div class="input-group mb-3">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-map-marked"></i></span>
+                                <div class="col-md-4"> <div class="form-group">
+                                        <label for="web">Página web</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-pager"></i></span>
+                                            </div>
+                                            <input type="text" name="web" id="web" class="form-control" placeholder="Escriba aqui...">
                                         </div>
-                                        <input type="text" name="direccion" class="form-control" placeholder="Escriba aqui..." required>
                                     </div>
-                                    @error('direccion')
-                                        <small style="color: red">{{$message}}</small>
-                                    @enderror
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4"> <div class="form-group">
+                                        <label for="moneda">Moneda (*)</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                            </div>
+                                            <select name="moneda" id="moneda" class="form-control" required>
+                                                <option value="">-- Seleccione una moneda --</option> <option value="usd">Dolar Estadounidense (USD)</option>
+                                                <option value="eur">Euro (EUR)</option> <option value="mxn">Peso Mexicano (MXN)</option>
+                                                <option value="hnl">Lempira Hondureño (HNL)</option>
+                                            </select>
+                                        </div>
+                                        @error('moneda')
+                                        <small style="color: red">{{$message}}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-4"> <div class="form-group">
+                                        <label for="cartera">Cartera</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                            </div>
+                                            <input type="text" name="cartera" id="cartera" class="form-control" placeholder="Ingrese el valor de la cartera">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Telefono (*)</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                                            </div>
-                                        <input type="text" name="telefono" class="form-control" placeholder="Escriba aqui..." required>
-                                    </div>
-                                    @error('telefono')
-                                        <small style="color: red">{{$message}}</small>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Email</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
-                                            </div>
-                                        <input type="email" name="email" class="form-control" placeholder="Escriba aqui...">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Pagina web</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-pager"></i></span>
-                                            </div>
-                                        <input type="text" name="web" class="form-control" placeholder="Escriba aqui...">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                            <label for="">Moneda (*)</label>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fas fa-coins"></i></span>
-                                            </div>
-                                       <select name="moneda" id="" class="form-control">
-                                       <option value="usd"> Dolar Estadounidense (USD)</option>
-                                       <option value="eur"> Dolar Estadounidense (EUR)</option>
-                                       <option value="mxn"> Peso Mexicano (MXN)</option>
-                                       <option value="hnl">Lempira Hondureño (HNL)</option>
-                                    </select>
-                                </div>
-                                @error('moneda')
-                                        <small style="color: red">{{$message}}</small>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="logo">Logo(*)</label>
-                            <input type="file" id="file" name="logo" accept=".jpg, .jpeg, .png" class="form-control" required>
-                            @error('logo')
-                            <small style="...">{{$message}}</small>
-                            @enderror
-                            <br>
-                            <center><output id="List"></output></center>
-                            <script>
-                                function archivo(evt) {
-                                    var files = evt.target.files;
 
-                                    for (var i = 0, f; f = files[i]; i++) {
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="file">Logo(*)</label>
+                                <input type="file" id="file" name="logo" accept=".jpg, .jpeg, .png" class="form-control" required>
+                                @error('logo')
+                                <small style="color: red">{{$message}}</small> @enderror
+                                <br>
+                                <center>
+                                    <output id="List"></output> </center>
+                                <script>
+                                    function archivo(evt) {
+                                        var files = evt.target.files; // Obtiene los archivos seleccionados
 
-                                        if (!f.type.match('image.*')) {
-                                            continue;
+                                        // Itera sobre los archivos (aunque solo esperamos uno para el logo)
+                                        for (var i = 0, f; f = files[i]; i++) {
+
+                                            // Verifica que el archivo sea una imagen
+                                            if (!f.type.match('image.*')) {
+                                                continue; // Si no es imagen, salta al siguiente archivo
+                                            }
+
+                                            var reader = new FileReader(); // Crea un lector de archivos
+
+                                            // Configura la función que se ejecutará cuando el archivo se lea
+                                            reader.onload = (function (theFile) {
+                                                return function (e) {
+                                                    // Actualiza el contenido del elemento con id "List" con la imagen de vista previa
+                                                    document.getElementById("List").innerHTML = `<img class="thumb thumbnail" src="${e.target.result}" width="100%" title="${escape(theFile.name)}" alt="Vista previa del logo"/>`; // Ajustado width y añadido alt text
+                                                };
+                                            })(f);
+
+                                            // Lee el archivo como una URL de datos (para mostrar la vista previa)
+                                            reader.readAsDataURL(f);
                                         }
-                                        var reader = new FileReader();
-                                        reader.onload = (function (theFile) {
-                                            return function (e) {
-
-                                                document.getElementById("List").innerHTML = `<img class="thumb thumbnail" src="${e.target.result}" width="70%" title="${escape(theFile.name)}"/>`;
-                                            };
-                                        })(f);
-                                        reader.readAsDataURL(f);
                                     }
-                                    
-                                }
-                                document.getElementById('file').addEventListener('change', archivo, false);
-                            </script>
+                                    // Asigna la función 'archivo' al evento 'change' del input con id 'file'
+                                    document.getElementById('file').addEventListener('change', archivo, false);
+                                </script>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <hr>
-                <div class =  "row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                        <a href="{{url('/configuraciones')}}" class="btn btn-dark">Cancelar</a>
-                        <button type="submit" class = "btn btn-success">Registrar</button>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <a href="{{url('/configuraciones')}}" class="btn btn-dark">Cancelar</a>
+                                <button type="submit" class="btn btn-success">Registrar</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form> </div>
         </div>
     </div>
 </div>
-</div>
+
             
 
 @stop
