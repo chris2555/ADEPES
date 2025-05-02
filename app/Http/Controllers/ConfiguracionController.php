@@ -39,6 +39,7 @@ class ConfiguracionController extends Controller
             'telefono' => 'required',
             'moneda' => 'required',
             'logo' => 'required',
+            'cartera' => 'required',
         ]);
 
         $configuracion = new Configuracion();
@@ -50,6 +51,7 @@ class ConfiguracionController extends Controller
         $configuracion->web = $request->web;
         $configuracion->moneda = $request->moneda;
         $configuracion->logo = $request->file('logo')->store('logos','public');
+        $configuracion->cartera = $request->cartera;
         $configuracion->save();
 
         return redirect()->route('configuraciones.index')
@@ -88,6 +90,7 @@ class ConfiguracionController extends Controller
             'direccion' => 'required',
             'telefono' => 'required',
             'moneda' => 'required',
+            'cartera' => 'required',
         
         ]);
 
@@ -104,7 +107,7 @@ class ConfiguracionController extends Controller
             Storage::delete('public/'.$configuraciones->logo);
             $configuracion->logo = $request->file('logo')->store('logos','public');
         }
-        
+        $configuracion->cartera = $request->cartera;
         $configuracion->save();
 
         return redirect()->route('configuraciones.index')
