@@ -350,7 +350,7 @@ return [
                    
                 ],
                 [
-                    'text' => 'Referencias Familiares',
+                    'text' => 'Referencias',
                     'route' => 'referencias.index', // Ruta al index del controlador
                     'icon' => 'fas fa-fw fa-house-user', // Ícono representativo de Referencia Familiar
                    
