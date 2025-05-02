@@ -42,6 +42,7 @@
                             <th style="...">Telefono</th>
                             <th style="...">Email</th>
                             <th style="...">Moneda</th>
+                             <th style="...">Cartera</th>
                             <th style="...">Logo</th>
                             <th style="...">Accion</th>
                         </tr>
@@ -55,6 +56,7 @@
                 <td style="text-align: center">{{$configuracione->telefono}}</td>
                 <td>{{$configuracione->email}}</td>
                 <td style="text-align: center">{{$configuracione->moneda}}</td>
+                <td style="text-align: center">{{$configuracione->cartera}}</td>
                 <td style="text-align: center">
                   <img src="{{asset('storage/'.$configuracione->logo)}}" width="100px" alt="imagen">
                 </td>
