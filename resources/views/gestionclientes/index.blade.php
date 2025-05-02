@@ -43,7 +43,7 @@
                                         <th style="text-align: center">Género</th>
                                         <th style="text-align: center">Teléfono</th>
                                         <th style="text-align: center">Email Personal</th>
-                                        <th style="text-align: center">Email Laboral</th>
+                                        <th style="text-align: center">Tipo cliente</th>
                                         <th style="text-align: center">Acciones</th>
                                         </tr>
                                     </thead>
@@ -58,7 +58,19 @@
                                         <td>{{ $persona['genero'] }}</td>
                                         <td>{{ $persona['telefono_secundario'] }}</td>
                                         <td>{{ $persona['email_personal'] }}</td>
-                                        <td>{{ $persona['email_laboral'] }}</td>
+                                        <td style="text-align: center">
+    @if($persona['tipo_persona'] === 'Solicitante')
+        <span class="badge bg-success text-white" style="font-size: 16px; width: 120px; display: inline-block; text-align: center;">Solicitante</span>
+    @elseif($persona['tipo_persona'] === 'Aval')
+        <span class="badge bg-primary text-white" style="font-size: 16px; width: 120px; display: inline-block; text-align: center;">Aval</span>
+    @else
+        <span class="badge bg-secondary text-white" style="font-size: 16px; width: 120px; display: inline-block; text-align: center;">{{ $persona['tipo_persona'] }}</span>
+    @endif
+</td>
+
+
+
+
                                         <td style="text-align: center">
 
                                         <a href="javascript:void(0);" class="btn btn-primary btn-sm"
@@ -329,6 +341,40 @@ function calcularEdad() {
         }
     }
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function validarTextoSinNumeros(input) {
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/\d/g, ""); // Elimina cualquier número ingresado
+        });
+    }
+
+    // Aplicar la validación a los campos específicos
+    validarTextoSinNumeros(document.querySelector("input[name='nombres_apellidos']"));
+    validarTextoSinNumeros(document.querySelector("input[name='nacionalidad']"));
+
+    // Agregar evento submit al formulario
+    document.getElementById("insert").addEventListener("submit", validarFormulario);
+});
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function validarSoloNumeros(input) {
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/\D/g, ""); // Elimina cualquier cosa que no sea número
+        });
+    }
+
+    // Aplicar la validación a los campos específicos
+    validarSoloNumeros(document.querySelector("input[name='n_identidad']"));
+
+    // Agregar evento submit al formulario
+    document.getElementById("insert").addEventListener("submit", validarFormulario);
+});
+</script>
+
 
 @stop
 @section('js')

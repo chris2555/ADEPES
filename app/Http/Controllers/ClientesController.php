@@ -135,7 +135,7 @@ class ClientesController extends Controller
     if ($response->successful()) {
         return redirect()->route('gestionclientes.index')->with('success', 'Cliente eliminado correctamente.');
     } else {
-        return redirect()->route('gestionclientes.index')->with('error', 'No se pudo eliminar el cliente.');
+        return redirect()->route('gestionclientes.index')->with('error', 'Este cliente tiene una solicitud generada no se puede eliminar.');
     }
 }
 }
