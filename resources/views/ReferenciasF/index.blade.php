@@ -1,10 +1,10 @@
 @extends('adminlte::page')
 
-@section('Referencias', 'Gestión de Referencias Familiares')
+@section('Referencias', 'Gestión de Referencias ')
 
 
 @section('content_header')
-<h1><b>Listado de Referencias Familiares</b></h1>
+<h1><b>Listado de Referencias </b></h1>
     <hr>
 @stop
 
@@ -23,7 +23,7 @@
         <div class="col-md-12">
             <div class="card card-outline card-success">
                 <div class="card-header">
-                    <h3 class="card-title">Gestión de Referencias Familiares</h3>
+                    <h3 class="card-title">Gestión de Referencias </h3>
                     <div class="card-tools">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevareferencia">
                 <i class="fas fa-plus"></i> Nueva Referencia
@@ -41,6 +41,7 @@
                         <th style="text-align: center">Nombre Pariente</th>
                         <th style="text-align: center">Nombre Familiar</th>
                         <th style="text-align: center">Parentesco</th>
+                        <th style="text-align: center">Telefono 1</th>
                         <th style="text-align: center">Dirección</th>
                         <th style="text-align: center">Acciones</th>
                         </tr>
@@ -53,6 +54,7 @@
                         <td>{{ $referencia['nombres_persona'] }}</td>
                         <td>{{ $referencia['nombre_familiar'] }}</td>
                         <td>{{ $referencia['parentesco'] }}</td>
+                        <td>{{ $referencia['telref1'] }}</td>
                         <td>{{ $referencia['direccion_familiar'] }}</td>
                             <td td style="text-align: center">
                                 <a href="javascript:void(0);" class="btn btn-primary btn-sm" 
@@ -110,61 +112,90 @@ function sortTable(columnIndex) {
 
 <!-- Modal para Insertar Nueva Referencia -->
 <div class="modal fade" id="nuevareferencia" tabindex="-1" aria-labelledby="nuevareferenciaModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl"> <!-- Cambiado a modal-xl para más espacio -->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="nuevareferencia">Agregar Nueva Referencia</h5>
+                <h5 class="modal-title">Agregar Nueva Referencia</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="insertForm" action="{{ route('referencias.store') }}" method="POST">
-                    @csrf
 
-                    <!-- ID Solicitud -->
+            <form id="insertForm" action="{{ route('referencias.store') }}" method="POST">
+                @csrf
+                <div class="modal-body">
+                    <!-- Selección de Persona -->
                     @if(isset($personas))
-    <x-adminlte-select name="id_persona" label="Seleccionar Familiar" fgroup-class="mb-3" required>
-        <option value="">Seleccione un Familiar</option>
-        @foreach ($personas as $persona)
-            <option value="{{ $persona['id_persona'] }}">
-                Nombre: {{ $persona['nombres_apellidos'] }} - ID Persona: {{ $persona['id_persona'] }}
-            </option>
-        @endforeach
-    </x-adminlte-select>
-@endif
-<div class="row">
-    <!-- Columna 1: Familiar 1 -->
-    <div class="col-md-6">
-        <!-- Nombre del Familiar 1 -->
-        <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar 1" required fgroup-class="mb-3" />
+                        <x-adminlte-select name="id_persona" label="Seleccionar Familiar" fgroup-class="mb-3" required>
+                            <option value="">Seleccione un Familiar</option>
+                            @foreach ($personas as $persona)
+                                <option value="{{ $persona['id_persona'] }}">
+                                    Nombre: {{ $persona['nombres_apellidos'] }} - ID Persona: {{ $persona['id_persona'] }}
+                                </option>
+                            @endforeach
+                        </x-adminlte-select>
+                    @endif
 
-        <!-- Parentesco 1 -->
-        <x-adminlte-input name="parentesco" id="parentesco" label="Parentesco" required fgroup-class="mb-3" />
+                    <!-- Referencias Familiares -->
+                    <h5 class="mb-3">Referencias Familiares</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar 1" required fgroup-class="mb-3" />
+                            <x-adminlte-input name="parentesco" id="parentesco" label="Parentesco" required fgroup-class="mb-3" />
+                            <x-adminlte-input name="telref1" id="telref1" label="Teléfono Familiar 1" type="text"
+                                fgroup-class="mb-3" placeholder="Ingrese el número" required
+                                pattern="[2389][0-9]{7}" maxlength="8"
+                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                            <x-adminlte-textarea name="direccion_familiar" id="direccion_familiar" label="Dirección" required fgroup-class="mb-3" rows="3" />
+                        </div>
 
-        <!-- Dirección 1 -->
-        <x-adminlte-textarea name="direccion_familiar" id="direccion_familiar" label="Dirección" required fgroup-class="mb-3" rows="3" />
-    </div>
+                        <div class="col-md-6">
+                            <x-adminlte-input name="nombre_familiardos" id="nombre_familiardos" label="Nombre del Familiar 2" required fgroup-class="mb-3" />
+                            <x-adminlte-input name="parentesco_dos" id="parentesco_dos" label="Parentesco" required fgroup-class="mb-3" />
+                            <x-adminlte-input name="telref2" id="telref2" label="Teléfono Familiar 2" type="text"
+                                fgroup-class="mb-3" placeholder="Ingrese el número" required
+                                pattern="[2389][0-9]{7}" maxlength="8"
+                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                            <x-adminlte-textarea name="direccion_familiardos" id="direccion_familiardos" label="Dirección" required fgroup-class="mb-3" rows="3" />
+                        </div>
+                    </div>
 
-    <!-- Columna 2: Familiar 2 -->
-    <div class="col-md-6">
-        <!-- Nombre del Familiar 2 -->
-        <x-adminlte-input name="nombre_familiardos" id="nombre_familiardos" label="Nombre del Familiar 2" required fgroup-class="mb-3" />
+                    <!-- Referencias Personales -->
+                    <h5 class="mt-4 mb-3">Referencias Personales</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <x-adminlte-input name="nombreper1" id="nombreper1" label="Nombre Persona 1" required fgroup-class="mb-3" />
+                            <x-adminlte-input name="relacionper1" id="relacionper1" label="Relación con Persona " required fgroup-class="mb-3" />
+                            <x-adminlte-input name="telrefper1" id="telrefper1" label="Teléfono Persona " type="text"
+                                fgroup-class="mb-3" placeholder="Ingrese el número" required
+                                pattern="[2389][0-9]{7}" maxlength="8"
+                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                            <x-adminlte-textarea name="direccionper1" id="direccionper1" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
+                        </div>
 
-        <!-- Parentesco 2 -->
-        <x-adminlte-input name="parentesco_dos" id="parentesco_dos" label="Parentesco" required fgroup-class="mb-3" />
+                        <div class="col-md-6">
+                            <x-adminlte-input name="nombreper2" id="nombreper2" label="Nombre Persona 2" required fgroup-class="mb-3" />
+                            <x-adminlte-input name="relacionper2" id="relacionper2" label="Relación con Persona " required fgroup-class="mb-3" />
+                            <x-adminlte-input name="telrefper2" id="telrefper2" label="Teléfono Persona " type="text"
+                                fgroup-class="mb-3" placeholder="Ingrese el número" required
+                                pattern="[2389][0-9]{7}" maxlength="8"
+                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                            <x-adminlte-textarea name="direccionper2" id="direccionper2" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Dirección 2 -->
-        <x-adminlte-textarea name="direccion_familiardos" id="direccion_familiardos" label="Dirección" required fgroup-class="mb-3" rows="3" />
+                <!-- Campo oculto de usuario -->
+                <input type="hidden" name="creado_por" value="{{ auth()->user()->id }}">
+
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <x-adminlte-button label="Cerrar" data-bs-dismiss="modal" class="btn-secondary" />
+                    <x-adminlte-button type="submit" label="Guardar Referencia" theme="success" icon="fas fa-save" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
-
-                    <input type="hidden" name="creado_por" value="{{ auth()->user()->id }}">
-
-                    <div class="modal-footer">
-                        <x-adminlte-button label="Cerrar" data-bs-dismiss="modal" class="btn-secondary" />
-                        <x-adminlte-button type="submit" label="Guardar Referencia" theme="success" icon="fas fa-save" />
-                    </div>
-                </form>
             
 
                 <script>
@@ -259,18 +290,41 @@ document.addEventListener("DOMContentLoaded", function () {
     function viewModal(referencia) {
         var modalBody = document.getElementById('viewModalBody');
         modalBody.innerHTML = `
-        <div class="col-md-6">
-            <p><strong>Nombre Familiar 1:</strong> ${referencia.nombre_familiar}</p>
-            <p><strong>Parentesco:</strong> ${referencia.parentesco || 'No especificado'}</p>
-            <p><strong>Dirección:</strong> ${referencia.direccion_familiar || 'No disponible'}</p>
-            </div>
-        <div class="col-md-6">
-        <p><strong>Nombre Familiar 2:</strong> ${referencia.nombre_familiardos}</p>
-            <p><strong>Parentesco:</strong> ${referencia.parentesco_dos || 'No especificado'}</p>
-            <p><strong>Dirección:</strong> ${referencia.direccion_familiardos || 'No disponible'}</p>
-            <p><strong>Creado por:</strong> ${referencia.creado_por}</p>
-            <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
-        </div>
+<div class="row">
+  <div class="col-md-6">
+    <p><strong>Nombre Familiar 1:</strong> ${referencia.nombre_familiar}</p>
+    <p><strong>Parentesco:</strong> ${referencia.parentesco || 'No especificado'}</p>
+    <p><strong>Teléfono:</strong> ${referencia.telref1 || 'No especificado'}</p>
+    <p><strong>Dirección:</strong> ${referencia.direccion_familiar || 'No disponible'}</p>
+  </div>
+  <div class="col-md-6">
+    <p><strong>Nombre Familiar 2:</strong> ${referencia.nombre_familiardos}</p>
+    <p><strong>Parentesco:</strong> ${referencia.parentesco_dos || 'No especificado'}</p>
+    <p><strong>Teléfono:</strong> ${referencia.telref2 || 'No especificado'}</p>
+    <p><strong>Dirección:</strong> ${referencia.direccion_familiardos || 'No disponible'}</p>
+  </div>
+</div>
+
+<!-- Referencias Personales -->
+<div class="row">
+  <div class="col-md-6">
+    <p><strong>Referencia Personal 1:</strong></p>
+    <p><strong>Nombre:</strong> ${referencia.nombreper1 || 'No especificado'}</p>
+    <p><strong>Relación:</strong> ${referencia.relacionper1 || 'No especificado'}</p>
+    <p><strong>Teléfono:</strong> ${referencia.telrefper1 || 'No especificado'}</p>
+    <p><strong>Dirección:</strong> ${referencia.direccionper1 || 'No disponible'}</p>
+    <p><strong>Creado por:</strong> ${referencia.creado_por}</p>
+    <p><strong>Modificador por:</strong> ${referencia.modificado_por}</p>
+  </div>
+  <div class="col-md-6">
+    <p><strong>Referencia Personal 2:</strong></p>
+    <p><strong>Nombre:</strong> ${referencia.nombreper2 || 'No especificado'}</p>
+    <p><strong>Relación:</strong> ${referencia.relacionper2 || 'No especificado'}</p>
+    <p><strong>Teléfono:</strong> ${referencia.telrefper2 || 'No especificado'}</p>
+    <p><strong>Dirección:</strong> ${referencia.direccionper2 || 'No disponible'}</p>
+    <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
+  </div>
+</div>
         `;
         var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
         viewModalElement.show();

@@ -16,7 +16,7 @@ class ReferenciasFController extends Controller
     public function index()
     {
         // Realizar la primera solicitud HTTP
-        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares');
+        $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares');
         $referencias = $response->json();
         $personas = Persona::all();
 
@@ -41,7 +41,7 @@ class ReferenciasFController extends Controller
     {
         $usuario_id = auth()->id();
     
-        // Enviar datos a la API
+        // Enviar datos a la API https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares', [
             'id_persona' => $request->id_persona,
             'nombres_persona' => $request->nombres_persona,
@@ -51,6 +51,16 @@ class ReferenciasFController extends Controller
             'nombre_familiardos' => $request->nombre_familiardos,
             'parentesco_dos' => $request->parentesco_dos ?? null,
             'direccion_familiardos' => $request->direccion_familiardos ?? null,
+            'telref1' => $request->telref1 ?? null,
+            'telref2' => $request->telref2 ?? null,
+            'nombreper1' => $request->nombreper1 ?? null,
+            'relacionper1' => $request->relacionper1 ?? null,
+            'direccionper1' => $request->direccionper1 ?? null,
+            'telrefper1' => $request->telrefper1 ?? null,
+            'nombreper2' => $request->nombreper2 ?? null,
+            'relacionper2' => $request->relacionper2 ?? null,
+            'direccionper2' => $request->direccionper2 ?? null,
+            'telrefper2' => $request->telrefper2 ?? null,
             'creado_por' => $usuario_id,
             'creado_en' => now()->format('Y-m-d H:i:s'), // Fecha actual en formato compatible
         ]);
@@ -78,7 +88,7 @@ class ReferenciasFController extends Controller
      */
     public function show(string $id)
     {
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares/{$id}");
+        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares/{$id}");
         $referencias = $response->json();
         $personas = Persona::all();
 
@@ -95,7 +105,7 @@ public function update(Request $request, string $id)
     $usuario_id = auth()->id();
 
     // Enviar datos a la API
-    $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/referenciasfamiliares/{$id}", [
+    $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/ReferenciasFamiliares/{$id}", [
         'id_persona' => $request->id_persona,
         'nombre_familiar' => $request->nombre_familiar,
         'parentesco' => $request->parentesco ?? null,
@@ -103,6 +113,16 @@ public function update(Request $request, string $id)
         'nombre_familiardos' => $request->nombre_familiardos,
         'parentesco_dos' => $request->parentesco_dos ?? null,
         'direccion_familiardos' => $request->direccion_familiardos ?? null,
+        'telref1' => $request->telref1 ?? null,
+        'telref2' => $request->telref2 ?? null,
+        'nombreper1' => $request->nombreper1 ?? null,
+        'relacionper1' => $request->relacionper1 ?? null,
+        'direccionper1' => $request->direccionper1 ?? null,
+        'telrefper1' => $request->telrefper1 ?? null,
+        'nombreper2' => $request->nombreper2 ?? null,
+        'relacionper2' => $request->relacionper2 ?? null,
+        'direccionper2' => $request->direccionper2 ?? null,
+        'telrefper2' => $request->telrefper2 ?? null,
         'modificado_por' => $usuario_id,
     ]);
 
