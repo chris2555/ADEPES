@@ -57,7 +57,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->middleware('can:ver-seguridad')->names('users');
     //Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
     Route::resource('solicitudes', SolicitudController::class)->middleware('can:ver-seguridad')->names('solicitudes');
-    Route::resource('gestionclientes', ClientesController::class)->middleware('can:ver-seguridad')->names('gestionclientes');
     Route::post('/egresos', [EstadoegresoController::class, 'store'])->name('Estadoegresos.store');
     Route::resource('egresos', EstadoEgresosController::class)->middleware('can:ver-seguridad')->names('egresos');
     Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
@@ -73,6 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
     Route::resource('conyuge', ConyugeController::class)->middleware('can:ver-seguridad')->names('conyuge');
     Route::resource('viviendas',ViviendaController::class)->names('viviendas');
+    Route::resource('gestionclientes', ClientesController::class)->names('gestionclientes');
     Route::resource('parametros',parametrosController::class)->names('Parametros');
     Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
     Route::get('/amortizacion/{id_solicitud}', [RelacionController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
