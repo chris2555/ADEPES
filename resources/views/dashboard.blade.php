@@ -61,6 +61,18 @@
                 <a href="{{ route('prestamos.index') }}" class="small-box-footer">Mostrar prestamos <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h3>{{ $CarteraEmpresa }}</h3>
+                    <p>Total Cartera</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="{{ route('configuraciones.index') }}" class="small-box-footer">Mostrar Cartera <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
     </div>
 </div>
 
