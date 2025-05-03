@@ -52,7 +52,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>{{ $TotalMontosAprobados }}</h3>
+                    <h3>{{ number_format($TotalMontosAprobados, 2) }} LPS</h3>
                     <p>Total Prestado</p>
                 </div>
                 <div class="icon">
@@ -64,7 +64,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
-                    <h3>{{ $CarteraEmpresa }}</h3>
+                    <h3>{{ number_format($CarteraEmpresa, 2) }} LPS</h3>
                     <p>Total Cartera</p>
                 </div>
                 <div class="icon">
