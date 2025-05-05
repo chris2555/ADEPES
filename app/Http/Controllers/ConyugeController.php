@@ -43,6 +43,7 @@ class ConyugeController extends Controller
         'fecha_nacimiento_conyuge' => $request->fecha_nacimiento_conyuge,
         'identidad_conyuge' => $request->identidad_conyuge,
         'direccion_conyuge' => $request->direccion_conyuge,
+        'telefono_conyuge' => $request->telefono_conyuge,
         'profesion_oficio_conyuge' => $request->profesion_oficio_conyuge,
         'cargo_conyuge' => $request->cargo_conyuge,
         'ingresos_negocio_conyuge' => $request->ingresos_negocio_conyuge,
@@ -104,6 +105,7 @@ class ConyugeController extends Controller
             'fecha_nacimiento_conyuge' => $request->fecha_nacimiento_conyuge,
             'identidad_conyuge' => $request->identidad_conyuge,
             'direccion_conyuge' => $request->direccion_conyuge,
+            'telefono_conyuge' => $request->telefono_conyuge,
             'profesion_oficio_conyuge' => $request->profesion_oficio_conyuge,
             'cargo_conyuge' => $request->cargo_conyuge,
             'ingresos_negocio_conyuge' => $request->ingresos_negocio_conyuge,
@@ -116,6 +118,15 @@ class ConyugeController extends Controller
         ]);
 
         if ($response->successful()) {
+            // 1️⃣ Extraer el ID desde la respuesta de la API
+            $data = $response->json();
+            $idEditado = $data['id_conyuge' ] ?? 'desconocido';
+        
+            // 2️⃣ Inyectar el ID al request para que lo use el middleware
+            $request->merge([
+                '_id_editado_api' => $idEditado,
+                '_nombre_editado_api' => $request->nombres_conyuge,
+            ]);
             return redirect()->route('conyuge.index')->with('success', 'Conyuge actualizado correctamente.');
         } else {
             return redirect()->route('conyuge.index')->with('error', 'Error al actualizar Conyuge.');;

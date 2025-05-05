@@ -75,9 +75,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('gestionclientes', ClientesController::class)->names('gestionclientes');
     Route::resource('parametros',parametrosController::class)->names('Parametros');
     Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
-    Route::get('/amortizacion/{id_solicitud}', [RelacionController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
-    Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
+    Route::get('/amortizacion/{id_solicitud}', [SolicitudController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
+    Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
     Route::get('/solicitud/{id_solicitud}', [RelacionController::class, 'generarSolicitudPDF'])->name('solicitud');
     Route::resource('parametros',ParametrosController::class)->names('parametros');
     Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');

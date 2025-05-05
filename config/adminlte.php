@@ -320,11 +320,7 @@ return [
                 'route' => 'gestionclientes.index',
                 'icon' => 'fas fa-fw fa-user', // Ícono de casa para viviendas
             ],
-            [
-                'text' => 'Telefonos',
-                'route' => 'telefonos.index',
-                'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
-                ],
+            
             [
                 'text' => 'Conyugues',
                 'route' => 'conyuge.index', // Ruta al index del controlador
@@ -355,6 +351,11 @@ return [
                     'icon' => 'fas fa-fw fa-house-user', // Ícono representativo de Referencia Familiar
                    
                 ],
+                [
+                    'text' => 'Telefonos',
+                    'route' => 'telefonos.index',
+                    'icon' => 'fas fa-fw fa-phone', // Ícono de teléfono
+                    ],
                 
             ],
            

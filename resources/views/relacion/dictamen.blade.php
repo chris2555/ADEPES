@@ -3,11 +3,21 @@
 <head>
     <title>Dictamen de Solicitud</title>
     <style>
+
         body {
             font-family: sans-serif;
             margin: 0;
             padding: 20px;
         }
+        .info-linea {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-bottom: 20px;
+    }
+    .info-linea div {
+        white-space: nowrap;
+    }
         .container {
             width: 800px;
             margin: 0 auto;
@@ -46,44 +56,88 @@
             text-align: left;
             margin-top: 20px;
         }
+        .box-verde h2,
+.box-verde h3 {
+    margin: 0;
+    padding: 2px;
+    font-size: 18px; /* Puedes reducir más si lo deseas */
+    line-height: 1.2;
+}
+
+.box-verde {
+    border: 1px solid #90ee90;
+    background-color:rgb(148, 236, 148);
+    padding: 3px; /* antes 5px */
+    border-radius: 1px;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.single-line-info {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 40px;
+        margin-bottom: 20px;
+        flex-wrap: nowrap;
+    }
+
+    .single-line-info div {
+        white-space: nowrap;
+    }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+<div class="header">
+            <div class="info">
+
             
-            <h2>ASOCIACIÓN DE DESARROLLO PESPIRENSE</h2>
-            <h3>"ADEPES"</h3>
+   
+            
+            <div class="box-verde">
+    <h2>ASOCIACIÓN DE DESARROLLO PESPIRENSE</h2>
+    <h3>"ADEPES"</h3>
+</div>
+
+            
         </div>
-        <div class="title">DICTAMEN DEL ASESOR</div>
-        <div class="info">
-            <div>
-                <strong>Monto:</strong> {{ $dictamen['monto'] }}
-            </div>
-            <div>
-                <strong>Plazo:</strong> {{ $dictamen['plazo'] }}
-            </div>
-        </div>
-        <div class="info">
-            <div>
-                <strong>Nombres y Apellidos:</strong> {{ $dictamen['nombre_solicitante'] }}
-            </div>
-        </div>
+        <table width="100%" style="margin-bottom: 20px; border: none; border-collapse: collapse;">
+
+
+        <tr>
+    <td style="text-align: left; vertical-align: top; border: none;">
+    </td>
+        <td style="text-align: center; vertical-align: top; border: none;">
+        <img src="{{ public_path('img/adepeslogo.jpg') }}" width="150" alt="Logo ADEPES">
+        </td>
+    </tr>
+</table>
+<div class="title"><h4><u>DICTAMEN DEL ASESOR</u></h4></div>
+<p>
+
+<p>
+    <strong>Monto:</strong> {{ $dictamen['monto'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <strong>Plazo:</strong> {{ $dictamen['plazo'] }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <strong>Destino:</strong> {{ $dictamen['invierte_en'] }}
+</p>
+
+
+
         <div class="analysis">
-            <strong>ANALISIS</strong>
+        <div class="box-verde">
+    <h3>DATOS PARA ANALISIS</h3>
+</div>
             <p>
-                CONSIDERANDO la informacion proporcionada, el analisis segun la informacion crediticia de
-                la Prestataria <strong>{{ $dictamen['nombre_solicitante'] }}</strong> y la informacion de la garantia <strong>{{ $dictamen['tipo_garantia'] }}</strong>
-                que presenta ante esta institucion este cliente tiene capacidad de pago para un monto de LPS.
-                <strong>{{ $dictamen['monto'] }}</strong> y una forma de pago en cuotas NIVELADA. 
+                SOLICITANTE: <strong>{{ $dictamen['nombre_solicitante'] }}</strong> obtiene sus ingresos por: <strong>{{ $informacionlaboral['profesion_oficio'] ?? 'N/A' }}</strong> actualmente se decida como: <strong>{{ $informacionlaboral['actividad'] ?? 'N/A' }}</strong> 
+                de <strong>{{ $informacionlaboral['patrono_negocio'] ?? 'N/A' }}</strong>,  el tipo de credito es <strong>{{ $dictamen['tipo_credito'] }}</strong> segun transunion (no tiene credito)
+                el monto solicitado es de: <strong>{{ $dictamen['monto'] }}</strong> la finalidad del credito es para compre de:(--------). 
                 La inversión se realizara en el sector de <strong>{{ $dictamen['invierte_en'] }}</strong>, ya que el solicitante trabaja como
                 <strong>{{ $dictamen['actividad'] }}</strong> en <strong>{{ $dictamen['direccion_trabajo_solicitante'] }}</strong>.
-                Los avales son: <strong>{{ $dictamen['nombre_aval1'] }}</strong>, quien trabaja en <strong>{{ $dictamen['direccion_trabajo_aval1'] }}</strong>;
-                <strong>{{ $dictamen['nombre_aval2'] }}</strong>, quien trabaja en <strong>{{ $dictamen['direccion_trabajo_aval2'] }}</strong>;
-                y <strong>{{ $dictamen['nombre_aval3'] }}</strong>, quien trabaja en <strong>{{ $dictamen['direccion_trabajo_aval3'] }}</strong>.
+                es su segundo credito en el fondo rotatorio (---------------)
             </p>
             <p>
-                POR LO TANTO YO JOSÉ LUIS MEJÍA SUGIERO LA APROBACION DEL MONTO ANTES
+                POR LO TANTO YO ________________________________ SUGIERO LA APROBACION DEL MONTO ANTES
                 EXBLUESTO
             </p>
         </div>

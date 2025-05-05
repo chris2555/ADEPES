@@ -183,6 +183,9 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="estado_credito_conyuge" label="Creditos en ADEPES" type="text" fgroup-class="mb-3" required
                                 placeholder="sin credito o con credito" />
 
+                                <x-adminlte-input name="telefono_conyuge" label="Telefono conyuge" type="text" fgroup-class="mb-3" required
+                                 />
+
                             </div>
                         </div>
                     </div>
@@ -252,6 +255,22 @@ function sortTable(columnIndex) {
         event.target.submit();
     }
   }
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function validarSoloNumeros(input) {
+        input.addEventListener("input", function () {
+            this.value = this.value.replace(/\D/g, ""); // Elimina cualquier cosa que no sea número
+        });
+    }
+
+    // Aplicar la validación a los campos específicos
+    validarSoloNumeros(document.querySelector("input[name='identidad_conyuge']"));
+
+    // Agregar evento submit al formulario
+    document.getElementById("insert").addEventListener("submit", validarFormulario);
+});
 </script>
 
 <script>
@@ -353,6 +372,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <p><strong>Fecha de Nacimiento:</strong> ${solicitud.fecha_nacimiento_conyuge }</p>
             <p><strong>Identidad:</strong> ${solicitud.identidad_conyuge }</p>
             <p><strong>Direccion:</strong> ${solicitud.direccion_conyuge  || 'No disponible'}</p>
+            <p><strong>Telefono:</strong> ${solicitud.telefono_conyuge  || 'No disponible'}</p>
             <p><strong>Profesion:</strong> ${solicitud.profesion_oficio_conyuge  || 'No disponible'}</p>
             <p><strong>Cargo:</strong> ${solicitud.cargo_conyuge  || 'No disponible'}</p>
             <p><strong>Ingresos del Negocio:</strong> ${solicitud.ingresos_negocio_conyuge  || 'No disponible'}</p>

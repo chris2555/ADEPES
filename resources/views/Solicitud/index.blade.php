@@ -44,6 +44,7 @@
                                 <th style="text-align: center">Plazo</th>
                                 <th style="text-align: center">Monto</th>
                                 <th style="text-align: center">Estado</th>
+                                <th style="text-align: center">Amortizacion</th>
                                 <th style="text-align: center">Dictamen</th>
                                 <th style="text-align: center">Acciones</th>
                             </tr>
@@ -71,7 +72,18 @@
     <span class="{{ $claseEstado }}" style="font-size: 0.975rem;">{{ $estado }}</span>
 </td>
 <td style="text-align: center">
-    @if($solicitud['estado_solicitud'] === 'Aprobado')
+  @if($solicitud['estado_solicitud'] === 'Aprobado')
+    <a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-primary btn-sm" title="Ver Tabla de Amortización">
+      <i class="fas fa-file-alt"> Tabla de amortizacion </i>
+    </a>
+  @else
+    <span class="text-muted">No disponible</span>
+  @endif
+</td>
+
+
+<td style="text-align: center">
+    @if($solicitud['estado_solicitud'] === 'Pendiente')
         <a href="{{ route('dictamen', $solicitud['id_solicitud']) }}"
             class="btn btn-outline-primary btn-sm" title="Generar dictamen PDF">
             <i class="fas fa-file-pdf"> Dictamen </i>

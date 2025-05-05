@@ -45,7 +45,6 @@
                                 <th style="text-align: center">Ingresos</th>
                                 <th style="text-align: center">Aval 1</th>
                                 <th style="text-align: center">Aval 2</th>
-                                <th style="text-align: center">Amortizacion</th>
                                 <th style="text-align: center">Solicitud</th>
                                 <th style="text-align: center">Acciones</th>
                             </tr>
@@ -60,9 +59,6 @@
                                     <td>{{ $solicitudr['ingresos'] }}</td>
                                     <td>{{ $solicitudr['nombre_aval1'] }}</td>
                                     <td>{{ $solicitudr['nombre_aval2'] }}</td>
-                                    <td style="text-align: center"><a href="{{ route('amortizacion', $solicitudr['id_solicitud']) }}" class="btn btn-outline-primary btn-sm" title="Ver Tabla de Amortización">
-                                            <i class="fas fa-file-alt"> Tabla de amortizacion </i>
-                                        </a>
                                         <td style="text-align: center">
         <a href="{{ route('solicitud', $solicitudr['id_solicitud']) }}"
             class="btn btn-outline-primary btn-sm" title="Generar solicitud PDF">
