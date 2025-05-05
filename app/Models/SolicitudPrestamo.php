@@ -25,6 +25,7 @@ class SolicitudPrestamo extends Model
         'estado_solicitud',
         'valor_cuota',
         'es_aval',
+        'finalidad_cre',
         'creado_por',
         'creado_en',
         'modificado_por',
