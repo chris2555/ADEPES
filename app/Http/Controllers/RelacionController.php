@@ -179,27 +179,9 @@ public function getByPersona($id)
     }
 
 
-    public function obtenerTablaAmortizacion($id_solicitud)
-{
-    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/amortizacion/{$id_solicitud}");
+  
 
-    if ($response->successful()) {
-        $amortizacion = $response->json();
 
-        // Verificar si los datos de amortización son válidos
-        if (empty($amortizacion)) {
-            return redirect()->back()->with('error', 'No se encontraron datos para la tabla de amortización.');
-        }
-
-        // Cargar la vista que contendrá el contenido del PDF
-        $pdf = PDF::loadView('relacion.amortizacion', compact('amortizacion'));
-
-        return $pdf->stream();
-
-    } else {
-        return redirect()->back()->with('error', 'No se pudo obtener la tabla de amortización.');
-    }
-}
 
 public function generarSolicitudPDF($id_solicitud)
 {

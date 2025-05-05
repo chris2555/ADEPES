@@ -81,6 +81,10 @@
                                     <x-adminlte-input name="estado_credito_conyuge" label="Estado de Crédito del Cónyuge"
                                         type="text" fgroup-class="mb-3" required
                                         value="{{ old('estado_credito_conyuge', $solicitudes['estado_credito_conyuge'] ?? '') }}" />
+
+                                        <x-adminlte-input name="telefono_conyuge" label="Telefono del Cónyuge"
+                                        type="text" fgroup-class="mb-3" required
+                                        value="{{ old('telefono_conyuge', $solicitudes['telefono_conyuge'] ?? '') }}" />
                                 </div>
                             </div>
                         </div>

@@ -146,28 +146,65 @@ class SolicitudController extends Controller
 
     public function generarDictamen($id_solicitud)
 {
+    // Obtener el dictamen desde la API
     $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/dictamen/{$id_solicitud}");
 
-    if ($response->successful()) {
-        $dictamen = $response->json();
+    if ($response->failed()) {
+        abort(404, 'No se encontró el dictamen');
+    }
 
-        // Verificar si los datos del dictamen son válidos
-        if (empty($dictamen)) {
-            return redirect()->back()->with('error', 'No se encontraron datos para el dictamen.');
+    $dictamen = $response->json();
+
+    // Verificar que id_persona esté presente
+    if (!isset($dictamen['id_persona'])) {
+        abort(500, 'El dictamen no contiene id_persona');
+    }
+
+    $id_persona = $dictamen['id_persona'];
+
+    // Obtener estado de ingresos de la API
+    $ingresos = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos")->json();
+    $ingreso = collect($ingresos)->firstWhere('id_persona', $id_persona);
+
+    $InformacionLaboral = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral")->json();
+    $informacionlaboral = collect($InformacionLaboral)->firstWhere('id_persona', $id_persona);
+
+    $datos = [
+        'dictamen' => $dictamen,
+        'estado_ingresos' => $ingreso,
+        'informacionlaboral' => $informacionlaboral,
+    ];
+
+    // Generar el PDF con la vista Blade
+    $pdf = PDF::loadView('relacion.dictamen', $datos);
+    $pdf->setPaper('A3', 'portrait');
+
+    return $pdf->stream();
+}
+
+
+public function obtenerTablaAmortizacion($id_solicitud)
+{
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/amortizacion/{$id_solicitud}");
+
+    if ($response->successful()) {
+        $amortizacion = $response->json();
+
+        // Verificar si los datos de amortización son válidos
+        if (empty($amortizacion)) {
+            return redirect()->back()->with('error', 'No se encontraron datos para la tabla de amortización.');
         }
 
         // Cargar la vista que contendrá el contenido del PDF
-        $pdf = PDF::loadView('relacion.dictamen', compact('dictamen'));
-         // Establecer el tamaño del papel
-         $pdf->setPaper('A3', 'portrait'); // Puedes cambia
+        $pdf = PDF::loadView('relacion.amortizacion', compact('amortizacion'));
 
         return $pdf->stream();
 
     } else {
-        return redirect()->back()->with('error', 'No se pudo obtener el dictamen.');
+        return redirect()->back()->with('error', 'No se pudo obtener la tabla de amortización.');
     }
 }
-
+   
 public function generarTransunion($id_persona)
 {
     $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/transunion/{$id_persona}");

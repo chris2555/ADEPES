@@ -63,6 +63,7 @@
         <thead>
             <tr>
                 <th>Número de Pago</th>
+                <th>Fecha de pago</th>
                 <th>Saldo Inicial</th>
                 <th>Cuota Mensual</th>
                 <th>Interés Pagado</th>
@@ -74,6 +75,7 @@
             @foreach ($amortizacion as $pago)
                 <tr>
                     <td>{{ $pago['NumeroPago'] }}</td>
+                    <td>{{ \Carbon\Carbon::parse($pago['Fecha'])->format('d/m/Y') }}</td>
                     <td>L {{ number_format($pago['SaldoInicial'], 2) }}</td>
                     <td>L {{ number_format($pago['CuotaMensual'], 2) }}</td>
                     <td>L {{ number_format($pago['InteresPagado'], 2) }}</td>
