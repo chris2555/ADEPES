@@ -3,66 +3,72 @@
 @section('title', 'Editar Pagos')
 
 @section('content_header')
-    <h1>Editar Pagos</h1>
+    <h1><b>Pagos / Modificar Pago</b></h1>
+    </hr>
 @stop
 
 @section('content')
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-success">
-                        <div class="card-header">
-                            <h3 class="card-title">Actualizar Pago</h3>
-                        </div>
-                        <form id="editForm" action="{{ route('pagos.update', $pago->id_pago) }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="card-body">
-                                <div class="row">
-                                    <!-- Columna Izquierda -->
-                                    <div class="col-md-6">
-                                        <!-- ID del Préstamo -->
-                                        <x-adminlte-input name="id_prestamo" label="ID del Préstamo" type="number" fgroup-class="mb-3" value="{{ $pago->id_prestamo }}" required />
-
-                                        <!-- ID de la Persona -->
-                                        <x-adminlte-input name="id_persona" label="ID de la Persona" type="number" fgroup-class="mb-3" value="{{ $pago->id_persona }}" required />
-
-                                        <!-- Monto del Pago -->
-                                        <x-adminlte-input name="monto" label="Monto del Pago" type="number" step="0.01" min="0" fgroup-class="mb-3" value="{{ $pago->monto }}" required />
-
-                                        <!-- Método de Pago -->
-                                        <x-adminlte-select name="metodo_pago" label="Método de Pago" fgroup-class="mb-3" required>
-                                            <option value="Efectivo" {{ $pago->metodo_pago == 'Efectivo' ? 'selected' : '' }}>Efectivo</option>
-                                            <option value="Transferencia" {{ $pago->metodo_pago == 'Transferencia' ? 'selected' : '' }}>Transferencia</option>
-                                            <option value="Cheque" {{ $pago->metodo_pago == 'Cheque' ? 'selected' : '' }}>Cheque</option>
-                                        </x-adminlte-select>
-
-                                        <!-- Número de Recibo -->
-                                        <x-adminlte-input name="recibo" label="Número de Recibo" type="text" fgroup-class="mb-3" value="{{ $pago->recibo }}" required />
-                                    </div>
-
-                                    <!-- Columna Derecha -->
-                                    <div class="col-md-6">
-                                        <!-- Fecha de Pago -->
-                                        <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" value="{{ $pago->fecha }}" required />
-
-                                        <!-- Intereses -->
-                                        <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" value="{{ $pago->intereses }}" required />
-                                    </div>
-                                </div>
-
-                                <div class="card-footer">
-                                    <a href="{{ route('pagos.index') }}" class="btn btn-secondary">Cancelar</a>
-                                    <x-adminlte-button class="btn-flat" type="submit" label="Actualizar Pago" theme="success" icon="fas fa-lg fa-save" />
-                                </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-outline card-success">
+            <div class="card-header">
+                <h3 class="card-title">Llene los datos del formulario</h3>
+            </div>
+            <div class="card-body">
+                <form id="editForm" action="{{ route('pagos.update', $pago->id_pago) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+                        <!-- Columna izquierda -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="id_prestamo" class="form-label">ID del Préstamo</label>
+                                <input type="number" class="form-control" id="id_prestamo" name="id_prestamo" value="{{ $pago->id_prestamo }}" required>
                             </div>
-                        </form>
+                            <div class="mb-3">
+                                <label for="id_persona" class="form-label">ID de la Persona</label>
+                                <input type="number" class="form-control" id="id_persona" name="id_persona" value="{{ $pago->id_persona }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="monto" class="form-label">Monto del Pago</label>
+                                <input type="number" step="0.01" min="0" class="form-control" id="monto" name="monto" value="{{ $pago->monto }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="metodo_pago" class="form-label">Método de Pago</label>
+                                <select class="form-control" id="metodo_pago" name="metodo_pago" required>
+                                    <option value="Efectivo" {{ $pago->metodo_pago == 'Efectivo' ? 'selected' : '' }}>Efectivo</option>
+                                    <option value="Transferencia" {{ $pago->metodo_pago == 'Transferencia' ? 'selected' : '' }}>Transferencia</option>
+                                    <option value="Cheque" {{ $pago->metodo_pago == 'Cheque' ? 'selected' : '' }}>Cheque</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recibo" class="form-label">Número de Recibo</label>
+                                <input type="text" class="form-control" id="recibo" name="recibo" value="{{ $pago->recibo }}" required>
+                            </div>
+                        </div>
+
+                        <!-- Columna derecha -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="fecha" class="form-label">Fecha de Pago</label>
+                                <input type="date" class="form-control" id="fecha" name="fecha" value="{{ $pago->fecha }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="intereses" class="form-label">Intereses</label>
+                                <input type="number" step="0.01" min="0" class="form-control" id="intereses" name="intereses" value="{{ $pago->intereses }}" required>
+                            </div>
+                        </div>
                     </div>
-                </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar Cambios</button>
+                        <a href="{{ route('pagos.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 @stop
 
 @section('js')
