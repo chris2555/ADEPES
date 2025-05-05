@@ -198,7 +198,11 @@ function sortTable(columnIndex) {
                                 <x-adminlte-input name="monto" type="number" label="Monto del Préstamo"
                                     placeholder="Ingrese el monto" fgroup-class="mb-3" step="0.01" min="10000"
                                     max="60000" required />
-
+                                    <x-adminlte-input name="finalidad_cre" type="text" label="Finalidad del Crédito"
+                                    placeholder="Ej. Compra de insumos, expansión de negocio..." fgroup-class="mb-3"
+                                    maxlength="50" required
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+\.?$"
+                                    title="Solo letras, espacios y un punto final opcional. No se permiten números ni signos especiales." />
                             </div>
                             <div class="col-md-6">
                                 <x-adminlte-select name="invierte_en" label="Sector de Inversión" fgroup-class="mb-3"
@@ -383,6 +387,7 @@ function sortTable(columnIndex) {
         <div class="col-md-6">
             <p><strong>Valor de la Cuota:</strong> ${solicitud.valor_cuota || 'No disponible'}</p>
              <p><strong>Es Aval:</strong> ${solicitud.es_aval || 'No disponible'}</p>
+             <p><strong>Finalidad Del Credito:</strong> ${solicitud.finalidad_cre || 'No disponible'}</p>
             <p><strong>Creado por:</strong> ${solicitud.creado_por}</p>
             <p><strong>Creado en:</strong> ${solicitud.creado_en ? new Date(solicitud.creado_en).toLocaleString() : 'No disponible'}</p>
             <p><strong>Modificado por:</strong> ${solicitud.modificado_por || 'No disponible'}</p>

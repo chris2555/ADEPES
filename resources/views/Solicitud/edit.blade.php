@@ -74,7 +74,11 @@
                                         placeholder="Ingrese el monto" fgroup-class="mb-3"
                                         step="0.01" min="1000" max="100000" required
                                         value="{{ old('monto', $solicitudes->monto) }}" />
-
+                                        <x-adminlte-input name="finalidad_cre" type="text" label="Finalidad del Crédito"
+                                         placeholder="Ej. Compra de insumos, expansión de negocio..." fgroup-class="mb-3"
+                                         maxlength="50" required value="{{ $solicitudes->finalidad_cre }}"
+                                         pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+\.?$"
+                                         title="Solo letras, espacios y un punto final opcional. No se permiten números ni signos especiales." />
 
                                         <x-adminlte-input name="capital" type="number" label="Capital"
                                             placeholder="Ingrese el capital" fgroup-class="mb-3" step="0.01" min="0"

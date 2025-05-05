@@ -52,6 +52,7 @@ class SolicitudController extends Controller
             'capital' => $request->capital,
             'interes' => $request->interes,
             'es_aval' => $request->es_aval,
+            'finalidad_cre' => $request->finalidad_cre,
             'creado_por' => $usuario_id,
         ]);
     
@@ -118,6 +119,7 @@ class SolicitudController extends Controller
             'capital' => $request->capital,
             'interes' => $request->interes,
             'es_aval' => $request->es_aval,
+            'finalidad_cre' => $request->finalidad_cre,
             'modificado_por' => $usuario_id,
         ]);
 
