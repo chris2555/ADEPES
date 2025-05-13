@@ -10,6 +10,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
+        <!-- USUARIOS -->
         <div class="col-lg-3 col-6">
             <div class="small-box bg-info">
                 <div class="inner">
@@ -23,6 +24,7 @@
             </div>
         </div>
 
+        <!-- CLIENTES -->
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
                 <div class="inner">
@@ -36,6 +38,7 @@
             </div>
         </div>
 
+        <!-- SOLICITUDES -->
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
@@ -49,6 +52,7 @@
             </div>
         </div>
 
+        <!-- TOTAL PRESTADO -->
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
@@ -61,6 +65,8 @@
                 <a href="{{ route('prestamos.index') }}" class="small-box-footer">Mostrar prestamos <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+
+        <!-- TOTAL CARTERA -->
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
                 <div class="inner">
@@ -73,13 +79,12 @@
                 <a href="{{ route('configuraciones.index') }}" class="small-box-footer">Mostrar Cartera <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-    </div>
-</div>
 
- <div class="col-lg-3 col-6">
+        <!-- TOTAL PAGADO -->
+        <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3>{{ $TotalSolicitudesAprobadas }}</h3>
+                    <h3> LPS</h3>
                     <p>Total Pagado</p>
                 </div>
                 <div class="icon">
@@ -88,6 +93,9 @@
                 <a href="{{ route('pagos.index') }}" class="small-box-footer">Mostrar pagos <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
+    </div>
+</div>
+
 
 @stop
 @section('js')
