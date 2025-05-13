@@ -84,7 +84,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
                 <div class="inner">
-                    <h3> LPS</h3>
+                    <h3>{{ number_format($TotalPagado, 2) }} LPS</h3>
                     <p>Total Pagado</p>
                 </div>
                 <div class="icon">
