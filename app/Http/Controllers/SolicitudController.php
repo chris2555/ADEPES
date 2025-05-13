@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB; // Asegúrate que esté al inicio del archivo
 use App\Models\SolicitudPrestamo;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Persona;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class SolicitudController extends Controller
 {
@@ -171,15 +172,35 @@ class SolicitudController extends Controller
     $InformacionLaboral = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral")->json();
     $informacionlaboral = collect($InformacionLaboral)->firstWhere('id_persona', $id_persona);
 
+
+    $persona = Persona::find($id_persona);
+
+    $nombreCompleto = $persona 
+        ? trim("{$persona->nombre1} {$persona->nombre2} {$persona->apellido1} {$persona->apellido2}") 
+        : null;
+    
+    $cantidadPrestamos = 0;
+    
+    if ($nombreCompleto) {
+        $cantidadPrestamos = DB::table('persona as p')
+            ->join('prestamo as pr', 'pr.id_persona', '=', 'p.id_persona')
+            ->where(DB::raw("CONCAT_WS(' ', p.nombre1, p.nombre2, p.apellido1, p.apellido2)"), '=', $nombreCompleto)
+            ->count();
+    }
+    
+    $usuarioNombre = auth()->user()->name;
+
     $datos = [
         'dictamen' => $dictamen,
         'estado_ingresos' => $ingreso,
         'informacionlaboral' => $informacionlaboral,
+        'cantidadPrestamos' => $cantidadPrestamos,
+        'usuarioNombre' => $usuarioNombre,
     ];
 
     // Generar el PDF con la vista Blade
     $pdf = PDF::loadView('relacion.dictamen', $datos);
-    $pdf->setPaper('A3', 'portrait');
+     $pdf->setPaper('letter', 'portrait'); // Cambiar A3 a 'letter'
 
     return $pdf->stream();
 }
@@ -187,18 +208,40 @@ class SolicitudController extends Controller
 
 public function obtenerTablaAmortizacion($id_solicitud)
 {
+    // Obtener la tabla de amortización
     $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/amortizacion/{$id_solicitud}");
 
     if ($response->successful()) {
         $amortizacion = $response->json();
 
-        // Verificar si los datos de amortización son válidos
         if (empty($amortizacion)) {
             return redirect()->back()->with('error', 'No se encontraron datos para la tabla de amortización.');
         }
 
-        // Cargar la vista que contendrá el contenido del PDF
-        $pdf = PDF::loadView('relacion.amortizacion', compact('amortizacion'));
+        // Tomar el id_persona desde la primera fila del resultado
+        $id_persona = $amortizacion[0]['IdPersona'] ?? null;
+
+        if (!$id_persona) {
+            return redirect()->back()->with('error', 'No se pudo determinar el ID de la persona.');
+        }
+
+        // Obtener todas las solicitudes desde la API
+        $solicitudes = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes")->json();
+
+        // Buscar la solicitud que coincide con el id_persona
+        $solicitud = collect($solicitudes)->firstWhere('id_persona', $id_persona);
+
+        if (!$solicitud) {
+            return redirect()->back()->with('error', 'No se encontró la solicitud correspondiente.');
+        }
+
+        // Pasar los datos a la vista PDF
+        $pdf = PDF::loadView('relacion.amortizacion', [
+            'amortizacion' => $amortizacion,
+            'solicitud' => $solicitud
+        ]);
+
+        $pdf->setPaper('letter', 'portrait');
 
         return $pdf->stream();
 
@@ -206,6 +249,7 @@ public function obtenerTablaAmortizacion($id_solicitud)
         return redirect()->back()->with('error', 'No se pudo obtener la tabla de amortización.');
     }
 }
+
    
 public function generarTransunion($id_persona)
 {

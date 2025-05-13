@@ -53,9 +53,10 @@
             margin-bottom: 20px;
         }
         .footer {
-            text-align: left;
-            margin-top: 20px;
-        }
+    text-align: center;
+    margin-top: 20px;
+}
+
         .box-verde h2,
 .box-verde h3 {
     margin: 0;
@@ -85,6 +86,10 @@
     .single-line-info div {
         white-space: nowrap;
     }
+    .justificado {
+    text-align: justify;
+    line-height: 1.5;
+}
 
     </style>
 </head>
@@ -129,22 +134,38 @@
     <h3>DATOS PARA ANALISIS</h3>
 </div>
             <p>
-                SOLICITANTE: <strong>{{ $dictamen['nombre_solicitante'] }}</strong> obtiene sus ingresos por: <strong>{{ $informacionlaboral['profesion_oficio'] ?? 'N/A' }}</strong> actualmente se decida como: <strong>{{ $informacionlaboral['actividad'] ?? 'N/A' }}</strong> 
-                de <strong>{{ $informacionlaboral['patrono_negocio'] ?? 'N/A' }}</strong>,  el tipo de credito es <strong>{{ $dictamen['tipo_credito'] }}</strong> segun transunion (no tiene credito)
-                el monto solicitado es de: <strong>{{ $dictamen['monto'] }}</strong> la finalidad del credito es para compre de:(--------). 
-                La inversión se realizara en el sector de <strong>{{ $dictamen['invierte_en'] }}</strong>, ya que el solicitante trabaja como
-                <strong>{{ $dictamen['actividad'] }}</strong> en <strong>{{ $dictamen['direccion_trabajo_solicitante'] }}</strong>.
-                es su segundo credito en el fondo rotatorio (---------------)
+            <div class="justificado">
+    SOLICITANTE: <strong>{{ $dictamen['nombre_solicitante'] }}</strong> obtiene sus ingresos por: <strong>{{ $informacionlaboral['profesion_oficio'] ?? 'N/A' }}</strong> actualmente se decida como: <strong>{{ $informacionlaboral['actividad'] ?? 'N/A' }}</strong> 
+    de <strong>{{ $informacionlaboral['patrono_negocio'] ?? 'N/A' }}</strong>, el tipo de crédito es <strong>{{ $dictamen['tipo_credito'] }}</strong> según TransUnion (no tiene crédito).  
+    El monto solicitado es de: <strong>{{ $dictamen['monto'] }}</strong>, la finalidad del crédito es para: <strong>{{ $dictamen['finalidad_cre'] }}</strong>.  
+    La inversión se realizará en el sector de <strong>{{ $dictamen['invierte_en'] }}</strong>, ya que el solicitante trabaja como 
+    <strong>{{ $dictamen['actividad'] }}</strong> <strong>{{ $dictamen['direccion_trabajo_solicitante'] }}</strong>.  
+    Es su crédito #<strong>{{ $cantidadPrestamos + 1 }}</strong> en el fondo rotatorio.
+</div>
+
+
+
             </p>
             <p>
-                POR LO TANTO YO ________________________________ SUGIERO LA APROBACION DEL MONTO ANTES
-                EXBLUESTO
+            <p>
+            <p>
+    POR LO TANTO YO <strong>{{ strtoupper($usuarioNombre) }}</strong> SUGIERO LA APROBACIÓN DEL MONTO ANTES EXPUESTO,
+</p>
+
+</p>
+
             </p>
         </div>
         <div class="footer">
-            <strong>ASESOR DE CREDITO</strong>
-            <p>____________________________</p>
-        </div>
+    
+    <p>____________________________</p>
+    <strong>ASESOR DE CREDITO</strong>
+</div>
+
     </div>
+    <div style="position: fixed; bottom: 20px; right: 20px; font-size: 12px;">
+    Página 1 de 1
+</div>
+
 </body>
 </html>

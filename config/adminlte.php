@@ -373,7 +373,12 @@ return [
             'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
         ],
         
-        
+        [
+            'text' => 'Prestamos',
+            'route' => 'Prestamo.index', // Ruta al index del controlador
+            'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
+           
+        ],
        
         [
         'text' => 'Pagos',
@@ -381,11 +386,19 @@ return [
         'icon' => 'fas fa-fw fa-credit-card', // Ícono representativo de usuarios
         ],
         [
-            'text' => 'Prestamos',
-            'route' => 'Prestamo.index', // Ruta al index del controlador
-            'icon' => 'fas fa-fw fa-hand-holding-usd', // Ícono representativo de usuarios
-           
+            'text' => 'Administración',
+            'icon' => 'fas fa-fw fa-cogs', // Ícono de engranajes para administración
+            'submenu' => [
+                [
+                    'text' => 'Usuarios',
+                    'route' => 'users.index', // Ruta al módulo de usuarios
+                    'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
+                    'can' => 'ver-seguridad' 
+                ],
+                
+            ],
         ],
+        
         [
             'text' => 'Seguridad',
             'icon' => 'fas fa-fw fa-user-lock', // Ícono representativo de usuarios
@@ -402,39 +415,29 @@ return [
                     'icon' => 'fas fa-fw fa-key', // Ícono de lista para bitácora
                     'can' => 'ver-seguridad' 
                 ],
-            ],
-           
-        ],
-        [
-            'text' => 'Administración',
-            'icon' => 'fas fa-fw fa-cogs', // Ícono de engranajes para administración
-            'submenu' => [
-                [
-                    'text' => 'Usuarios',
-                    'route' => 'users.index', // Ruta al módulo de usuarios
-                    'icon' => 'fas fa-fw fa-users', // Ícono de usuarios
-                    'can' => 'ver-seguridad' 
-                ],
                 [
                     'text' => 'Bitácora',
                     'route' => 'bitacoras.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
                   
                 ],
-                [
-                    'text' => 'Configuraciones',
-                    'route' => 'configuraciones.index', // Ruta al módulo de usuarios
-                    'icon' => 'fas fa-fw fa-tools', // Ícono de usuarios
-                    'can' => 'ver-seguridad' 
-                ],
+                
             ],
+           
         ],
+        
         [
             'text' => 'Respaldo',
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-database', // Ícono representativo de usuarios
             'can' => 'ver-seguridad' 
 
+        ],
+        [
+            'text' => 'Configuraciones',
+            'route' => 'configuraciones.index', // Ruta al módulo de usuarios
+            'icon' => 'fas fa-fw fa-tools', // Ícono de usuarios
+            'can' => 'ver-seguridad' 
         ],
         
     ],
