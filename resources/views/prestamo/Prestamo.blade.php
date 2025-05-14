@@ -60,7 +60,7 @@
             <td>{{ $prestamo['estado'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
+            <td>{{ \Carbon\Carbon::parse($prestamo['fecha_inicio'])->format('Y-m-d') }}</td>
             <td style="text-align: center">
                 <!-- Botón Ver sin onclick directo -->
                 <button class="btn btn-primary btn-sm view-prestamo"
