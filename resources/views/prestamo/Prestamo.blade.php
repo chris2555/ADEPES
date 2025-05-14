@@ -30,58 +30,59 @@
             </div>
 
             <div class="card-body">
-                <div class="table-responsive">
-                    <table id="prestamoTable" class="table table-bordered table-hover table-striped table-sm">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center">ID</th>
-                                <th style="text-align: center">Cliente</th>
-                                <th style="text-align: center">DNI</th>
-                                <th style="text-align: center">Monto</th>
-                                <th style="text-align: center">Interés</th>
-                                <th style="text-align: center">Plazo</th>
-                                <th style="text-align: center">Estado</th>
-                                <th style="text-align: center">Tipo</th>
-                                <th style="text-align: center">Garantia</th>
-                                <th style="text-align: center">Fecha Inicio</th>
-                                <th style="text-align: center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if(isset($prestamos) && is_array($prestamos) && count($prestamos) > 0)
-                            @foreach($prestamos as $prestamo)
-                            <tr>
-                                <td style="text-align: center">{{ $prestamo['id_prestamo'] ?? 'N/A' }}</td>
-                                <td>{{ $prestamo['nombres_apellidos'] ?? 'N/A' }}</td>
-                                <td>{{ $prestamo['n_identidad'] ?? 'N/A' }}</td>
-                                <td>{{ $prestamo['monto'] ?? 'N/A' }}</td>
-                                <td>{{ $prestamo['tasa'] ?? 'N/A' }}%</td>
-                                <td>{{ $prestamo['plazo'] ?? 'N/A' }} meses</td>
-                                <td>{{ $prestamo['estado'] ?? 'N/A' }}</td>
-                                <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
-                                <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
-                                <td>{{ $prestamo['fecha_inicio'] ? \Carbon\Carbon::parse($prestamo['fecha_inicio'])->format('d/m/Y') : 'N/A' }}</td>
-                                <td style="text-align: center">
-                                    <!-- Botón Ver sin onclick directo -->
-                                    <button class="btn btn-primary btn-sm view-prestamo"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#view"
-                                        data-id="{{ $prestamo['id_prestamo'] }}"
-                                        data-id-persona="{{ $prestamo['id_persona'] }}"
-                                        data-nombre="{{ $prestamo['nombres_apellidos'] }}"
-                                        data-identidad="{{ $prestamo['n_identidad'] }}"
-                                        data-tipo-persona="{{ $prestamo['tipo_persona'] }}"
-                                        data-total="{{ $prestamo['total_pagado'] }}"
-                                        data-inicio="{{ $prestamo['fecha_inicio'] }}"
-                                        data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
-                                        data-tipo="{{ $prestamo['tipo'] }}"
-                                        data-monto="{{ $prestamo['monto'] }}"
-                                        data-tasa="{{ $prestamo['tasa'] }}"
-                                        data-plazo="{{ $prestamo['plazo'] }}"
-                                        data-estado="{{ $prestamo['estado'] }}"
-                                        data-garantia="{{ $prestamo['tipo_garantia'] }}">
-                                        <i class="bi bi-eye"></i>
-                                    </button>
+                        <div class="table-responsive">
+            <table id="prestamoTable" class="table table-bordered table-hover table-striped table-sm">
+                <thead>
+                    <tr>
+                        <th style="text-align: center">ID</th>
+                        <th style="text-align: center">Cliente</th>
+                        <th style="text-align: center">DNI</th>
+                        <th style="text-align: center">Monto</th>
+                        <th style="text-align: center">Interés</th>
+                        <th style="text-align: center">Plazo</th>
+                        <th style="text-align: center">Estado</th>
+                        <th style="text-align: center">Tipo</th>
+                        <th style="text-align: center">Garantia</th>
+                        <th style="text-align: center">Fecha Inicio</th>
+                        <th style="text-align: center">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if(isset($prestamos) && is_array($prestamos) && count($prestamos) > 0)
+    @foreach($prestamos as $prestamo)
+        <tr>
+            <td style="text-align: center">{{ $prestamo['id_prestamo'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['nombres_apellidos'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['n_identidad'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['monto'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['tasa'] ?? 'N/A' }}%</td>
+            <td>{{ $prestamo['plazo'] ?? 'N/A' }} meses</td>
+            <td>{{ $prestamo['estado'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
+            <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
+            <td style="text-align: center">
+                <!-- Botón Ver sin onclick directo -->
+                <button class="btn btn-primary btn-sm view-prestamo"
+                data-bs-toggle="modal" 
+                 data-bs-target="#view"
+                data-id="{{ $prestamo['id_prestamo'] }}"
+                data-id-persona="{{ $prestamo['id_persona'] }}"
+                data-nombre="{{ $prestamo['nombres_apellidos'] }}"
+                data-identidad="{{ $prestamo['n_identidad'] }}"
+                 data-tipo-persona="{{ $prestamo['tipo_persona'] }}"
+                data-total="{{ $prestamo['total_pagado'] }}"
+                data-inicio="{{ $prestamo['fecha_inicio'] }}"
+                data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
+                data-tipo="{{ $prestamo['tipo'] }}"
+                data-monto="{{ $prestamo['monto'] }}"
+                 data-tasa="{{ $prestamo['tasa'] }}"
+                data-plazo="{{ $prestamo['plazo'] }}"
+                 data-estado="{{ $prestamo['estado'] }}"
+                 data-garantia="{{ $prestamo['tipo_garantia'] }}"
+>
+                <i class="bi bi-eye"></i>
+                </button>
 
 
                                     <!-- Botón Editar sin onclick directo 
@@ -398,17 +399,17 @@
     </div>
 </div>
 -->
-        <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit-title" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="edit-title">Modificación Préstamo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="form-update-prestamo" method="POST">
-                            @csrf
-                            @method('PUT')
+<div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit-title" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="edit-title">Modificación Préstamo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form-update-prestamo" method="POST">
+                    @csrf
+                    @method('PUT')
 
                             <!-- ID Préstamo -->
                             <input type="hidden" id="id_prestamo" name="id_prestamo">
@@ -437,15 +438,15 @@
                                         <input type="number" class="form-control" id="e.total_pagado" name="total_pagado" min="1" required>
                                     </div>
 
-                                    <!-- Fechas -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Fecha Inicio</label>
-                                        <input type="date" class="form-control" id="e.fecha_inicio" name="fecha_inicio" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Fecha Vencimiento</label>
-                                        <input type="date" class="form-control" id="e.fecha_vencimiento" name="fecha_vencimiento" required readonly>
-                                    </div>
+                            <!-- Fechas -->
+                            <div class="mb-3">
+                                <label class="form-label">Fecha Inicio</label>
+                                <input type="date" class="form-control" id="e.fecha_inicio" name="fecha_inicio" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Fecha Vencimiento</label>
+                                <input type="date" class="form-control" id="e.fecha_vencimiento" name="fecha_vencimiento" required readonly>
+                            </div>
 
                                     <!-- Tipo -->
                                     <div class="mb-3">
@@ -565,29 +566,29 @@
                 fechaInicioDate.setMonth(fechaInicioDate.getMonth() + parseInt(plazo));
                 fecha_vencimiento.value = fechaInicioDate.toISOString().split("T")[0];
 
-                // Enviar formulario después de validaciones
-                event.target.submit();
-            });
-        </script>
-        <!-- Script para asignar datos al modal -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll(".edit-prestamo").forEach(button => {
-                    button.addEventListener("click", function() {
-                        document.getElementById("id_prestamo").value = this.getAttribute("data-id");
-                        document.getElementById("e.id_persona").value = this.getAttribute("data-id-persona");
-                        document.getElementById("e.nombres_apellidos").value = this.getAttribute("data-nombres");
-                        document.getElementById("e.n_identidad").value = this.getAttribute("data-dni");
-                        document.getElementById("e.total_pagado").value = parseFloat(this.getAttribute("data-total")).toFixed(2);
-                        document.getElementById("e.fecha_inicio").value = this.getAttribute("data-inicio");
-                        document.getElementById("e.fecha_vencimiento").value = this.getAttribute("data-vencimiento");
-                        document.getElementById("e.tipo").value = this.getAttribute("data-tipo");
-                        document.getElementById("e.monto").value = parseFloat(this.getAttribute("data-monto")).toFixed(2);
-                        document.getElementById("e.tasa").value = this.getAttribute("data-tasa");
-                        document.getElementById("e.plazo").value = this.getAttribute("data-plazo");
-                        document.getElementById("e.estado").value = this.getAttribute("data-estado");
-                        document.getElementById("e.tipo_garantia").value = this.getAttribute("data-garantia");
-                        //document.getElementById("modificado_por").value = this.getAttribute("data-modificado-por");
+    // Enviar formulario después de validaciones
+    event.target.submit();
+});
+</script>
+<!-- Script para asignar datos al modal -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".edit-prestamo").forEach(button => {
+        button.addEventListener("click", function () {
+            document.getElementById("id_prestamo").value = this.getAttribute("data-id");
+            document.getElementById("e.id_persona").value = this.getAttribute("data-id-persona");
+            document.getElementById("e.nombres_apellidos").value = this.getAttribute("data-nombres");
+            document.getElementById("e.n_identidad").value = this.getAttribute("data-dni");
+            document.getElementById("e.total_pagado").value = parseFloat(this.getAttribute("data-total")).toFixed(2);
+            document.getElementById("e.fecha_inicio").value = this.getAttribute("data-inicio");
+            document.getElementById("e.fecha_vencimiento").value = this.getAttribute("data-vencimiento");
+            document.getElementById("e.tipo").value = this.getAttribute("data-tipo");
+            document.getElementById("e.monto").value = parseFloat(this.getAttribute("data-monto")).toFixed(2);
+            document.getElementById("e.tasa").value = this.getAttribute("data-tasa");
+            document.getElementById("e.plazo").value = this.getAttribute("data-plazo");
+            document.getElementById("e.estado").value = this.getAttribute("data-estado");
+            document.getElementById("e.tipo_garantia").value = this.getAttribute("data-garantia");
+            //document.getElementById("modificado_por").value = this.getAttribute("data-modificado-por");
 
                         // Actualiza la acción del formulario con el ID correcto
                         document.getElementById("form-update-prestamo").action = "/prestamos/" + this.getAttribute("data-id");
@@ -653,50 +654,50 @@
             });
         </script>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll(".view-prestamo").forEach(button => {
-                    button.addEventListener("click", function() {
-                        document.getElementById("view-id").textContent = this.getAttribute("data-id");
-                        document.getElementById("view-id-persona").textContent = this.getAttribute("data-id-persona");
-                        document.getElementById("view-nombre").textContent = this.getAttribute("data-nombre");
-                        document.getElementById("view-identidad").textContent = this.getAttribute("data-identidad");
-                        document.getElementById("view-tipo-persona").textContent = this.getAttribute("data-tipo-persona");
-                        document.getElementById("view-total").textContent = this.getAttribute("data-total");
-                        document.getElementById("view-inicio").textContent = this.getAttribute("data-inicio");
-                        document.getElementById("view-vencimiento").textContent = this.getAttribute("data-vencimiento");
-                        document.getElementById("view-tipo").textContent = this.getAttribute("data-tipo");
-                        document.getElementById("view-monto").textContent = this.getAttribute("data-monto");
-                        document.getElementById("view-tasa").textContent = this.getAttribute("data-tasa");
-                        document.getElementById("view-plazo").textContent = this.getAttribute("data-plazo");
-                        document.getElementById("view-estado").textContent = this.getAttribute("data-estado");
-                        document.getElementById("view-garantia").textContent = this.getAttribute("data-garantia");
-                    });
-                });
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".view-prestamo").forEach(button => {
+        button.addEventListener("click", function () {
+            document.getElementById("view-id").textContent = this.getAttribute("data-id");
+            document.getElementById("view-id-persona").textContent = this.getAttribute("data-id-persona");
+            document.getElementById("view-nombre").textContent = this.getAttribute("data-nombre");
+            document.getElementById("view-identidad").textContent = this.getAttribute("data-identidad");
+            document.getElementById("view-tipo-persona").textContent = this.getAttribute("data-tipo-persona");
+            document.getElementById("view-total").textContent = this.getAttribute("data-total");
+            document.getElementById("view-inicio").textContent = this.getAttribute("data-inicio");
+            document.getElementById("view-vencimiento").textContent = this.getAttribute("data-vencimiento");
+            document.getElementById("view-tipo").textContent = this.getAttribute("data-tipo");
+            document.getElementById("view-monto").textContent = this.getAttribute("data-monto");
+            document.getElementById("view-tasa").textContent = this.getAttribute("data-tasa");
+            document.getElementById("view-plazo").textContent = this.getAttribute("data-plazo");
+            document.getElementById("view-estado").textContent = this.getAttribute("data-estado");
+            document.getElementById("view-garantia").textContent = this.getAttribute("data-garantia");
+        });
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Esta acción no se puede deshacer",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.closest("form").submit(); // Envía el formulario si confirma
+                }
             });
-        </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll(".delete-btn").forEach(button => {
-                    button.addEventListener("click", function() {
-                        Swal.fire({
-                            title: "¿Estás seguro?",
-                            text: "Esta acción no se puede deshacer",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#d33",
-                            cancelButtonColor: "#3085d6",
-                            confirmButtonText: "Sí, eliminar",
-                            cancelButtonText: "Cancelar"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                this.closest("form").submit(); // Envía el formulario si confirma
-                            }
-                        });
-                    });
-                });
-            });
-        </script>
+        });
+    });
+});
+</script>
 
 
 

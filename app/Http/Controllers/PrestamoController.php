@@ -148,6 +148,8 @@ class PrestamoController extends Controller
     Log::info('Datos validados para actualizar:', $validatedData);
 
     try {
+        //$fecha_inicio = date('Y-m-d', strtotime($request->fecha_inicio));
+        //$fecha_vencimiento = date('Y-m-d', strtotime($request->fecha_vencimiento));
         // Enviar el ID correcto a la API externa
         $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id_prestamo}", [
             'id_persona' => $request->id_persona,
