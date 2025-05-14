@@ -60,7 +60,8 @@
             <td>{{ $prestamo['estado'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
-            <td>{{ $prestamo['fecha_inicio'] ?? 'N/A' }}</td>
+            <td>{{ \Carbon\Carbon::parse($prestamo['fecha_inicio'])->format('Y-m-d') }}</td>
+<!-- <td>{{ \Carbon\Carbon::parse($prestamo['fecha_inicio'])->translatedFormat('j \d\e F \d\e Y') }}</td> -->
             <td style="text-align: center">
                 <!-- Botón Ver sin onclick directo -->
                 <button class="btn btn-primary btn-sm view-prestamo"
@@ -395,6 +396,7 @@
     </div>
 </div>
 -->
+<!-- IModal para editar -->
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit-title" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -435,13 +437,15 @@
                             </div>
 
                             <!-- Fechas -->
-                            <div class="mb-3">
-                                <label class="form-label">Fecha Inicio</label>
-                                <input type="date" class="form-control" id="e.fecha_inicio" name="fecha_inicio" required>
-                            </div>
-                            <div class="mb-3">
+                           <div class="mb-3">
+                            <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
+                            <input type="date" class="form-control" id="e.fecha_inicio" name="fecha_inicio"
+                             value="{{ \Carbon\Carbon::parse($prestamo['fecha_inicio'])->format('Y-m-d') }}" required>
+                              </div>
+                             <div class="mb-3">
                                 <label class="form-label">Fecha Vencimiento</label>
-                                <input type="date" class="form-control" id="e.fecha_vencimiento" name="fecha_vencimiento" required readonly>
+                                <input type="date" class="form-control" id="e.fecha_vencimiento" name="fecha_vencimiento"
+                                required readonly value="{{ \Carbon\Carbon::parse($prestamo['fecha_vencimiento'])->format('Y-m-d') }}">
                             </div>
 
                             <!-- Tipo -->
@@ -576,8 +580,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("e.nombres_apellidos").value = this.getAttribute("data-nombres");
             document.getElementById("e.n_identidad").value = this.getAttribute("data-dni");
             document.getElementById("e.total_pagado").value = parseFloat(this.getAttribute("data-total")).toFixed(2);
-            document.getElementById("e.fecha_inicio").value = this.getAttribute("data-inicio");
-            document.getElementById("e.fecha_vencimiento").value = this.getAttribute("data-vencimiento");
+            document.getElementById("e.fecha_inicio").value = new Date(this.getAttribute("data-inicio")).toISOString().split("T")[0];
+            document.getElementById("e.fecha_vencimiento").value = new Date(this.getAttribute("data-vencimiento")).toISOString().split("T")[0];
             document.getElementById("e.tipo").value = this.getAttribute("data-tipo");
             document.getElementById("e.monto").value = parseFloat(this.getAttribute("data-monto")).toFixed(2);
             document.getElementById("e.tasa").value = this.getAttribute("data-tasa");
@@ -661,8 +665,9 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("view-identidad").textContent = this.getAttribute("data-identidad");
             document.getElementById("view-tipo-persona").textContent = this.getAttribute("data-tipo-persona");
             document.getElementById("view-total").textContent = this.getAttribute("data-total");
-            document.getElementById("view-inicio").textContent = this.getAttribute("data-inicio");
-            document.getElementById("view-vencimiento").textContent = this.getAttribute("data-vencimiento");
+            document.getElementById("view-inicio").textContent = new Date(this.getAttribute("data-inicio")).toISOString().split("T")[0];
+            document.getElementById("view-vencimiento").textContent = new Date(this.getAttribute("data-vencimiento")).toISOString().split("T")[0];
+
             document.getElementById("view-tipo").textContent = this.getAttribute("data-tipo");
             document.getElementById("view-monto").textContent = this.getAttribute("data-monto");
             document.getElementById("view-tasa").textContent = this.getAttribute("data-tasa");
