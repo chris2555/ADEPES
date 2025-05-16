@@ -317,21 +317,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <p><strong>ID Préstamo:</strong> <span id="view-id"></span></p>
-                <p><strong>ID Persona:</strong> <span id="view-id-persona"></span></p>
-                <p><strong>Nombre Completo:</strong> <span id="view-nombre"></span></p>
-                <p><strong>Número de Identidad:</strong> <span id="view-identidad"></span></p>
-                <p><strong>Tipo de Persona:</strong> <span id="view-tipo-persona"></span></p>
-                <p><strong>Total Pagado:</strong> <span id="view-total"></span></p>
-                <p><strong>Fecha Inicio:</strong> <span id="view-inicio"></span></p>
-                <p><strong>Fecha Vencimiento:</strong> <span id="view-vencimiento"></span></p>
-                <p><strong>Tipo de Préstamo:</strong> <span id="view-tipo"></span></p>
-                <p><strong>Monto:</strong> L.<span id="view-monto"></span></p>
-                <p><strong>Tasa de Interés:</strong> <span id="view-tasa"></span>%</p>
-                <p><strong>Plazo:</strong> <span id="view-plazo"></span> meses</p>
-                <p><strong>Estado:</strong> <span id="view-estado"></span></p>
-                <p><strong>Tipo de Garantía:</strong> <span id="view-garantia"></span></p>
+                <div class="row">
+                    <!-- Columna izquierda -->
+                    <div class="col-md-6">
+                        <p><strong>ID Préstamo:</strong> <span id="view-id"></span></p>
+                        <p><strong>ID Persona:</strong> <span id="view-id-persona"></span></p>
+                        <p><strong>Nombre Completo:</strong> <span id="view-nombre"></span></p>
+                        <p><strong>Número de Identidad:</strong> <span id="view-identidad"></span></p>
+                        <p><strong>Tipo de Persona:</strong> <span id="view-tipo-persona"></span></p>
+                        <p><strong>Tipo de Préstamo:</strong> <span id="view-tipo"></span></p>
+                        <p><strong>Monto:</strong> L.<span id="view-monto"></span></p>
+                    </div>
+
+                    <!-- Columna derecha -->
+                    <div class="col-md-6">
+                        <p><strong>Tasa de Interés:</strong> <span id="view-tasa"></span>%</p>
+                        <p><strong>Plazo:</strong> <span id="view-plazo"></span> meses</p>
+                        <p><strong>Total Pagado:</strong> L.<span id="view-total"></span></p>
+                        <p><strong>Fecha Inicio:</strong> <span id="view-inicio"></span></p>
+                        <p><strong>Fecha Vencimiento:</strong> <span id="view-vencimiento"></span></p>
+                        <p><strong>Tipo de Garantía:</strong> <span id="view-garantia"></span></p>
+                        <p><strong>Estado:</strong> <span id="view-estado"></span></p>
+                    </div>
+                </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
@@ -701,8 +711,8 @@ document.addEventListener("DOMContentLoaded", function () {
 @section('js')
 <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
     <script src="//cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

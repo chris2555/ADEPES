@@ -130,12 +130,29 @@ class ClientesController extends Controller
      */
     public function destroy(string $id)
 {
-    $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
+    // 1️⃣ Obtener información de la persona para conocer el tipo
+    $personaResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
 
-    if ($response->successful()) {
-        return redirect()->route('gestionclientes.index')->with('success', 'Cliente eliminado correctamente.');
+    if ($personaResponse->successful()) {
+        $persona = $personaResponse->json();
+        $tipoPersona = $persona['tipo_persona'] ?? null;
+
+        // 2️⃣ Intentar eliminar
+        $deleteResponse = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas/{$id}");
+
+        if ($deleteResponse->successful()) {
+            return redirect()->route('gestionclientes.index')->with('success', 'Cliente eliminado correctamente.');
+        } else {
+            // 3️⃣ Mostrar mensaje personalizado según el tipo de persona
+            if ($tipoPersona === 'Aval') {
+                return redirect()->route('gestionclientes.index')->with('error', 'No se puede eliminar el aval porque está relacionado con una solicitud.');
+            } else {
+                return redirect()->route('gestionclientes.index')->with('error', 'Este cliente tiene una solicitud generada no se puede eliminar.');
+            }
+        }
     } else {
-        return redirect()->route('gestionclientes.index')->with('error', 'Este cliente tiene una solicitud generada no se puede eliminar.');
+        return redirect()->route('gestionclientes.index')->with('error', 'No se pudo obtener la información del cliente.');
     }
 }
+
 }
