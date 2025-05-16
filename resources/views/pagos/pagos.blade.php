@@ -9,7 +9,16 @@
 @stop
 
 @section('content_body')
+<style>
+    .subrow.expanded {
+  background-color: #cce5ff; /* azul claro */
+}
+.subrow {
+    background-color: #e6f2ff; /* azul claro */
+}
 
+
+</style>
 <head>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
@@ -32,13 +41,13 @@
 
             <div class="card-body">
                 <div class="table-responsive">
-                    <table id="pagoTable" class="table table-bordered table-hover table-striped table-sm">
+                    <table id="pagoTable" class="table table-bordered table-hover  table-sm">
                         <thead>
                             <tr>
                                 <th style="text-align: center">Fecha</th>
                                 <th style="text-align: center">Nombre Cliente</th>
                                 <th style="text-align: center">Monto Préstamo</th>
-                                <th style="text-align: center">Monto</th>
+                                <th style="text-align: center">Cuota</th>
                                 <th style="text-align: center">Intereses</th>
                                 <th style="text-align: center">Abono a Capital</th>
                                 <th style="text-align: center">Excedente/Déficit</th>
@@ -46,38 +55,83 @@
                                 <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($pagos as $pago)
-                                <tr>
-                                    <td style="text-align: center">{{ date('d-m-Y', strtotime($pago['fecha'])) }}</td>
-                                    <td>{{ $pago['nombres_apellidos'] }}</td>
-                                    <td style="text-align: center">{{ $pago['monto_prestamo'] }}</td>
-                                    <td style="text-align: center">{{ $pago['monto'] }}</td>
-                                    <td style="text-align: center">{{ $pago['intereses'] }}</td>
-                                    <td style="text-align: center">{{ $pago['abono_capital'] }}</td>
-                                    <td style="text-align: center">{{ $pago['estado'] }}</td>
-                                    <td style="text-align: center"><a href="{{ route('pagado', $pago['id_persona']) }}" class="btn btn-outline-primary btn-sm" title="Ver Pagos Realizados">
-                                            <i class="fas fa-file-alt"> Pagos Realizados </i>
-                                        </a>
-                                    <td style="text-align: center">
-                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
-                                            onclick="viewModal({{ json_encode($pago) }})">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="{{ route('pagos.show', $pago['id_pago']) }}" class="btn btn-success btn-sm">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
-                                        <form action="{{ route('pagos.destroy', $pago['id_pago']) }}" method="POST" class="d-inline delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm delete-btn">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        @php
+    $pagosAgrupados = collect($pagos)->groupBy('nombres_apellidos');
+@endphp
+
+  <tbody>
+    @foreach ($pagosAgrupados as $nombre => $grupo)
+        @php
+            $primerPago = $grupo->first();
+        @endphp
+        <tr data-nombre="{{ $nombre }}">
+            <td style="text-align: center">{{ date('d-m-Y', strtotime($primerPago['fecha'])) }}</td>
+            <td>{{ $primerPago['nombres_apellidos'] }}</td>
+            <td style="text-align: center">{{ $primerPago['monto_prestamo'] }}</td>
+            <td style="text-align: center">{{ $primerPago['monto'] }}</td>
+            <td style="text-align: center">{{ $primerPago['intereses'] }}</td>
+            <td style="text-align: center">{{ $primerPago['abono_capital'] }}</td>
+            <td style="text-align: center">{{ $primerPago['estado'] }}</td>
+            <td style="text-align: center">
+                <a href="{{ route('pagado', $primerPago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-file-alt"> Pagos Realizados </i>
+                </a>
+            </td>
+            <td style="text-align: center">
+                <button class="btn btn-info btn-sm toggle-subrows"><i class="bi bi-plus-lg"></i></button>
+                <a href="javascript:void(0);" class="btn btn-primary btn-sm"
+                    onclick="viewModal({{ json_encode($primerPago) }})">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+        {{-- Filas hijas ocultas --}}
+        @foreach ($grupo->skip(1) as $subPago)
+            <tr class="subrow" data-parent="{{ $nombre }}" style="display: none;">
+                <td style="text-align: center">{{ date('d-m-Y', strtotime($subPago['fecha'])) }}</td>
+                <td>{{ $subPago['nombres_apellidos'] }}</td>
+                <td style="text-align: center">{{ $subPago['monto_prestamo'] }}</td>
+                <td style="text-align: center">{{ $subPago['monto'] }}</td>
+                <td style="text-align: center">{{ $subPago['intereses'] }}</td>
+                <td style="text-align: center">{{ $subPago['abono_capital'] }}</td>
+                <td style="text-align: center">{{ $subPago['estado'] }}</td>
+                <td style="text-align: center">
+                
+            </td>
+            <td style="text-align: center">
+               
+                <a href="javascript:void(0);" class="btn btn-primary btn-sm"
+                    onclick="viewModal({{ json_encode($primerPago) }})">
+                    <i class="bi bi-eye"></i>
+                </a>
+                <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    @endforeach
+</tbody>
+
+
                     </table>
 @stop
     
@@ -170,6 +224,55 @@
     </div>
 
     @section('js')
+    
+    <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const montoPagoInput = document.querySelector('#monto_pago');
+    const interesInput = document.querySelector('#intereses');
+    const capitalInput = document.querySelector('#abono_capital');
+    const prestamoSelect = document.querySelector('#id_prestamo');
+
+    let interesMensual = 0;
+
+    // Consultar interés estimado al seleccionar préstamo
+    prestamoSelect.addEventListener('change', async function () {
+      const idPrestamo = this.value;
+
+      if (!idPrestamo) return;
+
+      try {
+        const res = await fetch(`/api/interes-mensual/${idPrestamo}`);
+        const data = await res.json();
+        interesMensual = parseFloat(data.interes_mensual || 0);
+        interesInput.value = interesMensual.toFixed(2);
+        actualizarCapital();
+      } catch (error) {
+        console.error('Error obteniendo interés:', error);
+      }
+    });
+
+    // Al escribir el monto, recalcular capital
+    montoPagoInput.addEventListener('input', actualizarCapital);
+
+    function actualizarCapital() {
+      const pago = parseFloat(montoPagoInput.value || 0);
+      let abonoInteres = 0;
+      let abonoCapital = 0;
+
+      if (pago >= interesMensual) {
+        abonoInteres = interesMensual;
+        abonoCapital = pago - interesMensual;
+      } else {
+        abonoInteres = pago;
+        abonoCapital = 0;
+      }
+
+      interesInput.value = abonoInteres.toFixed(2);
+      capitalInput.value = abonoCapital.toFixed(2);
+    }
+  });
+</script>
+
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Campos relevantes
@@ -210,7 +313,7 @@
 <script>
     $(function () {
         $('#pagoTable').DataTable({
-            "order": [[0, "asc"]],
+            "order": [],
             "pageLength": 10,
             "responsive": true,
             "lengthChange": true,
@@ -325,6 +428,79 @@
         });
     </script>
 @endif
+
+
+ <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const botones = document.querySelectorAll(".toggle-subrows");
+
+        botones.forEach(btn => {
+            btn.addEventListener("click", function () {
+                const tr = this.closest("tr");
+                const nombre = tr.getAttribute("data-nombre");
+                const subrows = document.querySelectorAll(`.subrow[data-parent="${nombre}"]`);
+                const icon = this.querySelector("i");
+
+                const isVisible = subrows[0].style.display === "table-row";
+
+                // Cerrar TODOS los grupos abiertos, excepto el que fue clickeado
+                botones.forEach(otherBtn => {
+                    const otherTr = otherBtn.closest('tr');
+                    const otherNombre = otherTr.getAttribute('data-nombre');
+                    const otherSubrows = document.querySelectorAll(`.subrow[data-parent="${otherNombre}"]`);
+                    const otherIcon = otherBtn.querySelector('i');
+
+                    if (otherBtn !== this) {
+                        otherSubrows.forEach(row => row.style.display = "none");
+                        otherIcon.classList.remove("bi-dash-lg");
+                        otherIcon.classList.add("bi-plus-lg");
+                    }
+                });
+
+                // Alternar visibilidad del grupo clickeado
+                if (isVisible) {
+                    subrows.forEach(row => row.style.display = "none");
+                    icon.classList.remove("bi-dash-lg");
+                    icon.classList.add("bi-plus-lg");
+                } else {
+                    subrows.forEach(row => row.style.display = "table-row");
+                    icon.classList.remove("bi-plus-lg");
+                    icon.classList.add("bi-dash-lg");
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+$(document).ready(function () {
+    const table = $('#pagoTable').DataTable();
+
+    // Alternar subfilas
+    $('#pagoTable').on('click', '.toggle-subrows', function () {
+        const parentRow = $(this).closest('tr');
+        const nombre = parentRow.data('nombre');
+
+        // Colapsar todos
+        $('.subrow').hide().removeClass('expanded');
+        $('.toggle-subrows i').removeClass('bi-dash-lg').addClass('bi-plus-lg');
+
+        // Mostrar sólo si no estaba ya expandido
+        const subRows = $(`.subrow[data-parent="${nombre}"]`);
+        if (!subRows.is(':visible')) {
+            subRows.show().addClass('expanded');
+            $(this).find('i').removeClass('bi-plus-lg').addClass('bi-dash-lg');
+        }
+    });
+
+    // Evento: cuando se hace búsqueda, ocultar las subfilas
+    table.on('search.dt', function () {
+        $('.subrow').hide().removeClass('expanded');
+        $('.toggle-subrows i').removeClass('bi-dash-lg').addClass('bi-plus-lg');
+    });
+});
+</script>
+
 
 
 
