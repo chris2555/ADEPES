@@ -430,68 +430,49 @@
 @endif
 
 
- <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const botones = document.querySelectorAll(".toggle-subrows");
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Código que ya tienes para toggle-subrows:
+    const botones = document.querySelectorAll('.toggle-subrows');
 
-        botones.forEach(btn => {
-            btn.addEventListener("click", function () {
-                const tr = this.closest("tr");
-                const nombre = tr.getAttribute("data-nombre");
-                const subrows = document.querySelectorAll(`.subrow[data-parent="${nombre}"]`);
-                const icon = this.querySelector("i");
+    botones.forEach(button => {
+        button.addEventListener('click', function () {
+            const row = this.closest('tr');
+            const nombre = row.getAttribute('data-nombre');
+            const subrows = document.querySelectorAll(`.subrow[data-parent="${nombre}"]`);
+            const isVisible = subrows[0]?.style.display !== 'none';
 
-                const isVisible = subrows[0].style.display === "table-row";
+            // Cerrar todas las filas expandidas
+            document.querySelectorAll('.subrow').forEach(sub => {
+                sub.style.display = 'none';
+                sub.classList.remove('expanded');
+            });
 
-                // Cerrar TODOS los grupos abiertos, excepto el que fue clickeado
-                botones.forEach(otherBtn => {
-                    const otherTr = otherBtn.closest('tr');
-                    const otherNombre = otherTr.getAttribute('data-nombre');
-                    const otherSubrows = document.querySelectorAll(`.subrow[data-parent="${otherNombre}"]`);
-                    const otherIcon = otherBtn.querySelector('i');
+            // Cambiar íconos de todos los botones
+            document.querySelectorAll('.toggle-subrows i').forEach(icon => {
+                icon.classList.remove('bi-dash-lg');
+                icon.classList.add('bi-plus-lg');
+            });
 
-                    if (otherBtn !== this) {
-                        otherSubrows.forEach(row => row.style.display = "none");
-                        otherIcon.classList.remove("bi-dash-lg");
-                        otherIcon.classList.add("bi-plus-lg");
-                    }
+            // Si no estaban visibles, mostrar solo las de este grupo
+            if (!isVisible) {
+                subrows.forEach(sub => {
+                    sub.style.display = '';
+                    sub.classList.add('expanded');
                 });
 
-                // Alternar visibilidad del grupo clickeado
-                if (isVisible) {
-                    subrows.forEach(row => row.style.display = "none");
-                    icon.classList.remove("bi-dash-lg");
-                    icon.classList.add("bi-plus-lg");
-                } else {
-                    subrows.forEach(row => row.style.display = "table-row");
-                    icon.classList.remove("bi-plus-lg");
-                    icon.classList.add("bi-dash-lg");
-                }
-            });
+                // Cambiar ícono del botón actual
+                this.querySelector('i').classList.remove('bi-plus-lg');
+                this.querySelector('i').classList.add('bi-dash-lg');
+            }
         });
     });
+});
 </script>
 
 <script>
 $(document).ready(function () {
     const table = $('#pagoTable').DataTable();
-
-    // Alternar subfilas
-    $('#pagoTable').on('click', '.toggle-subrows', function () {
-        const parentRow = $(this).closest('tr');
-        const nombre = parentRow.data('nombre');
-
-        // Colapsar todos
-        $('.subrow').hide().removeClass('expanded');
-        $('.toggle-subrows i').removeClass('bi-dash-lg').addClass('bi-plus-lg');
-
-        // Mostrar sólo si no estaba ya expandido
-        const subRows = $(`.subrow[data-parent="${nombre}"]`);
-        if (!subRows.is(':visible')) {
-            subRows.show().addClass('expanded');
-            $(this).find('i').removeClass('bi-plus-lg').addClass('bi-dash-lg');
-        }
-    });
 
     // Evento: cuando se hace búsqueda, ocultar las subfilas
     table.on('search.dt', function () {
@@ -500,17 +481,6 @@ $(document).ready(function () {
     });
 });
 </script>
-
-
-
-
-
-
-
-
-
-
-
 
 
 @stop
