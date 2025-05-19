@@ -65,7 +65,7 @@ class PagosController extends Controller
             'fecha'         => $request->fecha,
             'intereses'     => $request->intereses ?? 0,
             'abono_capital' => $request->abono_capital ?? 0, 
-            'creado_por'    => auth()->id(),
+            'creado_por' => auth()->id(),
             'estado'        => 'pendiente',
             'creado_en'     => now(),
         ]);
