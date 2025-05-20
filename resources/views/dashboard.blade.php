@@ -94,29 +94,32 @@
             </div>
         </div>
     </div>
-<!-- FILA DE GRÁFICOS -->
-<div class="row mt-4">
+
     <!-- Gráfico: Total Pagado por Mes -->
-    <div class="col-12 mb-4">
-        <div class="card">
+    <div class="col-12 mb-4 d-flex justify-content-left">
+        <div class="card w-100" style="max-width: 800px;">
             <div class="card-body">
                 <h5 class="card-title">Total de Pagos Por Mes</h5>
-                <canvas id="pagosChart" style="height: 300px;"></canvas>
+                <div style="position: relative; width: 100%; height: auto;">
+                    <canvas id="pagosChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Gráfico: Estadísticas (Monto Prestado) -->
-    <div class="col-12">
-        <div class="card">
+    <div class="col-12 d-flex justify-content-left">
+        <div class="card w-100" style="max-width: 800px;">
             <div class="card-body">
                 <h5 class="card-title">Monto Prestado por Mes</h5>
-                <canvas id="montoPrestadoChart" width="1000" height="400"></canvas>
-
+                <div style="position: relative; width: 100%; height: auto;">
+                    <canvas id="montoPrestadoChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 
 </div>
 @stop
