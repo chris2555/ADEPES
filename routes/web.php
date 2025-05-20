@@ -87,6 +87,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}', [SolicitudController::class, 'getSolicitudes']);
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{id}', [IngresosController::class, 'getByPersona']);
     Route::resource('bitacoras',BitacoraController::class)->names('bitacoras');
+
+    Route::get('/api-local/pagos/por-mes', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss/por-mes');
+    return $response->json();
+});
+
 });
 });
  
