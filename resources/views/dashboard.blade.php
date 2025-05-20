@@ -208,7 +208,6 @@ fetch('/api-local/prestamos/por-mes')
       '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre'
     };
 
-    // Obtener año del primer dato o año actual
     const anio = data.length > 0 ? data[0].mes.split('-')[0] : new Date().getFullYear().toString();
 
     const labels = [];
@@ -220,11 +219,15 @@ fetch('/api-local/prestamos/por-mes')
       labels.push(label);
 
       const encontrado = data.find(item => item.mes === `${anio}-${mesNum}`);
-      montos.push(encontrado ? parseFloat(encontrado.total) : 0); // mostrar 0 si no hay datos
+      montos.push(encontrado ? parseFloat(encontrado.total) : 0);
     }
 
     const ctx = document.getElementById('montoPrestadoChart').getContext('2d');
-    new Chart(ctx, {
+
+    const initialPointRadius = Array(12).fill(0); // puntos ocultos
+    const finalPointRadius = Array(12).fill(4);   // puntos visibles al finalizar
+
+    const chart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: labels,
@@ -235,13 +238,20 @@ fetch('/api-local/prestamos/por-mes')
           backgroundColor: 'rgba(54, 162, 235, 0.3)',
           borderColor: 'rgba(54, 162, 235, 1)',
           borderWidth: 1.5,
-          tension: 0.5, 
+          tension: 0.5,
           pointBackgroundColor: 'rgba(54, 162, 235, 1)',
-          pointRadius: 4
+          pointRadius: initialPointRadius // ocultar puntos al inicio
         }]
       },
       options: {
         responsive: true,
+        animation: {
+          duration: 3000,
+          onComplete: () => {
+            chart.data.datasets[0].pointRadius = finalPointRadius;
+            chart.update();
+          }
+        },
         scales: {
           x: {
             ticks: {
@@ -276,6 +286,4 @@ fetch('/api-local/prestamos/por-mes')
   })
   .catch(error => console.error("Error al cargar los préstamos:", error));
 </script>
-
-
 @stop
