@@ -94,10 +94,35 @@
             </div>
         </div>
     </div>
+
+  <div class="card mt-4">
+    <div class="card-body">
+        <h5 class="card-title">Total de Pagos Por Mes</h5>
+        <div style="max-width: 500px;">
+            <canvas id="pagosChart" style="height: 300px;"></canvas>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
 </div>
 
 
 @stop
+
+
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
+
 @section('js')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -108,20 +133,75 @@
         });
     </script>
 
-@stop
-@section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
-@stop
-
-@section('js')
-    <script>
-        console.log('Hi!');
-    </script>
-
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        
+
+        fetch('/api-local/pagos/por-mes')
+    .then(response => response.json())
+    .then(data => {
+        const nombreMeses = [
+            '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+
+        const labels = data.map(item => nombreMeses[item.mes]);
+        const montos = data.map(item => item.total_pagado);
+
+        const ctx = document.getElementById('pagosChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Total pagado',
+                    data: montos,
+                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return new Intl.NumberFormat('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }).format(value);
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw;
+                                const formatted = new Intl.NumberFormat('en-US', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                }).format(value);
+                                return `${context.dataset.label}: $${formatted}`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    })
+    .catch(error => {
+        console.error("Error al cargar los pagos:", error);
+    });
 
 
+    </script>
 @stop
