@@ -94,114 +94,189 @@
             </div>
         </div>
     </div>
+<!-- FILA DE GRÁFICOS -->
+<div class="row mt-4">
+    <!-- Gráfico: Total Pagado por Mes -->
+    <div class="col-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total de Pagos Por Mes</h5>
+                <canvas id="pagosChart" style="height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
 
-  <div class="card mt-4">
-    <div class="card-body">
-        <h5 class="card-title">Total de Pagos Por Mes</h5>
-        <div style="max-width: 500px;">
-            <canvas id="pagosChart" style="height: 300px;"></canvas>
+    <!-- Gráfico: Estadísticas (Monto Prestado) -->
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Monto Prestado por Mes</h5>
+                <canvas id="montoPrestadoChart" width="1000" height="400"></canvas>
+
+            </div>
         </div>
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
 </div>
-
-
 @stop
 
-
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+<link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        Swal.fire({
-            title: "Exitoso!",
-            text: "Bienvenido al panel general!",
-            icon: "success"
-        });
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    Swal.fire({
+        title: "Exitoso!",
+        text: "Bienvenido al panel general!",
+        icon: "success"
+    });
+</script>
 
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        
+<!-- Gráfico 1: Pagos por mes -->
+<script>
+    fetch('/api-local/pagos/por-mes')
+        .then(response => response.json())
+        .then(data => {
+            const nombreMeses = [
+                '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+            ];
 
-        fetch('/api-local/pagos/por-mes')
-    .then(response => response.json())
-    .then(data => {
-        const nombreMeses = [
-            '', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-        ];
+            const labels = data.map(item => nombreMeses[item.mes]);
+            const montos = data.map(item => item.total_pagado);
 
-        const labels = data.map(item => nombreMeses[item.mes]);
-        const montos = data.map(item => item.total_pagado);
-
-        const ctx = document.getElementById('pagosChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Total pagado',
-                    data: montos,
-                    backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return new Intl.NumberFormat('en-US', {
+            const ctx = document.getElementById('pagosChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total pagado',
+                        data: montos,
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: value => new Intl.NumberFormat('en-US', {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2
-                                }).format(value);
+                                }).format(value)
                             }
                         }
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.raw;
-                                const formatted = new Intl.NumberFormat('en-US', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                }).format(value);
-                                return `${context.dataset.label}: $${formatted}`;
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: context => {
+                                    const value = context.raw;
+                                    const formatted = new Intl.NumberFormat('en-US', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }).format(value);
+                                    return `${context.dataset.label}: Lps ${formatted}`;
+                                }
                             }
                         }
                     }
                 }
+            });
+        })
+        .catch(error => console.error("Error al cargar los pagos:", error));
+</script>
+@section('js')
+<canvas id="montoPrestadoChart"></canvas>
+
+<script>
+fetch('/api-local/prestamos/por-mes')
+  .then(response => response.json())
+  .then(data => {
+    const meses = {
+      '01': 'Enero', '02': 'Febrero', '03': 'Marzo', '04': 'Abril',
+      '05': 'Mayo', '06': 'Junio', '07': 'Julio', '08': 'Agosto',
+      '09': 'Septiembre', '10': 'Octubre', '11': 'Noviembre', '12': 'Diciembre'
+    };
+
+    // Obtener año actual del primer dato (ajusta si quieres usar otro año)
+    const anio = data.length > 0 ? data[0].mes.split('-')[0] : new Date().getFullYear().toString();
+
+    // Crear estructura completa con 12 meses
+    const labels = [];
+    const montos = [];
+
+    for (let i = 1; i <= 12; i++) {
+      const mesNum = i.toString().padStart(2, '0');
+      const label = `${meses[mesNum]} ${anio}`;
+      labels.push(label);
+
+      // Buscar si ese mes tiene datos
+      const encontrado = data.find(item => item.mes === `${anio}-${mesNum}`);
+      montos.push(encontrado ? parseFloat(encontrado.total) : null);
+    }
+
+    const ctx = document.getElementById('montoPrestadoChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Monto total este mes',
+          data: montos,
+          fill: true,
+          backgroundColor: 'rgba(54, 162, 235, 0.3)',
+          borderColor: 'rgba(54, 162, 235, 1)',
+          borderWidth: 1.5,
+          tension: 1.1,
+          pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+          pointRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          x: {
+            ticks: {
+              autoSkip: false,
+              maxRotation: 45,
+              minRotation: 45
             }
-        });
-    })
-    .catch(error => {
-        console.error("Error al cargar los pagos:", error);
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: value => 'Lps ' + value.toLocaleString()
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          },
+          tooltip: {
+            callbacks: {
+              label: context => {
+                const value = context.raw;
+                return `${context.dataset.label}: Lps ${value.toLocaleString(undefined, { minimumFractionDigits: 2 })}`;
+              }
+            }
+          }
+        }
+      }
     });
+  })
+  .catch(error => console.error("Error al cargar los préstamos:", error));
+</script>
 
-
-    </script>
 @stop

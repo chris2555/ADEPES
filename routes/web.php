@@ -45,6 +45,11 @@ Route::middleware('auth')->group(function () {
         $data = $response->json();
         return view('dashboard', $data);
     })->name('dashboard');
+Route::get('/api-local/prestamos/por-mes', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/prestamo-grafico');
+    return $response->json();
+});
+
 
 
     Route::middleware(['web', BitacoraMiddleware::class])->group(function () {
