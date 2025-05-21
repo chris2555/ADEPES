@@ -9,91 +9,86 @@
 @stop
 @section('content')
 <div class="container-fluid">
-    <div class="row">
-        <!-- USUARIOS -->
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>{{ $TotalUsuarios }}</h3>
-                    <p>USUARIOS</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-bag"></i>
-                </div>
-                <a href="{{ route('users.index') }}" class="small-box-footer">Mostrar usuario <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+   <div class="row">
+  <!-- USUARIOS -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <a href="{{ route('users.index') }}" class="text-dark text-decoration-none">
+      <div class="info-box">
+        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">USUARIOS</span>
+          <span class="info-box-number">{{ $TotalUsuarios }}</span>
         </div>
+      </div>
+    </a>
+  </div>
 
-        <!-- CLIENTES -->
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>{{ $TotalPersonas }}</h3>
-                    <p>CLIENTES</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="{{ route('gestionclientes.index') }}" class="small-box-footer">Mostrar clientes <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+  <!-- CLIENTES -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <a href="{{ route('gestionclientes.index') }}" class="text-dark text-decoration-none">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-success elevation-1"><i class="fas fa-user-friends"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">CLIENTES</span>
+          <span class="info-box-number">{{ $TotalPersonas }}</span>
         </div>
+      </div>
+    </a>
+  </div>
 
-        <!-- SOLICITUDES -->
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>{{ $TotalSolicitudesAprobadas }}</h3>
-                    <p>Solicitudes</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-                <a href="{{ route('solicitudes.index') }}" class="small-box-footer">Mostrar solicitudes <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+  <!-- SOLICITUDES -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <a href="{{ route('solicitudes.index') }}" class="text-dark text-decoration-none">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-file-alt"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">SOLICITUDES</span>
+          <span class="info-box-number">{{ $TotalSolicitudesAprobadas }}</span>
         </div>
+      </div>
+    </a>
+  </div>
 
-        <!-- TOTAL PRESTADO -->
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>{{ number_format($TotalMontosAprobados, 2) }} LPS</h3>
-                    <p>Total Prestado</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="{{ route('prestamos.index') }}" class="small-box-footer">Mostrar prestamos <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+  <!-- TOTAL PRESTADO -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <a href="{{ route('prestamos.index') }}" class="text-dark text-decoration-none">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-dollar-sign"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">TOTAL PRESTADO</span>
+          <span class="info-box-number">{{ number_format($TotalMontosAprobados, 2) }} LPS</span>
         </div>
+      </div>
+    </a>
+  </div>
 
-        <!-- TOTAL CARTERA -->
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>{{ number_format($CarteraEmpresa, 2) }} LPS</h3>
-                    <p>Total Cartera</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="{{ route('configuraciones.index') }}" class="small-box-footer">Mostrar Cartera <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+  <!-- TOTAL CARTERA -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <a href="{{ route('configuraciones.index') }}" class="text-dark text-decoration-none">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-briefcase"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">TOTAL CARTERA</span>
+          <span class="info-box-number">{{ number_format($CarteraEmpresa, 2) }} LPS</span>
         </div>
+      </div>
+    </a>
+  </div>
 
-        <!-- TOTAL PAGADO -->
-        <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>{{ number_format($TotalPagado, 2) }} LPS</h3>
-                    <p>Total Pagado</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-                <a href="{{ route('pagos.index') }}" class="small-box-footer">Mostrar pagos <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
+  <!-- TOTAL PAGADO -->
+  <div class="col-12 col-sm-6 col-md-3">
+    <a href="{{ route('pagos.index') }}" class="text-dark text-decoration-none">
+      <div class="info-box mb-3">
+        <span class="info-box-icon bg-secondary elevation-1"><i class="fas fa-money-check-alt"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">TOTAL PAGADO</span>
+          <span class="info-box-number">{{ number_format($TotalPagado, 2) }} LPS</span>
         </div>
-    </div>
+      </div>
+    </a>
+  </div>
+</div>
+
 
     <!-- Gráfico: Total Pagado por Mes -->
     <div class="col-12 mb-4 d-flex justify-content-left">
