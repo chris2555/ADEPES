@@ -14,7 +14,7 @@
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('users.index') }}" class="text-dark text-decoration-none">
       <div class="info-box">
-        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-users"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">USUARIOS</span>
           <span class="info-box-number">{{ $TotalUsuarios }}</span>
@@ -53,7 +53,7 @@
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('prestamos.index') }}" class="text-dark text-decoration-none">
       <div class="info-box mb-3">
-        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-dollar-sign"></i></span>
+        <span class="info-box-icon bg-secondary elevation-1"><i class="fas fa-dollar-sign"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">TOTAL PRESTADO</span>
           <span class="info-box-number">{{ number_format($TotalMontosAprobados, 2) }} LPS</span>
@@ -66,7 +66,7 @@
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('configuraciones.index') }}" class="text-dark text-decoration-none">
       <div class="info-box mb-3">
-        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-briefcase"></i></span>
+        <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-briefcase"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">TOTAL CARTERA</span>
           <span class="info-box-number">{{ number_format($CarteraEmpresa, 2) }} LPS</span>
@@ -79,7 +79,7 @@
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('pagos.index') }}" class="text-dark text-decoration-none">
       <div class="info-box mb-3">
-        <span class="info-box-icon bg-secondary elevation-1"><i class="fas fa-money-check-alt"></i></span>
+        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-money-check-alt"></i></span>
         <div class="info-box-content">
           <span class="info-box-text">TOTAL PAGADO</span>
           <span class="info-box-number">{{ number_format($TotalPagado, 2) }} LPS</span>
@@ -90,9 +90,11 @@
 </div>
 
 
+<div class="row mt-4">
     <!-- Gráfico: Total Pagado por Mes -->
-    <div class="col-12 mb-4 d-flex justify-content-left">
-        <div class="card w-100" style="max-width: 800px;">
+    <div class="col-md-6 mb-4 d-flex justify-content-center">
+        <div class="card w-100" style="max-width: 1000px;"
+                                style="max-height: 600px;">
             <div class="card-body">
                 <h5 class="card-title">Total de Pagos Por Mes</h5>
                 <div style="position: relative; width: 100%; height: auto;">
@@ -102,12 +104,30 @@
         </div>
     </div>
 
+    <!-- Gráfico: Pastel por Tipo de Crédito -->
+    <div class="col-md-6 mb-4 d-flex justify-content-center">
+        <div class="card w-100" style="max-width: 1000px;"
+                                style="max-height: 600px;">
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center" style="height: 380px;">
+    <canvas id="graficoTipoCredito" width="400" height="400"></canvas>
+</div>
+
+</div>
+
+</div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- Gráfico: Estadísticas (Monto Prestado) -->
     <div class="col-12 d-flex justify-content-left">
-        <div class="card w-100" style="max-width: 800px;">
+        <div class="card w-100" style="max-width: 1000px;"
+                                style="max-height: 600px;">
             <div class="card-body">
                 <h5 class="card-title">Monto Prestado por Mes</h5>
-                <div style="position: relative; width: 100%; height: auto;">
+                <div style="position: relative; width: 900px; height: auto;">
                     <canvas id="montoPrestadoChart"></canvas>
                 </div>
             </div>
@@ -115,8 +135,6 @@
     </div>
 </div>
 
-
-</div>
 @stop
 
 @section('css')
@@ -156,7 +174,7 @@
                     datasets: [{
                         label: 'Total pagado',
                         data: montos,
-                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        backgroundColor: 'rgb(0, 123, 255, 0.5)', // Antes era 0.5
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
                     }]
@@ -193,7 +211,7 @@
         })
         .catch(error => console.error("Error al cargar los pagos:", error));
 </script>
-@section('js')
+
 <canvas id="montoPrestadoChart"></canvas>
 
 <script>
@@ -284,4 +302,86 @@ fetch('/api-local/prestamos/por-mes')
   })
   .catch(error => console.error("Error al cargar los préstamos:", error));
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="graficoTipoCredito" style="max-width: 500px; max-height: 500px;"></canvas>
+<script>
+fetch('/api-local/prestamos/tipo')
+  .then(response => response.json())
+  .then(data => {
+    const labels = [];
+    const valores = [];
+
+    const tiposEsperados = ['Primera Vez', 'Refinanciamiento', 'Reingreso', 'Novación'];
+    const coloresPastel = {
+  'Primera Vez': 'rgb(48, 236, 92)',        // Verde sólido
+  'Refinanciamiento': 'rgb(0, 123, 255)',   // Rosa sólido
+  'Reingreso': 'rgb(255, 242, 63)',          // Amarillo sólido
+  'Novación': 'rgba(255, 182, 193, 1)'            // Azul sólido
+};
+    const bordesPastel = {
+       'Primera Vez': 'rgb(9, 146, 9)',        // Verde sólido
+  'Refinanciamiento': 'rgb(42, 27, 255)',   // Rosa sólido
+  'Reingreso': 'rgb(255, 238, 0)',          // Amarillo sólido
+  'Novación': 'rgb(240, 86, 109)'            // Azul sólido
+    };
+
+    tiposEsperados.forEach(tipo => {
+      const encontrado = data.find(item => item.tipo_credito === tipo);
+      labels.push(tipo);
+      valores.push(encontrado ? parseInt(encontrado.cantidad) : 0);
+    });
+
+    const ctx = document.getElementById('graficoTipoCredito').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: valores,
+          backgroundColor: labels.map(label => coloresPastel[label]),
+          borderColor: labels.map(label => bordesPastel[label]),
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              font: {
+                size: 14
+              },
+              color: '#555'
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const valor = context.raw;
+                const porcentaje = total > 0 ? ((valor / total) * 100).toFixed(1) : 0;
+                return `${context.label}: ${valor} (${porcentaje}%)`;
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Total de préstamos por tipo de créditos',
+            font: {
+              size: 16
+            },
+            color: '#666'
+          }
+        }
+      }
+    });
+  })
+  .catch(error => console.error("Error al cargar gráfico de tipo de crédito:", error));
+</script>
+
+
 @stop
+
