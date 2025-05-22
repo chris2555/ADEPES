@@ -90,9 +90,11 @@
 </div>
 
 
+<div class="row mt-4">
     <!-- Gráfico: Total Pagado por Mes -->
-    <div class="col-12 mb-4 d-flex justify-content-left">
-        <div class="card w-100" style="max-width: 800px;">
+    <div class="col-md-6 mb-4 d-flex justify-content-center">
+        <div class="card w-100" style="max-width: 1000px;"
+                                style="max-height: 600px;">
             <div class="card-body">
                 <h5 class="card-title">Total de Pagos Por Mes</h5>
                 <div style="position: relative; width: 100%; height: auto;">
@@ -102,12 +104,25 @@
         </div>
     </div>
 
+    <!-- Gráfico: Pastel por Tipo de Crédito -->
+    <div class="col-md-6 mb-4 d-flex justify-content-left">
+        <div class="card w-100" style="max-width: 400px;"
+        style="max-heihht: 400px;">
+            <div class="card-body">
+                <div style="position: relative; width: 100%; height: 320px;">
+                    <canvas id="graficoTipoCredito"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Gráfico: Estadísticas (Monto Prestado) -->
     <div class="col-12 d-flex justify-content-left">
-        <div class="card w-100" style="max-width: 800px;">
+        <div class="card w-100" style="max-width: 1000px;"
+                                style="max-height: 600px;">
             <div class="card-body">
                 <h5 class="card-title">Monto Prestado por Mes</h5>
-                <div style="position: relative; width: 100%; height: auto;">
+                <div style="position: relative; width: 900px; height: auto;">
                     <canvas id="montoPrestadoChart"></canvas>
                 </div>
             </div>
@@ -115,8 +130,6 @@
     </div>
 </div>
 
-
-</div>
 @stop
 
 @section('css')
@@ -193,7 +206,7 @@
         })
         .catch(error => console.error("Error al cargar los pagos:", error));
 </script>
-@section('js')
+
 <canvas id="montoPrestadoChart"></canvas>
 
 <script>
@@ -284,4 +297,87 @@ fetch('/api-local/prestamos/por-mes')
   })
   .catch(error => console.error("Error al cargar los préstamos:", error));
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="graficoTipoCredito" style="max-width: 400px;"></canvas>
+
+<script>
+fetch('/api-local/prestamos/tipo')
+  .then(response => response.json())
+  .then(data => {
+    const labels = [];
+    const valores = [];
+
+    const tiposEsperados = ['Primera Vez', 'Refinanciamiento', 'Reingreso', 'Novación'];
+    const coloresPastel = {
+      'Primera Vez': 'rgba(144, 238, 144, 0.6)',        // Verde pastel
+      'Refinanciamiento': 'rgba(255, 182, 193, 0.6)',   // Rosa pastel
+      'Reingreso': 'rgba(255, 255, 153, 0.6)',          // Amarillo claro
+      'Novación': 'rgba(173, 216, 230, 0.6)'            // Azul pastel
+    };
+    const bordesPastel = {
+      'Primera Vez': 'rgba(144, 238, 144, 1)',
+      'Refinanciamiento': 'rgba(255, 182, 193, 1)',
+      'Reingreso': 'rgba(255, 255, 153, 1)',
+      'Novación': 'rgba(173, 216, 230, 1)'
+    };
+
+    tiposEsperados.forEach(tipo => {
+      const encontrado = data.find(item => item.tipo_credito === tipo);
+      labels.push(tipo);
+      valores.push(encontrado ? parseInt(encontrado.cantidad) : 0);
+    });
+
+    const ctx = document.getElementById('graficoTipoCredito').getContext('2d');
+    new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: valores,
+          backgroundColor: labels.map(label => coloresPastel[label]),
+          borderColor: labels.map(label => bordesPastel[label]),
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              font: {
+                size: 14
+              },
+              color: '#555'
+            }
+          },
+          tooltip: {
+            callbacks: {
+              label: function (context) {
+                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                const valor = context.raw;
+                const porcentaje = total > 0 ? ((valor / total) * 100).toFixed(1) : 0;
+                return `${context.label}: ${valor} (${porcentaje}%)`;
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Total de préstamos por tipo de créditos',
+            font: {
+              size: 16
+            },
+            color: '#666'
+          }
+        }
+      }
+    });
+  })
+  .catch(error => console.error("Error al cargar gráfico de tipo de crédito:", error));
+</script>
+
+
 @stop
+
