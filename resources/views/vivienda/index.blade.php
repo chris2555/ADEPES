@@ -187,6 +187,9 @@ function sortTable(columnIndex) {
                                         <option value="Concreto">Concreto</option>
                                         <option value="Madera">Madera</option>
                                         <option value="Mixto">Mixto</option>
+                                         <option value="Concreto">Adobe</option>
+                                        <option value="Madera">Ladrillo</option>
+                                        <option value="Mixto">Bloque</option>
                                     </x-adminlte-select>
 
                                     <x-adminlte-input name="dependiente" label="Dependiente" type="number"
