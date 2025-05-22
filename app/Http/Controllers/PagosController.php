@@ -197,5 +197,57 @@ public function obtenerPagos($id_persona)
     }
 }
 
+
+public function obtenerRecibos($id_persona)
+{
+    // 1. Obtener los recibos desde la API
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/recibo/{$id_persona}");
+
+    if ($response->failed()) {
+        return redirect()->back()->with('error', 'No se pudo obtener los datos de pagos.');
+    }
+
+    $recibo = $response->json();
+
+    if (empty($recibo)) {
+        return redirect()->back()->with('error', 'No se encontraron datos de pagos.');
+    }
+
+    // 2. Obtener datos de la persona desde la base de datos local
+    $persona = Persona::find($id_persona);
+    $nombreCompleto = $persona 
+        ? trim("{$persona->nombre1} {$persona->nombre2} {$persona->apellido1} {$persona->apellido2}") 
+        : ($recibo[0]['nombres_apellidos'] ?? 'Nombre no disponible');
+
+    // 3. Usuario autenticado
+    $usuarioNombre = auth()->user()->name;
+
+    // 4. Obtener solicitud desde API
+    $solicitudesResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes");
+    $solicitud = null;
+    if ($solicitudesResponse->ok()) {
+        $solicitud = collect($solicitudesResponse->json())->firstWhere('id_persona', $id_persona);
+    }
+
+    // 5. Obtener primer pago (desde el recibo)
+    $primerPago = $recibo[0] ?? null;
+
+    // 6. Enviar datos a la vista
+    $datos = [
+        'recibo' => $recibo,
+        'nombreCompleto' => $nombreCompleto,
+        'usuarioNombre' => $usuarioNombre,
+        'solicitud' => $solicitud,
+        'primerPago' => $primerPago,
+    ];
+
+    $pdf = PDF::loadView('pagos.recibo', $datos);
+    return $pdf->stream();
 }
+
+
+}
+
+
+
 

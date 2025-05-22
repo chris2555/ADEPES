@@ -107,7 +107,9 @@
                 <td style="text-align: center">{{ $subPago['abono_capital'] }}</td>
                 <td style="text-align: center">{{ $subPago['estado'] }}</td>
                 <td style="text-align: center">
-                
+                <a href="{{ route('recibo', $primerPago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-file-alt"> Pagos Realizados </i>
+                </a>
             </td>
             <td style="text-align: center">
                
