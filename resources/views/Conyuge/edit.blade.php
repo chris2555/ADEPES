@@ -39,11 +39,11 @@
                                     </x-adminlte-textarea>
 
                                     <x-adminlte-input name="profesion_oficio_conyuge" label="Profesión u Oficio del Cónyuge"
-                                        type="text" fgroup-class="mb-3" required
+                                        type="text" fgroup-class="mb-3" 
                                         value="{{ old('profesion_oficio_conyuge', $solicitudes['profesion_oficio_conyuge'] ?? '') }}" />
 
                                     <x-adminlte-input name="cargo_conyuge" label="Cargo del Cónyuge"
-                                        type="text" fgroup-class="mb-3" required
+                                        type="text" fgroup-class="mb-3" 
                                         value="{{ old('cargo_conyuge', $solicitudes['cargo_conyuge'] ?? '') }}" />
                                 </div>
 
@@ -54,7 +54,7 @@
                                         value="{{ old('ingresos_negocio_conyuge', $solicitudes['ingresos_negocio_conyuge'] ?? '') }}" />
 
                                     <x-adminlte-textarea name="direccion_trabajo_conyuge" label="Dirección de Trabajo del Cónyuge"
-                                        fgroup-class="mb-3" required>
+                                        fgroup-class="mb-3" >
                                         {{ old('direccion_trabajo_conyuge', $solicitudes['direccion_trabajo_conyuge'] ?? '') }}
                                     </x-adminlte-textarea>
 
