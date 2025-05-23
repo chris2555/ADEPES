@@ -95,9 +95,11 @@
         </div>
     </div>
 
+    <div class="row mt-4">
     <!-- Gráfico: Total Pagado por Mes -->
-    <div class="col-12 mb-4 d-flex justify-content-left">
-        <div class="card w-100" style="max-width: 800px;">
+    <div class="col-md-6 mb-4 d-flex justify-content-center">
+        <div class="card w-100" style="max-width: 1000px;"
+                                style="max-height: 600px;">
             <div class="card-body">
                 <h5 class="card-title">Total de Pagos Por Mes</h5>
                 <div style="position: relative; width: 100%; height: auto;">
@@ -106,6 +108,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- Gráfico: Estadísticas (Monto Prestado) -->
     <div class="col-12 d-flex justify-content-left">
@@ -290,3 +294,4 @@ fetch('/api-local/prestamos/por-mes')
   .catch(error => console.error("Error al cargar los préstamos:", error));
 </script>
 @stop
+
