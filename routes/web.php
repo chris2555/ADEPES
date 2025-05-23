@@ -86,6 +86,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/amortizacion/{id_solicitud}', [SolicitudController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
     Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
+   Route::get('/recibo/{id_persona}/{id_pago}', [PagosController::class, 'obtenerRecibos'])->name('recibo');
     Route::get('/solicitud/{id_solicitud}', [RelacionController::class, 'generarSolicitudPDF'])->name('solicitud');
     Route::resource('parametros',ParametrosController::class)->names('parametros');
     Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');

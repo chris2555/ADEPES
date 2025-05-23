@@ -52,6 +52,7 @@
                                 <th style="text-align: center">Abono a Capital</th>
                                 <th style="text-align: center">Excedente/Déficit</th>
                                 <th style="text-align: center">Resumen de Pagos</th>
+                                <th style="text-align: center">Recibos de pago</th>
                                 <th style="text-align: center">Acciones</th>
                             </tr>
                         </thead>
@@ -76,6 +77,11 @@
                 <a href="{{ route('pagado', $primerPago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
                     <i class="fas fa-file-alt"> Pagos Realizados </i>
                 </a>
+            </td>
+            <td style="text-align: center">
+               <a href="{{ route('recibo', [$primerPago['id_persona'], $primerPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+    <i class="fas fa-file-alt"> Recibo de pago </i>
+</a>
             </td>
             <td style="text-align: center">
                 <button class="btn btn-info btn-sm toggle-subrows"><i class="bi bi-plus-lg"></i></button>
@@ -107,8 +113,13 @@
                 <td style="text-align: center">{{ $subPago['abono_capital'] }}</td>
                 <td style="text-align: center">{{ $subPago['estado'] }}</td>
                 <td style="text-align: center">
-                
+                     </td>
+                <td style="text-align: center">
+                   <a href="{{ route('recibo', [$subPago['id_persona'], $subPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-file-alt"> Recibos de Pago </i>
+                </a>
             </td>
+            
             <td style="text-align: center">
                
                 <a href="javascript:void(0);" class="btn btn-primary btn-sm"
@@ -314,7 +325,7 @@
     $(function () {
         $('#pagoTable').DataTable({
             "order": [],
-            "pageLength": 10,
+            "pageLength": 25,
             "responsive": true,
             "lengthChange": true,
             "autoWidth": false,
