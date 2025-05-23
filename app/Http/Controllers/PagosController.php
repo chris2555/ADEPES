@@ -198,52 +198,47 @@ public function obtenerPagos($id_persona)
 }
 
 
-public function obtenerRecibos($id_persona)
+public function obtenerRecibos($id_persona, $id_pago)
 {
-    // 1. Obtener los recibos desde la API
-    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/recibo/{$id_persona}");
+    $recibo = DB::table('pagos')
+        ->where('id_pago', $id_pago)
+        ->where('id_persona', $id_persona)
+        ->first();
 
-    if ($response->failed()) {
-        return redirect()->back()->with('error', 'No se pudo obtener los datos de pagos.');
+    if (!$recibo) {
+        abort(404, 'Recibo no encontrado');
     }
 
-    $recibo = $response->json();
+    $recibo = (array) $recibo;
 
-    if (empty($recibo)) {
-        return redirect()->back()->with('error', 'No se encontraron datos de pagos.');
-    }
-
-    // 2. Obtener datos de la persona desde la base de datos local
-    $persona = Persona::find($id_persona);
-    $nombreCompleto = $persona 
-        ? trim("{$persona->nombre1} {$persona->nombre2} {$persona->apellido1} {$persona->apellido2}") 
-        : ($recibo[0]['nombres_apellidos'] ?? 'Nombre no disponible');
-
-    // 3. Usuario autenticado
     $usuarioNombre = auth()->user()->name;
 
-    // 4. Obtener solicitud desde API
     $solicitudesResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes");
     $solicitud = null;
     if ($solicitudesResponse->ok()) {
         $solicitud = collect($solicitudesResponse->json())->firstWhere('id_persona', $id_persona);
     }
 
-    // 5. Obtener primer pago (desde el recibo)
-    $primerPago = $recibo[0] ?? null;
+    $personasResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas");
+    $persona = null;
+    if ($personasResponse->ok()) {
+        $persona = collect($personasResponse->json())->firstWhere('id_persona', $id_persona);
+    }
 
-    // 6. Enviar datos a la vista
     $datos = [
-        'recibo' => $recibo,
-        'nombreCompleto' => $nombreCompleto,
+        'recibos' => [$recibo],
         'usuarioNombre' => $usuarioNombre,
         'solicitud' => $solicitud,
-        'primerPago' => $primerPago,
+        'persona' => $persona,
+        'primerPago' => $recibo,
+        'recibo' => $recibo, // Asegúrate que también esté esta variable si la usas en la vista
     ];
 
-    $pdf = PDF::loadView('pagos.recibo', $datos);
-    return $pdf->stream();
+    $pdf = \PDF::loadView('pagos.recibo', $datos);
+    return $pdf->stream('recibo_pago.pdf');
 }
+
+
 
 
 }
