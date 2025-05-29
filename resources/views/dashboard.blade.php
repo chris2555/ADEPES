@@ -121,18 +121,28 @@
         </div>
     </div>
 
-    <!-- Gráfico: Estadísticas (Monto Prestado) -->
-    <div class="col-12 d-flex justify-content-left">
-        <div class="card w-100" style="max-width: 1000px;"
-                                style="max-height: 600px;">
-            <div class="card-body">
-                <h5 class="card-title">Monto Prestado por Mes</h5>
-                <div style="position: relative; width: 900px; height: auto;">
-                    <canvas id="montoPrestadoChart"></canvas>
-                </div>
-            </div>
-        </div>
+    <!-- Gráfico: Estadísticas (Monto Prestado) y Estado de Solicitudes -->
+<div class="col-12 d-flex justify-content-left" style="gap: 20px;">
+  <!-- Tarjeta del gráfico -->
+  <div class="card w-100" style="max-width: 1000px;">
+    <div class="card-body">
+      <h5 class="card-title">Monto Prestado por Mes</h5>
+      <div style="position: relative; width: 900px; height: auto;">
+        <canvas id="montoPrestadoChart"></canvas>
+      </div>
     </div>
+  </div>
+
+  <!-- Tarjeta de estado de solicitudes -->
+  <div style="width: 390px;">
+    <div class="card w-100">
+      <div class="card-body">
+        <div class="goal-container" id="goalStats">
+          <div class="goal-title">Estado de Solicitudes de Préstamo</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 @stop
@@ -380,6 +390,86 @@ fetch('/api-local/prestamos/tipo')
     });
   })
   .catch(error => console.error("Error al cargar gráfico de tipo de crédito:", error));
+</script>
+
+<script>
+  // Inyectar estilos para las barras
+  const style = document.createElement('style');
+  style.textContent = `
+    .goal-container {
+      font-family: "Segoe UI", sans-serif;
+      width: 100%;
+    }
+    .goal-title {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 18px;
+    }
+    .goal-bar {
+      margin-bottom: 18px;
+    }
+    .goal-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .bar-background {
+      background-color: #444;
+      border-radius: 3px;
+      overflow: hidden;
+      height: 10px;
+    }
+    .bar-fill {
+      display: block;
+      height: 10px;
+    }
+    .bar-aprobado { background-color: #28a745; }
+    .bar-rechazado { background-color: #dc3545; }
+    .bar-pendiente { background-color: #007bff; }
+  `;
+  document.head.appendChild(style);
+
+  // Cargar datos y construir barras
+  // Cargar datos y construir barras
+fetch('/api-local/solicitudes/estadistica')
+  .then(response => response.json())
+  .then(data => {
+    const estados = ['Aprobado', 'Rechazado', 'Pendiente'];
+    const coloresClase = {
+      'Aprobado': 'bar-aprobado',
+      'Rechazado': 'bar-rechazado',
+      'Pendiente': 'bar-pendiente'
+    };
+
+    const container = document.getElementById('goalStats');
+
+    // Calcular el total de solicitudes (suma de todas)
+    const totalSolicitudes = data.reduce((sum, item) => sum + item.total, 0);
+
+    estados.forEach(estado => {
+      const item = data.find(d => d.estado_solicitud === estado);
+      const valor = item ? item.total : 0;
+      const porcentaje = (valor / totalSolicitudes) * 100;
+
+      const barHTML = `
+        <div class="goal-bar">
+          <div class="goal-label">
+            <span>${estado}</span>
+            <span><strong>${valor}</strong>/${totalSolicitudes}</span>
+          </div>
+          <div class="bar-background">
+            <span class="bar-fill ${coloresClase[estado]}" style="width: ${porcentaje}%;"></span>
+          </div>
+        </div>
+      `;
+      container.innerHTML += barHTML;
+    });
+  })
+  .catch(error => console.error("Error al cargar las solicitudes:", error));
+
 </script>
 
 
