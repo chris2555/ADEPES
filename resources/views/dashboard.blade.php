@@ -146,13 +146,13 @@
 
     <!-- Lista de personas que deben pagar esta semana -->
     <div class="card w-100 mt-3">
-      <div class="card-body">
-        <div class="goal-title">Personas Que Tienen Que Realizar sus Pagos Esta Semana</div>
-        <ul id="personasPagoLista" class="list-group list-group-flush">
-          <!-- Se llenará dinámicamente -->
-        </ul>
+  <div class="card-body">
+    <div class="goal-title">Personas Que Tienen Que Realizar sus Pagos Esta Semana</div>
+    <div id="personasPagoLista" class="list-group list-group-flush"></div>
       </div>
     </div>
+
+  </div>
   </div>
 </div>
 
@@ -487,29 +487,30 @@ fetch('/api-local/solicitudes/estadistica')
 async function cargarPersonasPagoLista() {
   try {
     const response = await fetch('/api-local/personass/pagosDeEstaSemana');
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const personas = await response.json();
-
     const lista = document.getElementById('personasPagoLista');
-    lista.innerHTML = ''; // limpiar antes de insertar
+    lista.innerHTML = ''; // Limpiar contenido previo
 
     if (personas.length === 0) {
-      const li = document.createElement('li');
-      li.className = 'list-group-item';
-      li.textContent = 'No hay pagos programados para esta semana.';
-      lista.appendChild(li);
-      return;
+      const div = document.createElement('div');
+      div.className = 'list-group-item';
+      div.textContent = 'No hay pagos programados para esta semana.';
+      lista.appendChild(div);
+    } else {
+      personas.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'list-group-item';
+        div.textContent = `${p.nombres_apellidos} - Tel: ${p.telefono_secundario || 'No registrado'}`;
+        lista.appendChild(div);
+      });
     }
 
-    personas.forEach(p => {
-      const li = document.createElement('li');
-      li.className = 'list-group-item';
-      li.textContent = `${p.nombres_apellidos} - Tel: ${p.telefono_secundario || 'No registrado'}`;
-      lista.appendChild(li);
-    });
+    // Estilo forzado para altura máxima
+    lista.style.maxHeight = '156px';
+    lista.style.overflowY = personas.length > 3 ? 'auto' : 'hidden';
+    lista.style.border = '1px solid #dee2e6';
 
   } catch (error) {
     console.error('Error al cargar personas:', error);
@@ -518,7 +519,6 @@ async function cargarPersonasPagoLista() {
 
 window.addEventListener('DOMContentLoaded', cargarPersonasPagoLista);
 </script>
-
 
 @stop
 
