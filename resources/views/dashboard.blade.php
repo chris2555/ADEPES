@@ -133,13 +133,21 @@
     </div>
   </div>
 
-  <!-- Tarjeta de estado de solicitudes -->
+  <!-- Tarjeta de estado de solicitudes + personas que pagan -->
   <div style="width: 390px;">
     <div class="card w-100">
       <div class="card-body">
         <div class="goal-container" id="goalStats">
           <div class="goal-title">Estado de Solicitudes de Préstamo</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Nuevo gráfico de personas que deben pagar esta semana -->
+    <div class="card w-100 mt-3">
+      <div class="card-body">
+        <div class="goal-title">Personas Que Tienen Que Realizar sus Pagos Esta Semana</div>
+        <canvas id="personasPagoChart"></canvas>
       </div>
     </div>
   </div>
@@ -470,6 +478,57 @@ fetch('/api-local/solicitudes/estadistica')
   })
   .catch(error => console.error("Error al cargar las solicitudes:", error));
 
+</script>
+
+<script>
+  async function cargarPersonasPagoChart() {
+    try {
+      const response = await fetch('/api-local/personass/pagosDeEstaSemana');
+      const data = await response.json();
+
+      const nombres = data.map(p => p.nombres_apellidos);
+      const telefonos = data.map(p => p.telefono_secundario);
+
+      const ctx = document.getElementById('personasPagoChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: nombres,
+          datasets: [{
+            label: 'Teléfono',
+            data: nombres.map(() => 1), // Valor dummy para mostrar barras
+            backgroundColor: '#007bff'
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  return 'Tel: ' + telefonos[context.dataIndex];
+                }
+              }
+            },
+            title: { display: false }
+          },
+          scales: {
+            x: { display: false },
+            y: {
+              ticks: { font: { size: 14 } }
+            }
+          }
+        }
+      });
+
+    } catch (error) {
+      console.error('Error al cargar datos:', error);
+    }
+  }
+
+  // Llama la función al cargar la página
+  cargarPersonasPagoChart();
 </script>
 
 
