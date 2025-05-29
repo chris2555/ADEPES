@@ -102,6 +102,11 @@ Route::middleware('auth','twofactor')->group(function () {
     return $response->json();
 });
 
+    Route::get('/api-local/solicitudes/estadistica', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudess/estadistica');
+    return $response->json();
+});
+
 });
 });
  
