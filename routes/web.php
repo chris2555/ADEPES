@@ -107,6 +107,11 @@ Route::middleware('auth','twofactor')->group(function () {
     return $response->json();
 });
 
+    Route::get('/api-local/personass/pagosDeEstaSemana', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personass/pagosDeEstaSemana');
+    return $response->json();
+});
+
 });
 });
  
