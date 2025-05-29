@@ -122,6 +122,7 @@
     </div>
 
     <!-- Gráfico: Estadísticas (Monto Prestado) y Estado de Solicitudes -->
+<!-- Gráfico: Estadísticas (Monto Prestado) y Estado de Solicitudes -->
 <div class="col-12 d-flex justify-content-left" style="gap: 20px;">
   <!-- Tarjeta del gráfico -->
   <div class="card w-100" style="max-width: 1000px;">
@@ -143,11 +144,13 @@
       </div>
     </div>
 
-    <!-- Nuevo gráfico de personas que deben pagar esta semana -->
+    <!-- Lista de personas que deben pagar esta semana -->
     <div class="card w-100 mt-3">
       <div class="card-body">
         <div class="goal-title">Personas Que Tienen Que Realizar sus Pagos Esta Semana</div>
-        <canvas id="personasPagoChart"></canvas>
+        <ul id="personasPagoLista" class="list-group list-group-flush">
+          <!-- Se llenará dinámicamente -->
+        </ul>
       </div>
     </div>
   </div>
@@ -481,54 +484,39 @@ fetch('/api-local/solicitudes/estadistica')
 </script>
 
 <script>
-  async function cargarPersonasPagoChart() {
-    try {
-      const response = await fetch('/api-local/personass/pagosDeEstaSemana');
-      const data = await response.json();
-
-      const nombres = data.map(p => p.nombres_apellidos);
-      const telefonos = data.map(p => p.telefono_secundario);
-
-      const ctx = document.getElementById('personasPagoChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: nombres,
-          datasets: [{
-            label: 'Teléfono',
-            data: nombres.map(() => 1), // Valor dummy para mostrar barras
-            backgroundColor: '#007bff'
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: function(context) {
-                  return 'Tel: ' + telefonos[context.dataIndex];
-                }
-              }
-            },
-            title: { display: false }
-          },
-          scales: {
-            x: { display: false },
-            y: {
-              ticks: { font: { size: 14 } }
-            }
-          }
-        }
-      });
-
-    } catch (error) {
-      console.error('Error al cargar datos:', error);
+async function cargarPersonasPagoLista() {
+  try {
+    const response = await fetch('/api-local/personass/pagosDeEstaSemana');
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
     }
-  }
 
-  // Llama la función al cargar la página
-  cargarPersonasPagoChart();
+    const personas = await response.json();
+
+    const lista = document.getElementById('personasPagoLista');
+    lista.innerHTML = ''; // limpiar antes de insertar
+
+    if (personas.length === 0) {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.textContent = 'No hay pagos programados para esta semana.';
+      lista.appendChild(li);
+      return;
+    }
+
+    personas.forEach(p => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.textContent = `${p.nombres_apellidos} - Tel: ${p.telefono_secundario || 'No registrado'}`;
+      lista.appendChild(li);
+    });
+
+  } catch (error) {
+    console.error('Error al cargar personas:', error);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', cargarPersonasPagoLista);
 </script>
 
 
