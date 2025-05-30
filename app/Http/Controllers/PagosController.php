@@ -197,5 +197,52 @@ public function obtenerPagos($id_persona)
     }
 }
 
+
+public function obtenerRecibos($id_persona, $id_pago)
+{
+    $recibo = DB::table('pagos')
+        ->where('id_pago', $id_pago)
+        ->where('id_persona', $id_persona)
+        ->first();
+
+    if (!$recibo) {
+        abort(404, 'Recibo no encontrado');
+    }
+
+    $recibo = (array) $recibo;
+
+    $usuarioNombre = auth()->user()->name;
+
+    $solicitudesResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes");
+    $solicitud = null;
+    if ($solicitudesResponse->ok()) {
+        $solicitud = collect($solicitudesResponse->json())->firstWhere('id_persona', $id_persona);
+    }
+
+    $personasResponse = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/personas");
+    $persona = null;
+    if ($personasResponse->ok()) {
+        $persona = collect($personasResponse->json())->firstWhere('id_persona', $id_persona);
+    }
+
+    $datos = [
+        'recibos' => [$recibo],
+        'usuarioNombre' => $usuarioNombre,
+        'solicitud' => $solicitud,
+        'persona' => $persona,
+        'primerPago' => $recibo,
+        'recibo' => $recibo, // Asegúrate que también esté esta variable si la usas en la vista
+    ];
+
+    $pdf = \PDF::loadView('pagos.recibo', $datos);
+    return $pdf->stream('recibo_pago.pdf');
 }
+
+
+
+
+}
+
+
+
 

@@ -38,18 +38,21 @@ Route::middleware('auth')->group(function () {
       
 });
 
-Route::middleware('auth')->group(function () { 
+Route::middleware('auth','twofactor')->group(function () { 
 
     Route::get('/dashboard', function () {
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/estadisticas');
         $data = $response->json();
         return view('dashboard', $data);
     })->name('dashboard');
-Route::get('/api-local/prestamos/por-mes', function () {
+    Route::get('/api-local/prestamos/por-mes', function () {
     $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/prestamo-grafico');
     return $response->json();
-});
-
+    });
+    Route::get('/api-local/prestamos/tipo', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/prestamo-tipo');
+    return $response->json();
+    });
 
 
     Route::middleware(['web', BitacoraMiddleware::class])->group(function () {
@@ -83,6 +86,7 @@ Route::get('/api-local/prestamos/por-mes', function () {
     Route::get('/amortizacion/{id_solicitud}', [SolicitudController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
     Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
+   Route::get('/recibo/{id_persona}/{id_pago}', [PagosController::class, 'obtenerRecibos'])->name('recibo');
     Route::get('/solicitud/{id_solicitud}', [RelacionController::class, 'generarSolicitudPDF'])->name('solicitud');
     Route::resource('parametros',ParametrosController::class)->names('parametros');
     Route::resource('informacionlaboral',InformacionLaboralController::class)->names('informacionlaboral');
@@ -95,6 +99,16 @@ Route::get('/api-local/prestamos/por-mes', function () {
 
     Route::get('/api-local/pagos/por-mes', function () {
     $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss/por-mes');
+    return $response->json();
+});
+
+    Route::get('/api-local/solicitudes/estadistica', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudess/estadistica');
+    return $response->json();
+});
+
+    Route::get('/api-local/personass/pagosDeEstaSemana', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personass/pagosDeEstaSemana');
     return $response->json();
 });
 
