@@ -21,6 +21,10 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
+
+     protected $casts = [
+    'change' => 'boolean',
+];
     protected $fillable = [
         'name',
         'email',
