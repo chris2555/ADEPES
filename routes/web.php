@@ -64,25 +64,25 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::resource('permisos', PermisosController::class)->middleware('can:ver-seguridad')->names('permisos');
     Route::resource('users', UserController::class)->middleware('can:ver-seguridad')->names('users');
     //Route::resource('solicitud', SolicitudPrestamoController::class)->middleware('can:ver-seguridad')->names('solicitud');
-    Route::resource('solicitudes', SolicitudController::class)->middleware('can:ver-seguridad')->names('solicitudes');
+    Route::resource('solicitudes', SolicitudController::class)->names('solicitudes');
     Route::post('/egresos', [EstadoegresoController::class, 'store'])->name('Estadoegresos.store');
     Route::resource('egresos', EstadoEgresosController::class)->middleware('can:ver-seguridad')->names('egresos');
-    Route::resource('relacion',RelacionController::class)->middleware('can:ver-seguridad')->names('relacion');
-    Route::resource('Prestamo', PrestamoController::class)->middleware('can:ver-seguridad')->names('Prestamo');
-    Route::get('/prestamos', [PrestamoController::class, 'index'])->middleware('can:ver-seguridad')->name('prestamos.index');
-    Route::get('/prestamos/{id}', [PrestamoController::class, 'show'])->middleware('can:ver-seguridad')->name('show');
-    Route::post('/prestamos', [PrestamoController::class, 'store'])->middleware('can:ver-seguridad')->name('prestamos.store');
-    Route::get('/prestamos/{id}', [PrestamoController::class, 'edit'])->middleware('can:ver-seguridad')->name('prestamos.edit');
-    Route::put('/prestamos/{id}', [PrestamoController::class, 'update'])->middleware('can:ver-seguridad')->name('prestamos.update');
-    Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->middleware('can:ver-seguridad')->name('prestamos.destroy');
-    Route::resource('/referencias', ReferenciasFController::class)->middleware('can:ver-seguridad')->names('referencias');
-    Route::resource('pagos', PagosController::class)->middleware('can:ver-seguridad')->names('pagos');
+    Route::resource('relacion',RelacionController::class)->names('relacion');
+    Route::resource('Prestamo', PrestamoController::class)->names('Prestamo');
+    Route::get('/prestamos', [PrestamoController::class, 'index'])->name('prestamos.index');
+    Route::get('/prestamos/{id}', [PrestamoController::class, 'show'])->name('show');
+    Route::post('/prestamos', [PrestamoController::class, 'store'])->name('prestamos.store');
+    Route::get('/prestamos/{id}', [PrestamoController::class, 'edit'])->name('prestamos.edit');
+    Route::put('/prestamos/{id}', [PrestamoController::class, 'update'])->name('prestamos.update');
+    Route::delete('/prestamos/{id}', [PrestamoController::class, 'destroy'])->name('prestamos.destroy');
+    Route::resource('/referencias', ReferenciasFController::class)->names('referencias');
+    Route::resource('pagos', PagosController::class)->names('pagos');
     Route::resource('telefonos',TelefonoController::class)->names('telefonos');
-    Route::resource('conyuge', ConyugeController::class)->middleware('can:ver-seguridad')->names('conyuge');
+    Route::resource('conyuge', ConyugeController::class)->names('conyuge');
     Route::resource('viviendas',ViviendaController::class)->names('viviendas');
     Route::resource('gestionclientes', ClientesController::class)->names('gestionclientes');
     Route::resource('parametros',parametrosController::class)->names('Parametros');
-    Route::resource('ingresos', IngresosController::class)->middleware('can:ver-seguridad')->names('ingresos');
+    Route::resource('ingresos', IngresosController::class)->names('ingresos');
     Route::get('/amortizacion/{id_solicitud}', [SolicitudController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
     Route::get('/pagado/{id_solicitud}', [PagosController::class, 'obtenerPagos'])->name('pagado');
@@ -95,7 +95,7 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/Conyuge/{id}', [RelacionController::class, 'getConyuge']);
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}', [SolicitudController::class, 'getSolicitudes']);
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{id}', [IngresosController::class, 'getByPersona']);
-    Route::resource('bitacoras',BitacoraController::class)->names('bitacoras');
+    Route::resource('bitacoras',BitacoraController::class)->middleware('can:ver-seguridad')->names('bitacoras');
 
     Route::get('/api-local/pagos/por-mes', function () {
     $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss/por-mes');

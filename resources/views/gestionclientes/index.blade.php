@@ -81,14 +81,17 @@
                                             class="btn btn-success btn-sm">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                        <form action="{{ route('gestionclientes.destroy', $persona['id_persona']) }}" 
-                                        method="POST" class="d-inline delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm delete-btn">
-                                            <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                        @hasanyrole(['Administrador'])
+                                            <form action="{{ route('gestionclientes.destroy', $persona['id_persona']) }}" 
+                                                method="POST" class="d-inline delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        @endhasanyrole
+
                                     </td>
                                 </tr>
                             @endforeach

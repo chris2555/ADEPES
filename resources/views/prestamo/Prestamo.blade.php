@@ -91,35 +91,40 @@
                     <i class="fas fa-edit"></i>
                 </button>
                 -->
-                <button class="btn btn-success btn-sm edit-prestamo"
-    data-bs-toggle="modal"
-    data-bs-target="#edit"
-    data-id="{{ $prestamo['id_prestamo'] }}"
-    data-id-persona="{{ $prestamo['id_persona'] }}"
-    data-nombres="{{ $prestamo['nombres_apellidos'] }}"
-    data-dni="{{ $prestamo['n_identidad'] }}"
-    data-total="{{ $prestamo['total_pagado'] }}"
-    data-inicio="{{ $prestamo['fecha_inicio'] }}"
-    data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
-    data-tipo="{{ $prestamo['tipo'] }}"
-    data-monto="{{ $prestamo['monto'] }}"
-    data-tasa="{{ $prestamo['tasa'] }}"
-    data-plazo="{{ $prestamo['plazo'] }}"
-    data-estado="{{ $prestamo['estado'] }}"
-    data-garantia="{{ $prestamo['tipo_garantia'] }}"
-    data-modificado-por="{{ auth()->user()->name }}">
-    <i class="bi bi-pencil"></i>
-</button>
+               @hasanyrole(['Administrador'])
+    @if($prestamo['estado'] === 'aprobado' || Auth::user()->hasRole('Administrador'))
+        
+            <button class="btn btn-success btn-sm edit-prestamo"
+                data-bs-toggle="modal"
+                data-bs-target="#edit"
+                data-id="{{ $prestamo['id_prestamo'] }}"
+                data-id-persona="{{ $prestamo['id_persona'] }}"
+                data-nombres="{{ $prestamo['nombres_apellidos'] }}"
+                data-dni="{{ $prestamo['n_identidad'] }}"
+                data-total="{{ $prestamo['total_pagado'] }}"
+                data-inicio="{{ $prestamo['fecha_inicio'] }}"
+                data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
+                data-tipo="{{ $prestamo['tipo'] }}"
+                data-monto="{{ $prestamo['monto'] }}"
+                data-tasa="{{ $prestamo['tasa'] }}"
+                data-plazo="{{ $prestamo['plazo'] }}"
+                data-estado="{{ $prestamo['estado'] }}"
+                data-garantia="{{ $prestamo['tipo_garantia'] }}"
+                data-modificado-por="{{ auth()->user()->name }}">
+                <i class="bi bi-pencil"></i>
+            </button>
 
-                <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
+            <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
                 @csrf
                 @method('DELETE')
-                 <button type="button" class="btn btn-danger btn-sm delete-btn">
-                  <i class="bi bi-trash"></i>
+                <button type="button" class="btn btn-danger btn-sm delete-btn">
+                    <i class="bi bi-trash"></i>
                 </button>
-                </form>
-            </td>
-        </tr>
+            </form>
+        </td>
+    @endif
+@endhasanyrole
+
     @endforeach
 @else
     <tr>

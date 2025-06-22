@@ -100,10 +100,20 @@
                                             <i class="bi bi-eye"></i>
                                         </a>
                                         
-                                        <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}"
-                                        class="btn btn-primary btn-sm">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
+@hasanyrole(['Tecnico', 'Contador', 'Administrador'])
+    @if(
+        in_array($solicitud['estado_solicitud'], ['Rechazado', 'Pendiente']) ||
+        Auth::user()->hasRole('Administrador')
+    )
+        <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}" 
+           class="btn btn-primary btn-sm">
+            <i class="bi bi-pencil"></i>
+        </a>
+    @endif
+@endhasanyrole
+
+
+
                                         <form action="{{ route('solicitudes.destroy', $solicitud['id_solicitud']) }}"
                                              method="POST" class="d-inline">
                                     @csrf

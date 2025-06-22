@@ -30,14 +30,17 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card card-outline card-success">
-            <div class="card-header">
-                <h3 class="card-title">DETALLE DE PAGOS</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPago">
-                        <i class="fas fa-plus"></i> Nuevo Pago
-                    </button>
-                </div>
-            </div>
+                        @hasanyrole(['Administrador'])
+                            <div class="card-header">
+                                <h3 class="card-title">DETALLE DE PAGOS</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPago">
+                                        <i class="fas fa-plus"></i> Nuevo Pago
+                                    </button>
+                                </div>
+                            </div>
+                        @endhasanyrole
+
 
             <div class="card-body">
                 <div class="table-responsive">
@@ -89,9 +92,14 @@
                     onclick="viewModal({{ json_encode($primerPago) }})">
                     <i class="bi bi-eye"></i>
                 </a>
+                
+                @hasanyrole(['Administrador'])
+
                 <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
                     <i class="bi bi-pencil"></i>
                 </a>
+                @endhasanyrole
+                @hasanyrole(['Administrador'])
                 <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
                     @csrf
                     @method('DELETE')
@@ -99,6 +107,7 @@
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
+                @endhasanyrole
             </td>
         </tr>
 
@@ -126,6 +135,9 @@
                     onclick="viewModal({{ json_encode($primerPago) }})">
                     <i class="bi bi-eye"></i>
                 </a>
+                
+                @hasanyrole(['Administrador'])
+
                 <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
                     <i class="bi bi-pencil"></i>
                 </a>
@@ -136,6 +148,7 @@
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
+                @endhasanyrole
             </td>
         </tr>
         @endforeach
