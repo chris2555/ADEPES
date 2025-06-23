@@ -24,9 +24,11 @@
             <div class="card-header">
             <h3 class="card-title">GESTION DE SOLICITUD</h3>
             <div class="card-tools">
+                @hasanyrole(['Tecnico', 'Administrador'])
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insert">
                     <i class="fas fa-plus"></i> Nueva Solicitud
                 </button>
+                @endhasanyrole
                 </div>
                 </div>
 
@@ -50,7 +52,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                        @foreach(collect($solicitudes)->sortBy(fn($p) => (int) $p['id_solicitud']) as $solicitud)
+                        @foreach(collect($solicitudes)
+                            ->sortBy(fn($p) => (int) $p['id_solicitud'])
+                            ->filter(function ($solicitud) {
+                                if (auth()->user()->hasAnyRole(['Tecnico', 'Administrador'])) {
+                                    return true; // Pueden ver todos los estados
+                                }
+
+                                if (auth()->user()->hasRole('Contador')) {
+                                    return $solicitud['estado_solicitud'] === 'Aprobado'; // Solo ve "Aprobado"
+                                }
+
+                                return false; // Otros roles no ven nada
+                            }) as $solicitud)
+
                                 <tr>
                                     <td style="text-align: center" data-order="asc">{{ $solicitud['id_solicitud'] }}</td>
                                     <td style="text-align: center">{{ $solicitud['id_persona'] }}</td>
@@ -93,12 +108,22 @@
     @endif
 </td>
 
-
+                                    
                                     <td style="text-align: center">
+                                        @hasanyrole(['Tecnico', 'Administrador'])
                                         <a href="javascript:void(0);" class="btn btn-success btn-sm"
                                             onclick="viewModal({{ json_encode($solicitud) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
+
+                                        @endhasanyrole
+                                        
+                                    @hasanyrole(['Tecnico', 'Administrador'])
+                                            <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}" 
+                                            class="btn btn-primary btn-sm">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+
                                         @php
                                             $mostrarBoton = in_array($solicitud['estado_solicitud'], ['Aprobado', 'Pendiente', 'Rechazado']) || 
                                                             Auth::user()->hasRole(['Administrador', 'Tecnico', 'Contador']);
@@ -114,6 +139,7 @@
                                                 </a>
                                             @endhasanyrole
                                         @endif
+
 
 
 
@@ -148,7 +174,6 @@ function sortTable(columnIndex) {
 
     </script>
             </div>
-
     <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

@@ -372,6 +372,7 @@ return [
             'text' => 'Relacion solicitudes',
             'route' => 'relacion.index',
             'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
+            'can' => 'Ver-reportes',
         ],
         
         [
