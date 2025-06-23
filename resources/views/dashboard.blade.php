@@ -12,6 +12,7 @@
 <div class="container-fluid">
    <div class="row">
   <!-- USUARIOS -->
+  @hasanyrole('Tecnico|Administrador')
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('users.index') }}" class="text-dark text-decoration-none">
       <div class="info-box">
@@ -23,8 +24,9 @@
       </div>
     </a>
   </div>
-
+    @endhasanyrole
   <!-- CLIENTES -->
+   @hasanyrole('Tecnico|Administrador')
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('gestionclientes.index') }}" class="text-dark text-decoration-none">
       <div class="info-box mb-3">
@@ -36,6 +38,7 @@
       </div>
     </a>
   </div>
+  @endhasanyrole
 
   <!-- SOLICITUDES -->
   <div class="col-12 col-sm-6 col-md-3">
