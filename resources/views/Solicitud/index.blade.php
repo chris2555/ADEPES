@@ -99,27 +99,35 @@
                                             onclick="viewModal({{ json_encode($solicitud) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        
-                                    @hasanyrole(['Tecnico', 'Contador', 'Administrador'])
-                                            <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}" 
-                                            class="btn btn-primary btn-sm">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
+                                        @php
+                                            $mostrarBoton = in_array($solicitud['estado_solicitud'], ['Aprobado', 'Pendiente', 'Rechazado']) || 
+                                                            Auth::user()->hasRole(['Administrador', 'Tecnico', 'Contador']);
+                                        @endphp
 
-                                    @endhasanyrole
+                                        @if($mostrarBoton)
+                                            @hasanyrole(['Tecnico', 'Contador', 'Administrador'])
+                                                <a href="#" 
+                                                class="btn btn-primary btn-sm show-confirmation" 
+                                                data-id="{{ $solicitud['id_solicitud'] }}"
+                                                data-estado="{{ $solicitud['estado_solicitud'] }}">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
+                                            @endhasanyrole
+                                        @endif
+
+
 
 
                                             @hasanyrole(['Administrador', 'Tecnico'])
                                             @if(
                                             in_array($solicitud['estado_solicitud'], ['Rechazado', 'Pendiente']) ||
-                                            Auth::user()->hasRole('Administrador')
-                                        )
+                                            Auth::user()->hasRole('Administrador'))
                                         <form action="{{ route('solicitudes.destroy', $solicitud['id_solicitud']) }}"
                                              method="POST" class="d-inline">
                                              @endif
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                                    <button type="submit" class="btn btn-danger btn-sm delete-btn" data-estado="{{ $solicitud['estado_solicitud'] }}">
                                             <i class="bi bi-trash"></i>
                                     </button>
                                         </form>
@@ -352,6 +360,40 @@ function sortTable(columnIndex) {
     </script>
 
 
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editButtons = document.querySelectorAll('.show-confirmation');
+
+        editButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const solicitudId = this.dataset.id;
+                const estado = this.dataset.estado;
+
+                if (estado === 'Aprobado') {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Acción no permitida',
+                        text: 'No se puede modificar una solicitud que ya fue aprobada.',
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#28a745' // color del boton
+                    });
+                } else {
+                    // Redirigir directamente sin alerta
+                    window.location.href = `/solicitudes/${solicitudId}`;
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
+
 @stop
 
 
@@ -425,31 +467,45 @@ function sortTable(columnIndex) {
         }
   
 
- document.addEventListener("DOMContentLoaded", function () {
-    // Selecciona todos los botones de eliminación
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    //Alerta del boton Eliminar con condicion Aprobado
     document.querySelectorAll(".delete-btn").forEach(button => {
         button.addEventListener("click", function (event) {
-            event.preventDefault(); // Evita la eliminación inmediata
-            let form = this.closest("form"); // Encuentra el formulario más cercano
-            
-            Swal.fire({
-                title: "¿Está seguro?",
-                text: "Esta acción no se puede deshacer.",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#d33",
-                cancelButtonColor: "#3085d6",
-                confirmButtonText: "Sí, eliminar",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit(); // Envía el formulario solo si el usuario confirma
-                }
-            });
+            event.preventDefault();
+            let form = this.closest("form");
+            let estado = this.dataset.estado;
+
+            if (estado === 'Aprobado') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'No se puede eliminar',
+                    text: 'La solicitud ya fue aprobada y no puede ser eliminada.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745' // color del boton
+                });
+            } else {
+                Swal.fire({
+                    title: "¿Está seguro?",
+                    text: "Esta acción no se puede deshacer.",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            }
         });
     });
 });
-    </script>
+</script>
+
 
 @if(session('success'))
     <script>
