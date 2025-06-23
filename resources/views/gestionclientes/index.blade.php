@@ -81,7 +81,7 @@
                                             class="btn btn-success btn-sm">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                        @hasanyrole(['Administrador'])
+                                        @hasanyrole(['Administrador', 'Tecnico'])
                                             <form action="{{ route('gestionclientes.destroy', $persona['id_persona']) }}" 
                                                 method="POST" class="d-inline delete-form">
                                                 @csrf
