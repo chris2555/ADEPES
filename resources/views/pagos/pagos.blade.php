@@ -30,7 +30,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card card-outline card-success">
-                        @hasanyrole(['Administrador'])
+                        @hasanyrole(['Administrador', 'Contador'])
                             <div class="card-header">
                                 <h3 class="card-title">DETALLE DE PAGOS</h3>
                                 <div class="card-tools">
@@ -93,7 +93,7 @@
                     <i class="bi bi-eye"></i>
                 </a>
                 
-                @hasanyrole(['Administrador'])
+                @hasanyrole(['Administrador', 'Contador'])
 
                 <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
                     <i class="bi bi-pencil"></i>
@@ -136,7 +136,7 @@
                     <i class="bi bi-eye"></i>
                 </a>
                 
-                @hasanyrole(['Administrador'])
+                @hasanyrole(['Administrador', 'Contador'])
 
                 <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
                     <i class="bi bi-pencil"></i>

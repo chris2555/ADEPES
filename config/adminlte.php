@@ -314,6 +314,7 @@ return [
             'text' => 'Gestion de Clientes',
             'route' => 'gestionclientes.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+            'can' => 'ver-tecnico', 
            'submenu' => [
             [
                 'text' => 'Clientes',
@@ -371,6 +372,7 @@ return [
             'text' => 'Relacion solicitudes',
             'route' => 'relacion.index',
             'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
+            'can' => 'Ver-reportes',
         ],
         
         [
