@@ -82,6 +82,7 @@ class UserController extends Controller
         $user->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
         ]);
 
         // Redirect to the users list
