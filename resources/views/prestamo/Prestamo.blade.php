@@ -114,13 +114,16 @@
                 <i class="bi bi-pencil"></i>
             </button>
 
-            <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
-                @csrf
-                @method('DELETE')
-                <button type="button" class="btn btn-danger btn-sm delete-btn">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </form>
+           <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
+    @csrf
+    @method('DELETE')
+
+    <button type="button" class="btn btn-danger btn-sm"
+        onclick="abrirModalJustificacion({{ $prestamo['id_prestamo'] }})">
+        <i class="bi bi-trash"></i>
+    </button>
+</form>
+
         </td>
     @endif
 @endhasanyrole
@@ -411,6 +414,7 @@
     </div>
 </div>
 -->
+
 <!-- IModal para editar -->
 <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="edit-title" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -526,6 +530,38 @@
         </div>
     </div>
 </div>
+
+<!-- Modal de justificación -->
+<!-- Modal de Justificación para Eliminar Préstamo -->
+<div class="modal fade" id="modalJustificacion" tabindex="-1" aria-labelledby="modalJustificacionLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <form id="formJustificacion" method="POST">
+                @csrf
+                @method('DELETE')
+
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalJustificacionLabel">Justificar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="id_prestamo" id="inputIdPrestamo">
+                    <div class="mb-3">
+                        <label for="razon" class="form-label">Motivo de la eliminación</label>
+                        <textarea class="form-control" name="razon" id="razon" rows="3" required placeholder="Describa brevemente la razón..."></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar Préstamo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <script>
 document.getElementById("form-update-prestamo").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita que el formulario se envíe automáticamente
@@ -758,6 +794,25 @@ document.addEventListener("DOMContentLoaded", function () {
         });
    
 </script>
+
+<script>
+function abrirModalJustificacion(idPrestamo) {
+    const form = document.getElementById('formJustificacion');
+    const inputHidden = document.getElementById('inputIdPrestamo');
+    const razon = document.getElementById('razon');
+
+    inputHidden.value = idPrestamo;
+    razon.value = "";
+
+    // Actualiza la acción del formulario
+    form.action = `/prestamos/${idPrestamo}`;
+
+    // Muestra el modal
+    const modal = new bootstrap.Modal(document.getElementById('modalJustificacion'));
+    modal.show();
+}
+
+</script>
 @stop
 
 @endsection
@@ -853,5 +908,8 @@ $(document).on('click', '.view-prestamo', function () {
         });
     });
 </script>
+
+
+
 @endsection
 @stop
