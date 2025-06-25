@@ -310,6 +310,13 @@ return [
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
         ],
+
+         [
+            'text' => 'Centro de Ayuda',
+            'route' => 'centro-de-ayuda', // Ruta al index del controlador
+            'topnav_right' => true, // Ícono representativo de usuarios
+            'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
+        ],
         [
             'text' => 'Gestion de Clientes',
             'route' => 'gestionclientes.index', // Ruta al index del controlador

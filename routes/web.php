@@ -26,6 +26,7 @@ use App\Http\Controllers\BitacoraController;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\HelpCenterController;
 
 Route::get('/', function () {
     return view('login.Iniciarsesion');
@@ -96,6 +97,10 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/solicitudes/{$id}', [SolicitudController::class, 'getSolicitudes']);
     Route::get('/https://goldfish-app-q3ucp.ondigitalocean.app/api/estadoingresos/{id}', [IngresosController::class, 'getByPersona']);
     Route::resource('bitacoras',BitacoraController::class)->middleware('can:ver-seguridad')->names('bitacoras');
+    Route::get('/centro-de-ayuda', [HelpCenterController::class, 'index'])->name('centro-de-ayuda');
+
+    
+
 
     Route::get('/api-local/pagos/por-mes', function () {
     $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss/por-mes');
