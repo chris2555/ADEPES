@@ -45,6 +45,7 @@
                         <thead>
                             <tr>
                                 <th style="text-align: center">Fecha</th>
+                                <th style="text-align: center">Correlativo</th>
                                 <th style="text-align: center">Nombre Cliente</th>
                                 <th style="text-align: center">Monto Préstamo</th>
                                 <th style="text-align: center">Cuota</th>
@@ -57,71 +58,91 @@
                             </tr>
                         </thead>
                         @php
+    // Obtener plazos por préstamo desde la API externa
+    $plazosPorPrestamo = [];
+
+    try {
+        $prestamosApi = json_decode(file_get_contents('https://goldfish-app-q3ucp.ondigitalocean.app/api/prestamo'), true);
+
+        foreach ($prestamosApi as $prestamo) {
+            if (isset($prestamo['id_prestamo']) && isset($prestamo['plazo'])) {
+                $plazosPorPrestamo[$prestamo['id_prestamo']] = $prestamo['plazo'];
+            }
+        }
+    } catch (\Exception $e) {
+        $plazosPorPrestamo = [];
+    }
+
+    // Agrupar pagos por nombre completo del cliente
     $pagosAgrupados = collect($pagos)->groupBy('nombres_apellidos');
 @endphp
 
-  <tbody>
-    @foreach ($pagosAgrupados as $nombre => $grupo)
-        @php
-            $primerPago = $grupo->first();
-        @endphp
-        <tr data-nombre="{{ $nombre }}">
-            <td style="text-align: center">{{ date('d-m-Y', strtotime($primerPago['fecha'])) }}</td>
-            <td>{{ $primerPago['nombres_apellidos'] }}</td>
-            <td style="text-align: center">{{ $primerPago['monto_prestamo'] }}</td>
-            <td style="text-align: center">{{ $primerPago['monto'] }}</td>
-            <td style="text-align: center">{{ $primerPago['intereses'] }}</td>
-            <td style="text-align: center">{{ $primerPago['abono_capital'] }}</td>
-            <td style="text-align: center">{{ $primerPago['estado'] }}</td>
-            <td style="text-align: center">
-                <a href="{{ route('pagado', $primerPago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
-                    <i class="fas fa-file-alt"> Pagos Realizados </i>
-                </a>
-            </td>
-            <td style="text-align: center">
-               <a href="{{ route('recibo', [$primerPago['id_persona'], $primerPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
-    <i class="fas fa-file-alt"> Recibo de pago </i>
-</a>
-            </td>
-            <td style="text-align: center">
-                <button class="btn btn-info btn-sm toggle-subrows"><i class="bi bi-plus-lg"></i></button>
-                <a href="javascript:void(0);" class="btn btn-primary btn-sm"
-                    onclick="viewModal({{ json_encode($primerPago) }})">
-                    <i class="bi bi-eye"></i>
-                </a>
-                <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
-                    <i class="bi bi-pencil"></i>
-                </a>
-                <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm delete-btn">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </form>
-            </td>
-        </tr>
+<tbody>
+@foreach ($pagosAgrupados as $nombre => $grupo)
+    @php
+        $primerPago = $grupo->first();
+        $plazo = $plazosPorPrestamo[$primerPago['id_prestamo']] ?? 'N/A';
+    @endphp
 
-        {{-- Filas hijas ocultas --}}
-        @foreach ($grupo->skip(1) as $subPago)
-            <tr class="subrow" data-parent="{{ $nombre }}" style="display: none;">
-                <td style="text-align: center">{{ date('d-m-Y', strtotime($subPago['fecha'])) }}</td>
-                <td>{{ $subPago['nombres_apellidos'] }}</td>
-                <td style="text-align: center">{{ $subPago['monto_prestamo'] }}</td>
-                <td style="text-align: center">{{ $subPago['monto'] }}</td>
-                <td style="text-align: center">{{ $subPago['intereses'] }}</td>
-                <td style="text-align: center">{{ $subPago['abono_capital'] }}</td>
-                <td style="text-align: center">{{ $subPago['estado'] }}</td>
-                <td style="text-align: center">
-                     </td>
-                <td style="text-align: center">
-                   <a href="{{ route('recibo', [$subPago['id_persona'], $subPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+    <tr data-nombre="{{ $nombre }}">
+        <td style="text-align: center">{{ date('d-m-Y', strtotime($primerPago['fecha'])) }}</td>
+        <td style="text-align: center">1/{{ $plazo }}</td>
+        <td>{{ $primerPago['nombres_apellidos'] }}</td>
+        <td style="text-align: center">{{ $primerPago['monto_prestamo'] }}</td>
+        <td style="text-align: center">{{ $primerPago['monto'] }}</td>
+        <td style="text-align: center">{{ $primerPago['intereses'] }}</td>
+        <td style="text-align: center">{{ $primerPago['abono_capital'] }}</td>
+        <td style="text-align: center">{{ $primerPago['estado'] }}</td>
+        <td style="text-align: center">
+            <a href="{{ route('pagado', $primerPago['id_persona']) }}" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-file-alt"> Pagos Realizados </i>
+            </a>
+        </td>
+        <td style="text-align: center">
+            <a href="{{ route('recibo', [$primerPago['id_persona'], $primerPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-file-alt"> Recibo de pago </i>
+            </a>
+        </td>
+        <td style="text-align: center">
+            <button class="btn btn-info btn-sm toggle-subrows"><i class="bi bi-plus-lg"></i></button>
+            <a href="javascript:void(0);" class="btn btn-primary btn-sm"
+                onclick="viewModal({{ json_encode($primerPago) }})">
+                <i class="bi bi-eye"></i>
+            </a>
+            <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
+                <i class="bi bi-pencil"></i>
+            </a>
+            <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </td>
+    </tr>
+
+    {{-- Subfilas ocultas --}}
+    @foreach ($grupo->skip(1)->values() as $i => $subPago)
+        @php
+            $plazo = $plazosPorPrestamo[$subPago['id_prestamo']] ?? 'N/A';
+        @endphp
+        <tr class="subrow" data-parent="{{ $nombre }}" style="display: none;">
+            <td style="text-align: center">{{ date('d-m-Y', strtotime($subPago['fecha'])) }}</td>
+            <td style="text-align: center">{{ $i + 2 }}/{{ $plazo }}</td>
+            <td>{{ $subPago['nombres_apellidos'] }}</td>
+            <td style="text-align: center">{{ $subPago['monto_prestamo'] }}</td>
+            <td style="text-align: center">{{ $subPago['monto'] }}</td>
+            <td style="text-align: center">{{ $subPago['intereses'] }}</td>
+            <td style="text-align: center">{{ $subPago['abono_capital'] }}</td>
+            <td style="text-align: center">{{ $subPago['estado'] }}</td>
+            <td></td>
+            <td style="text-align: center">
+                <a href="{{ route('recibo', [$subPago['id_persona'], $subPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
                     <i class="fas fa-file-alt"> Recibos de Pago </i>
                 </a>
             </td>
-            
             <td style="text-align: center">
-               
                 <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                     onclick="viewModal({{ json_encode($primerPago) }})">
                     <i class="bi bi-eye"></i>
@@ -138,8 +159,8 @@
                 </form>
             </td>
         </tr>
-        @endforeach
     @endforeach
+@endforeach
 </tbody>
 
 
@@ -357,7 +378,7 @@
 
     function viewModal(pagos) {
     var DateTime = luxon.DateTime;
-    var fechaFormateada = DateTime.fromISO(pagos.fecha, { zone: 'utc' }) // Formato de fecha
+    var fechaFormateada = DateTime.fromISO(pagos.fecha, { zone: 'utc' })
         .setLocale('es')
         .toFormat("dd 'de' MMMM 'de' yyyy");
 
@@ -372,15 +393,14 @@
                 <p><strong>Nombre del Cliente:</strong> ${pagos.nombres_apellidos}</p>
                 <p><strong>Método de Pago:</strong> ${pagos.metodo_pago}</p>
                 <p><strong>Recibo:</strong> ${pagos.recibo}</p>
-                
             </div>
             <div class="col-md-6">
                 <p><strong>Monto Pagado:</strong> ${pagos.monto}</p>
                 <p><strong>Fecha de Pago:</strong> ${fechaFormateada}</p>
                 <p><strong>Intereses:</strong> ${pagos.intereses}</p>
-                <p><strong>Creado por:</strong> ${pagos.creado_por}</p>
+                <p><strong>Creado por:</strong> ${pagos.nombre_creador ?? 'No disponible'}</p>
                 <p><strong>Creado en:</strong> ${pagos.creado_en ? new Date(pagos.creado_en).toLocaleString() : 'No disponible'}</p>
-                <p><strong>Modificado por:</strong> ${pagos.modificado_por || 'No disponible'}</p>
+                <p><strong>Modificado por:</strong> ${pagos.nombre_modificador ?? 'No disponible'}</p>
                 <p><strong>Modificado en:</strong> ${pagos.modificado_en ? new Date(pagos.modificado_en).toLocaleString() : 'No disponible'}</p>
             </div>
         </div>
@@ -389,6 +409,7 @@
     var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
     viewModalElement.show();
 }
+
 
 
         
