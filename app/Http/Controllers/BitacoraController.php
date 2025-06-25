@@ -9,14 +9,22 @@ use Illuminate\Support\Facades\Http;
 class BitacoraController extends Controller
 {
     public function index()
-    {
-            // Llamada a la API para obtener las bitácoras
-            $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/bitacora');
-            $bitacoras = $response->json();
-            
-            
-        return view('bitacora.index', compact('bitacoras'));
+{
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/bitacora');
+
+    if (!$response->successful()) {
+        return view('bitacora.index', ['bitacoras' => []])->with('error', 'No se pudo obtener la bitácora');
     }
+
+    $bitacoras = $response->json();
+
+    // Verifica que sea un array
+    if (!is_array($bitacoras)) {
+        return view('bitacora.index', ['bitacoras' => []])->with('error', 'Respuesta inesperada');
+    }
+
+    return view('bitacora.index', compact('bitacoras'));
+}
 
 public function create()
 {

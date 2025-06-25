@@ -44,16 +44,18 @@
             </tr>
         </thead>
         <tbody>
-        @foreach(collect($bitacoras)->sortBy(fn($p) => (int) $p['id_bitacora']) as $bitacora)
-                <tr>
-                    <td style="text-align: center" data-order="asc">{{ $bitacora['id_bitacora'] }}</td>  <!-- Acceder como array -->
-                    <td>{{ $bitacora['id'] }}</td>  <!-- Acceder como array -->
-                    <td>{{ $bitacora['nombre_usuario'] }}</td>
-                    <td>{{ $bitacora['accion'] }}</td>  <!-- Acceder como array -->
-                    <td>{{ $bitacora['modulo'] }}</td>  <!-- Acceder como array -->
-                    <td>{{ \Carbon\Carbon::parse($bitacora['fecha_hora'])->format('d/m/Y H:i') }}</td>  <!-- Acceder como array -->
-                </tr>
-                @endforeach
+        @foreach($bitacoras as $bitacora)
+<tr>
+    <td>{{ $bitacora['id_bitacora'] }}</td>
+    <td>{{ $bitacora['id'] }}</td>
+    <td>{{ $bitacora['nombre_usuario'] ?? '---' }}</td>
+    <td>{{ $bitacora['accion'] }}</td>
+    <td>{{ $bitacora['modulo'] }}</td>
+    <td>{{ \Carbon\Carbon::parse($bitacora['fecha_hora'])->format('d/m/Y H:i') }}</td>
+</tr>
+@endforeach
+
+
         </tbody>
     </table>
     <script>
@@ -79,7 +81,7 @@ function sortTable(columnIndex) {
     <script>
             $(function() {
                 $('#bitacoraTable').DataTable({ // Inicializa DataTables en tu tabla "relacionTable"
-                    "order": [[0, "asc"]],
+                    "order": [[0, "desc"]],
             "pageLength": 10,
         "responsive": true,
         "lengthChange": true,
