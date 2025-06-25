@@ -84,12 +84,14 @@
             default => 'badge bg-secondary',
         };
     @endphp
+
                                         <span class="{{ $claseEstado }}" style="font-size: 0.975rem;">{{ $estado }}</span>
                                     </td>
                                     <td style="text-align: center">
                                     @if($solicitud['estado_solicitud'] === 'Aprobado')
                                         <a href="{{ route('amortizacion', $solicitud['id_solicitud']) }}" class="btn btn-outline-primary btn-sm" title="Ver Tabla de Amortización">
                                         <i class="fas fa-file-alt"> Tabla de amortizacion </i>
+
                                         </a>
                                     @else
                                         <span class="text-muted">No disponible</span>
@@ -118,11 +120,14 @@
 
                                         @endhasanyrole
                                         
+
                                     @hasanyrole(['Tecnico', 'Administrador'])
+
                                             <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}" 
                                             class="btn btn-primary btn-sm">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
+
 
                                         @php
                                             $mostrarBoton = in_array($solicitud['estado_solicitud'], ['Aprobado', 'Pendiente', 'Rechazado']) || 
@@ -148,6 +153,7 @@
                                             @if(
                                             in_array($solicitud['estado_solicitud'], ['Rechazado', 'Pendiente']) ||
                                             Auth::user()->hasRole('Administrador'))
+
                                         <form action="{{ route('solicitudes.destroy', $solicitud['id_solicitud']) }}"
                                              method="POST" class="d-inline">
                                              @endif
