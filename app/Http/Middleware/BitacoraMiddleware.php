@@ -20,7 +20,7 @@ class BitacoraMiddleware
 
             if ($accion) {
                 $modulo = $this->getModulo($request->path());
-                DB::table('Bitacora')->insert([
+                DB::table('bitacora')->insert([
                     'fecha_hora' => Carbon::now(),
                     'id' => Auth::id(),
                     'accion' => $accion,
