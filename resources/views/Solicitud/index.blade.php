@@ -75,15 +75,16 @@
                                     <td style="text-align: center">{{ $solicitud['tasa'] }}</td>
                                     <td style="text-align: center">{{ $solicitud['plazo'] }}</td>
                                     <td style="text-align: center">{{ $solicitud['monto'] }}</td>
-                                    <td style="text-align: center"> @php
-        $estado = $solicitud['estado_solicitud'];
-        $claseEstado = match ($estado) {
-            'Aprobado' => 'badge bg-success',
-            'Pendiente' => 'badge bg-primary',
-            'Rechazado' => 'badge bg-danger',
-            default => 'badge bg-secondary',
-        };
-    @endphp
+                                    <td style="text-align: center"> 
+                            @php
+                         $estado = $solicitud['estado_solicitud'];
+                            $claseEstado = match ($estado) {
+                            'Aprobado' => 'badge bg-success',
+                            'Pendiente' => 'badge bg-primary',
+                            'Rechazado' => 'badge bg-danger',
+                            default => 'badge bg-secondary',
+                             };
+                         @endphp
 
                                         <span class="{{ $claseEstado }}" style="font-size: 0.975rem;">{{ $estado }}</span>
                                     </td>
@@ -99,73 +100,56 @@
                                     </td>
 
 
+                       {{-- Columna Dictamen --}}
 <td style="text-align: center">
     @if($solicitud['estado_solicitud'] === 'Pendiente')
         <a href="{{ route('dictamen', $solicitud['id_solicitud']) }}"
             class="btn btn-outline-primary btn-sm" title="Generar dictamen PDF">
-            <i class="fas fa-file-pdf"> Dictamen </i>
+            <i class="fas fa-file-pdf"></i> Dictamen
         </a>
     @else
         <span class="text-muted">No disponible</span>
     @endif
 </td>
 
-                                    
-                                    <td style="text-align: center">
-                                        @hasanyrole(['Tecnico', 'Administrador'])
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
-                                            onclick="viewModal({{ json_encode($solicitud) }})">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
+{{-- Columna Acciones --}}
+<td style="text-align: center">
+    @hasanyrole(['Tecnico', 'Administrador', 'Contador'])
+        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+            onclick="viewModal({{ json_encode($solicitud) }})">
+            <i class="bi bi-eye"></i>
+        </a>
+    @endhasanyrole
 
-                                        @endhasanyrole
-                                        
+    @php
+        $mostrarBoton = in_array($solicitud['estado_solicitud'], ['Aprobado', 'Pendiente', 'Rechazado']) || 
+                        Auth::user()->hasRole(['Administrador', 'Tecnico', 'Contador']);
+    @endphp
 
-                                    @hasanyrole(['Tecnico', 'Administrador'])
+    @if($mostrarBoton)
+        @hasanyrole(['Tecnico', 'Contador', 'Administrador'])
+            <a href="#" 
+                class="btn btn-primary btn-sm show-confirmation" 
+                data-id="{{ $solicitud['id_solicitud'] }}"
+                data-estado="{{ $solicitud['estado_solicitud'] }}">
+                <i class="bi bi-pencil"></i>
+            </a>
+        @endhasanyrole
+    @endif
 
-                                            <a href="{{ route('solicitudes.show', $solicitud['id_solicitud']) }}" 
-                                            class="btn btn-primary btn-sm">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-
-
-                                        @php
-                                            $mostrarBoton = in_array($solicitud['estado_solicitud'], ['Aprobado', 'Pendiente', 'Rechazado']) || 
-                                                            Auth::user()->hasRole(['Administrador', 'Tecnico', 'Contador']);
-                                        @endphp
-
-                                        @if($mostrarBoton)
-                                            @hasanyrole(['Tecnico', 'Contador', 'Administrador'])
-                                                <a href="#" 
-                                                class="btn btn-primary btn-sm show-confirmation" 
-                                                data-id="{{ $solicitud['id_solicitud'] }}"
-                                                data-estado="{{ $solicitud['estado_solicitud'] }}">
-                                                    <i class="bi bi-pencil"></i>
-                                                </a>
-                                            @endhasanyrole
-                                        @endif
-
-
-
-
-
-                                            @hasanyrole(['Administrador', 'Tecnico'])
-                                            @if(
-                                            in_array($solicitud['estado_solicitud'], ['Rechazado', 'Pendiente']) ||
-                                            Auth::user()->hasRole('Administrador'))
-
-                                        <form action="{{ route('solicitudes.destroy', $solicitud['id_solicitud']) }}"
-                                             method="POST" class="d-inline">
-                                             @endif
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger btn-sm delete-btn" data-estado="{{ $solicitud['estado_solicitud'] }}">
-                                            <i class="bi bi-trash"></i>
-                                    </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                            @endhasanyrole
+    @hasanyrole(['Administrador', 'Tecnico'])
+        @if(in_array($solicitud['estado_solicitud'], ['Rechazado', 'Pendiente']) || Auth::user()->hasRole('Administrador'))
+            <form action="{{ route('solicitudes.destroy', $solicitud['id_solicitud']) }}"
+                method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm delete-btn" data-estado="{{ $solicitud['estado_solicitud'] }}">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        @endif
+    @endhasanyrole
+</td>
                             @endforeach
                         </tbody>
                     </table>
