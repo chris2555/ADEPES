@@ -310,10 +310,18 @@ return [
             'route' => 'dashboard', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
         ],
+
+         [
+            'text' => 'Centro de Ayuda',
+            'route' => 'centro-de-ayuda', // Ruta al index del controlador
+            'topnav_right' => true, // Ícono representativo de usuarios
+            'icon' => 'fas fa-fw fa-home', // Ícono representativo de usuarios
+        ],
         [
             'text' => 'Gestion de Clientes',
             'route' => 'gestionclientes.index', // Ruta al index del controlador
             'icon' => 'fas fa-fw fa-user-friends', // Ícono representativo de usuarios
+            'can' => 'ver-tecnico', 
            'submenu' => [
             [
                 'text' => 'Clientes',
@@ -371,6 +379,7 @@ return [
             'text' => 'Relacion solicitudes',
             'route' => 'relacion.index',
             'icon' => 'fas fa-fw fa-link', // Ícono de relación o enlace
+            'can' => 'Ver-reportes',
         ],
         
         [
@@ -419,7 +428,7 @@ return [
                     'text' => 'Bitácora',
                     'route' => 'bitacoras.index', // Ruta al módulo de bitácora
                     'icon' => 'fas fa-fw fa-clipboard-list', // Ícono de lista para bitácora
-                  
+                    'can' => 'ver-seguridad' 
                 ],
                 
             ],

@@ -30,14 +30,17 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card card-outline card-success">
-            <div class="card-header">
-                <h3 class="card-title">DETALLE DE PAGOS</h3>
-                <div class="card-tools">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPago">
-                        <i class="fas fa-plus"></i> Nuevo Pago
-                    </button>
-                </div>
-            </div>
+                        @hasanyrole(['Administrador', 'Contador'])
+                            <div class="card-header">
+                                <h3 class="card-title">DETALLE DE PAGOS</h3>
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertPago">
+                                        <i class="fas fa-plus"></i> Nuevo Pago
+                                    </button>
+                                </div>
+                            </div>
+                        @endhasanyrole
+
 
             <div class="card-body">
                 <div class="table-responsive">
@@ -138,7 +141,7 @@
             <td style="text-align: center">{{ $subPago['estado'] }}</td>
             <td></td>
             <td style="text-align: center">
-                <a href="{{ route('recibo', [$subPago['id_persona'], $subPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+
                     <i class="fas fa-file-alt"> Recibos de Pago </i>
                 </a>
             </td>
@@ -147,6 +150,9 @@
                     onclick="viewModal({{ json_encode($primerPago) }})">
                     <i class="bi bi-eye"></i>
                 </a>
+                
+                @hasanyrole(['Administrador', 'Contador'])
+
                 <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
                     <i class="bi bi-pencil"></i>
                 </a>
@@ -157,6 +163,7 @@
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
+                @endhasanyrole
             </td>
         </tr>
     @endforeach

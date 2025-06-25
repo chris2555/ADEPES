@@ -4,6 +4,7 @@
 
 @section('plugins.Sweetalert2', true)
 
+
 @section('content_header')
     <h1>PANEL GENERAL</h1>
 @stop
@@ -11,6 +12,7 @@
 <div class="container-fluid">
    <div class="row">
   <!-- USUARIOS -->
+  @hasanyrole('Tecnico|Administrador')
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('users.index') }}" class="text-dark text-decoration-none">
       <div class="info-box">
@@ -22,8 +24,9 @@
       </div>
     </a>
   </div>
-
+    @endhasanyrole
   <!-- CLIENTES -->
+   @hasanyrole('Tecnico|Administrador')
   <div class="col-12 col-sm-6 col-md-3">
     <a href="{{ route('gestionclientes.index') }}" class="text-dark text-decoration-none">
       <div class="info-box mb-3">
@@ -35,6 +38,7 @@
       </div>
     </a>
   </div>
+  @endhasanyrole
 
   <!-- SOLICITUDES -->
   <div class="col-12 col-sm-6 col-md-3">
@@ -164,13 +168,35 @@
 
 @section('js')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@php
+    $mustChange = auth()->check() && auth()->user()->change == 1;
+@endphp
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
+@if ($mustChange)
     Swal.fire({
-        title: "Exitoso!",
-        text: "Bienvenido al panel general!",
-        icon: "success"
+        title: ' Cambio de Contraseña Requerido',
+        text: 'Tu contraseña ha vencido. Debes Cambiarla antes de continuar.',
+        icon: 'warning',
+        confirmButtonText: 'Actualizar ahora',
+        allowOutsideClick: false,    
+        allowEscapeKey: false,       
+        allowEnterKey: false,        
+        showCloseButton: false 
+    }).then(() => {
+        window.location.href = '{{ url('/profile') }}';
     });
+@else
+    Swal.fire({
+        title: '¡Éxito!',
+        text: 'Bienvenido al panel general!',
+        icon: 'success'
+    });
+@endif
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
