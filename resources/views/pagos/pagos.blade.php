@@ -125,48 +125,52 @@
         </td>
     </tr>
 
-    {{-- Subfilas ocultas --}}
-    @foreach ($grupo->skip(1)->values() as $i => $subPago)
-        @php
-            $plazo = $plazosPorPrestamo[$subPago['id_prestamo']] ?? 'N/A';
-        @endphp
-        <tr class="subrow" data-parent="{{ $nombre }}" style="display: none;">
-            <td style="text-align: center">{{ date('d-m-Y', strtotime($subPago['fecha'])) }}</td>
-            <td style="text-align: center">{{ $i + 2 }}/{{ $plazo }}</td>
-            <td>{{ $subPago['nombres_apellidos'] }}</td>
-            <td style="text-align: center">{{ $subPago['monto_prestamo'] }}</td>
-            <td style="text-align: center">{{ $subPago['monto'] }}</td>
-            <td style="text-align: center">{{ $subPago['intereses'] }}</td>
-            <td style="text-align: center">{{ $subPago['abono_capital'] }}</td>
-            <td style="text-align: center">{{ $subPago['estado'] }}</td>
-            <td></td>
-            <td style="text-align: center">
+   {{-- Subfilas ocultas --}}
+@foreach ($grupo->skip(1)->values() as $i => $subPago)
+    @php
+        $plazo = $plazosPorPrestamo[$subPago['id_prestamo']] ?? 'N/A';
+    @endphp
+    <tr class="subrow" data-parent="{{ $nombre }}" style="display: none;">
+        <td style="text-align: center">{{ date('d-m-Y', strtotime($subPago['fecha'])) }}</td>
+        <td style="text-align: center">{{ $i + 2 }}/{{ $plazo }}</td>
+        <td>{{ $subPago['nombres_apellidos'] }}</td>
+        <td style="text-align: center">{{ $subPago['monto_prestamo'] }}</td>
+        <td style="text-align: center">{{ $subPago['monto'] }}</td>
+        <td style="text-align: center">{{ $subPago['intereses'] }}</td>
+        <td style="text-align: center">{{ $subPago['abono_capital'] }}</td>
+        <td style="text-align: center">{{ $subPago['estado'] }}</td>
+        <td></td> <!-- Celda vacía donde iría Pagos Realizados -->
+        <td style="text-align: center">
+            <a href="{{ route('recibo', [$subPago['id_persona'], $subPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+                <i class="fas fa-file-alt"> Recibo de pago </i>
+            </a>
+        </td>
+        <td style="text-align: center">
+            <button class="btn btn-info btn-sm toggle-subrows"><i class="bi bi-plus-lg"></i></button>
+            <a href="javascript:void(0);" class="btn btn-primary btn-sm"
+                onclick="viewModal({{ json_encode($subPago) }})">
+                <i class="bi bi-eye"></i>
+            </a>
 
-                    <i class="fas fa-file-alt"> Recibos de Pago </i>
-                </a>
-            </td>
-            <td style="text-align: center">
-                <a href="javascript:void(0);" class="btn btn-primary btn-sm"
-                    onclick="viewModal({{ json_encode($primerPago) }})">
-                    <i class="bi bi-eye"></i>
-                </a>
-                
-                @hasanyrole(['Administrador', 'Contador'])
-
-                <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
+            @hasanyrole(['Administrador', 'Contador'])
+                <a href="{{ route('pagos.show', $subPago['id_pago']) }}" class="btn btn-success btn-sm">
                     <i class="bi bi-pencil"></i>
                 </a>
-                <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
+            @endhasanyrole
+
+            @hasanyrole(['Administrador'])
+                <form action="{{ route('pagos.destroy', $subPago['id_pago']) }}" method="POST" class="d-inline delete-form">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm delete-btn">
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
-                @endhasanyrole
-            </td>
-        </tr>
-    @endforeach
+            @endhasanyrole
+        </td>
+    </tr>
+@endforeach
+
 @endforeach
 </tbody>
 
