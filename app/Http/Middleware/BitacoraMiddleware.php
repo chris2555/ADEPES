@@ -42,7 +42,6 @@ class BitacoraMiddleware
     private function formarAccion(Request $request, $method)
 {
     $modulo = $this->getModulo($request->path());
-    $datoClave = $this->extraerDatoClave($request);
 
     switch ($method) {
         case 'POST':
@@ -54,20 +53,23 @@ class BitacoraMiddleware
         case 'PATCH':
             $parametros = $request->route()->parameters();
             $idEditado = reset($parametros) ?? 'desconocido';
-            $datoClave = $this->extraerDatoClave($request);
             $nombreEditado = $request->input('_nombre_editado_api') ?? 'registro';
-            return "Se edito en $modulo: $nombreEditado (ID $idEditado)";
+            return "Se editó en $modulo: $nombreEditado (ID $idEditado)";
     
         case 'DELETE':
             $parametros = $request->route()->parameters();
             $id = reset($parametros) ?? 'desconocido';
+            $razon = $request->input('razon');
+            if ($razon) {
+                return "Se eliminó en $modulo: ID $id - Motivo: $razon";
+            }
             return "Se eliminó en $modulo: ID $id";
-    
+
         default:
             return null;
     }
-    
 }
+
 
 
 private function extraerDatoClave(Request $request)

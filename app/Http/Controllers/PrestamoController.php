@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Persona;
 
@@ -182,14 +183,23 @@ class PrestamoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $response = Http::delete("https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo/{$id}");
+   public function destroy(Request $request, $id)
+{
+    $razon = $request->input('razon');
 
-        if ($response->successful()) {
-            return redirect()->route('prestamos.index')->with('success', 'Prestamo eliminada correctamente.');
-        } else {
-            return redirect()->route('prestamos.index')->with('error', 'No se pudo eliminar la El Prestamo.');
-        }
-    }
+    // Eliminar el préstamo
+    DB::table('prestamo')->where('id_prestamo', $id)->delete();
+
+    // Registrar en bitácora con el motivo incluido
+    DB::table('bitacora')->insert([
+        'fecha_hora' => now(),
+        'id' => auth()->user()->id,
+        'accion' => 'Se eliminó en Prestamos: ID ' . $id . ' - Motivo: ' . $razon,
+        'modulo' => 'Prestamos',
+    ]);
+
+    return redirect()->route('prestamos.index')->with('success', 'Préstamo eliminado correctamente.');
+}
+
+
 }
