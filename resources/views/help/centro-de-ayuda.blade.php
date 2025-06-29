@@ -12,7 +12,7 @@
     <div id="accordionAdministrador">
 
         <div class="card mb-2">
-            <div class="card-header bg-primary text-white" id="headingAdmin1">
+            <div class="card-header bg-success text-white" id="headingAdmin1">
                 <h5 class="mb-0">
                     <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseAdmin1" aria-expanded="false" aria-controls="collapseAdmin1">
                         Manual Técnico(clic para ampliar)
@@ -28,7 +28,7 @@
         </div>
 
         <div class="card mb-2">
-            <div class="card-header bg-primary text-white" id="headingAdmin2">
+            <div class="card-header bg-success text-white" id="headingAdmin2">
                 <h5 class="mb-0">
                     <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseAdmin2" aria-expanded="false" aria-controls="collapseAdmin2">
                         Manual de Usuario(clic para ampliar)
@@ -72,7 +72,7 @@
 @hasrole('Contador')
 <div id="accordionContador" class="mb-4">
     <div class="card">
-        <div class="card-header bg-warning text-dark" id="headingContador">
+        <div class="card-header bg-success text-dark" id="headingContador">
             <h5 class="mb-0">
                 <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseContador" aria-expanded="false" aria-controls="collapseContador">
                     Manual para Contadores(clic para ampliar)
