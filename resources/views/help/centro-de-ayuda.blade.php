@@ -3,80 +3,105 @@
 @section('title', 'Centro de Ayuda')
 
 @section('content_header')
-    <h1>Centro de Ayuda</h1>
+<h1 class="text-center">Centro de Ayuda</h1>
 @endsection
 
 @section('content')
-<div class="container">
-    <p>Consulta los manuales directamente desde este sistema, según tu rol.</p>
+<div class="container my-4">
+    @hasrole('Administrador')
+    <div id="accordionAdministrador">
+
+        <div class="card mb-2">
+            <div class="card-header bg-primary text-white" id="headingAdmin1">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseAdmin1" aria-expanded="false" aria-controls="collapseAdmin1">
+                        Manual Técnico(clic para ampliar)
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseAdmin1" class="collapse" aria-labelledby="headingAdmin1" data-parent="#accordionAdministrador">
+                <div class="card-body p-0">
+                    <iframe src="{{ asset('Manuales/Manual_técnico.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-2">
+            <div class="card-header bg-primary text-white" id="headingAdmin2">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseAdmin2" aria-expanded="false" aria-controls="collapseAdmin2">
+                        Manual de Usuario(clic para ampliar)
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseAdmin2" class="collapse" aria-labelledby="headingAdmin2" data-parent="#accordionAdministrador">
+                <div class="card-body p-0">
+                    <iframe src="{{ asset('Manuales/Manual_usuarios.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @endhasrole
 </div>
 
-{{-- Modal de Centro de Ayuda --}}
-@auth
-<div class="modal fade" id="helpCenterModal" tabindex="-1" role="dialog" aria-labelledby="helpCenterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content shadow rounded">
-            <div class="modal-header">
-                <h5 class="modal-title" id="helpCenterModalLabel">
-                    <i class="fas fa-info-circle text-primary"></i> Centro de Ayuda
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-                    <span aria-hidden="true">&times;</span>
+
+@hasrole('Tecnico')
+<div id="accordionTecnico" class="mb-4">
+    <div class="card">
+        <div class="card-header bg-success text-white" id="headingTecnico">
+            <h5 class="mb-0">
+                <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseTecnico" aria-expanded="false" aria-controls="collapseTecnico">
+                    Manual para Técnicos(clic para ampliar)
                 </button>
-            </div>
+            </h5>
+        </div>
 
-            <div class="modal-body">
-                @php
-                    $role = Auth::user()->role ?? null;
-                @endphp
-
-                {{-- Manual de Usuario --}}
-                @if($role === 'administrador' || $role === 'contador')
-                <div class="mb-4">
-                    <h6><i class="fas fa-book-open text-primary"></i> Manual de Usuario</h6>
-                    <p>Consulta el manual de usuario directamente aquí:</p>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/ID_DEL_ARCHIVO_USUARIO/preview" allowfullscreen></iframe>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Manual Técnico --}}
-                @if($role === 'administrador' || $role === 'tecnico')
-                <div class="mb-4">
-                    <h6><i class="fas fa-cogs text-secondary"></i> Manual Técnico</h6>
-                    <p>Consulta el manual técnico directamente aquí:</p>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item" src="https://drive.google.com/file/d/ID_DEL_ARCHIVO_TECNICO/preview" allowfullscreen></iframe>
-                    </div>
-                </div>
-                @endif
-
-                {{-- Sin acceso --}}
-                @if(!in_array($role, ['administrador', 'contador', 'tecnico']))
-                <div class="alert alert-warning mt-3">
-                    No tienes acceso a los manuales en este momento.
-                </div>
-                @endif
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <div id="collapseTecnico" class="collapse" aria-labelledby="headingTecnico" data-parent="#accordionTecnico">
+            <div class="card-body p-0">
+                <iframe src="{{ asset('Manuales/Manual_técnico.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
             </div>
         </div>
     </div>
 </div>
-@endauth
+@endhasrole
+
+
+@hasrole('Contador')
+<div id="accordionContador" class="mb-4">
+    <div class="card">
+        <div class="card-header bg-warning text-dark" id="headingContador">
+            <h5 class="mb-0">
+                <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseContador" aria-expanded="false" aria-controls="collapseContador">
+                    Manual para Contadores(clic para ampliar)
+                </button>
+            </h5>
+        </div>
+
+        <div id="collapseContador" class="collapse" aria-labelledby="headingContador" data-parent="#accordionContador">
+            <div class="card-body p-0">
+                <iframe src="{{ asset('Manuales/Manual_usuarios.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+@endhasrole
+
+</div>
 @endsection
 
 @section('css')
-{{-- Puedes agregar estilos personalizados aquí si deseas --}}
+<style>
+    iframe {
+        display: block;
+        width: 100%;
+        height: 600px;
+        border: none;
+    }
+</style>
 @endsection
 
 @section('js')
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        $('#helpCenterModal').modal('show'); // Abrir modal automáticamente al cargar la vista
-    });
-</script>
 @endsection
