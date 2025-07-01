@@ -37,7 +37,7 @@ class ClaveController extends Controller
         ]);
 
         // Redirigir de vuelta con un mensaje de estado indicando que la contraseña fue actualizada.
-        return back()->with('status', 'password-updated');
+        return redirect()->route('dashboard')->with('status', 'password-updated');
     }
 }
 
