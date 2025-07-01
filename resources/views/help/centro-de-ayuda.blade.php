@@ -61,7 +61,7 @@
 
         <div id="collapseTecnico" class="collapse" aria-labelledby="headingTecnico" data-parent="#accordionTecnico">
             <div class="card-body p-0">
-                <iframe src="{{ asset('Manuales/Manual_técnico.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
+                <iframe src="{{ asset('Manuales/Manual_usuarios.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
             </div>
         </div>
     </div>
