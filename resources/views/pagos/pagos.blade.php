@@ -112,15 +112,37 @@
                 onclick="viewModal({{ json_encode($primerPago) }})">
                 <i class="bi bi-eye"></i>
             </a>
-            <a href="{{ route('pagos.show', $primerPago['id_pago']) }}" class="btn btn-success btn-sm">
-                <i class="bi bi-pencil"></i>
-            </a>
-            <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm delete-btn">
-                    <i class="bi bi-trash"></i>
-                </button>
+                <a href="#" 
+                class="btn btn-success btn-sm pago-confirmation"
+                data-id="{{ $primerPago['id_pago'] }}"
+                data-rol="{{ Auth::user()->getRoleNames()->first() }}">
+                    <i class="bi bi-pencil"></i>
+                </a>
+
+                @role('Tecnico')
+                    <button type="button"
+                            class="btn btn-danger btn-sm"
+                            onclick="Swal.fire({
+                                icon: 'warning',
+                                title: 'Acceso restringido',
+                                text: 'No se puede eliminar un pago aprobado.',
+                                confirmButtonText: 'Entendido',
+                                confirmButtonColor: '#28a745'
+                            })">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                @endrole
+
+                @hasanyrole('Administrador|Contador')
+                    <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                @endhasanyrole
+
             </form>
         </td>
     </tr>
@@ -152,21 +174,40 @@
                 <i class="bi bi-eye"></i>
             </a>
 
-            @hasanyrole(['Administrador', 'Contador'])
-                <a href="{{ route('pagos.show', $subPago['id_pago']) }}" class="btn btn-success btn-sm">
-                    <i class="bi bi-pencil"></i>
-                </a>
-            @endhasanyrole
+                @hasanyrole(['Administrador', 'Contador', 'Tecnico'])
+                    <a href="{{ route('pagos.show', $subPago['id_pago']) }}"
+                    class="btn btn-success btn-sm pago-confirmation"
+                    data-id="{{ $subPago['id_pago'] }}"
+                    data-rol="{{ Auth::user()->getRoleNames()->first() }}">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                @endhasanyrole
 
-            @hasanyrole(['Administrador'])
-                <form action="{{ route('pagos.destroy', $subPago['id_pago']) }}" method="POST" class="d-inline delete-form">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                @role('Tecnico')
+                    <button type="button"
+                            class="btn btn-danger btn-sm"
+                            onclick="Swal.fire({
+                                icon: 'warning',
+                                title: 'Acceso restringido',
+                                text: 'No se puede eliminar un pago aprobado.',
+                                confirmButtonText: 'Entendido',
+                                confirmButtonColor: '#28a745'
+                            })">
                         <i class="bi bi-trash"></i>
                     </button>
-                </form>
-            @endhasanyrole
+                @endrole
+
+                @hasanyrole('Administrador|Contador')
+                    <form action="{{ route('pagos.destroy', $subPago['id_pago']) }}" method="POST" class="d-inline delete-form">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                @endhasanyrole
+
+
         </td>
     </tr>
 @endforeach
@@ -346,6 +387,65 @@
     });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const pagoButtons = document.querySelectorAll('.pago-confirmation');
+
+    pagoButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const pagoId = this.dataset.id;
+            const rol = this.dataset.rol;
+
+            if (rol === 'Tecnico') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso restringido',
+                    text: 'No puedes editar un pago aprobado.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745'
+                });
+            } else {
+                // Redirige a la página del pago si el rol no es Técnico
+                window.location.href = `/pagos/${pagoId}`;
+            }
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const pagoButtons = document.querySelectorAll('.pago-confirmation');
+
+    pagoButtons.forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const pagoId = this.dataset.id;
+            const rol = this.dataset.rol;
+
+            if (rol === 'Tecnico') {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso restringido',
+                    text: 'No puedes editar un pago aprobado.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745'
+                });
+            } else {
+                // Redirige a la página del pago si el rol no es Técnico
+                window.location.href = `/pagos/${pagoId}`;
+            }
+        });
+    });
+});
+</script>
+
+
+
+
 <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -423,27 +523,47 @@
 
 
 
-        
-        document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', function () {
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".delete-btn").forEach(button => {
+        button.addEventListener("click", function (event) {
+            const rol = this.dataset.rol;
+
+            if (rol === 'Tecnico') {
+                event.preventDefault();
                 Swal.fire({
-                    title: '¿Está seguro?',
-                    text: "Esta acción no se puede deshacer",
                     icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Sí, eliminar',
-                    cancelButtonText: 'Cancelar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.closest('form').submit();
-                    }
+                    title: 'Acceso restringido',
+                    text: 'No tienes permisos para eliminar este pago.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745'
                 });
+                return;
+            }
+
+            // Confirmación para otros roles
+            event.preventDefault();
+            const form = this.closest("form");
+
+            Swal.fire({
+                title: "¿Está seguro?",
+                text: "Esta acción no se puede deshacer.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
             });
         });
     });
+});
+</script>
+
+
 
 
 

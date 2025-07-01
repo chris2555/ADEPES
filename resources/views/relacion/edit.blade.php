@@ -66,14 +66,15 @@
                                 <!-- Columna Derecha -->
                                 <div class="col-md-6">
                                     <!-- Cónyuge -->
-                                    <x-adminlte-select name="id_conyuge" label="ID Cónyuge" fgroup-class="mb-3" required>
+                                    <x-adminlte-select name="id_conyuge" label="ID Cónyuge" fgroup-class="mb-3">
                                         <option value="">Seleccione un cónyuge</option>
                                         @foreach ($conyuges as $conyuge)
-                                            <option value="{{ $conyuge->id_conyuge }}" {{ $conyuge->id_conyuge == $relacion->id_conyuge ? 'selected' : '' }}>
+                                            <option value="{{ $conyuge->id_conyuge }}" {{ isset($relacion->id_conyuge) && $conyuge->id_conyuge == $relacion->id_conyuge ? 'selected' : '' }}>
                                                 {{ $conyuge->nombres_conyuge }} - {{ $conyuge->identidad_conyuge }}
                                             </option>
                                         @endforeach
                                     </x-adminlte-select>
+
 
                                     <!-- Egresos -->
                                     <x-adminlte-select name="id_egresos" label="Seleccione un egreso" fgroup-class="mb-3" required>

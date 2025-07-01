@@ -124,51 +124,29 @@
                 <form id="insertForm" action="{{ route('relacion.store') }}" method="POST">
                     @csrf
                     <div class="row">
+                        {{-- Columna izquierda --}}
                         <div class="col-md-6">
+                            <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" id="id_persona" required>
+                                <option value="">Seleccione una persona</option>
+                                @foreach ($personas as $persona)
+                                    <option value="{{ $persona->id_persona }}">
+                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
 
-                        <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" id="id_persona" required>
-                        <option value="">Seleccione una persona</option>
-                        @foreach ($personas as $persona)
-                         <option value="{{ $persona->id_persona }}">
-                         {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
-                        </option>
-                        @endforeach
+                            <x-adminlte-select name="id_solicitud" id="id_solicitud" label="ID Solicitud" fgroup-class="mb-3" required>
+                                <option value="">Selecciona una solicitud</option>
+                            </x-adminlte-select>
 
+                            <div class="form-group mb-3">
+                                <label for="id_ingresos">ID Ingresos</label>
+                                <select name="id_ingresos" id="id_ingresos" class="form-control" required>
+                                    <option value="">Seleccione un ingreso</option>
+                                </select>
+                            </div>
 
-
-                        
-                        </x-adminlte-select>
-                        <x-adminlte-select name="id_solicitud" id="id_solicitud" label="ID Solicitud" fgroup-class="mb-3" required>
-                        <option value="">Selecciona una solicitud</option>
-                        </x-adminlte-select>
-
-                            
-
-                        <label for="id_ingresos">ID Ingresos</label>
-                        <select name="id_ingresos" id="id_ingresos" class="form-control" required>
-                        <option value="">Seleccione un ingreso</option>
-                    </select>
-
-
-
-                            
-                        </div>
-                        <div class="col-md-6">
-                        <div class="form-group mb-3">
-                        <label for="id_conyuge">ID Cónyuge</label>
-                        <select name="id_conyuge" id="id_conyuge" class="form-control" required>
-       
-                        </select>
-
-                        
-                        
-                        <div class="form-group mb-3">
-    
-       
-                        </select>
-                    </div>
-                        
-<x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
+                            <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
                                 <option value="">Seleccione un aval</option>
                                 @foreach ($avales as $aval)
                                     <option value="{{ $aval->id_persona }}">
@@ -176,7 +154,23 @@
                                     </option>
                                 @endforeach
                             </x-adminlte-select>
-                            <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
+                        </div>
+
+                        {{-- Columna derecha --}}
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="id_conyuge">ID Cónyuge</label>
+                                <select name="id_conyuge" id="id_conyuge" class="form-control">
+                                    <option value="">Seleccione un cónyuge</option>
+                                    @foreach ($conyuges as $conyuge)
+                                        <option value="{{ $conyuge->id_conyuge }}" {{ isset($relacion->id_conyuge) && $conyuge->id_conyuge == $relacion->id_conyuge ? 'selected' : '' }}>
+                                            {{ $conyuge->nombres_conyuge }} - {{ $conyuge->identidad_conyuge }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
                                 <option value="">Seleccione un aval</option>
                                 @foreach ($avales as $aval)
                                     <option value="{{ $aval->id_persona }}">
@@ -195,6 +189,7 @@
                             </x-adminlte-select>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <x-adminlte-button label="Cancelar" data-bs-dismiss="modal" class="btn-secondary" />
                         <x-adminlte-button class="btn-flat" type="submit" id="btnGuardar" label="Guardar Relación" theme="success" icon="fas fa-lg fa-save" />
@@ -204,6 +199,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
