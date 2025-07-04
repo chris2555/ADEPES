@@ -30,9 +30,11 @@ class ClientesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $usuario_id = auth()->id();
+public function store(Request $request)
+{
+    $usuario_id = auth()->id();
+
+    try {
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/personas?sort_by=id_persona&order=asc', [
             'id_persona' => $request->id_persona,
             'nombres_apellidos' => $request->nombres_apellidos,
@@ -46,27 +48,34 @@ class ClientesController extends Controller
             'email_personal' => $request->filled('email_personal') ? $request->email_personal : null,
             'email_laboral' => $request->filled('email_laboral') ? $request->email_laboral : null,
             'telefono_secundario' => $request->telefono_secundario,
-            'creado_por' => auth()->id(), 
+            'creado_por' => $usuario_id,
         ]);
+
         if ($response->successful()) {
-            // 1️⃣ Extraer el ID desde la respuesta de la API
             $data = $response->json();
-            $idCreado = $data['id_persona' ] ?? 'desconocido';
-        
-            // 2️⃣ Inyectar el ID al request para que lo use el middleware
+            $idCreado = $data['id_persona'] ?? 'desconocido';
+
             $request->merge([
                 '_id_creado_api' => $idCreado,
                 '_nombre_creado_api' => $request->nombres_apellidos,
             ]);
-            
-        
+
             return redirect()->route('gestionclientes.index')->with('success', 'Cliente creado correctamente');
+        } else {
+            // Verifica si el error es por entrada duplicada
+            $body = $response->body();
+            if (str_contains($body, 'Duplicate entry')) {
+                return redirect()->route('gestionclientes.index')->with('error', 'Ya existe una persona con esa identidad.');
+            }
+
+            // Otro tipo de error
+            //return redirect()->route('gestionclientes.index')->with('error', 'Error al crear el cliente: ' . $body);
         }
-         else {
-            dd($response->status(), $response->body()); // Agregado para depuración
-            return redirect()->route('gestionclientes.index')->with('error', 'Ocurrió un error al crear el cliente');
-        }
+    } catch (\Exception $e) {
+        return redirect()->route('gestionclientes.index')->with('error', 'Excepción al crear cliente: ' . $e->getMessage());
     }
+}
+
 
 
     /**
