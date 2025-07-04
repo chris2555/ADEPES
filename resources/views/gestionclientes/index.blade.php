@@ -142,16 +142,36 @@ function sortTable(columnIndex) {
                     <div class="row">
                         <!-- Primera columna -->
                         <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="nombres_apellidos">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombres_apellidos" name="nombres_apellidos" class="form-control" placeholder="Ingrese el nombre completo" required>
-                                <div class="text-danger" id="error_nombre"></div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="nombres_apellidos">Nombre Completo</label>
+                            <input type="text"
+                                class="form-control"
+                                id="nombres_apellidos"
+                                name="nombres_apellidos"
+                                placeholder="Ingrese el nombre completo"
+                                required
+                                maxlength="80"
+                                pattern="^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$"
+                                title="Solo se permiten letras y espacios."
+                                oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ\s]/g, '')">
+
+                            <div class="text-danger" id="error_nombre"></div>
+                        </div>
+
                             <div class="mb-3">
                                 <label for="n_identidad" class="form-label">Número de Identidad</label>
-                                <input type="text" class="form-control" id="n_identidad" name="n_identidad" required maxlength="13" oninput="soloNumeros(this)">
+                                <input type="text"
+                                    class="form-control"
+                                    id="n_identidad"
+                                    name="n_identidad"
+                                    required
+                                    minlength="13"
+                                    maxlength="13"
+                                    pattern="(0[1-9]|1[0-8])[0-9]{2}(19[0-9]{2}|20[0-2][0-9]|2030)[0-9]{5}"
+                                    title="Debe tener 13 dígitos: Código de departamento (01-18), y 5 dígitos aleatorios. Ej: 0801199512345">
                                 <div class="text-danger" id="error_identidad"></div>
                             </div>
+
                             <div class="mb-3">
                             <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
                             <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required oninput="calcularEdad()">
@@ -165,10 +185,22 @@ function sortTable(columnIndex) {
 
                         <!-- Segunda columna -->
                         <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="nacionalidad" class="form-label">Nacionalidad</label>
-                                <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" required>
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="nacionalidad" class="form-label">Nacionalidad</label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="nacionalidad"
+                                        name="nacionalidad"
+                                        required
+                                        maxlength="60"
+                                        pattern="^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$"
+                                        title="Solo se permiten letras y espacios."
+                                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ\s]/g, '')"
+                                        require>
+                                </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="estado_civil" class="form-label">Estado Civil</label>
                                 <select class="form-control" id="estado_civil" name="estado_civil">

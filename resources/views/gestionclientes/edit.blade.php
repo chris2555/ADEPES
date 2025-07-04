@@ -23,13 +23,37 @@
                     <!-- Primera columna -->
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label for="nombres_apellidos" class="form-label">Nombre Completo</label>
-                            <input type="text" class="form-control" id="nombres_apellidos" name="nombres_apellidos" value="{{ $personas['nombres_apellidos'] }}" required>
-                        </div>
+                            <label for="nombres_apellidos">Nombre Completo</label>
+                            <input type="text"
+                                class="form-control"
+                                id="nombres_apellidos"
+                                name="nombres_apellidos"
+                                placeholder="Ingrese el nombre completo"
+                                required
+                                maxlength="80"
+                                pattern="^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$"
+                                title="Solo se permiten letras y espacios."
+                                oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ\s]/g, '')"
+                                value="{{ $personas['nombres_apellidos'] }}"
+                                require>
+
+                            <div class="text-danger" id="error_nombre"></div>
+                            </div>
                         <div class="mb-3">
-                            <label for="n_identidad" class="form-label">Número de Identidad</label>
-                            <input type="text" class="form-control" id="n_identidad" name="n_identidad" value="{{ $personas['n_identidad'] }}" required>
-                        </div>
+                                <label for="n_identidad" class="form-label">Número de Identidad</label>
+                                <input type="text"
+                                    class="form-control"
+                                    id="n_identidad"
+                                    name="n_identidad"
+                                    required
+                                    minlength="13"
+                                    maxlength="13"
+                                    pattern="(0[1-9]|1[0-8])[0-9]{2}(19[0-9]{2}|20[0-2][0-9]|2030)[0-9]{5}"
+                                    title="Debe tener 13 dígitos: Código de departamento (01-18), y 5 dígitos aleatorios. Ej: 0801199512345"
+                                    value="{{ $personas['n_identidad'] }}" 
+                                    require>
+                                <div class="text-danger" id="error_identidad"></div>
+                            </div>
                         <div class="mb-3">
                             <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
                             <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento"
@@ -41,12 +65,22 @@
                         </div>
                     </div>
                     
-                    <!-- Segunda columna -->
-                    <div class="col-md-4">
-                        <div class="mb-3">
-                            <label for="nacionalidad" class="form-label">Nacionalidad</label>
-                            <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" value="{{ $personas['nacionalidad'] }}" required>
-                        </div>
+                    <!-- Segunda columna "-->
+
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="nacionalidad" class="form-label">Nacionalidad</label>
+                                    <input type="text"
+                                    class="form-control"
+                                    id="nacionalidad"
+                                    name="nacionalidad"
+                                    required
+                                    maxlength="60"
+                                    pattern="^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$"
+                                    title="Solo se permiten letras y espacios."
+                                    oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ\s]/g, '')"
+                                    value="{{ $personas['nacionalidad'] }}">            
+                                </div>
                         <div class="mb-3">
                             <label for="estado_civil" class="form-label">Estado Civil</label>
                             <select class="form-control" id="estado_civil" name="estado_civil">
