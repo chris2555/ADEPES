@@ -764,8 +764,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
    $(function () {
-        $('#prestamoTable').DataTable({
-           "pageLength": 5,
+    $('#prestamoTable').DataTable({
+        "pageLength": 5,
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
@@ -780,18 +780,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 "previous": "Anterior"
             }
         },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
-                     'rt' +
-                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-                buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-                ]
-            });
-        });
+        dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+             'rt' +
+             '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+        buttons: [
+            { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+            { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+            { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+            {
+                text: '<i class="fas fa-file-pdf"></i> PDF',
+                extend: 'pdfHtml5',
+                className: 'btn btn-success',
+                title: 'Reporte de Préstamos',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                customize: function (doc) {
+                    doc.defaultStyle.fontSize = 10;
+                    doc.pageMargins = [40, 60, 40, 60];
+                }
+            },
+            { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+        ]
+    });
+});
+
    
 </script>
 
