@@ -148,7 +148,7 @@
                     </button>
                 @endrole
 
-                @hasanyrole('Administrador|Contador')
+                @hasanyrole('Administrador')
                     <form action="{{ route('pagos.destroy', $primerPago['id_pago']) }}" method="POST" class="d-inline delete-form">
                         @csrf
                         @method('DELETE')
@@ -163,6 +163,7 @@
     </tr>
 
    {{-- Subfilas ocultas --}}
+
 @foreach ($grupo->skip(1)->values() as $i => $subPago)
     @php
         $plazo = $plazosPorPrestamo[$subPago['id_prestamo']] ?? 'N/A';
@@ -198,47 +199,45 @@
         </td>
 
         <td style="text-align: center">
-            <button class="btn btn-info btn-sm toggle-subrows"><i class="bi bi-plus-lg"></i></button>
-            <a href="javascript:void(0);" class="btn btn-primary btn-sm"
-                onclick="viewModal({{ json_encode($subPago) }})">
-                <i class="bi bi-eye"></i>
-            </a>
+    <a href="javascript:void(0);" class="btn btn-primary btn-sm"
+        onclick="viewModal({{ json_encode($subPago) }})">
+        <i class="bi bi-eye"></i>
+    </a>
 
-                @hasanyrole(['Administrador', 'Contador', 'Tecnico'])
-                    <a href="{{ route('pagos.show', $subPago['id_pago']) }}"
-                    class="btn btn-success btn-sm pago-confirmation"
-                    data-id="{{ $subPago['id_pago'] }}"
-                    data-rol="{{ Auth::user()->getRoleNames()->first() }}">
-                        <i class="bi bi-pencil"></i>
-                    </a>
-                @endhasanyrole
+    @hasanyrole(['Administrador', 'Contador', 'Tecnico'])
+        <a href="{{ route('pagos.show', $subPago['id_pago']) }}"
+        class="btn btn-success btn-sm pago-confirmation"
+        data-id="{{ $subPago['id_pago'] }}"
+        data-rol="{{ Auth::user()->getRoleNames()->first() }}">
+            <i class="bi bi-pencil"></i>
+        </a>
+    @endhasanyrole
 
-                @role('Tecnico')
-                    <button type="button"
-                            class="btn btn-danger btn-sm"
-                            onclick="Swal.fire({
-                                icon: 'warning',
-                                title: 'Acceso restringido',
-                                text: 'No se puede eliminar un pago aprobado.',
-                                confirmButtonText: 'Entendido',
-                                confirmButtonColor: '#28a745'
-                            })">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                @endrole
+    @role('Tecnico')
+        <button type="button"
+                class="btn btn-danger btn-sm"
+                onclick="Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso restringido',
+                    text: 'No se puede eliminar un pago aprobado.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745'
+                })">
+            <i class="bi bi-trash"></i>
+        </button>
+    @endrole
 
-                @hasanyrole('Administrador|Contador')
-                    <form action="{{ route('pagos.destroy', $subPago['id_pago']) }}" method="POST" class="d-inline delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm delete-btn">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </form>
-                @endhasanyrole
+    @hasanyrole('Administrador')
+        <form action="{{ route('pagos.destroy', $subPago['id_pago']) }}" method="POST" class="d-inline delete-form">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
+    @endhasanyrole
+</td>
 
-
-        </td>
     </tr>
 @endforeach
 
