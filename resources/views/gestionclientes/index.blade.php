@@ -107,27 +107,30 @@ function sortTable(columnIndex) {
     </script>
                 </div>
 
-<!-- Modal para agregar un nuevo cliente -->
-<div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="viewModalLabel">Información de Clientes</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row" id="viewModalBody">
-                                            {{-- El contenido del modal se carga aquí con JavaScript --}}
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+<!-- Modal para ver información del cliente -->
+        <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewModalLabel">Información de Clientes</h5>
+                    </div>
 
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Cuerpo del modal -->
+                    <div class="modal-body">
+                        <div class="row" id="viewModalBody">
+                            {{-- El contenido del modal se carga aquí con JavaScript --}}
                         </div>
-                        </div>
+                    </div>
+
+                    <!-- Pie del modal -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
                         <div class="modal fade" id="nuevoClienteModal" tabindex="-1" aria-labelledby="nuevoClienteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

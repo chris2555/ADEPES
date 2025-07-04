@@ -137,18 +137,33 @@
         @endhasanyrole
     @endif
 
-    @hasanyrole(['Administrador', 'Tecnico'])
-        @if(in_array($solicitud['estado_solicitud'], ['Rechazado', 'Pendiente']) || Auth::user()->hasRole('Administrador'))
-            <form action="{{ route('solicitudes.destroy', $solicitud['id_solicitud']) }}"
-                method="POST" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-sm delete-btn" data-estado="{{ $solicitud['estado_solicitud'] }}">
-                    <i class="bi bi-trash"></i>
-                </button>
-            </form>
-        @endif
-    @endhasanyrole
+@hasanyrole(['Administrador', 'Tecnico'])
+    @if(in_array($solicitud['estado_solicitud'], ['Rechazado', 'Pendiente']) || Auth::user()->hasRole('Administrador'))
+        {{-- Administrador o estados permitidos --}}
+        <form action="{{ route('solicitudes.destroy', $solicitud['id_solicitud']) }}"
+              method="POST" class="d-inline delete-form">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger btn-sm delete-btn">
+                <i class="bi bi-trash"></i>
+            </button>
+        </form>
+    @elseif(Auth::user()->hasRole('Tecnico') && $solicitud['estado_solicitud'] === 'Aprobado')
+        {{-- Técnico con solicitud aprobada: mostrar alerta --}}
+        <button type="button"
+                class="btn btn-danger btn-sm"
+                onclick="Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso restringido',
+                    text: 'No puedes eliminar una solicitud ya aprobada.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745'
+                })">
+            <i class="bi bi-trash"></i>
+        </button>
+    @endif
+@endhasanyrole
+
 </td>
                             @endforeach
                         </tbody>
@@ -169,7 +184,6 @@ function sortTable(columnIndex) {
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewModalLabel">Información de Solicitud</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row" id="viewModalBody">

@@ -1,7 +1,6 @@
 @extends('adminlte::page')
 
 @section('Clientes', 'Editar Cliente')
-
 @section('content_header')
     <h1><b>Clientes/Modificar cliente</b></h1>
     </hr>
@@ -55,18 +54,29 @@
                                 <div class="text-danger" id="error_identidad"></div>
                             </div>
                         <div class="mb-3">
+                        <div class="mb-3">
                             <label for="fecha_nacimiento" class="form-label">Fecha de nacimiento</label>
-                            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento"
-       value="{{ \Carbon\Carbon::parse($personas['fecha_nacimiento'])->format('Y-m-d') }}" required>
+                            <input type="date"
+                                class="form-control"
+                                id="fecha_nacimiento"
+                                name="fecha_nacimiento"
+                                value="{{ \Carbon\Carbon::parse($personas['fecha_nacimiento'])->format('Y-m-d') }}"
+                                required
+                                max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}">
                         </div>
+
                         <div class="mb-3">
                             <label for="edad" class="form-label">Edad</label>
-                            <input type="number" class="form-control" id="edad" name="edad" value="{{ $personas['edad'] }}" required>
+                            <input type="number"
+                                class="form-control"
+                                id="edad"
+                                name="edad"
+                                value="{{ $personas['edad'] }}"
+                                readonly>
                         </div>
-                    </div>
-                    
-                    <!-- Segunda columna "-->
-
+                   </div>
+                   </div>
+                     <!-- Segunda columna "-->
                             <div class="col-md-4">
                                 <div class="mb-3">
                                     <label for="nacionalidad" class="form-label">Nacionalidad</label>
@@ -132,4 +142,50 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.getElementById('fecha_nacimiento').addEventListener('change', function () {
+        const birthDate = new Date(this.value);
+        const today = new Date();
+        let age = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            alert("Debe tener al menos 18 años.");
+            this.value = '';
+            document.getElementById('edad').value = '';
+        } else {
+            document.getElementById('edad').value = age;
+        }
+    });
+</script>
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Aceptar'
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Cerrar'
+        });
+    </script>
+@endif
+
+
 @stop
