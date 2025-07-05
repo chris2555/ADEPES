@@ -75,7 +75,9 @@
                                 name="fecha_nacimiento"
                                 value="{{ \Carbon\Carbon::parse($personas['fecha_nacimiento'])->format('Y-m-d') }}"
                                 required
-                                max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}">
+                                 min="{{ \Carbon\Carbon::now()->subYears(100)->format('Y-m-d') }}"
+                                 max="{{ \Carbon\Carbon::now()->subYears(18)->format('Y-m-d') }}">
+
                         </div>
 
                         <div class="mb-3">
@@ -209,25 +211,58 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    document.getElementById('fecha_nacimiento').addEventListener('change', function () {
+    const fechaNacimiento = document.getElementById('fecha_nacimiento');
+    const edadInput = document.getElementById('edad');
+
+    // ✅ Calcula la edad cada vez que cambia la fecha
+    fechaNacimiento.addEventListener('change', function () {
         const birthDate = new Date(this.value);
         const today = new Date();
-        let age = today.getFullYear() - birthDate.getFullYear();
+        let edad = today.getFullYear() - birthDate.getFullYear();
         const m = today.getMonth() - birthDate.getMonth();
 
         if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
+            edad--;
         }
 
-        if (age < 18) {
-            alert("Debe tener al menos 18 años.");
-            this.value = '';
-            document.getElementById('edad').value = '';
+        if (!isNaN(edad)) {
+            edadInput.value = edad;
         } else {
-            document.getElementById('edad').value = age;
+            edadInput.value = '';
+        }
+    });
+
+    // ✅ Validación al enviar
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const fechaInput = fechaNacimiento;
+        const contenedor = fechaInput.parentElement;
+
+        // Limpiar errores anteriores
+        const viejoError = contenedor.querySelector('.text-danger');
+        if (viejoError) viejoError.remove();
+
+        const birthDate = new Date(fechaInput.value);
+        const today = new Date();
+        let edad = today.getFullYear() - birthDate.getFullYear();
+        const m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            edad--;
+        }
+
+        if (edad < 18 || edad > 100) {
+            e.preventDefault();
+            const errorDiv = document.createElement('div');
+            errorDiv.classList.add('text-danger');
+            errorDiv.innerText = 'Debes ingresar una fecha válida para una persona entre 18 y 100 años.';
+            contenedor.appendChild(errorDiv);
+            edadInput.value = '';
+        } else {
+            edadInput.value = edad;
         }
     });
 </script>
+
+
 @if (session('success'))
     <script>
         Swal.fire({
