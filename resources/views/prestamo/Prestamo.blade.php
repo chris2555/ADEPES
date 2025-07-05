@@ -91,42 +91,72 @@
                     <i class="fas fa-edit"></i>
                 </button>
                 -->
-               @hasanyrole(['Administrador'])
-    @if($prestamo['estado'] === 'aprobado' || Auth::user()->hasRole('Administrador'))
-        
-            <button class="btn btn-success btn-sm edit-prestamo"
-                data-bs-toggle="modal"
-                data-bs-target="#edit"
-                data-id="{{ $prestamo['id_prestamo'] }}"
-                data-id-persona="{{ $prestamo['id_persona'] }}"
-                data-nombres="{{ $prestamo['nombres_apellidos'] }}"
-                data-dni="{{ $prestamo['n_identidad'] }}"
-                data-total="{{ $prestamo['total_pagado'] }}"
-                data-inicio="{{ $prestamo['fecha_inicio'] }}"
-                data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
-                data-tipo="{{ $prestamo['tipo'] }}"
-                data-monto="{{ $prestamo['monto'] }}"
-                data-tasa="{{ $prestamo['tasa'] }}"
-                data-plazo="{{ $prestamo['plazo'] }}"
-                data-estado="{{ $prestamo['estado'] }}"
-                data-garantia="{{ $prestamo['tipo_garantia'] }}"
-                data-modificado-por="{{ auth()->user()->name }}">
-                <i class="bi bi-pencil"></i>
-            </button>
+{{-- Botón Editar: Solo Administrador y Contador --}}
+@hasanyrole(['Administrador', 'Contador'])
+    <button class="btn btn-success btn-sm edit-prestamo"
+        data-bs-toggle="modal"
+        data-bs-target="#edit"
+        data-id="{{ $prestamo['id_prestamo'] }}"
+        data-id-persona="{{ $prestamo['id_persona'] }}"
+        data-nombres="{{ $prestamo['nombres_apellidos'] }}"
+        data-dni="{{ $prestamo['n_identidad'] }}"
+        data-total="{{ $prestamo['total_pagado'] }}"
+        data-inicio="{{ $prestamo['fecha_inicio'] }}"
+        data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
+        data-tipo="{{ $prestamo['tipo'] }}"
+        data-monto="{{ $prestamo['monto'] }}"
+        data-tasa="{{ $prestamo['tasa'] }}"
+        data-plazo="{{ $prestamo['plazo'] }}"
+        data-estado="{{ $prestamo['estado'] }}"
+        data-garantia="{{ $prestamo['tipo_garantia'] }}"
+        data-modificado-por="{{ auth()->user()->name }}">
+        <i class="bi bi-pencil"></i>
+    </button>
+@endhasanyrole
 
-           <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
-    @csrf
-    @method('DELETE')
+{{-- Botón Editar para Técnico: Solo muestra alerta --}}
+@role('Tecnico')
+    <button type="button"
+            class="btn btn-success btn-sm"
+            onclick="Swal.fire({
+                icon: 'warning',
+                title: 'Acceso restringido',
+                text: 'No uedes editar préstamos.',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#28a745'
+            })">
+        <i class="bi bi-pencil"></i>
+    </button>
+@endrole
 
-    <button type="button" class="btn btn-danger btn-sm"
-        onclick="abrirModalJustificacion({{ $prestamo['id_prestamo'] }})">
+
+{{-- Botón Eliminar: Solo Administrador --}}
+@role('Administrador')
+    <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
+        @csrf
+        @method('DELETE')
+        <button type="button" class="btn btn-danger btn-sm"
+            onclick="abrirModalJustificacion({{ $prestamo['id_prestamo'] }})">
+            <i class="bi bi-trash"></i>
+        </button>
+    </form>
+@else
+    {{-- Si no es admin, mostrar alerta si intenta eliminar --}}
+    <button type="button"
+            class="btn btn-danger btn-sm"
+            onclick="Swal.fire({
+                icon: 'warning',
+                title: 'Acceso restringido',
+                text: 'Solo el administrador puede eliminar préstamos.',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#28a745'
+            })">
         <i class="bi bi-trash"></i>
     </button>
-</form>
+@endrole
+
 
         </td>
-    @endif
-@endhasanyrole
 
     @endforeach
 @else
@@ -296,8 +326,8 @@
         }
 
 
-        if (isNaN(plazo) || plazo < 1 || plazo >  36) {
-            alert("Error: Plazo debe estar entre 1 y 36 meses");
+        if (isNaN(plazo) || plazo < 1 || plazo >  48) {
+            alert("Error: Plazo debe estar entre 1 y 48 meses");
             event.preventDefault();
             return;
         }
@@ -323,7 +353,6 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Información del Préstamo</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -764,8 +793,8 @@ document.addEventListener("DOMContentLoaded", function () {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
    $(function () {
-        $('#prestamoTable').DataTable({
-           "pageLength": 5,
+    $('#prestamoTable').DataTable({
+        "pageLength": 5,
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
@@ -780,18 +809,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 "previous": "Anterior"
             }
         },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
-                     'rt' +
-                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-                buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-                ]
-            });
-        });
+        dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+             'rt' +
+             '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+        buttons: [
+            { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+            { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+            { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+            {
+                text: '<i class="fas fa-file-pdf"></i> PDF',
+                extend: 'pdfHtml5',
+                className: 'btn btn-success',
+                title: 'Reporte de Préstamos',
+                orientation: 'landscape',
+                pageSize: 'A4',
+                customize: function (doc) {
+                    doc.defaultStyle.fontSize = 10;
+                    doc.pageMargins = [40, 60, 40, 60];
+                }
+            },
+            { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+        ]
+    });
+});
+
    
 </script>
 

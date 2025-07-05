@@ -102,10 +102,25 @@
             </a>
         </td>
         <td style="text-align: center">
-            <a href="{{ route('recibo', [$primerPago['id_persona'], $primerPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-file-alt"> Recibo de pago </i>
-            </a>
+            @role('Tecnico')
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso restringido',
+                    text: 'No tienes permisos para ver el recibo de pago.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745'
+                })">
+                    <i class="fas fa-file-alt"></i> Recibo de pago
+                </button>
+            @endrole
+
+            @hasanyrole('Administrador|Contador')
+                <a href="{{ route('recibo', [$primerPago['id_persona'], $primerPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-file-alt"></i> Recibo de pago
+                </a>
+            @endhasanyrole
         </td>
+
         <td style="text-align: center">
             <button class="btn btn-info btn-sm toggle-subrows"><i class="bi bi-plus-lg"></i></button>
             <a href="javascript:void(0);" class="btn btn-primary btn-sm"
@@ -164,10 +179,25 @@
         <td style="text-align: center">{{ $subPago['estado'] }}</td>
         <td></td> <!-- Celda vacía donde iría Pagos Realizados -->
         <td style="text-align: center">
-            <a href="{{ route('recibo', [$subPago['id_persona'], $subPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
-                <i class="fas fa-file-alt"> Recibo de pago </i>
-            </a>
+            @role('Tecnico')
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="Swal.fire({
+                    icon: 'warning',
+                    title: 'Acceso restringido',
+                    text: 'No tienes permisos para ver el recibo de pago.',
+                    confirmButtonText: 'Entendido',
+                    confirmButtonColor: '#28a745'
+                })">
+                    <i class="fas fa-file-alt"></i> Recibo de pago
+                </button>
+            @endrole
+
+            @hasanyrole('Administrador|Contador')
+                <a href="{{ route('recibo', [$subPago['id_persona'], $subPago['id_pago']]) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="fas fa-file-alt"></i> Recibo de pago
+                </a>
+            @endhasanyrole
         </td>
+
         <td style="text-align: center">
     <a href="javascript:void(0);" class="btn btn-primary btn-sm"
         onclick="viewModal({{ json_encode($subPago) }})">
@@ -291,7 +321,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="viewModalLabel">Información del Pago</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row" id="viewModalBody">

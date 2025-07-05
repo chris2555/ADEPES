@@ -437,7 +437,7 @@ return [
         
         [
             'text' => 'Respaldo',
-            'route' => 'dashboard', // Ruta al index del controlador
+            'url' => 'https://cloud.digitalocean.com/login', 
             'icon' => 'fas fa-fw fa-database', // Ícono representativo de usuarios
             'can' => 'ver-seguridad' 
 
