@@ -37,21 +37,21 @@
                             <thead>
                                 <tr>
                                     <th style="text-align: center" data-order="asc">ID telefono</th>
-                                    <th style="text-align: center">Telefono</th>
-                                    <th style="text-align: center">tipo</th>
-                                    <th style="text-align: center">entidad</th>
+                                    <th style="text-align: center">Tipo Entidad</th>
+                                    <th style="text-align: center">Tipo De Telefono</th>
                                     <th style="text-align: center">Nombre</th>
+                                    <th style="text-align: center">Telefono</th>
                                     <th style="text-align: center">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                            @foreach(collect($telefonos)->sortBy(fn($p) => (int) $p['id_telefono']) as $telefono)
+                             @foreach(collect($telefonos)->sortBy(fn($p) => (int) $p['id_telefono']) as $telefono)
                                     <tr>
                                         <td style="text-align: center" data-order="asc">{{ $telefono['id_telefono'] }}</td>
-                                        <td style="text-align: center">{{ $telefono['numero'] }}</td>
-                                        <td style="text-align: center">{{ $telefono['tipo_telefono'] }}</td>
                                         <td style="text-align: center">{{ $telefono['tipo_entidad'] }}</td>
-                                        <td >{{ $telefono['nombre_persona'] }}</td>
+                                        <td style="text-align: center">{{ $telefono['tipo'] }}</td>
+                                        <td style="text-align: center">{{ $telefono['nombres_persona'] }}</td>
+                                        <td style="text-align: center">{{ $telefono['numero'] }}</td>
                                         <td style="text-align: center">
                                             <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                                 onclick="viewModal({{ json_encode($telefono) }})">
@@ -123,7 +123,7 @@ function sortTable(columnIndex) {
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <x-adminlte-select name="id_entidad" label="Seleccionar Persona"
+                                            <x-adminlte-select name="id_persona" label="Seleccionar Persona"
                                                 fgroup-class="mb-3" required>
                                                 <option value="">Seleccione una persona</option>
                                                 @foreach ($personas as $persona)
@@ -248,9 +248,9 @@ function sortTable(columnIndex) {
         <div class="col-md-6">
             <p><strong>ID telefono:</strong> ${telefono.id_telefono}</p>
             <p><strong>Telefono:</strong> ${telefono.numero}</p>
-            <p><strong>Tipo telefono:</strong> ${telefono.tipo_telefono}</p>
+            <p><strong>Tipo telefono:</strong> ${telefono.tipo}</p>
             <p><strong>Tipo entidad:</strong> ${telefono.tipo_entidad}</p>
-            <p><strong>Nombre persona:</strong> ${telefono.nombre_persona}</p>
+            <p><strong>Nombre persona:</strong> ${telefono.nombres_persona}</p>
         </div>
     `;
 

@@ -134,7 +134,7 @@
                     <i class="bi bi-pencil"></i>
                 </a>
 
-                @role('Tecnico')
+                @role('Tecnico|Contador')
                     <button type="button"
                             class="btn btn-danger btn-sm"
                             onclick="Swal.fire({
@@ -213,7 +213,7 @@
         </a>
     @endhasanyrole
 
-    @role('Tecnico')
+    @role('Tecnico|Contador')
         <button type="button"
                 class="btn btn-danger btn-sm"
                 onclick="Swal.fire({

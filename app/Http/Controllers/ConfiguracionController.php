@@ -33,14 +33,16 @@ class ConfiguracionController extends Controller
         //$datos = request()->all();
         //return response()->json($datos);
         $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required',
-            'moneda' => 'required',
-            'logo' => 'required',
-            'cartera' => 'required',
-        ]);
+        'nombre' => ['required', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/'],
+        'descripcion' => ['required', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/'],
+        'direccion' => ['required'],
+        'telefono' => ['required', 'digits_between:8,9'],
+        'email' => ['nullable', 'email'],
+        'web' => ['nullable', 'url'],
+        'moneda' => ['required', 'in:usd,eur,mxn,hnl'],
+        'cartera' => ['nullable', 'numeric'],
+        'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+    ]);
 
         $configuracion = new Configuracion();
         $configuracion->nombre = $request->nombre;
@@ -85,14 +87,17 @@ class ConfiguracionController extends Controller
         //$datos = request()->all();
         //return response()->json($datos);
         $request->validate([
-            'nombre' => 'required',
-            'descripcion' => 'required',
-            'direccion' => 'required',
-            'telefono' => 'required',
-            'moneda' => 'required',
-            'cartera' => 'required',
-        
-        ]);
+        'nombre' => ['required', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/'],
+        'descripcion' => ['required', 'regex:/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/'],
+        'direccion' => ['required'],
+        'telefono' => ['required', 'digits_between:7,15'],
+        'email' => ['nullable', 'email'],
+        'web' => ['nullable', 'url'],
+        'moneda' => ['required', 'in:usd,eur,mxn,hnl'],
+        'cartera' => ['nullable', 'numeric'],
+        'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+    ]);
+
 
         $configuracion = Configuracion::find($id);
         $configuracion->nombre = $request->nombre;

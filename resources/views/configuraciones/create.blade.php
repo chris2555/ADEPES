@@ -26,7 +26,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-home"></i></span>
                                             </div>
-                                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Escriba aqui..." required>
+                                            <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Escriba aqui..." required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" title="Solo letras y espacios">
                                         </div>
                                         @error('nombre')
                                         <small style="color: red">{{$message}}</small>
@@ -40,7 +40,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-university"></i></span>
                                             </div>
-                                            <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Escriba aqui..." required>
+                                            <input type="text" name="descripcion" id="descripcion" class="form-control" placeholder="Escriba aqui..." required pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+" title="Solo letras y espacios">
                                         </div>
                                         @error('descripcion')
                                         <small style="color: red">{{$message}}</small>
@@ -69,7 +69,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-phone"></i></span>
                                             </div>
-                                            <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Escriba aqui..." required>
+                                            <input type="text" name="telefono" id="telefono" class="form-control" placeholder="Escriba aqui..." required pattern="[0-9]+" title="Solo números">
                                         </div>
                                         @error('telefono')
                                         <small style="color: red">{{$message}}</small>
@@ -122,7 +122,7 @@
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-coins"></i></span>
                                             </div>
-                                            <input type="text" name="cartera" id="cartera" class="form-control" placeholder="Ingrese el valor de la cartera">
+                                            <input type="text" name="cartera" id="cartera" class="form-control" placeholder="Ingrese el valor de la cartera" pattern="[0-9]+" title="Solo números">
                                         </div>
                                     </div>
                                 </div>

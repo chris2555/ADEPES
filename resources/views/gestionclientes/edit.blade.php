@@ -1,17 +1,12 @@
 @extends('adminlte::page')
 
-
 @section('title', 'Editar Cliente')
-
-
-@section('Clientes', 'Editar Cliente')
 
 @section('content_header')
     <h1>Editar Cliente</h1>
 @stop
 
 @section('content')
-
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -19,6 +14,7 @@
                 <div class="card card-success">
                     <div class="card-header">
                         <h3 class="card-title">Clientes / Modificar Cliente</h3>
+
 
 <div class='row'> 
     <div class="col-md-12">
@@ -131,6 +127,7 @@
                             </select>
                         </div>
 
+
                     </div>
                     <form id="editForm" action="{{ route('gestionclientes.update', $personas['id_persona']) }}" method="POST">
                         @csrf
@@ -197,7 +194,6 @@
                 </div>
             </div>
         </div>
-
 </section>
 @stop
 
@@ -206,6 +202,7 @@
 @stop
 
 @section('js')
+
 
     </div>
 </div>
@@ -286,6 +283,7 @@
         });
     </script>
 @endif
+
 
 
 
