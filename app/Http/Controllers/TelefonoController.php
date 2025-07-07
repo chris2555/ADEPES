@@ -34,11 +34,8 @@ class TelefonoController extends Controller
      */
     public function store(Request $request)
     {
-      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos', [
+      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/sincronizar', [
         'id_entidad' => $request->id_entidad,
-        'tipo_entidad' => $request->tipo_entidad,
-        'tipo' => $request->tipo,
-        'numero' => $request->numero,
       ]);
      
       if ($response->successful()) {
