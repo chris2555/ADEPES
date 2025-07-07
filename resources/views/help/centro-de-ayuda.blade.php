@@ -47,7 +47,7 @@
             <div class="card-header bg-success text-white" id="headingAdmin2">
                 <h5 class="mb-0">
                     <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseAdmin2" aria-expanded="false" aria-controls="collapseAdmin2">
-                        Manual de Respaldo(clic para ampliar)
+                        Manual de Respaldo(click para ampliar)
                     </button>
                 </h5>
             </div>
