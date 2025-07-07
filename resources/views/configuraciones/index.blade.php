@@ -107,6 +107,55 @@
 
 @stop
 
+@section('js')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const soloLetras = /^[a-zA-ZÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const soloNumeros = /^\d+$/;
+
+    const nombre = document.querySelector('input[name="nombre"]');
+    const descripcion = document.querySelector('input[name="descripcion"]');
+    const telefono = document.querySelector('input[name="telefono"]');
+    const cartera = document.querySelector('input[name="cartera"]');
+    const form = document.querySelector('form'); // Ajusta si tienes más de un formulario
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            let errores = [];
+
+            if (!soloLetras.test(nombre.value.trim())) {
+                errores.push("El nombre solo debe contener letras.");
+            }
+
+            if (!soloLetras.test(descripcion.value.trim())) {
+                errores.push("La descripción solo debe contener letras.");
+            }
+
+            if (!soloNumeros.test(telefono.value.trim())) {
+                errores.push("El teléfono solo debe contener números.");
+            }
+
+            if (!soloNumeros.test(cartera.value.trim())) {
+                errores.push("La cartera solo debe contener números.");
+            }
+
+            if (errores.length > 0) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Errores de Validación',
+                    html: errores.join("<br>"),
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'Corregir'
+                });
+            }
+        });
+    }
+});
+</script>
+@endsection
+
+
 @section('css')
     <style>
         /*Fondo trasnparente y sin borde en el contenedor*/
