@@ -43,13 +43,13 @@
                                         <x-adminlte-select name="tipo" label="Tipo de Teléfono" fgroup-class="mb-3"
                                             required>
                                             <option value="Residencial"
-                                                {{ $telefono['tipo'] == 'Residencial' ? 'selected' : '' }}>
+                                                {{ $telefono['tipo_telefono'] == 'Residencial' ? 'selected' : '' }}>
                                                 Residencial</option>
                                             <option value="Celular"
-                                                {{ $telefono['tipo'] == 'Celular' ? 'selected' : '' }}>Celular
+                                                {{ $telefono['tipo_telefono'] == 'Celular' ? 'selected' : '' }}>Celular
                                             </option>
                                             <option value="Trabajo"
-                                                {{ $telefono['tipo'] == 'Trabajo' ? 'selected' : '' }}>Trabajo
+                                                {{ $telefono['tipo_telefono'] == 'Trabajo' ? 'selected' : '' }}>Trabajo
                                             </option>
                                         </x-adminlte-select>
                                     </div>
@@ -76,12 +76,12 @@
 
                                         <!-- Selección de Persona -->
                                         <div class="col-md-6">
-                                            <x-adminlte-select name="id_persona" label="Seleccionar Persona"
+                                            <x-adminlte-select name="id_entidad" label="Seleccionar Persona"
                                                 fgroup-class="mb-3" required>
                                                 <option value="">Seleccione una persona</option>
                                                 @foreach ($personas as $persona)
                                                     <option value="{{ $persona->id_persona }}"
-                                                        {{ $persona->id_persona == $telefono['id_persona'] ? 'selected' : '' }}>
+                                                        {{ $persona->id_persona == $telefono['id_entidad'] ? 'selected' : '' }}>
                                                         {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
                                                     </option>
                                                 @endforeach
