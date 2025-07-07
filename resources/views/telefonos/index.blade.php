@@ -49,7 +49,7 @@
                                     <tr>
                                         <td style="text-align: center" data-order="asc">{{ $telefono['id_telefono'] }}</td>
                                         <td style="text-align: center">{{ $telefono['numero'] }}</td>
-                                        <td style="text-align: center">{{ $telefono['tipo_telefono'] }}</td>
+                                        <td style="text-align: center">{{ $telefono['tipo'] }}</td>
                                         <td style="text-align: center">{{ $telefono['tipo_entidad'] }}</td>
                                         <td >{{ $telefono['nombre_persona'] }}</td>
                                         <td style="text-align: center">
