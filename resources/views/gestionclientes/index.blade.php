@@ -22,7 +22,8 @@
             <div class="card-header">
             <h3 class="card-title">DATOS PERSONALES</h3>
             <div class="card-tools">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoClienteModal">
+
                                 <i class="fas fa-plus"></i> Nuevo Cliente
                             </button>
                         </div>

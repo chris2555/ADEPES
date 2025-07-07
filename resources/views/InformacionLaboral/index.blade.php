@@ -57,11 +57,11 @@
                                     <td>{{ $informacionlaboral['patrono_negocio'] }}</td>
                                     <td>{{ $informacionlaboral['tiempo_laborar'] }}</td>
                                     <td>
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($informacionlaboral) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('informacionlaboral.show', $informacionlaboral['id_informacion_laboral'])}}" class="btn btn-primary btn-sm">
+                                        <a href="{{ route('informacionlaboral.show', $informacionlaboral['id_informacion_laboral'])}}" class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('informacionlaboral.destroy', $informacionlaboral['id_informacion_laboral']) }}" 

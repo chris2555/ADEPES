@@ -33,17 +33,21 @@ class TelefonoController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/sincronizar', [
+{
+    $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos', [
         'id_entidad' => $request->id_entidad,
-      ]);
-     
-      if ($response->successful()) {
-        return redirect()->route('telefonos.index')->with('success', 'Telefono creado correctamente');
-      } else {
-        return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al crear el telefono');
-      }
+        'tipo_entidad' => $request->tipo_entidad,
+        'tipo' => $request->tipo,
+        'numero' => $request->numero,
+    ]);
+
+    if ($response->successful()) {
+        return redirect()->route('telefonos.index')->with('success', 'Teléfono creado correctamente');
+    } else {
+        return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al crear el teléfono');
     }
+}
+
 
     /**
      * Display the specified resource.
