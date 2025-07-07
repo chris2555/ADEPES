@@ -43,13 +43,13 @@
                                         <x-adminlte-select name="tipo" label="Tipo de Teléfono" fgroup-class="mb-3"
                                             required>
                                             <option value="Residencial"
-                                                {{ $telefono['tipo'] == 'Residencial' ? 'selected' : '' }}>
+                                                {{ $telefono['tipo_telefono'] == 'Residencial' ? 'selected' : '' }}>
                                                 Residencial</option>
                                             <option value="Celular"
-                                                {{ $telefono['tipo'] == 'Celular' ? 'selected' : '' }}>Celular
+                                                {{ $telefono['tipo_telefono'] == 'Celular' ? 'selected' : '' }}>Celular
                                             </option>
                                             <option value="Trabajo"
-                                                {{ $telefono['tipo'] == 'Trabajo' ? 'selected' : '' }}>Trabajo
+                                                {{ $telefono['tipo_telefono'] == 'Trabajo' ? 'selected' : '' }}>Trabajo
                                             </option>
                                         </x-adminlte-select>
                                     </div>
