@@ -15,11 +15,10 @@
             <div class="card-header bg-success text-white" id="headingAdmin1">
                 <h5 class="mb-0">
                     <button class="btn btn-link text-white" data-toggle="collapse" data-target="#collapseAdmin1" aria-expanded="false" aria-controls="collapseAdmin1">
-                        Manual Técnico(clic para ampliar)
+                        Manual Técnico (clic para ampliar)
                     </button>
                 </h5>
             </div>
-
             <div id="collapseAdmin1" class="collapse" aria-labelledby="headingAdmin1" data-parent="#accordionAdministrador">
                 <div class="card-body p-0">
                     <iframe src="{{ asset('Manuales/Manual_técnico.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
@@ -31,11 +30,10 @@
             <div class="card-header bg-success text-white" id="headingAdmin2">
                 <h5 class="mb-0">
                     <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseAdmin2" aria-expanded="false" aria-controls="collapseAdmin2">
-                        Manual de Usuario(clic para ampliar)
+                        Manual de Usuario (clic para ampliar)
                     </button>
                 </h5>
             </div>
-
             <div id="collapseAdmin2" class="collapse" aria-labelledby="headingAdmin2" data-parent="#accordionAdministrador">
                 <div class="card-body p-0">
                     <iframe src="{{ asset('Manuales/Manual_usuarios.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
@@ -43,16 +41,16 @@
             </div>
         </div>
 
+        <!-- Nuevo Manual de Respaldo -->
         <div class="card mb-2">
-            <div class="card-header bg-success text-white" id="headingAdmin2">
+            <div class="card-header bg-success text-white" id="headingAdmin3">
                 <h5 class="mb-0">
-                    <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseAdmin2" aria-expanded="false" aria-controls="collapseAdmin2">
-                        Manual de Respaldo(clic para ampliar)
+                    <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseAdmin3" aria-expanded="false" aria-controls="collapseAdmin3">
+                        Manual de Respaldo (clic para ampliar)
                     </button>
                 </h5>
             </div>
-
-            <div id="collapseAdmin2" class="collapse" aria-labelledby="headingAdmin2" data-parent="#accordionAdministrador">
+            <div id="collapseAdmin3" class="collapse" aria-labelledby="headingAdmin3" data-parent="#accordionAdministrador">
                 <div class="card-body p-0">
                     <iframe src="{{ asset('Manuales/Manual_Respaldo.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
                 </div>
@@ -62,6 +60,7 @@
     </div>
     @endhasrole
 </div>
+
 
 
 @hasrole('Tecnico')
