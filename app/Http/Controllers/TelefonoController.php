@@ -34,12 +34,12 @@ class TelefonoController extends Controller
      */
     public function store(Request $request)
     {
-      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/sincronizar', [
+      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos', [
         'id_entidad' => $request->id_entidad,
+        'tipo_entidad' => $request->tipo_entidad,
+        'tipo' => $request->tipo,
+        'numero' => $request->numero,
       ]);
-
-      //dd(request()->all());
-
      
       if ($response->successful()) {
         return redirect()->route('telefonos.index')->with('success', 'Telefono creado correctamente');
