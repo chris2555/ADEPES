@@ -88,9 +88,9 @@
 @hasrole('Contador')
 <div id="accordionContador" class="mb-4">
     <div class="card">
-        <div class="card-header bg-success text-dark" id="headingContador">
+        <div class="card-header bg-success text-white" id="headingContador">
             <h5 class="mb-0">
-                <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseContador" aria-expanded="false" aria-controls="collapseContador">
+                <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseContador" aria-expanded="false" aria-controls="collapseContador">
                     Manual para Contadores(clic para ampliar)
                 </button>
             </h5>
