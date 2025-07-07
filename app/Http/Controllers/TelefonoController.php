@@ -34,36 +34,18 @@ class TelefonoController extends Controller
      */
     public function store(Request $request)
     {
-      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonoss', [
-        //'id_entidad' => $request->id_entidad,
-        'id_persona' => $request->id_persona,
-        'tipo_entidad' => $request->tipo_entidad,
-        'tipo' => $request->tipo,
-        'nombres_persona' => $request->nombres_persona,
-        'numero' => $request->numero,
+      $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/sincronizar', [
+        'id_entidad' => $request->id_entidad,
       ]);
 
-      
-     //dd($response->body());
-      if ($response->successful()) {
-            // 1️⃣ Extraer el ID desde la respuesta de la API
-            $data = $response->json();
-            $idCreado = $data['id_telefono' ] ?? 'desconocido';
-        
-            // 2️⃣ Inyectar el ID al request para que lo use el middleware
-            $persona = Persona::find($request->id_persona);
-            $nombrePersona = $persona ? $persona->nombres_apellidos : 'registro';
-        
-            $request->merge([
-                '_id_creado_api' => $idCreado,
-                '_nombre_creado_api' => $nombrePersona,
-            ]);
-            
-            return redirect()->route('telefonos.index')->with('success', 'Telefono Creado Correctamente');
-          } else {
-            return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al crear el Telefono');
-          }
+      //dd(request()->all());
 
+     
+      if ($response->successful()) {
+        return redirect()->route('telefonos.index')->with('success', 'Telefono creado correctamente');
+      } else {
+        return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al crear el telefono');
+      }
     }
 
     /**
@@ -90,16 +72,12 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
-        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/phone/{$id}", [
-            'id_persona' => $request->id_persona,
-            'nombres_persona' => $request->nombres_persona,
+        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/{$id}", [
+            'id_entidad' => $request->id_entidad,
             'tipo_entidad' => $request->tipo_entidad,
             'tipo' => $request->tipo,
             'numero' => $request->numero,
         ]);
-
-       // dd($response->body());
         
         if ($response->successful()) {
             return redirect()->route('telefonos.index')->with('success', 'Telefono actualizado correctamente');
