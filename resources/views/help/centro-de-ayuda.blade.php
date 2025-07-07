@@ -43,6 +43,22 @@
             </div>
         </div>
 
+        <div class="card mb-2">
+            <div class="card-header bg-success text-white" id="headingAdmin2">
+                <h5 class="mb-0">
+                    <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseAdmin2" aria-expanded="false" aria-controls="collapseAdmin2">
+                        Manual de Respaldo(clic para ampliar)
+                    </button>
+                </h5>
+            </div>
+
+            <div id="collapseAdmin2" class="collapse" aria-labelledby="headingAdmin2" data-parent="#accordionAdministrador">
+                <div class="card-body p-0">
+                    <iframe src="{{ asset('Manuales/Manual_Respaldo.pdf') }}" width="100%" height="600px" style="border: none;"></iframe>
+                </div>
+            </div>
+        </div>
+
     </div>
     @endhasrole
 </div>
@@ -72,9 +88,9 @@
 @hasrole('Contador')
 <div id="accordionContador" class="mb-4">
     <div class="card">
-        <div class="card-header bg-success text-dark" id="headingContador">
+        <div class="card-header bg-success text-white" id="headingContador">
             <h5 class="mb-0">
-                <button class="btn btn-link text-dark collapsed" data-toggle="collapse" data-target="#collapseContador" aria-expanded="false" aria-controls="collapseContador">
+                <button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseContador" aria-expanded="false" aria-controls="collapseContador">
                     Manual para Contadores(clic para ampliar)
                 </button>
             </h5>
