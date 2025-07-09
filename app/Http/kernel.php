@@ -6,9 +6,9 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
-    // 🔒 Middlewares globales (opcional)
+    // 🔒 Middlewares globales (se aplica a todo)
     protected $middleware = [
-        \App\Http\Middleware\StrictTransportSecurityMiddleware::class, // HSTS
+        \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
     ];
 
     // 🧩 Grupos de middlewares por tipo
@@ -20,14 +20,11 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
-
         ],
 
         'api' => [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
         ],
     ];
 
