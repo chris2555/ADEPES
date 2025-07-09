@@ -4,34 +4,27 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request; // <-- Agrega esta línea
-use Illuminate\Support\Str;  // <-- Y esta también
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    protected $redirectTo = '/inicio';
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
 
-    /**
-     * Redirige al usuario después del login de forma segura.
-     */
     protected function authenticated(Request $request, $user)
     {
-        $intended = session()->pull('url.intended', '/dashboard');
+        $intended = session()->pull('url.intended', $this->redirectTo);
 
-        // Solo permitir rutas internas (empiezan con "/")
         if (!Str::startsWith($intended, '/')) {
-            $intended = '/dashboard';
+            $intended = $this->redirectTo;
         }
 
         return redirect($intended);
