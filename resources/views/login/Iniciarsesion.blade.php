@@ -74,7 +74,7 @@
                         <button type="submit" class="btn btn-success ms-auto">
                             Iniciar sesión
                         </button>
-                        <a href="/forgot-password" class="forgot-password-link">Olvidaste tu
+                        <a href="/recuperar-contrasena" class="forgot-password-link">Olvidaste tu
                                 contraseña?</a>
                     </div>
 
