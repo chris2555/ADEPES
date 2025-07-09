@@ -9,6 +9,7 @@ class Kernel extends HttpKernel
     // 🔒 Middlewares globales (se aplica a todo)
     protected $middleware = [
         \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
+        \App\Http\Middleware\TrustProxies::class,
     ];
 
     // 🧩 Grupos de middlewares por tipo
