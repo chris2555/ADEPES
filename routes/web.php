@@ -1,4 +1,6 @@
 <?php
+use App\Http\Middleware\StrictTransportSecurityMiddleware;
+use Illuminate\Http\Request;
 use App\Http\Middleware\BitacoraMiddleware;
 use App\Http\Controllers\HorasController;
 use App\Http\Controllers\AsignarRole;
@@ -38,6 +40,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/two-factor', [TwoFactorController::class, 'verify'])->name('two-factor.verify');  
       
 });
+
+
+
+Route::get('/test-hsts', function (Request $request) {
+    return response('Middleware de HSTS ejecutado');
+})->middleware(StrictTransportSecurityMiddleware::class);
+
 
 Route::middleware('auth','twofactor')->group(function () { 
 

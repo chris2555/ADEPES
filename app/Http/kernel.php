@@ -6,22 +6,12 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
 {
-    /**
-     * Los middleware globales HTTP para tu aplicación.
-     *
-     * Estos se ejecutan en **cada solicitud** al servidor.
-     */
+    // 🔒 Middlewares globales (opcional)
     protected $middleware = [
-        \App\Http\Middleware\ContentSecurityPolicy::class, // Agregaremos este luego
-        \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
-        \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
-        \App\Http\Middleware\TrimStrings::class,
-        \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\StrictTransportSecurityMiddleware::class, // HSTS
     ];
 
-    /**
-     * Los grupos de middleware.
-     */
+    // 🧩 Grupos de middlewares por tipo
     protected $middlewareGroups = [
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
@@ -30,21 +20,22 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
+
         ],
 
         'api' => [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
         ],
     ];
 
-    /**
-     * Middleware de ruta individual.
-     */
+    // 🎯 Middlewares individuales que puedes usar con ->middleware()
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
-        'csp' => \App\Http\Middleware\ContentSecurityPolicy::class, // Para aplicar CSP solo en rutas específicas
-        // otros middleware...
+        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'twofactor' => \App\Http\Middleware\Verify2FAMiddleware::class,
+        'bitacora' => \App\Http\Middleware\BitacoraMiddleware::class,
     ];
 }
