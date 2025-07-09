@@ -9,9 +9,7 @@
 
 @section('content')
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -24,7 +22,8 @@
             <div class="card-header">
             <h3 class="card-title">DATOS PERSONALES</h3>
             <div class="card-tools">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoClienteModal">
+
                                 <i class="fas fa-plus"></i> Nuevo Cliente
                             </button>
                         </div>
@@ -123,9 +122,10 @@ function sortTable(columnIndex) {
                     </div>
 
                     <!-- Pie del modal -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+</div>
+
                 </div>
             </div>
         </div>
@@ -137,7 +137,10 @@ function sortTable(columnIndex) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="nuevoClienteModalLabel">Añadir Nuevo Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+
             </div>
             <div class="modal-body">
                 <form id="nuevoClienteForm" action="{{ route('gestionclientes.store') }}" method="POST" onsubmit="return validarFormulario(event)">

@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('Informacion Laboral', 'Gestión de Informacion Laboral')
+@section('title', 'Gestión de Informacion Laboral')
 
 @section('content_header')
 <h1><b>Listado Informacion Laboral</b></h1>
@@ -57,11 +57,11 @@
                                     <td>{{ $informacionlaboral['patrono_negocio'] }}</td>
                                     <td>{{ $informacionlaboral['tiempo_laborar'] }}</td>
                                     <td>
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($informacionlaboral) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('informacionlaboral.show', $informacionlaboral['id_informacion_laboral'])}}" class="btn btn-primary btn-sm">
+                                        <a href="{{ route('informacionlaboral.show', $informacionlaboral['id_informacion_laboral'])}}" class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('informacionlaboral.destroy', $informacionlaboral['id_informacion_laboral']) }}" 
@@ -204,9 +204,9 @@ document.addEventListener("DOMContentLoaded", function () {
     <script>
 
      $(function () {
-            $('#InformacionLaboralTable').DataTable({ // Inicializa DataTables en tu tabla "InformacionLaboralTable"
-                "order": [[0, "asc"]],
-            "pageLength": 5,
+    $('#InformacionLaboralTable').DataTable({
+        "order": [[0, "asc"]],
+        "pageLength": 5,
         "responsive": true,
         "lengthChange": true,
         "autoWidth": false,
@@ -221,18 +221,30 @@ document.addEventListener("DOMContentLoaded", function () {
                 "previous": "Anterior"
             }
         },
-                dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
-                     'rt' +
-                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-                buttons: [
-                    { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-pdf"></i> PDF', extend: 'pdf', className: 'btn btn-success' },
-                    { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
-                ]
-            });
-        });
+        dom: '<"row d-flex justify-content-between align-items-center"<"col-md-3"l><"col-md-6 text-center"B><"col-md-3 d-flex justify-content-end"f>>' +
+             'rt' +
+             '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
+        buttons: [
+            { text: '<i class="fas fa-copy"></i> COPIAR', extend: 'copy', className: 'btn btn-success' },
+            { text: '<i class="fas fa-file-csv"></i> CSV', extend: 'csv', className: 'btn btn-success' },
+            { text: '<i class="fas fa-print"></i> IMPRIMIR', extend: 'print', className: 'btn btn-success' },
+            {
+                text: '<i class="fas fa-file-pdf"></i> PDF',
+                extend: 'pdfHtml5',
+                className: 'btn btn-success',
+                 title: 'Reporte de Información Laboral',
+                orientation: 'landscape',     // Puedes cambiar a 'portrait'
+                pageSize: 'A3',               // Cambia a 'A4', 'A5', 'LETTER', etc., según necesites
+                customize: function (doc) {
+                    doc.defaultStyle.fontSize = 10; // Cambia el tamaño de la fuente
+                    doc.pageMargins = [40, 60, 40, 60]; // Izquierda, arriba, derecha, abajo
+                }
+            },
+            { text: '<i class="fas fa-file-excel"></i> EXCEL', extend: 'excel', className: 'btn btn-success' },
+        ]
+    });
+});
+
 
         function viewModal(informacionlaboral) {
             var modalBody = document.getElementById('viewModalBody');
