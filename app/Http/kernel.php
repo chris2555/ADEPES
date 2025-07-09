@@ -28,6 +28,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:api',
+            \App\Http\Middleware\HSTSHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
