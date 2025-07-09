@@ -11,6 +11,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
         \App\Http\Middleware\TrustProxies::class,
          \App\Http\Middleware\HSTSHeader::class,
+         
     ];
 
     // 🧩 Grupos de middlewares por tipo
@@ -28,6 +29,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:api',
+            \App\Http\Middleware\HSTSHeader::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
