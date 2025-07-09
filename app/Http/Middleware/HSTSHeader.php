@@ -9,6 +9,7 @@ class HSTSHeader
     {
         $response = $next($request);
 
+        // Aplica solo si es HTTPS
         if ($request->isSecure()) {
             $response->headers->set(
                 'Strict-Transport-Security',

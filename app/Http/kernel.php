@@ -10,11 +10,13 @@ class Kernel extends HttpKernel
     protected $middleware = [
         \App\Http\Middleware\StrictTransportSecurityMiddleware::class,
         \App\Http\Middleware\TrustProxies::class,
+         \App\Http\Middleware\HSTSHeader::class,
     ];
 
     // 🧩 Grupos de middlewares por tipo
     protected $middlewareGroups = [
         'web' => [
+             \App\Http\Middleware\HSTSHeader::class,
             \App\Http\Middleware\HSTSHeader::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
