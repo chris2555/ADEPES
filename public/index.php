@@ -13,10 +13,9 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 require __DIR__.'/../vendor/autoload.php';
 
 // ✅ Agrega encabezados de seguridad antes de continuar
-if (true || // 👈 fuerza la ejecución sin HTTPS
+if (
     (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
-    (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
-    ($_ENV['APP_ENV'] ?? null) === 'local'
+    (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
 ) {
     header('Strict-Transport-Security: max-age=31536000; includeSubDomains; preload');
     header('X-Frame-Options: SAMEORIGIN');
