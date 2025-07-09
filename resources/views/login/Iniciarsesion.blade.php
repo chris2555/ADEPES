@@ -58,27 +58,37 @@
                 </center>
                 <br> <br />
                 <h2 class="login-title">Inicio de Sesion</h2>
-                <form method="POST" action="/login" class="needs-validation" novalidate="">
+                <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
+                    @csrf
                     <div class="form-group">
                         <label for="email" class="sr-only">Correo</label>
-                        <input id="email" type="email" class="form-control" name="email"
+                        <input id="email" type="email" class="form-control" name="email" :value="old('email')"
                             required autofocus autocomplete="username" placeholder="Correo">
+                        <strong class="text-danger">{{ $errors->first('email') }}</strong>
                     </div>
                     <div class="form-group mb-3">
                         <label for="password" class="sr-only">Contraseña</label>
                         <input id="password" type="password" class="form-control" name="password" required
                             autocomplete="current-password" placeholder="Contraseña">
+                        <strong class="text-danger">{{ $errors->first('password') }}</strong>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-5">
                         <button type="submit" class="btn btn-success ms-auto">
                             Iniciar sesión
                         </button>
-                        <a href="/recuperar-contrasena" class="forgot-password-link">Olvidaste tu
+                        @if (Route::has('password.request'))
+                            <a href="{{ route('password.request') }}" class="forgot-password-link">Olvidaste tu
                                 contraseña?</a>
+                            </a>
+                        @endif
+
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center mb-5">
+
+
+
                     </div>
                 </form>
             </div>
