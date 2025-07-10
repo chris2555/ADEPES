@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="
+<meta http-equiv="Content-Security-Policy" content="
   default-src 'self';
   script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com;
   style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com;
@@ -11,7 +11,11 @@
   img-src 'self' data: https://img.freepik.com;
   connect-src 'self';
   form-action 'self';
+  frame-ancestors 'none';
+  object-src 'none';
+  base-uri 'self';
 ">
+
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
