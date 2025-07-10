@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class ContentSecurityPolicy
 {
-   public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
 {
     $response = $next($request);
 
-    // CSP robusta y protección anti-clickjacking
-    $response->headers->set('Content-Security-Policy',
+    // Content Security Policy robusto
+    $response->headers->set('Content-Security-Policy', 
         "default-src 'self'; " .
         "script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://fonts.googleapis.com; " .
         "style-src 'self' https://fonts.googleapis.com; " .
@@ -20,10 +20,12 @@ class ContentSecurityPolicy
         "img-src 'self' data: https:; " .
         "connect-src 'self'; " .
         "form-action 'self'; " .
-        "frame-ancestors 'none'; " . // Protección anti-clickjacking
+        "frame-ancestors 'none'; " .  // 👈 Protección anti-clickjacking por CSP
         "object-src 'none';"
     );
-    $response->headers->set('X-Frame-Options', 'DENY');
+
+    // Protección anti-clickjacking clásica (para navegadores viejos)
+    $response->headers->set('X-Frame-Options', 'DENY'); // O 'SAMEORIGIN' si lo necesitas
 
     return $response;
 }
