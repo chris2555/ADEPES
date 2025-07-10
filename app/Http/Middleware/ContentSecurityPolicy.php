@@ -11,16 +11,18 @@ class ContentSecurityPolicy
     {
         $response = $next($request);
 
-        $csp = "default-src 'self'; "
-             . "script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com; "
-             . "style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com; "
-             . "font-src 'self' https://fonts.gstatic.com; "
-             . "img-src 'self' data: https://img.freepik.com; "
-             . "connect-src 'self'; "
-             . "form-action 'self'; "
-             . "frame-ancestors 'none';"; // 🔐 Protección contra clickjacking
-
-        $response->headers->set('Content-Security-Policy', $csp);
+        $response->headers->set('Content-Security-Policy',
+            "default-src 'self'; " .
+            "script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com; " .
+            "style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com; " .
+            "font-src 'self' https://fonts.gstatic.com; " .
+            "img-src 'self' data: https://img.freepik.com; " .
+            "connect-src 'self'; " .
+            "form-action 'self'; " .
+            "frame-ancestors 'none'; " .      // 🔐 protege contra clickjacking
+            "object-src 'none'; " .           // 🔐 evita uso de objetos inseguros
+            "base-uri 'self';"                // 🔐 asegura que no se reemplace el <base>
+        );
 
         return $response;
     }
