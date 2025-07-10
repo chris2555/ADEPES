@@ -26,16 +26,33 @@
                                 ¿Olvidaste tu contraseña? No hay problema. Solo déjanos tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña, que te permitirá elegir una nueva.
                             </p>
 
+                            <!-- Mensajes de estado (opcional) -->
+                            @if (session('status'))
+                                <div class="alert alert-success">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <!-- FORMULARIO -->
                             <form method="POST" action="/forgot-password-email" class="needs-validation" novalidate="">
-                                
+                                @csrf
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label text-muted">Correo Electrónico</label>
-                                    <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
+                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
                                     <div class="invalid-feedback">
                                         Por favor, ingresa una dirección de correo válida.
                                     </div>
-                                    
                                 </div>
 
                                 <div class="d-flex align-items-center justify-content-end mt-4">
@@ -55,4 +72,3 @@
     </section>
 </body>
 </html>
-
