@@ -9,9 +9,7 @@
 
 @section('content')
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -24,7 +22,8 @@
             <div class="card-header">
             <h3 class="card-title">DATOS PERSONALES</h3>
             <div class="card-tools">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nuevoClienteModal">
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#nuevoClienteModal">
+
                                 <i class="fas fa-plus"></i> Nuevo Cliente
                             </button>
                         </div>
@@ -107,34 +106,41 @@ function sortTable(columnIndex) {
     </script>
                 </div>
 
-<!-- Modal para agregar un nuevo cliente -->
-<div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="viewModalLabel">Información de Clientes</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row" id="viewModalBody">
-                                            {{-- El contenido del modal se carga aquí con JavaScript --}}
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+<!-- Modal para ver información del cliente -->
+        <div class="modal fade" id="view" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewModalLabel">Información de Clientes</h5>
+                    </div>
 
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Cuerpo del modal -->
+                    <div class="modal-body">
+                        <div class="row" id="viewModalBody">
+                            {{-- El contenido del modal se carga aquí con JavaScript --}}
                         </div>
-                        </div>
+                    </div>
+
+                    <!-- Pie del modal -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+</div>
+
+                </div>
+            </div>
+        </div>
+
+
 
                         <div class="modal fade" id="nuevoClienteModal" tabindex="-1" aria-labelledby="nuevoClienteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="nuevoClienteModalLabel">Añadir Nuevo Cliente</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+
             </div>
             <div class="modal-body">
                 <form id="nuevoClienteForm" action="{{ route('gestionclientes.store') }}" method="POST" onsubmit="return validarFormulario(event)">
@@ -142,16 +148,36 @@ function sortTable(columnIndex) {
                     <div class="row">
                         <!-- Primera columna -->
                         <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="nombres_apellidos">Nombre Completo</label>
-                                <input type="text" class="form-control" id="nombres_apellidos" name="nombres_apellidos" class="form-control" placeholder="Ingrese el nombre completo" required>
-                                <div class="text-danger" id="error_nombre"></div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="nombres_apellidos">Nombre Completo</label>
+                            <input type="text"
+                                class="form-control"
+                                id="nombres_apellidos"
+                                name="nombres_apellidos"
+                                placeholder="Ingrese el nombre completo"
+                                required
+                                maxlength="80"
+                                pattern="^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$"
+                                title="Solo se permiten letras y espacios."
+                                oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ\s]/g, '')">
+
+                            <div class="text-danger" id="error_nombre"></div>
+                        </div>
+
                             <div class="mb-3">
                                 <label for="n_identidad" class="form-label">Número de Identidad</label>
-                                <input type="text" class="form-control" id="n_identidad" name="n_identidad" required maxlength="13" oninput="soloNumeros(this)">
+                                <input type="text"
+                                    class="form-control"
+                                    id="n_identidad"
+                                    name="n_identidad"
+                                    required
+                                    minlength="13"
+                                    maxlength="13"
+                                    pattern="(0[1-9]|1[0-8])[0-9]{2}(19[0-9]{2}|20[0-2][0-9]|2030)[0-9]{5}"
+                                    title="Debe tener 13 dígitos: Código de departamento (01-18), y 5 dígitos aleatorios. Ej: 0801199512345">
                                 <div class="text-danger" id="error_identidad"></div>
                             </div>
+
                             <div class="mb-3">
                             <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
                             <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required oninput="calcularEdad()">
@@ -165,10 +191,22 @@ function sortTable(columnIndex) {
 
                         <!-- Segunda columna -->
                         <div class="col-md-4">
-                            <div class="mb-3">
-                                <label for="nacionalidad" class="form-label">Nacionalidad</label>
-                                <input type="text" class="form-control" id="nacionalidad" name="nacionalidad" required>
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label for="nacionalidad" class="form-label">Nacionalidad</label>
+                                    <input type="text"
+                                        class="form-control"
+                                        id="nacionalidad"
+                                        name="nacionalidad"
+                                        required
+                                        maxlength="60"
+                                        pattern="^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$"
+                                        title="Solo se permiten letras y espacios."
+                                        oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ\s]/g, '')"
+                                        require>
+                                </div>
                             </div>
+
                             <div class="mb-3">
                                 <label for="estado_civil" class="form-label">Estado Civil</label>
                                 <select class="form-control" id="estado_civil" name="estado_civil">

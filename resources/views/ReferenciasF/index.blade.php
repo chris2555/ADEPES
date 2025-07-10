@@ -98,7 +98,6 @@ function sortTable(columnIndex) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="viewModalLabel">Información de Referencia</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row" id="viewModalBody"></div>
@@ -142,9 +141,9 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar 1" required fgroup-class="mb-3" />
                             <x-adminlte-input name="parentesco" id="parentesco" label="Parentesco" required fgroup-class="mb-3" />
                             <x-adminlte-input name="telref1" id="telref1" label="Teléfono Familiar 1" type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                                 fgroup-class="mb-3" placeholder="Ej: 2345-6789" required
+    pattern="^[2389]\d{3}-\d{4}$" maxlength="9"
+    title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9." />
                             <x-adminlte-textarea name="direccion_familiar" id="direccion_familiar" label="Dirección" required fgroup-class="mb-3" rows="3" />
                         </div>
 
@@ -152,9 +151,9 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="nombre_familiardos" id="nombre_familiardos" label="Nombre del Familiar 2" required fgroup-class="mb-3" />
                             <x-adminlte-input name="parentesco_dos" id="parentesco_dos" label="Parentesco" required fgroup-class="mb-3" />
                             <x-adminlte-input name="telref2" id="telref2" label="Teléfono Familiar 2" type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                                 fgroup-class="mb-3" placeholder="Ej: 2345-6789" required
+    pattern="^[2389]\d{3}-\d{4}$" maxlength="9"
+    title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9." />
                             <x-adminlte-textarea name="direccion_familiardos" id="direccion_familiardos" label="Dirección" required fgroup-class="mb-3" rows="3" />
                         </div>
                     </div>
@@ -166,9 +165,9 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="nombreper1" id="nombreper1" label="Nombre Persona 1" required fgroup-class="mb-3" />
                             <x-adminlte-input name="relacionper1" id="relacionper1" label="Relación con Persona " required fgroup-class="mb-3" />
                             <x-adminlte-input name="telrefper1" id="telrefper1" label="Teléfono Persona " type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                                  fgroup-class="mb-3" placeholder="Ej: 2345-6789" required
+    pattern="^[2389]\d{3}-\d{4}$" maxlength="9"
+    title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9." />
                             <x-adminlte-textarea name="direccionper1" id="direccionper1" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
                         </div>
 
@@ -176,9 +175,9 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="nombreper2" id="nombreper2" label="Nombre Persona 2" required fgroup-class="mb-3" />
                             <x-adminlte-input name="relacionper2" id="relacionper2" label="Relación con Persona " required fgroup-class="mb-3" />
                             <x-adminlte-input name="telrefper2" id="telrefper2" label="Teléfono Persona " type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                                  fgroup-class="mb-3" placeholder="Ej: 2345-6789" required
+    pattern="^[2389]\d{3}-\d{4}$" maxlength="9"
+    title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9." />
                             <x-adminlte-textarea name="direccionper2" id="direccionper2" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
                         </div>
                     </div>
@@ -216,7 +215,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "nombre_familiar",
         "parentesco",
         "nombre_familiardos",
-        "parentesco_dos"
+        "parentesco_dos",
+        "nombreper1",
+        "relacionper1",
+        "nombreper2",
+        "relacionper2",
+
     ];
 
     // Aplicar validación en tiempo real
@@ -243,6 +247,69 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const camposTelefono = ['telref1', 'telref2', 'telrefper1', 'telrefper2'];
+
+    camposTelefono.forEach(id => {
+        const input = document.getElementById(id);
+
+        if (input) {
+            input.setAttribute('maxlength', '9');
+            input.placeholder = "Ej: 9876-1234";
+
+            const error = document.createElement('div');
+            error.classList.add('text-danger');
+            error.style.fontSize = '0.875rem';
+            error.style.display = 'none';
+            input.parentElement.appendChild(error);
+
+            input.addEventListener("input", function () {
+                let valor = this.value.replace(/[^0-9]/g, ''); // Eliminar letras y símbolos
+                if (valor.length > 4) {
+                    valor = valor.slice(0, 4) + '-' + valor.slice(4, 8);
+                }
+                this.value = valor;
+                error.style.display = 'none';
+            });
+
+            input.addEventListener("blur", function () {
+                const valor = this.value.trim();
+                if (!/^\d{4}-\d{4}$/.test(valor)) {
+                    error.textContent = "Debe tener el formato ####-#### (8 números con guion).";
+                    error.style.display = 'block';
+                } else {
+                    error.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    // Validación en el envío del formulario
+    const form = document.getElementById("insertForm");
+    form.addEventListener("submit", function (event) {
+        let valido = true;
+
+        camposTelefono.forEach(id => {
+            const input = document.getElementById(id);
+            const valor = input.value.trim();
+            const error = input.parentElement.querySelector('.text-danger');
+
+            if (!/^\d{4}-\d{4}$/.test(valor)) {
+                error.textContent = "Debe ingresar 8 dígitos separados por un guion (####-####).";
+                error.style.display = 'block';
+                valido = false;
+            } else {
+                error.style.display = 'none';
+            }
+        });
+
+        if (!valido) {
+            event.preventDefault();
+        }
+    });
+});
+</script>
 
 
 @stop
