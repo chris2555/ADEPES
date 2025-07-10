@@ -1,19 +1,8 @@
 <IfModule mod_headers.c>
-<<<<<<< HEAD
-    # Seguridad básica de cabeceras HTTP
-    Header set X-Content-Type-Options "nosniff"
-    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    Header set X-Frame-Options "DENY"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set Referrer-Policy "no-referrer-when-downgrade"
-    Header set Content-Security-Policy "default-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://use.fontawesome.com; script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://use.fontawesome.com; style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com https://use.fontawesome.com; img-src 'self' https://img.freepik.com data:; font-src 'self' https://fonts.gstatic.com https://use.fontawesome.com; connect-src 'self'; form-action 'self'; frame-ancestors 'none';"
-</IfModule>
-=======
   Header always set X-Content-Type-Options "nosniff"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
   Header always set Content-Security-Policy "default-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://use.fontawesome.com https://fundacionovelo.hn; script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://use.fontawesome.com; style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com https://use.fontawesome.com; img-src 'self' https://fundacionovelo.hn https://img.freepik.com data:; font-src 'self' https://fonts.gstatic.com https://use.fontawesome.com; connect-src 'self'; form-action 'self';"
   </IfModule>
->>>>>>> Ester
 
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
@@ -36,6 +25,7 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
 
 
 
