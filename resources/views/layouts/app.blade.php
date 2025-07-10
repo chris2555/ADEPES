@@ -3,6 +3,16 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com;
+  style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com;
+  font-src 'self' https://fonts.gstatic.com;
+  img-src 'self' data: https://img.freepik.com;
+  connect-src 'self';
+  form-action 'self';
+">
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSRF Token -->
