@@ -44,23 +44,24 @@
                             @endif
 
                             <!-- FORMULARIO -->
-                            <form method="POST" action="/forgot-password-email" class="needs-validation" novalidate="">
-                                @csrf
+                            <form method="POST" action="/forgot-password-email">
+    @csrf
 
-                                <div class="mb-3">
-                                    <label for="email" class="form-label text-muted">Correo Electrónico</label>
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
-                                    <div class="invalid-feedback">
-                                        Por favor, ingresa una dirección de correo válida.
-                                    </div>
-                                </div>
+    <div class="mb-3">
+        <label for="email" class="form-label text-muted">Correo Electrónico</label>
+        <input id="email" type="email" class="form-control" name="email" required autofocus>
+        <div class="invalid-feedback">
+            Por favor, ingresa una dirección de correo válida.
+        </div>
+    </div>
 
-                                <div class="d-flex align-items-center justify-content-end mt-4">
-                                    <button type="submit" class="btn btn-success">
-                                        Enviar Enlace de Restablecimiento de Contraseña
-                                    </button>
-                                </div>
-                            </form>
+    <div class="d-flex align-items-center justify-content-end mt-4">
+        <button type="submit" class="btn btn-success">
+            Enviar Enlace de Restablecimiento de Contraseña
+        </button>
+    </div>
+</form>
+
                         </div>
                         <div class="text-center mt-5 text-muted">
                             Copyright &copy; 2017-2021 &mdash; ADEPES
