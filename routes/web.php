@@ -1,5 +1,5 @@
 <?php
-use App\Http\Middleware\StrictTransportSecurityMiddleware;
+
 use Illuminate\Http\Request;
 use App\Http\Middleware\BitacoraMiddleware;
 use App\Http\Controllers\HorasController;
@@ -43,9 +43,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::get('/test-hsts', function (Request $request) {
-    return response('Middleware de HSTS ejecutado');
-})->middleware(StrictTransportSecurityMiddleware::class);
+
 
 
 Route::middleware('auth','twofactor')->group(function () { 
