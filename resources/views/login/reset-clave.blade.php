@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Content Security Policy (CSP) como meta tag -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' https://cdn.jsdelivr.net https://fundacioncovelo.hn;
+        script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
+        style-src 'self' https://cdn.jsdelivr.net 'unsafe-inline';
+        img-src 'self' https://fundacioncovelo.hn data:;
+        form-action 'self';
+    ">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <title>Restablecer Contraseña</title>
@@ -18,29 +28,36 @@
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
                             <h4 class="card-title text-center">Restablecer Contraseña</h4>
-                            <form method="POST" action="{{ route('password.store') }}" class="needs-validation" novalidate>
-                                @csrf
-                                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                            <!--
+                                NOTA: La acción del formulario `action="{{ route('password.store') }}"` y los valores
+                                `value="{{ old('email', $request->email) }}"`, `value="{{ $request->route('token') }}"`
+                                son sintaxis de Laravel Blade. Si este es un archivo HTML puro, necesitarás reemplazar
+                                esto con la URL real de tu endpoint de login y manejar los valores de los campos
+                                de otra manera.
+                            -->
+                            <form method="POST" action="/password/reset" class="needs-validation" novalidate>
+                                <!-- @csrf -->
+                                <input type="hidden" name="token" value="YOUR_RESET_TOKEN_HERE">
                                 
                                 <div class="mb-3">
                                     <label for="email" class="form-label text-muted">Correo Electrónico</label>
-                                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email', $request->email) }}" required autofocus>
+                                    <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
                                     <div class="invalid-feedback">Por favor, ingresa un correo válido.</div>
-                                    <strong class="text-danger">{{ $errors->first('email') }}</strong>
+                                    <!-- <strong class="text-danger">{{ $errors->first('email') }}</strong> -->
                                 </div>
                                 
                                 <div class="mb-3">
                                     <label for="password" class="form-label text-muted">Nueva Contraseña</label>
                                     <input id="password" type="password" class="form-control" name="password" required>
                                     <div class="invalid-feedback">Por favor, ingresa una contraseña.</div>
-                                    <strong class="text-danger">{{ $errors->first('password') }}</strong>
+                                    <!-- <strong class="text-danger">{{ $errors->first('password') }}</strong> -->
                                 </div>
                                 
                                 <div class="mb-3">
                                     <label for="password_confirmation" class="form-label text-muted">Confirmar Contraseña</label>
                                     <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required>
                                     <div class="invalid-feedback">Las contraseñas deben coincidir.</div>
-                                    <strong class="text-danger">{{ $errors->first('password_confirmation') }}</strong>
+                                    <!-- <strong class="text-danger">{{ $errors->first('password_confirmation') }}</strong> -->
                                 </div>
                                 
                                 <div class="d-flex align-items-center justify-content-end mt-4">

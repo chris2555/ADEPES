@@ -1,13 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fondo Rotatorio</title>
+
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://fonts.gstatic.com https://use.fontawesome.com https://fundacioncovelo.hn;
+        script-src 'self' https://stackpath.bootstrapcdn.com https://cdnjs.cloudflare.com 'unsafe-inline';
+        style-src 'self' https://fonts.googleapis.com https://stackpath.bootstrapcdn.com https://use.fontawesome.com 'unsafe-inline';
+        img-src 'self' https://fundacioncovelo.hn https://img.freepik.com data:;
+        font-src 'self' https://fonts.gstatic.com https://use.fontawesome.com;
+        connect-src 'self';
+        form-action 'self';
+    ">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Karla:wght@200;300;400;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="javascript" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js">
-    <link rel="javascript" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+
 </head>
+<body>
 
 <div class="container-fluid">
     <div class="row">
@@ -16,7 +32,6 @@
             </div>
 
             <div class="intro-content-wrapper">
-
                 <center>
                     <h1 class="intro-title">Fondo Rotatorio!</h1>
                 </center>
@@ -30,10 +45,10 @@
                     class="btn btn-read-more">Contactanos</a>
             </div>
             <div class="intro-section-footer">
-                <na class="footer-nav">
+                <nav class="footer-nav">
                     <a href="https://www.facebook.com/adepeshn/photos">Facebook</a>
                     <a href="https://www.instagram.com/adepeshn/?hl=es">Instagram</a>
-                </na>
+                </nav>
             </div>
         </div>
         <div class="col-sm-6 col-md-5 form-section">
@@ -41,7 +56,7 @@
                 <center><img id="logo" class="logo"
                         src="https://fundacioncovelo.hn/wp-content/uploads/2020/06/ADEPES.png" alt="Logotipo de ADEPES">
                 </center>
-                <br> <br />.
+                <br> <br />
                 <h2 class="login-title">Inicio de Sesion</h2>
                 <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
                     @csrf
@@ -76,11 +91,19 @@
 
                     </div>
                 </form>
-                
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
+
+
 <style>
     .logo {
         width: 150px;
