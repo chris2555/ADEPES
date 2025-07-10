@@ -12,6 +12,8 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrustProxies::class,
          \App\Http\Middleware\HSTSHeader::class,
          \App\Http\Middleware\RemoveLastModifiedHeader::class,
+         \App\Http\Middleware\ContentSecurityPolicy::class,
+
     ];
 
     // 🧩 Grupos de middlewares por tipo
