@@ -26,6 +26,7 @@
             </div>
         </div>
 
+        <!-- Manual de Usuario -->
         <div class="card mb-2">
             <div class="card-header bg-success text-white" id="headingAdmin2">
                 <h5 class="mb-0">
@@ -41,7 +42,7 @@
             </div>
         </div>
 
-        <!-- Nuevo Manual de Respaldo -->
+        <!-- Manual de Respaldo -->
         <div class="card mb-2">
             <div class="card-header bg-success text-white" id="headingAdmin3">
                 <h5 class="mb-0">
