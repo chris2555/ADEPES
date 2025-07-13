@@ -24,19 +24,11 @@
                                     <div class="col-md-6">
                                         <!-- Número de Teléfono -->
                                         <x-adminlte-input name="numero" label="Número de Teléfono" fgroup-class="mb-3"
-                                            value="{{ $telefono['numero'] }}" required maxlength="8" id="numero"
-                                            pattern="[2389][0-9]{7}"
-                                            title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
-                                        @push('js')
-                                            <script>
-                                                document.addEventListener("DOMContentLoaded", function() {
-                                                    document.getElementById("numero").addEventListener("input", function() {
-                                                        this.value = this.value.replace(/[^0-9]/g, ''); // Solo permite números
-                                                    });
-                                                });
-                                            </script>
-                                        @endpush
+    value="{{ $telefono['numero'] }}" required maxlength="9" id="numero"
+    pattern="^[2389]\d{3}-\d{4}$"
+    title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9." />
 
+                                       
 
 
                                         <!-- Tipo de Teléfono -->
@@ -104,15 +96,64 @@
 @stop
 
 @section('js')
-    @if (session('error'))
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: '{{ session('error') }}',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Aceptar'
-            });
-        </script>
-    @endif
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("numero");
+
+    if (input) {
+        const error = document.createElement('div');
+        error.classList.add('text-danger');
+        error.style.fontSize = '0.875rem';
+        error.style.display = 'none';
+        input.parentElement.appendChild(error);
+
+        // Autoformatear con guion ####-####
+        input.addEventListener("input", function () {
+            let valor = this.value.replace(/\D/g, '').substring(0, 8);
+            if (valor.length > 4) {
+                valor = valor.slice(0, 4) + '-' + valor.slice(4);
+            }
+            this.value = valor;
+            error.style.display = 'none';
+        });
+
+        // Validar al salir del campo
+        input.addEventListener("blur", function () {
+            const valor = this.value.trim();
+            if (!/^[2389]\d{3}-\d{4}$/.test(valor)) {
+                error.textContent = "Debe ingresar 8 dígitos en formato ####-#### y comenzar con 2, 3, 8 o 9.";
+                error.style.display = 'block';
+            } else {
+                error.style.display = 'none';
+            }
+        });
+
+        // Validar al enviar
+        const form = document.getElementById("editForm");
+        form.addEventListener("submit", function (event) {
+            const valor = input.value.trim();
+            const regex = /^[2389]\d{3}-\d{4}$/;
+            if (!regex.test(valor)) {
+                error.textContent = "Debe ingresar 8 dígitos en formato ####-#### y comenzar con 2, 3, 8 o 9.";
+                error.style.display = 'block';
+                event.preventDefault();
+            } else {
+                error.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+
+@if (session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: '{{ session('error') }}',
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+    });
+</script>
+@endif
 @stop
