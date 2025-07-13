@@ -64,7 +64,7 @@ class InformacionLaboralController extends Controller
             $informacionlaboral = $response->json();
             $personas = Persona::all();
 
-            return view('informacionlaboral.edit', compact('informacionlaboral' , 'personas'));
+            return view('InformacionLaboral.edit', compact('informacionlaboral' , 'personas'));
         }
 
        
