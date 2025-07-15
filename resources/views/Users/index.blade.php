@@ -147,7 +147,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="submit" form="nuevoUsuarioForm" class="btn btn-primary"
+                        <button type="submit" form="nuevoUsuarioForm" class="btn btn-success"
                             id="submitBtn">Guardar</button>
                     </div>
                 </div>

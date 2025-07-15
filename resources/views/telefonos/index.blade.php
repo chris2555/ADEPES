@@ -91,8 +91,6 @@ function sortTable(columnIndex) {
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="viewModalLabel">Información de Telefono</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row" id="viewModalBody">
@@ -155,35 +153,12 @@ function sortTable(columnIndex) {
                                             </x-adminlte-select>
 
                                             <x-adminlte-input name="numero" label="Número de Teléfono" type="text"
-                                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                                pattern="[2389][0-9]{7}"
-                                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9."
-                                                maxlength="8" id="numero" />
-
-                                            @push('js')
-                                                <script>
-                                                    document.addEventListener("DOMContentLoaded", function() {
-                                                        document.getElementById("numero").addEventListener("input", function() {
-                                                            this.value = this.value.replace(/[^0-9]/g, ''); // Solo permite números
-                                                        });
-                                                    });
-                                                </script>
-                                            @endpush
+                                                fgroup-class="mb-3" placeholder="Ej: 2345-6789" required
+    pattern="^[2389]\d{3}-\d{4}$" maxlength="9"
+    title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9."
+    id="numero" />
 
                                             
-
-                                            @push('js')
-                                                <script>
-                                                    document.addEventListener("DOMContentLoaded", function() {
-                                                        document.getElementById("numero").addEventListener("input", function() {
-                                                            this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');
-                                                        });
-                                                    });
-                                                </script>
-                                                </script>
-                                            @endpush
-
-
 
                                         </div>
                                     </div>
@@ -200,6 +175,63 @@ function sortTable(columnIndex) {
                 </div>
 
             @stop
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("numero");
+
+    if (input) {
+        // Crear contenedor de error
+        const error = document.createElement('div');
+        error.classList.add('text-danger');
+        error.style.fontSize = '0.875rem';
+        error.style.display = 'none';
+        input.parentElement.appendChild(error);
+
+        // Formatear con guion automáticamente mientras se escribe
+        input.addEventListener("input", function () {
+            let valor = this.value.replace(/\D/g, ''); // Eliminar todo lo que no sea número
+
+            // Limitar a 8 dígitos
+            valor = valor.substring(0, 8);
+
+            // Insertar guion después de 4 dígitos
+            if (valor.length > 4) {
+                valor = valor.substring(0, 4) + '-' + valor.substring(4);
+            }
+
+            this.value = valor;
+            error.style.display = 'none';
+        });
+
+        // Validar formato al salir del campo
+        input.addEventListener("blur", function () {
+            const valor = this.value.trim();
+            if (!/^[2389]\d{3}-\d{4}$/.test(valor)) {
+                error.textContent = "Debe ingresar 8 dígitos en formato ####-#### y comenzar con 2, 3, 8 o 9.";
+                error.style.display = 'block';
+            } else {
+                error.style.display = 'none';
+            }
+        });
+
+        // Validación al enviar el formulario
+        const form = document.getElementById("insertTelefonoForm");
+        form.addEventListener("submit", function (event) {
+            const valor = input.value.trim();
+            const regex = /^[2389]\d{3}-\d{4}$/;
+
+            if (!regex.test(valor)) {
+                error.textContent = "Debe ingresar 8 dígitos en formato ####-#### y comenzar con 2, 3, 8 o 9.";
+                error.style.display = 'block';
+                event.preventDefault(); // Detener envío
+            } else {
+                error.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
 
 
 
