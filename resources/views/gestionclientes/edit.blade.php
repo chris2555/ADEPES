@@ -79,6 +79,7 @@
 
                                 </div>
                             </div>
+                             <input type="hidden" name="modificado_por" value="{{ Auth::user()->id }}">
                             <div class="card-footer">
                                 <a href="{{ route('gestionclientes.index') }}" class="btn btn-secondary">Cancelar</a>
                                 <x-adminlte-button class="btn-flat" type="submit" id="btnActualizar" label="Actualizar Cliente" theme="success" icon="fas fa-lg fa-save" />

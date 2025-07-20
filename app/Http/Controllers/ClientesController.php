@@ -106,6 +106,7 @@ class ClientesController extends Controller
             'email_personal' => $request->filled('email_personal') ? $request->email_personal : null,
             'email_laboral' => $request->filled('email_laboral') ? $request->email_laboral : null,
             'telefono_secundario' => $request->telefono_secundario,
+            'modificado_por' => auth()->id(),
         ]);
 
         if ($response->successful()) {

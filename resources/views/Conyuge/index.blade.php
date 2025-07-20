@@ -383,10 +383,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <p><strong>Tiempo de Laborar:</strong> ${solicitud.tiempo_laborar_conyuge   || 'No disponible'}</p>
             <p><strong>Gastos Alimenticios:</strong> ${solicitud.gastos_alimentacion_conyuge   || 'No disponible'}</p>
             <p><strong>Estado de Credito:</strong> ${solicitud.estado_credito_conyuge   || 'No disponible'}</p>
-            <p><strong>Creado por:</strong> ${solicitud.creado_por}</p>
+<p><strong>Creado por:</strong> ${personas.creado_por_nombre || 'No disponible'}</p>
+
             <p><strong>Creado en:</strong> ${solicitud.creado_en ? new Date(solicitud.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${solicitud.modificado_por || 'No disponible'}</p>
-            <p><strong>Modificado en:</strong> ${solicitud.modificado_en ? new Date(solicitud.modificado_en).toLocaleString() : 'No disponible'}</p>
+            <<p><strong>Modificado por:</strong> ${personas.modificado_por_nombre || 'No disponible'}</p>
         </div>
     `;
 
