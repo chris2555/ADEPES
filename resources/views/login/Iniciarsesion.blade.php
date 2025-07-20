@@ -101,7 +101,7 @@
 
 
     .intro-section {
-        background-image: url(https://img.freepik.com/vector-gratis/fondo-verde-abstracto_698452-2815.jpg?t=st=1737185978~exp=1737189578~hmac=8309b30bc61d8d481239d1803dd71bb5b83c55528df5978e27353105885ad4fd&w=740);
+        background-image: url(https://i.pinimg.com/1200x/9c/6e/f3/9c6ef3f210e5a0535c853a5e08e092e2.jpg);
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
