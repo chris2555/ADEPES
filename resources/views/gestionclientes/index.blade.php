@@ -434,16 +434,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 <p><strong>Edad:</strong> ${personas.edad}</p>
                 <p><strong>Nacionalidad:</strong> ${personas.nacionalidad || 'No disponible'}</p>
                 <p><strong>Estado civil:</strong> ${personas.estado_civil || 'No disponible'}</p>
-            </div>
+            <p><strong>Creado por nombre:</strong> ${personas.nombre_creador ?? 'No disponible'}</p>
+<p><strong>Modificado por nombre:</strong> ${personas.nombre_modificador ?? 'No disponible'}</p>
+
+                </div>
             <div class="col-md-6">
                 <p><strong>Género:</strong> ${personas.genero || 'No disponible'}</p>
                 <p><strong>Tipo de cliente:</strong> ${personas.tipo_persona}</p>
                 <p><strong>Email personal:</strong> ${personas.email_personal}</p>
                 <p><strong>Email laboral:</strong> ${personas.email_laboral}</p>
                 <p><strong>Teléfono secundario:</strong> ${personas.telefono_secundario}</p>
-                <p><strong>Creado por:</strong> ${personas.creado_por_nombre || 'No disponible'}</p>
+                <p><strong>Creado por:</strong> ${personas.creado_por ?? 'No disponible'}</p>
                 <p><strong>Creado en:</strong> ${personas.creado_en ? new Date(personas.creado_en).toLocaleString() : 'No disponible'}</p>
-                <p><strong>Modificado por:</strong> ${personas.modificado_por_nombre || 'No disponible'}</p>
+                <p><strong>Modificado por:</strong> ${personas.modificado_por ?? 'No disponible'}</p>
                 <p><strong>Modificado en:</strong> ${personas.modificado_en ? new Date(personas.modificado_en).toLocaleString() : 'No disponible'}</p>
             </div>
         </div>

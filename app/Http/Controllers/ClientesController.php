@@ -16,6 +16,7 @@ class ClientesController extends Controller
         
         
             $personas = $response->json();
+            
             return view('gestionclientes.index', compact('personas'));
     }
 
@@ -155,5 +156,6 @@ class ClientesController extends Controller
         return redirect()->route('gestionclientes.index')->with('error', 'No se pudo obtener la información del cliente.');
     }
 }
+
 
 }
