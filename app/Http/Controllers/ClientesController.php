@@ -16,6 +16,7 @@ class ClientesController extends Controller
         
         
             $personas = $response->json();
+            
             return view('gestionclientes.index', compact('personas'));
     }
 
@@ -106,6 +107,7 @@ class ClientesController extends Controller
             'email_personal' => $request->filled('email_personal') ? $request->email_personal : null,
             'email_laboral' => $request->filled('email_laboral') ? $request->email_laboral : null,
             'telefono_secundario' => $request->telefono_secundario,
+            'modificado_por' => auth()->id(),
         ]);
 
         if ($response->successful()) {
@@ -154,5 +156,6 @@ class ClientesController extends Controller
         return redirect()->route('gestionclientes.index')->with('error', 'No se pudo obtener la información del cliente.');
     }
 }
+
 
 }
