@@ -55,7 +55,7 @@
                                         </span>
                                     </td>
                                     <td style="text-align: center">
-                                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-success btn-sm">
+                                        <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $user->id }}">
