@@ -59,12 +59,12 @@
                             <td>{{ $solicitud['direccion_conyuge'] }}</td>
                             <td>{{ $solicitud['profesion_oficio_conyuge'] }}</td>
                             <td>
-                                <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                                <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                     onclick="viewModal({{ json_encode($solicitud) }})">
                                     <i class="bi bi-eye"></i>
                                 </a>
                                 <a href="{{ route('conyuge.show', $solicitud['id_conyuge']) }}"
-                                    class="btn btn-primary btn-sm">
+                                    class="btn btn-success btn-sm">
                                     <i class="bi bi-pencil"></i>
                                 </a>
                                 <form action="{{ route('conyuge.destroy', $solicitud['id_conyuge']) }}"
@@ -217,6 +217,7 @@ function sortTable(columnIndex) {
         document.getElementById("error_nombre").textContent = "El nombre no debe contener números ni caracteres especiales.";
         valido = false;
     }
+
 
     // Validar número de identidad
     let identidad = document.getElementById("identidad_conyuge").value.trim();
@@ -383,10 +384,10 @@ document.addEventListener("DOMContentLoaded", function () {
             <p><strong>Tiempo de Laborar:</strong> ${solicitud.tiempo_laborar_conyuge   || 'No disponible'}</p>
             <p><strong>Gastos Alimenticios:</strong> ${solicitud.gastos_alimentacion_conyuge   || 'No disponible'}</p>
             <p><strong>Estado de Credito:</strong> ${solicitud.estado_credito_conyuge   || 'No disponible'}</p>
-<p><strong>Creado por:</strong> ${personas.creado_por_nombre || 'No disponible'}</p>
-
+            <p><strong>Creado por:</strong> ${solicitud.creado_nombre  || 'No disponible'}</p>
             <p><strong>Creado en:</strong> ${solicitud.creado_en ? new Date(solicitud.creado_en).toLocaleString() : 'No disponible'}</p>
-            <<p><strong>Modificado por:</strong> ${personas.modificado_por_nombre || 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${solicitud.modificado_nombre  || 'No disponible'}</p>
+            <p><strong>Modificado en:</strong> ${solicitud.modificado_en ? new Date(solicitud.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>
     `;
 

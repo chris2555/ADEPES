@@ -22,9 +22,11 @@
                             <div class="row">
                                 <!-- Columna Izquierda -->
                                 <div class="col-md-4">
-                                    <x-adminlte-input name="nombres_apellidos" id="nombres_apellidos" label="Nombre Completo" fgroup-class="mb-3" required
-    value="{{ old('nombres_apellidos', $personas['nombres_apellidos'] ?? '') }}" />
-<small id="error-nombre" class="text-danger d-none">Solo se permiten letras y espacios.</small>
+                                  {{-- NOMBRE sin números --}}
+<x-adminlte-input name="nombres_conyuge" id="nombres_conyuge" label="Nombre del Cónyuge"
+                  fgroup-class="mb-3" required
+                  value="{{ old('nombres_conyuge', $solicitudes['nombres_conyuge'] ?? '') }}"/>
+<small id="err-nombre" class="text-danger d-none">Solo letras y espacios.</small>
 
                                     <x-adminlte-input name="n_identidad" id="n_identidad" label="Número de Identidad" fgroup-class="mb-3" required
     value="{{ old('n_identidad', $personas['n_identidad'] ?? '') }}" />
