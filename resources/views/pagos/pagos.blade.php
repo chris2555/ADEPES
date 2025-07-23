@@ -233,7 +233,7 @@
                     <div class="row">
                         <div class="col-md-6">
                            
-                            <x-adminlte-select name="id_prestamo" label="Seleccionar Préstamo" fgroup-class="mb-3" required>
+                            <x-adminlte-select name="id_prestamo" label="Seleccionar Préstamo" fgroup-class="mb-3" id="id_prestamo" required>
                                 <option value="">Seleccione un préstamo</option>
                                 @foreach ($prestamos as $prestamo)
                                     <option value="{{ $prestamo['id_prestamo'] }}">
@@ -241,6 +241,12 @@
                                     </option>
                                 @endforeach
                             </x-adminlte-select>
+
+                            <x-adminlte-select name="numero_cuota" label="Seleccionar Cuota" fgroup-class="mb-3" id="numero_cuota"> 
+                                <option value="">Seleccione una cuota</option>
+                            </x-adminlte-select>
+
+
                             
                             
                             <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
@@ -268,8 +274,8 @@
                         <x-adminlte-input name="fecha" label="Fecha de Pago" type="date" fgroup-class="mb-3" required />
 
 
-                            <x-adminlte-input name="intereses" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses"  required />
-                            <x-adminlte-input name="abono_capital" label="Abono Capital" type="number" fgroup-class="mb-3" readonly /> 
+                            <x-adminlte-input name="intereses" id="valor_interes" label="Intereses" type="number" step="0.01" min="0" fgroup-class="mb-3" placeholder="Ingrese el monto de intereses" required />
+                            <x-adminlte-input name="abono_capital" id="valor_capital" label="Abono Capital" type="number" fgroup-class="mb-3" readonly />
                         </div>
                     </div>
 
@@ -308,7 +314,101 @@
     </div>
 
     @section('js')
-    
+<script>
+    // Al seleccionar un préstamo, se cargan sus cuotas
+    document.getElementById('id_prestamo').addEventListener('change', async function () {
+        const prestamoId = this.value;
+        const selectCuotas = document.getElementById('numero_cuota');
+
+        // Validación
+        if (!prestamoId || isNaN(prestamoId) || parseInt(prestamoId) <= 0) {
+            selectCuotas.innerHTML = '<option value="">Seleccione un préstamo válido</option>';
+            document.getElementById('valor_interes').value = '';
+            document.getElementById('valor_capital').value = '';
+            return;
+        }
+
+        // Mostrar mensaje de carga
+        selectCuotas.innerHTML = '<option value="">Cargando cuotas...</option>';
+
+        try {
+            const res = await fetch(`https://goldfish-app-q3ucp.ondigitalocean.app/api/cuotas?id_prestamo=${prestamoId}`);
+            console.log('Consultando API en:', url);
+
+            const res = await fetch(url);
+
+
+            if (!res.ok) {
+                const errorText = `Error del servidor (HTTP ${res.status})`;
+                throw new Error(errorText);
+            }
+
+            const cuotas = await res.json();
+
+            let optionsHtml = '<option value="">Seleccione una cuota</option>';
+
+            if (cuotas.length === 0) {
+                optionsHtml = '<option value="">No se encontraron cuotas para este préstamo</option>';
+            } else {
+                cuotas.forEach(c => {
+                    optionsHtml += `<option value="${c.numero_cuota}">Cuota #${c.numero_cuota}</option>`;
+                });
+            }
+
+            selectCuotas.innerHTML = optionsHtml;
+            document.getElementById('valor_interes').value = '';
+            document.getElementById('valor_capital').value = '';
+
+        } catch (err) {
+            alert(`Error al obtener las cuotas para el préstamo ID ${prestamoId}: ${err.message}`);
+            console.error("Detalle del error en carga de cuotas:", err);
+            selectCuotas.innerHTML = '<option value="">Error al cargar cuotas</option>';
+            document.getElementById('valor_interes').value = '';
+            document.getElementById('valor_capital').value = '';
+        }
+    });
+
+    // Al seleccionar una cuota, se cargan sus datos (interés y capital)
+    document.getElementById('numero_cuota').addEventListener('change', async function () {
+        const numeroCuota = this.value;
+        const prestamoId = document.getElementById('id_prestamo').value;
+
+        if (!numeroCuota || !prestamoId || isNaN(numeroCuota) || isNaN(prestamoId)) {
+            document.getElementById('valor_interes').value = '';
+            document.getElementById('valor_capital').value = '';
+            return;
+        }
+
+        try {
+            const res = await fetch = `https://goldfish-app-q3ucp.ondigitalocean.app/api/cuota?id_prestamo=${prestamoId}&numero_cuota=${numeroCuota}`;
+            console.log('Consultando detalle de cuota en:', url);
+
+            const res = await fetch(url);
+
+            if (!res.ok) {
+                throw new Error(`Error HTTP ${res.status}`);
+            }
+
+            const datos = await res.json();
+
+            if (!datos || Object.keys(datos).length === 0) {
+                alert('Cuota no encontrada o datos incompletos.');
+                document.getElementById('valor_interes').value = '';
+                document.getElementById('valor_capital').value = '';
+                return;
+            }
+
+            document.getElementById('valor_interes').value = datos.valor_intereses || '';
+            document.getElementById('valor_capital').value = datos.valor_capital || '';
+
+        } catch (err) {
+            alert(`Error al obtener el detalle de la cuota ${numeroCuota} para el préstamo ID ${prestamoId}: ${err.message}`);
+            console.error("Detalle del error en carga de detalle de cuota:", err);
+            document.getElementById('valor_interes').value = '';
+            document.getElementById('valor_capital').value = '';
+        }
+    });
+</script>
     <script>
   document.addEventListener('DOMContentLoaded', function () {
     const montoPagoInput = document.querySelector('#monto_pago');

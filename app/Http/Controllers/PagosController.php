@@ -23,7 +23,6 @@ class PagosController extends Controller
         $prestamos = $response->json(); 
         $personas = Persona::where('tipo_persona', 'Solicitante')->get(); 
         return view('pagos.pagos', compact('pagos', 'personas', 'prestamos'));
-        
     }
 
 
