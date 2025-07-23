@@ -207,8 +207,9 @@ function sortTable(columnIndex) {
                             </div>
                             <div class="mb-3">
                             <label for="telefono_secundario" class="form-label">Teléfono</label>
-                            <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario" required maxlength="9" oninput="soloNumeros(this)" placeholder="Ej: 0000-0000" required>
-    <div class="text-danger" id="error_telefono"></div>
+                            <input type="text" class="form-control" id="telefono_secundario" name="telefono_secundario" required maxlength="9"
+       oninput="formatearTelefono(this)" placeholder="Ej: 0000-0000">
+
                             </div>
                         </div>
                     </div>
@@ -276,6 +277,25 @@ function validarFormulario(event) {
     } else {
         event.target.submit();
     }
+}
+
+function formatearTelefono(input) {
+    let valor = input.value;
+
+    // Eliminar todo lo que no sea número
+    valor = valor.replace(/\D/g, '');
+
+    // Limitar a 8 dígitos
+    if (valor.length > 8) {
+        valor = valor.slice(0, 8);
+    }
+
+    // Agregar guion automáticamente después del cuarto dígito
+    if (valor.length > 4) {
+        valor = valor.slice(0, 4) + '-' + valor.slice(4);
+    }
+
+    input.value = valor;
 }
 
 // ✅ ESTA FUNCIÓN DEBE ESTAR FUERA
@@ -434,19 +454,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 <p><strong>Edad:</strong> ${personas.edad}</p>
                 <p><strong>Nacionalidad:</strong> ${personas.nacionalidad || 'No disponible'}</p>
                 <p><strong>Estado civil:</strong> ${personas.estado_civil || 'No disponible'}</p>
-            <p><strong>Creado por nombre:</strong> ${personas.nombre_creador ?? 'No disponible'}</p>
-<p><strong>Modificado por nombre:</strong> ${personas.nombre_modificador ?? 'No disponible'}</p>
+                <p><strong>Género:</strong> ${personas.genero || 'No disponible'}</p>
+                
+          
 
                 </div>
             <div class="col-md-6">
-                <p><strong>Género:</strong> ${personas.genero || 'No disponible'}</p>
                 <p><strong>Tipo de cliente:</strong> ${personas.tipo_persona}</p>
                 <p><strong>Email personal:</strong> ${personas.email_personal}</p>
                 <p><strong>Email laboral:</strong> ${personas.email_laboral}</p>
                 <p><strong>Teléfono secundario:</strong> ${personas.telefono_secundario}</p>
-                <p><strong>Creado por:</strong> ${personas.creado_por ?? 'No disponible'}</p>
-                <p><strong>Creado en:</strong> ${personas.creado_en ? new Date(personas.creado_en).toLocaleString() : 'No disponible'}</p>
-                <p><strong>Modificado por:</strong> ${personas.modificado_por ?? 'No disponible'}</p>
+                <p><strong>Creado por nombre:</strong> ${personas.creado_nombre ?? 'No disponible'}</p>
+            <p><strong>Creado en:</strong> ${personas.creado_en ? new Date(personas.creado_en).toLocaleString() : 'No disponible'}</p>
+                 <p><strong>Modificado por nombre:</strong> ${personas.modificado_nombre ?? 'No disponible'}</p>
                 <p><strong>Modificado en:</strong> ${personas.modificado_en ? new Date(personas.modificado_en).toLocaleString() : 'No disponible'}</p>
             </div>
         </div>
