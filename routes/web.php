@@ -27,6 +27,7 @@ use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\HelpCenterController;
+use App\Http\Controllers\CuotaController;
 
 Route::get('/', function () {
     return view('login.Iniciarsesion');
@@ -115,6 +116,11 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::get('/api-local/personass/pagosDeEstaSemana', function () {
     $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/personass/pagosDeEstaSemana');
     return $response->json();
+
+    Route::get('/cuotas', [PagosController::class, 'getCuotas']);
+    Route::get('/cuota', [PagosController::class, 'getDetalleCuota']);
+
+
 });
 
 });

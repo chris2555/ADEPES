@@ -8,6 +8,8 @@ use App\Models\Pago;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Persona;
 use Illuminate\Support\Facades\DB;
+use App\Models\Cuota;
+
 
 
 class PagosController extends Controller
@@ -22,7 +24,8 @@ class PagosController extends Controller
         $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/Prestamo');
         $prestamos = $response->json(); 
         $personas = Persona::where('tipo_persona', 'Solicitante')->get(); 
-        return view('pagos.pagos', compact('pagos', 'personas', 'prestamos'));
+        $cuotas = Cuota::all();
+        return view('pagos.pagos', compact('pagos', 'personas', 'prestamos', 'cuotas'));
     }
 
 
@@ -237,9 +240,47 @@ public function obtenerRecibos($id_persona, $id_pago)
     return $pdf->stream('recibo_pago.pdf');
 }
 
+public function getCuotas(Request $request)
+    {
+        $id_prestamo = $request->query('id_prestamo');
 
+        if (!is_numeric($id_prestamo) || $id_prestamo <= 0) {
+            return response()->json(['error' => 'ID de préstamo no válido. Debe ser un número entero positivo.'], 400);
+        }
 
+        $cuotas = Cuota::where('id_prestamo', $id_prestamo)->select('numero_cuota')->get();
 
+        if ($cuotas->isEmpty()) {
+            return response()->json(['error' => "No se encontraron cuotas para el préstamo con ID: $id_prestamo."], 404);
+        }
+
+        return response()->json($cuotas);
+    }
+
+    // Obtener una cuota específica de un préstamo
+    public function getDetalleCuota(Request $request)
+    {
+        $id_prestamo = $request->query('id_prestamo');
+        $numero_cuota = $request->query('numero_cuota');
+
+        if (!is_numeric($id_prestamo) || $id_prestamo <= 0) {
+            return response()->json(['error' => 'ID de préstamo no válido. Debe ser un número entero positivo.'], 400);
+        }
+
+        if (!is_numeric($numero_cuota) || $numero_cuota <= 0) {
+            return response()->json(['error' => 'Número de cuota no válido. Debe ser un número entero positivo.'], 400);
+        }
+
+        $cuota = Cuota::where('id_prestamo', $id_prestamo)
+                      ->where('numero_cuota', $numero_cuota)
+                      ->first();
+
+        if (!$cuota) {
+            return response()->json(['error' => "No se encontró la cuota $numero_cuota para el préstamo con ID: $id_prestamo."], 404);
+        }
+
+        return response()->json($cuota);
+    }
 }
 
 
