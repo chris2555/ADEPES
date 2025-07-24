@@ -97,7 +97,7 @@ function sortTable(columnIndex) {
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="viewModalLabel">Información de Solicitud</h5>
+                        <h5 class="modal-title" id="viewModalLabel">Información de Vivienda</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -286,9 +286,9 @@ function sortTable(columnIndex) {
         <div class="col-md-6">
             <p><strong>Dirección Completa:</strong> ${vivienda.direccion_completa || 'No disponible'}</p>
             <p><strong>Material de Construcción:</strong> ${vivienda.material_construccion}</p>
-            <p><strong>Creado por:</strong> ${vivienda.creado_por} value="{{ auth()->user()->id }} </p>
+            <p><strong>Creado por:</strong> ${vivienda.creado_nombre} value="{{ auth()->user()->id }} </p>
             <p><strong>Creado en:</strong> ${vivienda.creado_en ? new Date(vivienda.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${vivienda.modificado_por || 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${vivienda.modificado_nombre || 'No disponible'}</p>
             <p><strong>Modificado en:</strong> ${vivienda.modificado_en ? new Date(vivienda.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>
     `;
