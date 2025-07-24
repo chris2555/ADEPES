@@ -24,48 +24,67 @@ class InformacionLaboralController extends Controller
     }
 
     public function store(Request $request)
-    {
-    
-        $usuario_id = auth()->id();
+{
+    // Validación: evitar duplicados de información laboral por persona
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral');
+    $existentes = collect($response->json());
+    $yaExiste = $existentes->where('id_persona', $request->id_persona)->count() > 0;
 
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral', [
-            'id_persona' => $request->id_persona,
-            'profesion_oficio' => $request->profesion_oficio,
-            'actividad' => $request->actividad,
-            'patrono_negocio' => $request->patrono_negocio,
-            'tiempo_laborar' => $request->tiempo_laborar,
-            'ingresos_negocio' => $request->ingresos_negocio,
-            'direccion_trabajo' => $request->direccion_trabajo,
-            'gastos_alimentacion' => $request->gastos_alimentacion,
-            'creado_por' => $request->creado_por,
-            'creado_en' => $request->creado_en,
-        ]);
-
-        if ($response->successful()) {
-            $data = $response->json();
-            $idCreado = $data['id_informacion_laboral'] ?? 'desconocido';
-        
-            $persona = Persona::find($request->id_persona);
-            $nombrePersona = $persona ? $persona->nombres_apellidos : 'registro';
-        
-            $request->merge([
-                '_id_creado_api' => $idCreado,
-                '_nombre_creado_api' => $nombrePersona,
-            ]);
-            return redirect()->route('informacionlaboral.index')->with('success', 'Datos laborales creados correctamente.');
-        }
-
-        return redirect()->route('informacionlaboral.index')->with('error', 'Ocurrió un error al crear los datos laborales.');
+    if ($yaExiste) {
+        // Si ya existe información laboral para esa persona, redirige con mensaje de error
+        return redirect()->route('informacionlaboral.index')->with('error', '¡Esta persona ya tiene información laboral registrada!');
     }
 
-    public function show(string $id)
-    {
-        $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral/{$id}");
-            $informacionlaboral = $response->json();
-            $personas = Persona::all();
+    // Aquí va tu lógica de guardado (no cambia)
+    $usuario_id = auth()->id();
 
-            return view('InformacionLaboral.edit', compact('informacionlaboral' , 'personas'));
-        }
+    $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral', [
+        'id_persona'          => $request->id_persona,
+        'profesion_oficio'    => $request->profesion_oficio,
+        'actividad'           => $request->actividad,
+        'patrono_negocio'     => $request->patrono_negocio,
+        'tiempo_laborar'      => $request->tiempo_laborar,
+        'ingresos_negocio'    => $request->ingresos_negocio,
+        'direccion_trabajo'   => $request->direccion_trabajo,
+        'gastos_alimentacion' => $request->gastos_alimentacion,
+        'creado_por'          => $usuario_id,  
+        'creado_en'           => $request->creado_en,
+    ]);
+
+    if ($response->successful()) {
+        $data = $response->json();
+        $idCreado = $data['id_informacion_laboral'] ?? 'desconocido';
+
+        $persona = \App\Models\Persona::find($request->id_persona);
+        $nombrePersona = $persona ? $persona->nombres_apellidos : 'registro';
+
+        $request->merge([
+            '_id_creado_api' => $idCreado,
+            '_nombre_creado_api' => $nombrePersona,
+        ]);
+        return redirect()->route('informacionlaboral.index')->with('success', 'Datos laborales creados correctamente.');
+    }
+
+    return redirect()->route('informacionlaboral.index')->with('error', 'Ocurrió un error al crear los datos laborales.');
+}
+
+
+   public function show(string $id)
+{
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral/{$id}");
+    $informacionlaboral = $response->json();
+    $personas = Persona::all();
+
+    // Busca el nombre y n_identidad según id_persona
+    $persona = $personas->firstWhere('id_persona', $informacionlaboral['id_persona'] ?? null);
+    $nombre_persona = $persona
+        ? $persona->nombres_apellidos . ' - ' . $persona->n_identidad
+        : 'No encontrado';
+
+    // Ahora sí pasa el nombre_persona al blade
+    return view('InformacionLaboral.edit', compact('informacionlaboral', 'personas', 'nombre_persona'));
+}
+
 
        
     public function edit(string $id)
@@ -75,6 +94,8 @@ class InformacionLaboralController extends Controller
 
     public function update(Request $request, string $id)
 {
+    $usuario_id = auth()->id(); // Obtenemos el ID del usuario autenticado
+
     $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/InformacionLaboral/{$id}", [
         'id_persona' => $request->id_persona,
         'profesion_oficio' => $request->profesion_oficio,
@@ -84,13 +105,12 @@ class InformacionLaboralController extends Controller
         'ingresos_negocio' => $request->ingresos_negocio,
         'direccion_trabajo' => $request->direccion_trabajo,
         'gastos_alimentacion' => $request->gastos_alimentacion,
-        'modificado_por' => $request->modificado_por,
-        'modificado_en' => $request->modificado_en,
+        'modificado_por' => $usuario_id, // se asigna directamente
+        'modificado_en' => now(),        // fecha y hora actual
     ]);
 
-    // ⚠️ Imprimir respuesta para depuración
     if (!$response->successful()) {
-        dd($response->json()); // Muestra el error real antes de redirigir
+        dd($response->json()); // Depura si hay error
     }
 
     return redirect()->route('informacionlaboral.index')->with('success', 'Información laboral actualizada correctamente.');

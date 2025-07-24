@@ -57,11 +57,11 @@
                                     <td>{{ $informacionlaboral['patrono_negocio'] }}</td>
                                     <td>{{ $informacionlaboral['tiempo_laborar'] }}</td>
                                     <td>
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($informacionlaboral) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
-                                        <a href="{{ route('informacionlaboral.show', $informacionlaboral['id_informacion_laboral'])}}" class="btn btn-primary btn-sm">
+                                        <a href="{{ route('informacionlaboral.show', $informacionlaboral['id_informacion_laboral'])}}" class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('informacionlaboral.destroy', $informacionlaboral['id_informacion_laboral']) }}" 
@@ -77,6 +77,13 @@
                             @endforeach
                         </tbody>
                     </table>
+                </tbody>
+            </table>
+
+            <script>
+                // Pasa los IDs de personas ya registradas en información laboral
+                const personasConLaboral = @json(collect($InformacionLaboral)->pluck('id_persona')->unique()->values()->toArray());
+            </script>
 
                     
                     <script>
@@ -148,13 +155,14 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="ingresos_negocio" label="Ingresos del Negocio" fgroup-class="mb-3" 
                             placeholder="Ingrese ingresos" type="number" step="0.01" required />
 
-                            <x-adminlte-input name="direccion_trabajo" label="Dirección de Trabajo" fgroup-class="mb-3" 
+                           
+                            </div>
+                            <div class="col-md-6">
+                             <x-adminlte-input name="direccion_trabajo" label="Dirección de Trabajo" fgroup-class="mb-3" 
                             placeholder="Ingrese dirección del trabajo"  required/>
 
                             <x-adminlte-input name="patrono_negocio" label="Nombre del Patrono o Negocio" fgroup-class="mb-3" 
                             placeholder="Ingrese Patrono o Negocio" required />
-                            </div>
-                            <div class="col-md-6">
 
                             <x-adminlte-input name="tiempo_laborar" label="Tiempo de Laborar" fgroup-class="mb-3" 
                             placeholder="Ej. 2 años" required />
@@ -248,24 +256,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
         function viewModal(informacionlaboral) {
-            var modalBody = document.getElementById('viewModalBody');
-            modalBody.innerHTML = `
+    var modalBody = document.getElementById('viewModalBody');
+    modalBody.innerHTML = `
         <div class="col-md-6">
-            <p><strong>ID parametro:</strong> ${informacionlaboral.id_informacion_laboral}</p>
-            <p><strong>tipo usuario:</strong> ${informacionlaboral.id_persona}</p>
-            <p><strong>Clave :</strong> ${informacionlaboral.profesion_oficio}</p>
-            <p><strong>Nombre Usuario:</strong> ${informacionlaboral.actividad}</p>
-            </div>
+            <p><strong>ID Información Laboral:</strong> ${informacionlaboral.id_informacion_laboral}</p>
+            <p><strong>ID Persona:</strong> ${informacionlaboral.id_persona}</p>
+            <p><strong>Nombre Cliente:</strong> ${informacionlaboral.nombres_persona}</p>
+            <p><strong>Profesión u Oficio:</strong> ${informacionlaboral.profesion_oficio}</p>
+            <p><strong>Actividad:</strong> ${informacionlaboral.actividad}</p>
+            <p><strong>Ingresos del Negocio:</strong> ${informacionlaboral.ingresos_negocio}</p>
+        </div>
         <div class="col-md-6">
-            <p><strong>Creado en:</strong> ${informacionlaboral.patrono_negocio}</p>
-            <p><strong>Actualizado en:</strong> ${informacionlaboral.tiempo_laboral}</p>
-           
+            <p><strong>Dirección de Trabajo:</strong> ${informacionlaboral.direccion_trabajo}</p>
+            <p><strong>Patrono o Negocio:</strong> ${informacionlaboral.patrono_negocio}</p>
+            <p><strong>Tiempo de Laborar:</strong> ${informacionlaboral.tiempo_laborar}</p>
+            <p><strong>Gastos de Alimentación:</strong> ${informacionlaboral.gastos_alimentacion}</p>
+        <p><strong>Creado por:</strong> ${informacionlaboral.creado_nombre}</p>
+        <p><strong>Modificado por:</strong> ${informacionlaboral.modificado_nombre}</p>
         </div>
     `;
 
-            var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
-            viewModalElement.show();
-        }
+    var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
+    viewModalElement.show();
+}
+
 
         
         document.addEventListener("DOMContentLoaded", function () {
@@ -316,6 +330,31 @@ document.addEventListener("DOMContentLoaded", function () {
             confirmButtonText: 'Aceptar'
         });
     </script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Agrega validación al seleccionar persona
+    const selectPersona = document.querySelector("#insertinformacionlaboralForm select[name='id_persona']");
+    const btnGuardar = document.querySelector("#insertinformacionlaboralForm button[type='submit']");
+
+    if(selectPersona && btnGuardar){
+        selectPersona.addEventListener("change", function() {
+            if(personasConLaboral.includes(Number(this.value))){
+                Swal.fire({
+                    icon: 'warning',
+                    title: '¡Atención!',
+                    text: 'Esta persona ya tiene información laboral registrada.',
+                    confirmButtonColor: '#d33',
+                });
+                btnGuardar.disabled = true;
+            }else{
+                btnGuardar.disabled = false;
+            }
+        });
+    }
+});
+</script>
+
     @endif
     
 @stop
