@@ -443,6 +443,12 @@ return [
 
         ],
         [
+            'text' => 'Parámetros', // Text to display in the sidebar
+            'route' => 'Parametros.index', // Route to your parameters index page
+            'icon' => 'fas fa-fw fa-cogs', // Icon for parameters (e.g., cogs or sliders)
+            'can' => 'ver-seguridad' 
+        ],
+        [
             'text' => 'Configuraciones',
             'route' => 'configuraciones.index', // Ruta al módulo de usuarios
             'icon' => 'fas fa-fw fa-tools', // Ícono de usuarios

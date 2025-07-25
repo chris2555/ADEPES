@@ -1,14 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'Configuraciones - Configuraciones')
-
-
+@section('title', 'Parámetros - Listado')
 
 @section('content_header')
-    <h1><b>Listado de Configuraciones</b></h1>
-    </hr>
+    <h1><b>Listado de Parámetros</b></h1>
+    <hr>
 @stop
-
 
 @section('content')
 
@@ -19,78 +16,61 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     </head>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    </head>
+
     <div class='row'>
         <div class="col-md-12">
             <div class="card card-outline card-success">
                 <div class="card-header">
-                    <h3 class="card-title">Configuraciones registrados</h3>
+                    <h3 class="card-title">Parámetros registrados</h3>
 
                     <div class="card-tools">
-                        <a href="{{ url('configuraciones/create') }}" class="btn btn-success"> Crear nuevo </a>
+                        <a href="{{ route('Parametros.create') }}" class="btn btn-success"> Crear nuevo parámetro </a>
                     </div>
-                    <!-- /.card-tools -->
-                </div>
-                <!-- /.card-header -->
+                    </div>
                 <div class="card-body" style="display: block;">
                     <table id="example1" class="table table-bordered table-hover table-striped table-sm">
                         <thead>
                             <tr>
-                                <th style="...">Nro</th>
-                                <th style="...">Nombre</th>
-                                <th style="...">Descripcion</th>
-                                <th style="...">Telefono</th>
-                                <th style="...">Email</th>
-                                <th style="...">Moneda</th>
-                                <th style="...">Cartera</th>
-                                <th style="...">Logo</th>
-                                <th style="...">Accion</th>
+                                <th style="width: 15%;">Clave (ID)</th>
+                                <th style="width: 25%;">Valor</th>
+                                <th style="width: 30%;">Descripción</th>
+                                <th style="width: 15%;">Creado el</th> {{-- Nueva columna --}}
+                                <th style="width: 15%;">Última Actualización</th> {{-- Nueva columna --}}
+                                <th style="width: 10%;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($configuraciones as $configuracione)
+                            @foreach ($parametros as $parametro)
                                 <tr>
-                                    <td style ="...">{{ $configuracione->id }}</td>
-                                    <td>{{ $configuracione->nombre }}</td>
-                                    <td>{{ $configuracione->descripcion }}</td>
-                                    <td style="text-align: center">{{ $configuracione->telefono }}</td>
-                                    <td>{{ $configuracione->email }}</td>
-                                    <td style="text-align: center">{{ $configuracione->moneda }}</td>
-                                    <td style="text-align: center">{{ $configuracione->cartera }}</td>
+                                    <td style ="word-break: break-all;">{{ $parametro->id }}</td>
+                                    <td style ="word-break: break-all;">{{ $parametro->valor }}</td>
+                                    <td style ="word-break: break-all;">{{ $parametro->descripcion }}</td>
+                                    {{-- Formateando las fechas --}}
+                                    <td>{{ $parametro->created_at ? $parametro->created_at->format('d/m/Y H:i:s') : 'N/A' }}</td>
+                                    <td>{{ $parametro->updated_at ? $parametro->updated_at->format('d/m/Y H:i:s') : 'N/A' }}</td>
                                     <td style="text-align: center">
-                                        <img src="{{ asset('storage/' . $configuracione->logo) }}" width="100px"
-                                            alt="imagen">
-                                    </td>
-                                    <td style="text-align: center">
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a href="{{ url('/configuraciones', $configuracione->id) }}"
-                                                style="margin-right: 5px;" class="btn btn-info btn-sm"><i
-                                                    class="bi bi-eye"></i></a>
-                                            <a href="{{ url('/configuraciones/' . $configuracione->id . '/edit') }}"
-                                                style="margin-right: 5px;" class="btn btn-success btn-sm"><i
-                                                    class="bi bi-pencil"></i></a>
-                                            <form action = "{{ url('/configuraciones', $configuracione->id) }}"
-                                                method="post" onclick="preguntar{{ $configuracione->id }}(event)"
-                                                id="miFormulario{{ $configuracione->id }}">
+                                        <div class="btn-group" role="group" aria-label="Acciones de parámetro">
+                                            {{-- Botón Ver --}}
+                                            <a href="{{ route('Parametros.show', $parametro->id) }}"
+                                                style="margin-right: 5px;" class="btn btn-info btn-sm">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            {{-- Botón Editar --}}
+                                            <a href="{{ route('Parametros.edit', $parametro->id) }}"
+                                                style="margin-right: 5px;" class="btn btn-success btn-sm">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            {{-- Formulario para "Eliminar" (con SweetAlert2 de acción no permitida) --}}
+                                            <form action="{{ route('Parametros.destroy', $parametro->id) }}"
+                                                method="post" onclick="denyDelete(event)"
+                                                id="form-delete-{{ $parametro->id }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="btn btn-danger btn-sm"
-                                                    style="display:inline;"><i class="bi bi-trash"></i></button>
+                                                    style="display:inline;">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
                                             </form>
-                                            <script>
-                                                function preguntar{{ $configuracione->id }}(event) {
-                                                    event.preventDefault();
-                                                    Swal.fire({
-                                                        icon: 'warning',
-                                                        title: 'Acción no permitida',
-                                                        text: 'No está permitido borrar la configuración.',
-                                                        confirmButtonText: 'Entendido',
-                                                        confirmButtonColor: '#3085d6'
-                                                    });
-                                                }
-                                            </script>
-
                                         </div>
                                     </td>
                                 </tr>
@@ -98,29 +78,23 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- /.card-body -->
+                </div>
             </div>
-            <!-- /.card -->
-        </div>
-
     </div>
 
 @stop
 
 @section('css')
     <style>
-        /*Fondo trasnparente y sin borde en el contenedor*/
+        /*Fondo transparente y sin borde en el contenedor*/
         #example1_wrapper .dt-buttons {
             background-color: transparent;
             box-shadow: none;
             border: none;
             display: flex;
             justify-content: center;
-            /*Centrar los botenes */
             gap: 10px;
-            /*Espaciado entre botenes*/
             margin-bottom: 15px;
-            /*Separar botones de la tabla*/
         }
 
         /*Estilo personalizado para los botones*/
@@ -131,30 +105,30 @@
             font-size: 14px;
         }
 
-        /*Colores por tipo de botonn*/
+        /*Colores por tipo de botón*/
         .btn-danger {
-            backgroung-color: #dc3545;
+            background-color: #dc3545;
             border: none;
         }
 
         .btn-success {
-            backgroung-color: #28a745;
+            background-color: #28a745;
             border: none;
         }
 
         .btn-info {
-            backgroung-color: #17a2b8;
+            background-color: #17a2b8;
             border: none;
         }
 
         .btn-warning {
-            backgroung-color: #ffc107;
+            background-color: #ffc107;
             color: #212529;
             border: none;
         }
 
         .btn-default {
-            backgroung-color: #6e7176;
+            background-color: #6e7176;
             color: #212529;
             border: none;
         }
@@ -172,23 +146,19 @@
             background-color: #ffc107;
             color: #212529;
             margin-left: 5px;
-            /* Mueve el botón de editar a la derecha */
         }
 
         .dataTables_paginate {
             text-align: right !important;
-            /* Alinea la paginación a la derecha */
         }
 
         .dt-buttons {
             margin-bottom: 10px;
-            /* Agrega separación a los botones de impresión */
         }
     </style>
 @stop
 
 @section('js')
-    <!-- DataTables -->
     <script src="//cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
@@ -204,29 +174,26 @@
                 "lengthChange": true,
                 "autoWidth": false,
                 "language": {
-                    "emptyTable": "No hay informacion",
-                    "info": "Mostrando_START_a_END_de_TOTAL_ Configuraciones",
-                    "infoEmpty": "Mostrando 0 a 0 de 0 Configuraciones",
-                    "infoFiltered": "(Filtrado de _MAX_ total Configuraciones)",
-                    "lengthMenu": "Mostrar_MENU_Configuraciones",
+                    "emptyTable": "No hay información disponible de parámetros.",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ parámetros",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 parámetros",
+                    "infoFiltered": "(Filtrado de _MAX_ total parámetros)",
+                    "lengthMenu": "Mostrar _MENU_ parámetros",
                     "loadingRecords": "Cargando...",
                     "processing": "Procesando...",
-                    "search": "Buscador:",
-                    "zeroRecords": "Sin resultados encontrados",
+                    "search": "Buscar:",
+                    "zeroRecords": "No se encontraron parámetros que coincidan",
                     "paginate": {
                         "first": "Primero",
-                        "last": "Ultimo",
+                        "last": "Último",
                         "next": "Siguiente",
                         "previous": "Anterior"
                     }
-
                 },
-
                 dom: '<"row d-flex justify-content-between"<"col-md-3"l><"col-md-6"><"col-md-3 d-flex justify-content-end"f>>' +
                     '<"row"<"col-md-12"B>>' +
                     'rt' +
                     '<"row d-flex align-items-center mt-2"<"col-md-6 text-start"i><"col-md-6 d-flex justify-content-end"p>>',
-
                 buttons: [{
                         text: '<i class="fas fa-copy"></i> COPIAR',
                         extend: 'copy',
@@ -255,5 +222,17 @@
                 ]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         });
+
+        // Función para DENY la eliminación de parámetros
+        function denyDelete(event) {
+            event.preventDefault(); // Evitar el envío del formulario
+            Swal.fire({
+                icon: 'warning',
+                title: 'Acción no permitida',
+                text: 'No está permitido borrar parámetros.',
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#3085d6'
+            });
+        }
     </script>
 @stop

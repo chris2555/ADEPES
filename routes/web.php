@@ -12,6 +12,7 @@ use App\Http\Controllers\SolicitudPrestamoController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\EstadoEgresosController;
 use App\Http\Controllers\PrestamoController;
+use App\Http\Controllers\ParametroController;
 use App\Http\Controllers\ReferenciasFController;
 use App\Http\Controllers\TwoFactorController;
 use App\Http\Controllers\PagosController;
@@ -83,7 +84,7 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::resource('conyuge', ConyugeController::class)->names('conyuge');
     Route::resource('viviendas',ViviendaController::class)->names('viviendas');
     Route::resource('gestionclientes', ClientesController::class)->names('gestionclientes');
-    Route::resource('parametros',parametrosController::class)->names('Parametros');
+    Route::resource('parametro',ParametroController::class)->names('Parametros');
     Route::resource('ingresos', IngresosController::class)->names('ingresos');
     Route::get('/amortizacion/{id_solicitud}', [SolicitudController::class, 'obtenerTablaAmortizacion'])->name('amortizacion');
     Route::get('/dictamen/{id_solicitud}', [SolicitudController::class, 'generarDictamen'])->name('dictamen');
