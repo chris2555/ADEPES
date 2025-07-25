@@ -21,6 +21,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-6">
+                                      <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
+                                        <option value="">Seleccione una persona</option>
+                                        @foreach ($personas as $persona)
+                                        <option value="{{ $persona->id_persona }}" {{ $persona->id_persona == $vivienda['id_persona'] ? 'selected' : '' }}>
+                                            {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
+                                        </option>
+                                        @endforeach
+                                    </x-adminlte-select>
                                     <x-adminlte-select name="tipo_casa" label="Tipo de Casa" fgroup-class="mb-3" required>
                                         <option value="Alquila" {{ $vivienda['tipo_casa'] == 'Alquila' ? 'selected' : '' }}>Alquila</option>
                                         <option value="Propia" {{ $vivienda['tipo_casa'] == 'Propia' ? 'selected' : '' }}>Propia</option>
@@ -46,10 +54,12 @@
                                         <option value="Mensual" {{ $vivienda['tipo_pago_vivienda'] == 'Mensual' ? 'selected' : '' }}>Mensual</option>
                                     </x-adminlte-select>
 
-                                    <x-adminlte-input name="valor_pago" label="Valor de Pago" type="number" fgroup-class="mb-3" value="{{ $vivienda['valor_pago'] }}" />
                                 </div>
 
                                 <div class="col-md-6">
+
+
+                                   <x-adminlte-input name="valor_pago" label="Valor de Pago" type="number" fgroup-class="mb-3" value="{{ $vivienda['valor_pago'] }}" />
                                     <x-adminlte-select name="material_construccion" label="Material de Construcción" fgroup-class="mb-3" required>
 
                                         <option value="Concreto" {{ $vivienda['material_construccion'] == 'Concreto' ? 'selected' : '' }}>Concreto</option>
@@ -64,14 +74,7 @@
 
                                     <x-adminlte-textarea name="direccion_completa" label="Dirección" fgroup-class="mb-3">{{ $vivienda['direccion_completa'] }}</x-adminlte-textarea>
 
-                                    <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
-                                        <option value="">Seleccione una persona</option>
-                                        @foreach ($personas as $persona)
-                                        <option value="{{ $persona->id_persona }}" {{ $persona->id_persona == $vivienda['id_persona'] ? 'selected' : '' }}>
-                                            {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
-                                        </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+                                  
                                 </div>
                             </div>
                             <div class="card-footer">
