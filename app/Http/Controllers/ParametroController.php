@@ -39,7 +39,7 @@ class ParametroController extends Controller
     public function create()
     {
         // Retornar la vista del formulario de creación
-        return view('parametros.create');
+        return view('Parametros.create');
     }
 
     /**
@@ -91,7 +91,7 @@ class ParametroController extends Controller
     public function show(Parametro $parametro) // Laravel automáticamente inyecta el modelo por el 'id'
     {
         // Retornar la vista 'parametros.show' y pasar el parámetro
-        return view('parametros.show', compact('parametro'));
+        return view('Parametros.show', compact('parametro'));
     }
 
     /**
@@ -101,7 +101,7 @@ class ParametroController extends Controller
     public function edit(Parametro $parametro) // Laravel automáticamente inyecta el modelo por el 'id'
     {
         // Retornar la vista 'parametros.edit' y pasar el parámetro
-        return view('parametros.edit', compact('parametro'));
+        return view('Parametros.edit', compact('parametro'));
     }
 
     /**
