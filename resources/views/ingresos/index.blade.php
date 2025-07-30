@@ -41,8 +41,8 @@
                                 <th style="text-align: center">Total Ingresos</th>
                                 <th style="text-align: center">total_egresos</th>
                                 <th style="text-align: center">ingreso_neto</th>
-                                <th style="text-align: center">Acciones</th>
                                 <th style="text-align: center">Dictamen</th>
+                                <th style="text-align: center">Acciones</th>
                                 </tr>
                     </thead>
                     <tbody>
@@ -53,13 +53,20 @@
                                     <td>{{ $ingreso['total_ingresos'] }}</td>
                                     <td>{{ $ingreso['total_egresos'] }}</td>
                                     <td>{{ $ingreso['ingreso_neto'] }}</td>
-                                    <td style="text-align: center">
-                                        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+            <td style="text-align: center">
+    @if ($ingreso['ingreso_neto'] >= 0)
+        <span class="badge bg-success p-2">Favorable</span>
+    @else
+        <span class="badge bg-danger p-2">Desfavorable</span>
+    @endif
+    </td>
+    <td style="text-align: center">
+                                        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
                                             onclick="viewModal({{ json_encode($ingreso) }})">
                                             <i class="bi bi-eye"></i>
                                         </a>
                                         <a href="{{ route('ingresos.show', $ingreso['id_ingresos'])}}" 
-                                        class="btn btn-primary btn-sm">
+                                        class="btn btn-success btn-sm">
                                             <i class="bi bi-pencil"></i>
                                         </a>
                                         <form action="{{ route('ingresos.destroy', $ingreso['id_ingresos']) }}" 
@@ -71,13 +78,6 @@
                                     </button>
                                             </form>
             </td>
-            <td style="text-align: center">
-    @if ($ingreso['ingreso_neto'] >= 0)
-        <span class="badge bg-success p-2">Favorable</span>
-    @else
-        <span class="badge bg-danger p-2">Desfavorable</span>
-    @endif
-    </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -267,28 +267,28 @@ function sortTable(columnIndex) {
         <div class="col-md-4">
             <p><strong>ID Ingreso:</strong> ${ingreso.id_ingresos}</p>
             <p><strong>Nombre del Solicitante:</strong> ${ingreso.nombres_persona  || 'No disponible'}</p>
-            <p><strong>Creado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
-            <p><strong>Creado en:</strong> ${ingreso.creado_en ? new Date(ingreso.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${ingreso.modificado_por_nombre || 'No disponible'}</p>
-            <p><strong>Modificado en:</strong> ${ingreso.modificado_en ? new Date(ingreso.modificado_en).toLocaleString() : 'No disponible'}</p>
-        </div>
-        <div class="col-md-4">
             <p><strong>Sueldo Base:</strong> ${ingreso.sueldo_base}</p>
             <p><strong>Rentapropiedad:</strong> ${ingreso.renta_propiedades}</p>
             <p><strong>Remesas:</strong> ${ingreso.remesas}</p>
             <p><strong>Aporte Conyugue:</strong> ${ingreso.aporte_conyuge}</p>
             <p><strong>Ingresos Sociedad:</strong> ${ingreso.ingresos_sociedad}</p>
+            </div>
+        <div class="col-md-4">
             <p><strong>Total Ingresos:</strong> ${ingreso.total_ingresos}</p>
-        </div>
-        
-         <div class="col-md-4">
-            <p><strong>Cuota de Préstamo:</strong> ${ingreso.cuota_de_prestamo}</p>
+             <p><strong>Cuota de Préstamo:</strong> ${ingreso.cuota_de_prestamo}</p>
             <p><strong>Cuota Vivienda:</strong> ${ingreso.cuota_vivienda}</p>
             <p><strong>Alimentación:</strong> ${ingreso.alimentacion}</p>
             <p><strong>Central de Riesgo:</strong> ${ingreso.central_riesgo}</p>
             <p><strong>Otros Egresos:</strong> ${ingreso.otro_egresos}</p>
             <p><strong>Total Egresos:</strong> ${ingreso.total_egresos}</p>
+        </div>
+        
+         <div class="col-md-4">
             <p><strong>Ingreso Neto:</strong> ${ingreso.ingreso_neto}</p>
+             <p><strong>Creado por:</strong> ${ingreso.creado_por_nombre || 'No disponible'}</p>
+            <p><strong>Creado en:</strong> ${ingreso.creado_en ? new Date(ingreso.creado_en).toLocaleString() : 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${ingreso.modificado_nombre || 'No disponible'}</p>
+            <p><strong>Modificado en:</strong> ${ingreso.modificado_en ? new Date(ingreso.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>
 
         
