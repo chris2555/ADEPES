@@ -142,9 +142,11 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar 1" required fgroup-class="mb-3" />
                             <x-adminlte-input name="parentesco" id="parentesco" label="Parentesco" required fgroup-class="mb-3" />
                             <x-adminlte-input name="telref1" id="telref1" label="Teléfono Familiar 1" type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                            inputmode="numeric" maxlength="9" fgroup-class="mb-3"
+                            placeholder="0000-0000" required
+                            pattern="[2389][0-9]{3}-[0-9]{4}"
+                            title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
+
                             <x-adminlte-textarea name="direccion_familiar" id="direccion_familiar" label="Dirección" required fgroup-class="mb-3" rows="3" />
                         </div>
 
@@ -152,9 +154,10 @@ function sortTable(columnIndex) {
                             <x-adminlte-input name="nombre_familiardos" id="nombre_familiardos" label="Nombre del Familiar 2" required fgroup-class="mb-3" />
                             <x-adminlte-input name="parentesco_dos" id="parentesco_dos" label="Parentesco" required fgroup-class="mb-3" />
                             <x-adminlte-input name="telref2" id="telref2" label="Teléfono Familiar 2" type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+    inputmode="numeric" maxlength="9" fgroup-class="mb-3"
+    placeholder="0000-0000" required
+    pattern="[2389][0-9]{3}-[0-9]{4}"
+    title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
                             <x-adminlte-textarea name="direccion_familiardos" id="direccion_familiardos" label="Dirección" required fgroup-class="mb-3" rows="3" />
                         </div>
                     </div>
@@ -165,20 +168,23 @@ function sortTable(columnIndex) {
                         <div class="col-md-6">
                             <x-adminlte-input name="nombreper1" id="nombreper1" label="Nombre Persona 1" required fgroup-class="mb-3" />
                             <x-adminlte-input name="relacionper1" id="relacionper1" label="Relación con Persona " required fgroup-class="mb-3" />
-                            <x-adminlte-input name="telrefper1" id="telrefper1" label="Teléfono Persona " type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                            <x-adminlte-input name="telrefper1" id="telrefper1" label="Teléfono Persona" type="text"
+                            inputmode="numeric" maxlength="9" fgroup-class="mb-3"
+                            placeholder="9876-5432" required
+                            pattern="[2389][0-9]{3}-[0-9]{4}"
+                            title="Debe tener el formato 0000-0000 y comenzar con 2, 3, 8 o 9." />
                             <x-adminlte-textarea name="direccionper1" id="direccionper1" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
                         </div>
 
                         <div class="col-md-6">
                             <x-adminlte-input name="nombreper2" id="nombreper2" label="Nombre Persona 2" required fgroup-class="mb-3" />
                             <x-adminlte-input name="relacionper2" id="relacionper2" label="Relación con Persona " required fgroup-class="mb-3" />
-                            <x-adminlte-input name="telrefper2" id="telrefper2" label="Teléfono Persona " type="text"
-                                fgroup-class="mb-3" placeholder="Ingrese el número" required
-                                pattern="[2389][0-9]{7}" maxlength="8"
-                                title="El número debe tener 8 dígitos y comenzar con 2, 3, 8 o 9." />
+                            <x-adminlte-input name="telrefper2" id="telrefper2" label="Teléfono Persona" type="text"
+                            inputmode="numeric" maxlength="9" fgroup-class="mb-3"
+                            placeholder="0000-0000" required
+                            pattern="[2389][0-9]{3}-[0-9]{4}"
+                            title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
+
                             <x-adminlte-textarea name="direccionper2" id="direccionper2" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
                         </div>
                     </div>
@@ -243,6 +249,71 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+    const telefonoRegex = /^[2389]\d{3}-?\d{4}$/; // permite guion o sin guion
+
+    const camposTexto = [
+        "nombreper1", "nombreper2", "relacionper1", "relacionper2",
+        "nombre_familiar", "parentesco", "nombre_familiardos", "parentesco_dos"
+    ];
+
+    const camposTelefono = [
+        "telref1", "telref2", "telrefper1", "telrefper2"
+    ];
+
+    // Solo letras en campos de nombre y relación
+    camposTexto.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener("input", function () {
+                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+            });
+        }
+    });
+
+    // Validación de teléfonos en tiempo real
+    camposTelefono.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            input.addEventListener("input", function () {
+                let valor = this.value.replace(/[^0-9]/g, ''); // solo números
+                if (valor.length > 8) valor = valor.substring(0, 8);
+
+                if (valor.length >= 4) {
+                    this.value = valor.substring(0, 4) + '-' + valor.substring(4);
+                } else {
+                    this.value = valor;
+                }
+            });
+        }
+    });
+
+    // Validación final al enviar el formulario
+    const form = document.getElementById("insertForm");
+    form.addEventListener("submit", function (event) {
+        for (let id of camposTexto) {
+            const input = document.getElementById(id);
+            if (!soloLetrasRegex.test(input.value.trim())) {
+                event.preventDefault();
+                Swal.fire("Error", `El campo "${input.labels[0].innerText}" solo puede contener letras.`, "error");
+                return;
+            }
+        }
+
+        for (let id of camposTelefono) {
+            const input = document.getElementById(id);
+            if (!telefonoRegex.test(input.value.trim())) {
+                event.preventDefault();
+                Swal.fire("Error", `El campo "${input.labels[0].innerText}" debe tener el formato correcto (ej. 9876-5432).`, "error");
+                return;
+            }
+        }
+    });
+});
+</script>
+
 
 
 @stop
@@ -288,48 +359,64 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
    
-    function viewModal(referencia) {
-        var modalBody = document.getElementById('viewModalBody');
-        modalBody.innerHTML = `
-<div class="row">
-  <div class="col-md-6">
-    <p><strong>Nombre Familiar 1:</strong> ${referencia.nombre_familiar}</p>
-    <p><strong>Parentesco:</strong> ${referencia.parentesco || 'No especificado'}</p>
-    <p><strong>Teléfono:</strong> ${referencia.telref1 || 'No especificado'}</p>
-    <p><strong>Dirección:</strong> ${referencia.direccion_familiar || 'No disponible'}</p>
-  </div>
-  <div class="col-md-6">
-    <p><strong>Nombre Familiar 2:</strong> ${referencia.nombre_familiardos}</p>
-    <p><strong>Parentesco:</strong> ${referencia.parentesco_dos || 'No especificado'}</p>
-    <p><strong>Teléfono:</strong> ${referencia.telref2 || 'No especificado'}</p>
-    <p><strong>Dirección:</strong> ${referencia.direccion_familiardos || 'No disponible'}</p>
-  </div>
-</div>
+function viewModal(referencia) {
+    const modalBody = document.getElementById('viewModalBody');
+    modalBody.innerHTML = `
+<div class="container-fluid">
 
-<!-- Referencias Personales -->
-<div class="row">
-  <div class="col-md-6">
-    <p><strong>Referencia Personal 1:</strong></p>
-    <p><strong>Nombre:</strong> ${referencia.nombreper1 || 'No especificado'}</p>
-    <p><strong>Relación:</strong> ${referencia.relacionper1 || 'No especificado'}</p>
-    <p><strong>Teléfono:</strong> ${referencia.telrefper1 || 'No especificado'}</p>
-    <p><strong>Dirección:</strong> ${referencia.direccionper1 || 'No disponible'}</p>
-    <p><strong>Creado por:</strong> ${referencia.creado_por}</p>
-    <p><strong>Modificador por:</strong> ${referencia.modificado_por}</p>
+  <!-- Referencias Familiares -->
+  <h6 class="mb-2 text-success">Referencias Familiares</h6>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <p><strong>Nombre Familiar 1:</strong> ${referencia.nombre_familiar || 'No especificado'}</p>
+      <p><strong>Parentesco:</strong> ${referencia.parentesco || 'No especificado'}</p>
+      <p><strong>Teléfono:</strong> ${referencia.telref1 || 'No especificado'}</p>
+      <p><strong>Dirección:</strong> ${referencia.direccion_familiar || 'No disponible'}</p>
+    </div>
+    <div class="col-md-6">
+      <p><strong>Nombre Familiar 2:</strong> ${referencia.nombre_familiardos || 'No especificado'}</p>
+      <p><strong>Parentesco:</strong> ${referencia.parentesco_dos || 'No especificado'}</p>
+      <p><strong>Teléfono:</strong> ${referencia.telref2 || 'No especificado'}</p>
+      <p><strong>Dirección:</strong> ${referencia.direccion_familiardos || 'No disponible'}</p>
+    </div>
   </div>
-  <div class="col-md-6">
-    <p><strong>Referencia Personal 2:</strong></p>
-    <p><strong>Nombre:</strong> ${referencia.nombreper2 || 'No especificado'}</p>
-    <p><strong>Relación:</strong> ${referencia.relacionper2 || 'No especificado'}</p>
-    <p><strong>Teléfono:</strong> ${referencia.telrefper2 || 'No especificado'}</p>
-    <p><strong>Dirección:</strong> ${referencia.direccionper2 || 'No disponible'}</p>
-    <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
+
+  <hr>
+
+  <!-- Referencias Personales -->
+  <h6 class="mb-2 text-success">Referencias Personales</h6>
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <p><strong>Nombre Persona 1:</strong> ${referencia.nombreper1 || 'No especificado'}</p>
+      <p><strong>Relación:</strong> ${referencia.relacionper1 || 'No especificado'}</p>
+      <p><strong>Teléfono:</strong> ${referencia.telrefper1 || 'No especificado'}</p>
+      <p><strong>Dirección:</strong> ${referencia.direccionper1 || 'No disponible'}</p>
+    </div>
+    <div class="col-md-6">
+      <p><strong>Nombre Persona 2:</strong> ${referencia.nombreper2 || 'No especificado'}</p>
+      <p><strong>Relación:</strong> ${referencia.relacionper2 || 'No especificado'}</p>
+      <p><strong>Teléfono:</strong> ${referencia.telrefper2 || 'No especificado'}</p>
+      <p><strong>Dirección:</strong> ${referencia.direccionper2 || 'No disponible'}</p>
+ </div>
   </div>
+
+  <hr>
+
+  <!-- Referencias Personales -->
+  <h6 class="mb-2 text-success"></h6>
+
+      <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
+    <p><strong>Creado por:</strong> ${referencia.creado_por || 'No disponible'}</p>
+      <p><strong>Modificado por:</strong> ${referencia.modificado_por || 'No disponible'}</p>
+    </div>
+  </div>
+
 </div>
-        `;
-        var viewModalElement = new bootstrap.Modal(document.getElementById('view'));
-        viewModalElement.show();
-    }
+    `;
+    const viewModalElement = new bootstrap.Modal(document.getElementById('view'));
+    viewModalElement.show();
+}
+
 
     document.addEventListener("DOMContentLoaded", function () {
     // Selecciona todos los botones de eliminación
