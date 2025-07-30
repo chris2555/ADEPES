@@ -397,7 +397,7 @@ function sortTable(columnIndex) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Acción no permitida',
-                        text: 'Solo el administrador puede editar esta solicitud.',
+                        text: 'No puede editar esta solicitud aprobada.',
                         confirmButtonText: 'Entendido',
                         confirmButtonColor: '#28a745'
                     });
@@ -411,9 +411,6 @@ function sortTable(columnIndex) {
 </script>
 </body>
 
-
-
-'#28a745'
 
 
 @stop
