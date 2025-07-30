@@ -1,22 +1,17 @@
 <head>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Karla:wght@200;300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <link rel="javascript" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js">
-    <link rel="javascript" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
 </head>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-6 col-md-7 intro-section">
-            <div class="brand-wrapper">
-            </div>
+            <div class="brand-wrapper"></div>
 
             <div class="intro-content-wrapper">
-
                 <center>
                     <h1 class="intro-title">Fondo Rotatorio!</h1>
                 </center>
@@ -41,7 +36,7 @@
                 <center><img id="logo" class="logo"
                         src="https://fundacioncovelo.hn/wp-content/uploads/2020/06/ADEPES.png" alt="Logotipo de ADEPES">
                 </center>
-                <br> <br />.
+                <br> <br />
                 <h2 class="login-title">Inicio de Sesion</h2>
                 <form method="POST" action="{{ route('login') }}" class="needs-validation" novalidate="">
                     @csrf
@@ -51,10 +46,20 @@
                             required autofocus autocomplete="username" placeholder="Correo">
                         <strong class="text-danger">{{ $errors->first('email') }}</strong>
                     </div>
+
                     <div class="form-group mb-3">
                         <label for="password" class="sr-only">Contraseña</label>
-                        <input id="password" type="password" class="form-control" name="password" required
-                            autocomplete="current-password" placeholder="Contraseña">
+                        <div class="input-group">
+                            <input id="password" type="password" class="form-control" name="password" required
+                                autocomplete="current-password" placeholder="Contraseña">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-outline-secondary" type="button" id="togglePassword"
+                                    style="padding: 4px 8px; height: 36px; border: none; border-radius: 0;">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+
+                            </div>
+                        </div>
                         <strong class="text-danger">{{ $errors->first('password') }}</strong>
                     </div>
 
@@ -65,28 +70,29 @@
                         @if (Route::has('password.request'))
                             <a href="{{ route('password.request') }}" class="forgot-password-link">Olvidaste tu
                                 contraseña?</a>
-                            </a>
                         @endif
-
-                    </div>
-
-                    <div class="d-flex justify-content-between align-items-center mb-5">
-
-
-
                     </div>
                 </form>
-                
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const passwordInput = document.getElementById('password');
+        const icon = this.querySelector('i');
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        icon.classList.toggle('fa-eye');
+        icon.classList.toggle('fa-eye-slash');
+    });
+</script>
+
 <style>
     .logo {
         width: 150px;
-        /* Ajusta este valor según el tamaño deseado */
         height: auto;
-        /* Mantiene la proporción original de la imagen */
     }
 
     body {
@@ -99,7 +105,6 @@
         color: #fff !important;
     }
 
-
     .intro-section {
         background-image: url(https://i.pinimg.com/1200x/9c/6e/f3/9c6ef3f210e5a0535c853a5e08e092e2.jpg);
         background-size: cover;
@@ -107,10 +112,7 @@
         background-position: center;
         padding: 75px 95px;
         min-height: 100vh;
-        display: -webkit-box;
         display: flex;
-        -webkit-box-orient: vertical;
-        -webkit-box-direction: normal;
         flex-direction: column;
         color: #ffffff;
     }
@@ -200,11 +202,8 @@
     }
 
     .form-section {
-        display: -webkit-box;
         display: flex;
-        -webkit-box-align: center;
         align-items: center;
-        -webkit-box-pack: center;
         justify-content: center;
     }
 
@@ -233,22 +232,6 @@
         font-weight: bold;
         padding: 15px 10px;
         margin-bottom: 7px;
-    }
-
-    .login-wrapper .form-control::-webkit-input-placeholder {
-        color: #b0adad;
-    }
-
-    .login-wrapper .form-control::-moz-placeholder {
-        color: #b0adad;
-    }
-
-    .login-wrapper .form-control:-ms-input-placeholder {
-        color: #b0adad;
-    }
-
-    .login-wrapper .form-control::-ms-input-placeholder {
-        color: #b0adad;
     }
 
     .login-wrapper .form-control::placeholder {
@@ -285,7 +268,6 @@
     .social-login-title {
         font-size: 15px;
         color: #919aa3;
-        display: -webkit-box;
         display: flex;
         margin-bottom: 23px;
     }
@@ -293,9 +275,7 @@
     .social-login-title::before,
     .social-login-title::after {
         content: "";
-        background-image: -webkit-gradient(linear, left top, left bottom, from(#f4f4f4), to(#f4f4f4));
-        background-image: linear-gradient(#f4f4f4, #f4f4f4);
-        -webkit-box-flex: 1;
+        background: linear-gradient(#f4f4f4, #f4f4f4);
         flex-grow: 1;
         background-size: calc(100% - 20px) 1px;
         background-repeat: no-repeat;
@@ -317,7 +297,6 @@
     .social-login-link img {
         width: 40px;
         height: 40px;
-        -o-object-fit: contain;
         object-fit: contain;
     }
 
