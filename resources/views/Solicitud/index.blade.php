@@ -377,9 +377,13 @@ function sortTable(columnIndex) {
 
 
 
+<!-- Inyecta el rol del usuario como atributo en el body -->
+<body data-rol="{{ Auth::user()->rol }}"> <!-- Laravel Blade ejemplo -->
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const editButtons = document.querySelectorAll('.show-confirmation');
+        const userRole = document.body.dataset.rol; // 'Administrador' o 'Tecnico'
 
         editButtons.forEach(button => {
             button.addEventListener('click', function (e) {
@@ -388,25 +392,28 @@ function sortTable(columnIndex) {
                 const solicitudId = this.dataset.id;
                 const estado = this.dataset.estado;
 
-                if (estado === 'Aprobado') {
+                // Si el usuario es Técnico, bloquea la edición con una alerta
+                if (userRole === 'Tecnico') {
                     Swal.fire({
-                        icon: 'warning',
+                        icon: 'error',
                         title: 'Acción no permitida',
-                        text: 'No se puede modificar una solicitud que ya fue aprobada.',
+                        text: 'Solo el administrador puede editar esta solicitud.',
                         confirmButtonText: 'Entendido',
-                        confirmButtonColor: '#28a745' // color del boton
+                        confirmButtonColor: '#28a745'
                     });
                 } else {
-                    // Redirigir directamente sin alerta
+                    // Si es Administrador, continúa normalmente
                     window.location.href = `/solicitudes/${solicitudId}`;
                 }
             });
         });
     });
 </script>
+</body>
 
 
 
+'#28a745'
 
 
 @stop
