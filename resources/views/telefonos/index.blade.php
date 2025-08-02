@@ -289,11 +289,10 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 
         <div class="col-md-6">
-            <p><strong>ID telefono:</strong> ${telefono.creado_en}</p>
-            <p><strong>Nombre persona:</strong> ${telefono.modificado_en}</p>
-            <p><strong>Creado por:</strong> ${telefono.creado_nombre}</p>
+        <p><strong>Creado por:</strong> ${telefono.creado_nombre}</p>
+            <p><strong>Creado en:</strong> ${telefono.creado_en}</p>
             <p><strong>Modificado por:</strong> ${telefono.modificado_nombre}</p>
-            
+              <p><strong>Modificado en:</strong> ${telefono.modificado_en? new Date(telefono.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>
     `;
 
