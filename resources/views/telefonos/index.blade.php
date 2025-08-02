@@ -281,10 +281,19 @@ document.addEventListener("DOMContentLoaded", function () {
                         modalBody.innerHTML = `
         <div class="col-md-6">
             <p><strong>ID telefono:</strong> ${telefono.id_telefono}</p>
+            <p><strong>Nombre persona:</strong> ${telefono.nombre_persona}</p>
             <p><strong>Telefono:</strong> ${telefono.numero}</p>
             <p><strong>Tipo telefono:</strong> ${telefono.tipo_telefono}</p>
             <p><strong>Tipo entidad:</strong> ${telefono.tipo_entidad}</p>
-            <p><strong>Nombre persona:</strong> ${telefono.nombre_persona}</p>
+            
+        </div>
+
+        <div class="col-md-6">
+            <p><strong>ID telefono:</strong> ${telefono.creado_en}</p>
+            <p><strong>Nombre persona:</strong> ${telefono.modificado_en}</p>
+            <p><strong>Creado por:</strong> ${telefono.creado_nombre}</p>
+            <p><strong>Modificado por:</strong> ${telefono.modificado_nombre}</p>
+            
         </div>
     `;
 
