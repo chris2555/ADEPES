@@ -286,7 +286,7 @@ function sortTable(columnIndex) {
         <div class="col-md-6">
             <p><strong>Dirección Completa:</strong> ${vivienda.direccion_completa || 'No disponible'}</p>
             <p><strong>Material de Construcción:</strong> ${vivienda.material_construccion}</p>
-            <p><strong>Creado por:</strong> ${vivienda.creado_nombre} value="{{ auth()->user()->id }} </p>
+            <p><strong>Creado por:</strong> ${vivienda.creado_nombre || 'No disponible'}</p>
             <p><strong>Creado en:</strong> ${vivienda.creado_en ? new Date(vivienda.creado_en).toLocaleString() : 'No disponible'}</p>
             <p><strong>Modificado por:</strong> ${vivienda.modificado_nombre || 'No disponible'}</p>
             <p><strong>Modificado en:</strong> ${vivienda.modificado_en ? new Date(vivienda.modificado_en).toLocaleString() : 'No disponible'}</p>

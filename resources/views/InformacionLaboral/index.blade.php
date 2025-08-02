@@ -260,19 +260,21 @@ document.addEventListener("DOMContentLoaded", function () {
     modalBody.innerHTML = `
         <div class="col-md-6">
             <p><strong>ID Información Laboral:</strong> ${informacionlaboral.id_informacion_laboral}</p>
-            <p><strong>ID Persona:</strong> ${informacionlaboral.id_persona}</p>
             <p><strong>Nombre Cliente:</strong> ${informacionlaboral.nombres_persona}</p>
             <p><strong>Profesión u Oficio:</strong> ${informacionlaboral.profesion_oficio}</p>
             <p><strong>Actividad:</strong> ${informacionlaboral.actividad}</p>
             <p><strong>Ingresos del Negocio:</strong> ${informacionlaboral.ingresos_negocio}</p>
-        </div>
-        <div class="col-md-6">
             <p><strong>Dirección de Trabajo:</strong> ${informacionlaboral.direccion_trabajo}</p>
             <p><strong>Patrono o Negocio:</strong> ${informacionlaboral.patrono_negocio}</p>
+        </div>
+        <div class="col-md-6">
+            
             <p><strong>Tiempo de Laborar:</strong> ${informacionlaboral.tiempo_laborar}</p>
             <p><strong>Gastos de Alimentación:</strong> ${informacionlaboral.gastos_alimentacion}</p>
         <p><strong>Creado por:</strong> ${informacionlaboral.creado_nombre}</p>
+        <p><strong>Creado en:</strong> ${informacionlaboral.creado_en ? new Date(informacionlaboral.creado_en).toLocaleString() : 'No disponible'}</p>
         <p><strong>Modificado por:</strong> ${informacionlaboral.modificado_nombre}</p>
+        <p><strong>Modificado en:</strong> ${informacionlaboral.modificado_en ? new Date(informacionlaboral.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>
     `;
 

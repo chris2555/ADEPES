@@ -344,10 +344,12 @@ function viewModal(referencia) {
   <!-- Referencias Personales -->
   <h6 class="mb-2 text-success"></h6>
 
-      <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
+      
     <p><strong>Creado por:</strong> ${referencia.creado_nombre || 'No disponible'}</p>
-    <p><strong>Modificado en:</strong> ${referencia.modificado_en ? new Date(referencia.modificado_en).toLocaleString() : 'No disponible'}</p>
-      <p><strong>Modificado por:</strong> ${referencia.modificado_nombre || 'No disponible'}</p>
+    <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
+    <p><strong>Modificado por:</strong> ${referencia.modificado_nombre || 'No disponible'}</p>
+       <p><strong>Modificado en:</strong> ${referencia.modificado_en ? new Date(referencia.modificado_en).toLocaleString() : 'No disponible'}</p>
+
 
     </div>
   </div>

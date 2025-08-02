@@ -46,22 +46,18 @@
                             required autofocus autocomplete="username" placeholder="Correo">
                         <strong class="text-danger">{{ $errors->first('email') }}</strong>
                     </div>
+<div class="form-group mb-3 position-relative">
+    <label for="password" class="sr-only">Contraseña</label> <!-- Texto invisible pero mantiene el espacio -->
+    <input id="password" type="password" class="form-control pr-5" name="password"
+           required autocomplete="current-password" placeholder="Contraseña">
+    <i id="togglePassword"
+       class="fas fa-eye"
+       style="position: absolute; top: 12px; right: 10px; cursor: pointer; color: #666;"></i>
+    <strong class="text-danger">{{ $errors->first('password') }}</strong>
+</div>
 
-                    <div class="form-group mb-3">
-                        <label for="password" class="sr-only">Contraseña</label>
-                        <div class="input-group">
-                            <input id="password" type="password" class="form-control" name="password" required
-                                autocomplete="current-password" placeholder="Contraseña">
-                            <div class="input-group-append">
-                                <button class="btn btn-sm btn-outline-secondary" type="button" id="togglePassword"
-                                    style="padding: 4px 8px; height: 36px; border: none; border-radius: 0;">
-                                    <i class="fas fa-eye"></i>
-                                </button>
 
-                            </div>
-                        </div>
-                        <strong class="text-danger">{{ $errors->first('password') }}</strong>
-                    </div>
+
 
                     <div class="d-flex justify-content-between align-items-center mb-5">
                         <button type="submit" class="btn btn-success ms-auto">
@@ -79,17 +75,23 @@
 </div>
 
 <script>
-    document.getElementById('togglePassword').addEventListener('click', function() {
-        const passwordInput = document.getElementById('password');
-        const icon = this.querySelector('i');
-        const isPassword = passwordInput.type === 'password';
-        passwordInput.type = isPassword ? 'text' : 'password';
-        icon.classList.toggle('fa-eye');
-        icon.classList.toggle('fa-eye-slash');
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        const input = document.getElementById('password');
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
     });
 </script>
 
+
+
 <style>
+    label[for="password"] i {
+    color: #666;
+    font-size: 1rem;
+}
+
     .logo {
         width: 150px;
         height: auto;
