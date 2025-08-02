@@ -18,70 +18,48 @@
                         <form id="editForm" action="{{ route('telefonos.update', $telefono['id_telefono']) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            <div class="card-body">
-                                <div class="row">
-                                    <!-- Columna Izquierda -->
-                                    <div class="col-md-6">
-                                        <!-- Número de Teléfono -->
-                                        <x-adminlte-input name="numero" label="Número de Teléfono" fgroup-class="mb-3"
-    value="{{ $telefono['numero'] }}" required maxlength="9" id="numero"
-    pattern="^[2389]\d{3}-\d{4}$"
-    title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9." />
+                           <div class="card-body">
+    <div class="row">
+        <!-- Columna Izquierda -->
+        <div class="col-md-6">
+            <!-- Mostrar nombre de persona seleccionada, deshabilitado -->
+            @php
+                $personaSeleccionada = $personas->firstWhere('id_persona', $telefono['id_entidad']);
+                $nombreCompleto = $personaSeleccionada 
+                    ? $personaSeleccionada->nombres_apellidos . ' - ' . $personaSeleccionada->n_identidad 
+                    : 'Desconocido';
+            @endphp
 
-                                       
+            <x-adminlte-input name="persona_mostrada" label="Persona" value="{{ $nombreCompleto }}" readonly fgroup-class="mb-3" />
+            <input type="hidden" name="id_entidad" value="{{ $telefono['id_entidad'] }}">
 
+            <!-- Número de Teléfono -->
+            <x-adminlte-input name="numero" label="Número de Teléfono" fgroup-class="mb-3"
+                value="{{ $telefono['numero'] }}" required maxlength="9" id="numero"
+                pattern="^[2389]\d{3}-\d{4}$"
+                title="El número debe tener el formato ####-#### y comenzar con 2, 3, 8 o 9." />
+        </div>
 
-                                        <!-- Tipo de Teléfono -->
-                                        <x-adminlte-select name="tipo" label="Tipo de Teléfono" fgroup-class="mb-3"
-                                            required>
-                                            <option value="Residencial"
-                                                {{ $telefono['tipo_telefono'] == 'Residencial' ? 'selected' : '' }}>
-                                                Residencial</option>
-                                            <option value="Celular"
-                                                {{ $telefono['tipo_telefono'] == 'Celular' ? 'selected' : '' }}>Celular
-                                            </option>
-                                            <option value="Trabajo"
-                                                {{ $telefono['tipo_telefono'] == 'Trabajo' ? 'selected' : '' }}>Trabajo
-                                            </option>
-                                        </x-adminlte-select>
-                                    </div>
+        <!-- Columna Derecha -->
+        <div class="col-md-6">
+            <!-- Tipo de Teléfono -->
+            <x-adminlte-select name="tipo" label="Tipo de Teléfono" fgroup-class="mb-3" required>
+                <option value="Residencial" {{ $telefono['tipo_telefono'] == 'Residencial' ? 'selected' : '' }}>Residencial</option>
+                <option value="Celular" {{ $telefono['tipo_telefono'] == 'Celular' ? 'selected' : '' }}>Celular</option>
+                <option value="Trabajo" {{ $telefono['tipo_telefono'] == 'Trabajo' ? 'selected' : '' }}>Trabajo</option>
+            </x-adminlte-select>
 
-                                    <!-- Columna Derecha -->
-                                    <div class="col-md-6">
-                                        <!-- Tipo de Entidad -->
-                                        <x-adminlte-select name="tipo_entidad" label="Tipo de Entidad" fgroup-class="mb-3"
-                                            required>
-                                            <option value="Solicitante"
-                                                {{ $telefono['tipo_entidad'] == 'Solicitante' ? 'selected' : '' }}>
-                                                Solicitante</option>
-                                            <option value="Aval"
-                                                {{ $telefono['tipo_entidad'] == 'Aval' ? 'selected' : '' }}>Aval</option>
-                                            <option value="Conyuge"
-                                                {{ $telefono['tipo_entidad'] == 'Conyuge' ? 'selected' : '' }}>Conyuge
-                                            </option>
-                                            <option value="ReferenciaFamiliar"
-                                                {{ $telefono['tipo_entidad'] == 'ReferenciaFamiliar' ? 'selected' : '' }}>
-                                                Referencia Familiar</option>
-                                        </x-adminlte-select>
-
-
-
-                                        <!-- Selección de Persona -->
-                                        <div class="col-md-6">
-                                            <x-adminlte-select name="id_entidad" label="Seleccionar Persona"
-                                                fgroup-class="mb-3" required>
-                                                <option value="">Seleccione una persona</option>
-                                                @foreach ($personas as $persona)
-                                                    <option value="{{ $persona->id_persona }}"
-                                                        {{ $persona->id_persona == $telefono['id_entidad'] ? 'selected' : '' }}>
-                                                        {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
-                                                    </option>
-                                                @endforeach
-                                            </x-adminlte-select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
+            <!-- Tipo de Entidad -->
+            <x-adminlte-select name="tipo_entidad" label="Tipo de Entidad" fgroup-class="mb-3" required>
+                <option value="Solicitante" {{ $telefono['tipo_entidad'] == 'Solicitante' ? 'selected' : '' }}>Solicitante</option>
+                <option value="Aval" {{ $telefono['tipo_entidad'] == 'Aval' ? 'selected' : '' }}>Aval</option>
+                <option value="Conyuge" {{ $telefono['tipo_entidad'] == 'Conyuge' ? 'selected' : '' }}>Conyuge</option>
+                <option value="ReferenciaFamiliar" {{ $telefono['tipo_entidad'] == 'ReferenciaFamiliar' ? 'selected' : '' }}>Referencia Familiar</option>
+            </x-adminlte-select>
+        </div>
+    </div>
+</div>
+<div class="card-footer">
                                     <a href="{{ route('telefonos.index') }}" class="btn btn-secondary">Cancelar</a>
                                     <x-adminlte-button class="btn-flat" type="submit" id="btnActualizar"
                                         label="Actualizar Teléfono" theme="success" icon="fas fa-lg fa-save" />

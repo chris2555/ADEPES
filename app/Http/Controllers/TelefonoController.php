@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\Persona;
+use Illuminate\Support\Facades\Auth;
 
 class TelefonoController extends Controller
 {
@@ -34,11 +35,16 @@ class TelefonoController extends Controller
      */
     public function store(Request $request)
 {
+    $usuario_id = Auth::id();
+    $usuario_nombre = Auth::user()->name;
+
     $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos', [
         'id_entidad' => $request->id_entidad,
         'tipo_entidad' => $request->tipo_entidad,
         'tipo' => $request->tipo,
         'numero' => $request->numero,
+        'creado_por' => Auth::id(),
+        'creado_nombre' => Auth::user()->name,
     ]);
 
     if ($response->successful()) {
@@ -47,7 +53,6 @@ class TelefonoController extends Controller
         return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al crear el teléfono');
     }
 }
-
 
     /**
      * Display the specified resource.
@@ -72,20 +77,26 @@ class TelefonoController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/{$id}", [
-            'id_entidad' => $request->id_entidad,
-            'tipo_entidad' => $request->tipo_entidad,
-            'tipo' => $request->tipo,
-            'numero' => $request->numero,
-        ]);
-        
-        if ($response->successful()) {
-            return redirect()->route('telefonos.index')->with('success', 'Telefono actualizado correctamente');
-        } else {
-            return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al actualizar el telefono');
-        }
+{
+    $usuario_id = Auth::id();
+    $usuario_nombre = Auth::user()->name;
+
+    $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/telefonos/{$id}", [
+        'id_entidad' => $request->id_entidad,
+        'tipo_entidad' => $request->tipo_entidad,
+        'tipo' => $request->tipo,
+        'numero' => $request->numero,
+        'modificado_por' => Auth::id(),
+        'modificado_nombre' => Auth::user()->name,
+    ]);
+
+    if ($response->successful()) {
+        return redirect()->route('telefonos.index')->with('success', 'Teléfono actualizado correctamente');
+    } else {
+        return redirect()->route('telefonos.index')->with('error', 'Ocurrió un error al actualizar el teléfono');
     }
+}
+
 
     /**
      * Remove the specified resource from storage.

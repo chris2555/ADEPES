@@ -139,26 +139,51 @@ function sortTable(columnIndex) {
                     <h5 class="mb-3">Referencias Familiares</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar 1" required fgroup-class="mb-3" />
-                            <x-adminlte-input name="parentesco" id="parentesco" label="Parentesco" required fgroup-class="mb-3" />
-                            <x-adminlte-input name="telref1" id="telref1" label="Teléfono Familiar 1" type="text"
-                            inputmode="numeric" maxlength="9" fgroup-class="mb-3"
-                            placeholder="0000-0000" required
-                            pattern="[2389][0-9]{3}-[0-9]{4}"
-                            title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
+                            {{-- Nombre del Familiar 1 --}}
+<x-adminlte-input name="nombre_familiar" id="nombre_familiar" label="Nombre del Familiar 1"
+    required fgroup-class="mb-3" />
+<small id="err-nombre_familiar" class="text-danger d-none">Solo letras y espacios permitidos.</small>
 
-                            <x-adminlte-textarea name="direccion_familiar" id="direccion_familiar" label="Dirección" required fgroup-class="mb-3" rows="3" />
-                        </div>
+{{-- Parentesco --}}
+<x-adminlte-input name="parentesco" id="parentesco" label="Parentesco"
+    required fgroup-class="mb-3" />
+<small id="err-parentesco" class="text-danger d-none">Solo letras y espacios permitidos.</small>
 
-                        <div class="col-md-6">
-                            <x-adminlte-input name="nombre_familiardos" id="nombre_familiardos" label="Nombre del Familiar 2" required fgroup-class="mb-3" />
-                            <x-adminlte-input name="parentesco_dos" id="parentesco_dos" label="Parentesco" required fgroup-class="mb-3" />
-                            <x-adminlte-input name="telref2" id="telref2" label="Teléfono Familiar 2" type="text"
+{{-- Teléfono Familiar 1 --}}
+<x-adminlte-input name="telref1" id="telref1" label="Teléfono Familiar 1" type="text"
     inputmode="numeric" maxlength="9" fgroup-class="mb-3"
     placeholder="0000-0000" required
     pattern="[2389][0-9]{3}-[0-9]{4}"
     title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
-                            <x-adminlte-textarea name="direccion_familiardos" id="direccion_familiardos" label="Dirección" required fgroup-class="mb-3" rows="3" />
+<small id="err-telref1" class="text-danger d-none">Debe tener el formato 0000-0000 y no contener letras.</small>
+
+{{-- Dirección --}}
+<x-adminlte-textarea name="direccion_familiar" id="direccion_familiar" label="Dirección"
+    required fgroup-class="mb-3" rows="3" />
+
+                        </div>
+
+                        <div class="col-md-6">
+                            {{-- Nombre del Familiar 2 (opcional) --}}
+<x-adminlte-input name="nombre_familiardos" id="nombre_familiardos" label="Nombre del Familiar 2" fgroup-class="mb-3" />
+<small id="err-nombre_familiardos" class="text-danger d-none">Solo letras y espacios.</small>
+
+{{-- Parentesco 2 (opcional) --}}
+<x-adminlte-input name="parentesco_dos" id="parentesco_dos" label="Parentesco" fgroup-class="mb-3" />
+<small id="err-parentesco_dos" class="text-danger d-none">Solo letras y espacios.</small>
+
+{{-- Teléfono Familiar 2 (opcional) --}}
+<x-adminlte-input name="telref2" id="telref2" label="Teléfono Familiar 2" type="text"
+    inputmode="numeric" maxlength="9" fgroup-class="mb-3" 
+    placeholder="0000-0000" 
+    pattern="[2389][0-9]{3}-[0-9]{4}"
+    title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
+<small id="err-telref2" class="text-danger d-none">Debe tener el formato 0000-0000 y no contener letras.</small>
+
+{{-- Dirección (no se valida formato) --}}
+<x-adminlte-textarea name="direccion_familiardos" id="direccion_familiardos" label="Dirección"
+    fgroup-class="mb-3" rows="3" />
+
                         </div>
                     </div>
 
@@ -166,26 +191,47 @@ function sortTable(columnIndex) {
                     <h5 class="mt-4 mb-3">Referencias Personales</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <x-adminlte-input name="nombreper1" id="nombreper1" label="Nombre Persona 1" required fgroup-class="mb-3" />
-                            <x-adminlte-input name="relacionper1" id="relacionper1" label="Relación con Persona " required fgroup-class="mb-3" />
-                            <x-adminlte-input name="telrefper1" id="telrefper1" label="Teléfono Persona" type="text"
-                            inputmode="numeric" maxlength="9" fgroup-class="mb-3"
-                            placeholder="9876-5432" required
-                            pattern="[2389][0-9]{3}-[0-9]{4}"
-                            title="Debe tener el formato 0000-0000 y comenzar con 2, 3, 8 o 9." />
-                            <x-adminlte-textarea name="direccionper1" id="direccionper1" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
+                            {{-- Nombre Persona 1 --}}
+<x-adminlte-input name="nombreper1" id="nombreper1" label="Nombre Persona 1" required fgroup-class="mb-3" />
+<small id="err-nombreper1" class="text-danger d-none">Solo letras y espacios.</small>
+
+{{-- Relación con Persona --}}
+<x-adminlte-input name="relacionper1" id="relacionper1" label="Relación con Persona" required fgroup-class="mb-3" />
+<small id="err-relacionper1" class="text-danger d-none">Solo letras y espacios.</small>
+
+{{-- Teléfono Persona --}}
+<x-adminlte-input name="telrefper1" id="telrefper1" label="Teléfono Persona" type="text"
+   inputmode="numeric" maxlength="9" fgroup-class="mb-3"
+    placeholder="0000-0000"
+    pattern="[2389][0-9]{3}-[0-9]{4}"
+    title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
+<small id="err-telrefper1" class="text-danger d-none">Debe tener el formato 0000-0000 y no contener letras.</small>
+
+{{-- Dirección Persona --}}
+<x-adminlte-textarea name="direccionper1" id="direccionper1" label="Dirección Persona" required fgroup-class="mb-3" rows="3" />
+
                         </div>
 
                         <div class="col-md-6">
-                            <x-adminlte-input name="nombreper2" id="nombreper2" label="Nombre Persona 2" required fgroup-class="mb-3" />
-                            <x-adminlte-input name="relacionper2" id="relacionper2" label="Relación con Persona " required fgroup-class="mb-3" />
-                            <x-adminlte-input name="telrefper2" id="telrefper2" label="Teléfono Persona" type="text"
-                            inputmode="numeric" maxlength="9" fgroup-class="mb-3"
-                            placeholder="0000-0000" required
-                            pattern="[2389][0-9]{3}-[0-9]{4}"
-                            title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
+                            {{-- Nombre Persona 2 --}}
+<x-adminlte-input name="nombreper2" id="nombreper2" label="Nombre Persona 2" fgroup-class="mb-3" />
+<small id="err-nombreper2" class="text-danger d-none">Solo letras y espacios.</small>
 
-                            <x-adminlte-textarea name="direccionper2" id="direccionper2" label="Dirección Persona " required fgroup-class="mb-3" rows="3" />
+{{-- Relación con Persona --}}
+<x-adminlte-input name="relacionper2" id="relacionper2" label="Relación con Persona" fgroup-class="mb-3" />
+<small id="err-relacionper2" class="text-danger d-none">Solo letras y espacios.</small>
+
+{{-- Teléfono Persona --}}
+<x-adminlte-input name="telrefper2" id="telrefper2" label="Teléfono Persona" type="text"
+    inputmode="numeric" maxlength="9" fgroup-class="mb-3"
+    placeholder="0000-0000"
+    pattern="[2389][0-9]{3}-[0-9]{4}"
+    title="Debe tener el formato 9876-5432 y comenzar con 2, 3, 8 o 9." />
+<small id="err-telrefper2" class="text-danger d-none">Debe tener el formato 0000-0000 y no contener letras.</small>
+
+{{-- Dirección Persona --}}
+<x-adminlte-textarea name="direccionper2" id="direccionper2" label="Dirección Persona" fgroup-class="mb-3" rows="3" />
+
                         </div>
                     </div>
                 </div>
@@ -205,114 +251,7 @@ function sortTable(columnIndex) {
 
             
 
-                <script>
-// Expresión regular que permite solo letras, espacios y tildes
-const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
 
-function validarCampoSoloLetras(input) {
-    input.addEventListener("input", function () {
-        if (!soloLetrasRegex.test(this.value)) {
-            this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-        }
-    });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    const campos = [
-        "nombre_familiar",
-        "parentesco",
-        "nombre_familiardos",
-        "parentesco_dos"
-    ];
-
-    // Aplicar validación en tiempo real
-    campos.forEach(id => {
-        const campo = document.getElementById(id);
-        if (campo) {
-            validarCampoSoloLetras(campo);
-        }
-    });
-
-    // Validación al enviar el formulario
-    const form = document.getElementById("insertForm");
-    form.addEventListener("submit", function (event) {
-        for (let id of campos) {
-            const input = document.getElementById(id);
-            const valor = input.value.trim();
-            if (!soloLetrasRegex.test(valor) || valor === "") {
-                alert(`Error: El campo '${input.labels[0].innerText}' solo puede contener letras y espacios.`);
-                event.preventDefault();
-                return;
-            }
-        }
-    });
-});
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
-    const telefonoRegex = /^[2389]\d{3}-?\d{4}$/; // permite guion o sin guion
-
-    const camposTexto = [
-        "nombreper1", "nombreper2", "relacionper1", "relacionper2",
-        "nombre_familiar", "parentesco", "nombre_familiardos", "parentesco_dos"
-    ];
-
-    const camposTelefono = [
-        "telref1", "telref2", "telrefper1", "telrefper2"
-    ];
-
-    // Solo letras en campos de nombre y relación
-    camposTexto.forEach(id => {
-        const input = document.getElementById(id);
-        if (input) {
-            input.addEventListener("input", function () {
-                this.value = this.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
-            });
-        }
-    });
-
-    // Validación de teléfonos en tiempo real
-    camposTelefono.forEach(id => {
-        const input = document.getElementById(id);
-        if (input) {
-            input.addEventListener("input", function () {
-                let valor = this.value.replace(/[^0-9]/g, ''); // solo números
-                if (valor.length > 8) valor = valor.substring(0, 8);
-
-                if (valor.length >= 4) {
-                    this.value = valor.substring(0, 4) + '-' + valor.substring(4);
-                } else {
-                    this.value = valor;
-                }
-            });
-        }
-    });
-
-    // Validación final al enviar el formulario
-    const form = document.getElementById("insertForm");
-    form.addEventListener("submit", function (event) {
-        for (let id of camposTexto) {
-            const input = document.getElementById(id);
-            if (!soloLetrasRegex.test(input.value.trim())) {
-                event.preventDefault();
-                Swal.fire("Error", `El campo "${input.labels[0].innerText}" solo puede contener letras.`, "error");
-                return;
-            }
-        }
-
-        for (let id of camposTelefono) {
-            const input = document.getElementById(id);
-            if (!telefonoRegex.test(input.value.trim())) {
-                event.preventDefault();
-                Swal.fire("Error", `El campo "${input.labels[0].innerText}" debe tener el formato correcto (ej. 9876-5432).`, "error");
-                return;
-            }
-        }
-    });
-});
-</script>
 
 
 
@@ -406,8 +345,10 @@ function viewModal(referencia) {
   <h6 class="mb-2 text-success"></h6>
 
       <p><strong>Creado en:</strong> ${referencia.creado_en ? new Date(referencia.creado_en).toLocaleString() : 'No disponible'}</p>
-    <p><strong>Creado por:</strong> ${referencia.creado_por || 'No disponible'}</p>
-      <p><strong>Modificado por:</strong> ${referencia.modificado_por || 'No disponible'}</p>
+    <p><strong>Creado por:</strong> ${referencia.creado_nombre || 'No disponible'}</p>
+    <p><strong>Modificado en:</strong> ${referencia.modificado_en ? new Date(referencia.modificado_en).toLocaleString() : 'No disponible'}</p>
+      <p><strong>Modificado por:</strong> ${referencia.modificado_nombre || 'No disponible'}</p>
+
     </div>
   </div>
 
@@ -468,6 +409,145 @@ function viewModal(referencia) {
     </script>
     @endif
 
-    
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const soloTelefono = /^[2389][0-9]{3}-[0-9]{4}$/;
+
+    const nombre = document.getElementById('nombre_familiar');
+    const parentesco = document.getElementById('parentesco');
+    const telefono = document.getElementById('telref1');
+
+    const validarCampo = (input, regex, errorId) => {
+        const error = document.getElementById(errorId);
+        if (input.value && !regex.test(input.value)) {
+            input.classList.add('is-invalid');
+            error.classList.remove('d-none');
+        } else {
+            input.classList.remove('is-invalid');
+            error.classList.add('d-none');
+        }
+    };
+
+    nombre.addEventListener('input', () => validarCampo(nombre, soloLetras, 'err-nombre_familiar'));
+    parentesco.addEventListener('input', () => validarCampo(parentesco, soloLetras, 'err-parentesco'));
+    telefono.addEventListener('input', () => validarCampo(telefono, soloTelefono, 'err-telref1'));
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const soloTelefono = /^[2389][0-9]{3}-[0-9]{4}$/;
+
+    const camposOpcionales = [
+        { id: 'nombre_familiardos', regex: soloLetras, errorId: 'err-nombre_familiardos' },
+        { id: 'parentesco_dos', regex: soloLetras, errorId: 'err-parentesco_dos' },
+        { id: 'telref2', regex: soloTelefono, errorId: 'err-telref2' },
+    ];
+
+    const validarSiTieneValor = ({ id, regex, errorId }) => {
+        const input = document.getElementById(id);
+        const error = document.getElementById(errorId);
+
+        input.addEventListener('input', () => {
+            if (input.value.trim() === '') {
+                input.classList.remove('is-invalid');
+                error.classList.add('d-none');
+            } else if (!regex.test(input.value)) {
+                input.classList.add('is-invalid');
+                error.classList.remove('d-none');
+            } else {
+                input.classList.remove('is-invalid');
+                error.classList.add('d-none');
+            }
+        });
+    };
+
+    camposOpcionales.forEach(validarSiTieneValor);
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const soloTelefono = /^[2389][0-9]{3}-[0-9]{4}$/;
+
+    const camposRequeridos = [
+        { id: 'nombreper1', regex: soloLetras, errorId: 'err-nombreper1' },
+        { id: 'relacionper1', regex: soloLetras, errorId: 'err-relacionper1' },
+        { id: 'telrefper1', regex: soloTelefono, errorId: 'err-telrefper1' }
+    ];
+
+    const validarCampo = ({ id, regex, errorId }) => {
+        const input = document.getElementById(id);
+        const error = document.getElementById(errorId);
+
+        input.addEventListener('input', () => {
+            if (!regex.test(input.value.trim())) {
+                input.classList.add('is-invalid');
+                error.classList.remove('d-none');
+            } else {
+                input.classList.remove('is-invalid');
+                error.classList.add('d-none');
+            }
+        });
+    };
+
+    camposRequeridos.forEach(validarCampo);
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const soloLetras = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$/;
+    const soloTelefono = /^[2389][0-9]{3}-[0-9]{4}$/;
+
+    const camposOpcionales = [
+        { id: 'nombreper2', regex: soloLetras, errorId: 'err-nombreper2' },
+        { id: 'relacionper2', regex: soloLetras, errorId: 'err-relacionper2' },
+        { id: 'telrefper2', regex: soloTelefono, errorId: 'err-telrefper2' }
+    ];
+
+    camposOpcionales.forEach(({ id, regex, errorId }) => {
+        const input = document.getElementById(id);
+        const error = document.getElementById(errorId);
+
+        input.addEventListener('input', () => {
+            const valor = input.value.trim();
+            if (valor.length > 0 && !regex.test(valor)) {
+                input.classList.add('is-invalid');
+                error.classList.remove('d-none');
+            } else {
+                input.classList.remove('is-invalid');
+                error.classList.add('d-none');
+            }
+        });
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const telefonos = ['telrefper1', 'telrefper2', 'telref1', 'telref2'];
+
+    telefonos.forEach(id => {
+        const input = document.getElementById(id);
+        if (!input) return;
+
+        input.addEventListener('input', () => {
+            let valor = input.value.replace(/\D/g, ''); // Eliminar todo lo que no sea número
+
+            if (valor.length > 4) {
+                valor = valor.slice(0, 4) + '-' + valor.slice(4, 8);
+            }
+
+            input.value = valor.slice(0, 9); // Limitar a 9 caracteres con guion
+        });
+    });
+});
+</script>
+
+
 @stop
 

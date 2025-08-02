@@ -115,7 +115,7 @@
 {{-- Columna Acciones --}}
 <td style="text-align: center">
     @hasanyrole(['Tecnico', 'Administrador', 'Contador'])
-        <a href="javascript:void(0);" class="btn btn-success btn-sm"
+        <a href="javascript:void(0);" class="btn btn-primary btn-sm"
             onclick="viewModal({{ json_encode($solicitud) }})">
             <i class="bi bi-eye"></i>
         </a>
@@ -129,7 +129,7 @@
     @if($mostrarBoton)
         @hasanyrole(['Tecnico', 'Contador', 'Administrador'])
             <a href="#" 
-                class="btn btn-primary btn-sm show-confirmation" 
+                class="btn btn-success btn-sm show-confirmation" 
                 data-id="{{ $solicitud['id_solicitud'] }}"
                 data-estado="{{ $solicitud['estado_solicitud'] }}">
                 <i class="bi bi-pencil"></i>
@@ -375,6 +375,36 @@ function sortTable(columnIndex) {
     </script>
 
 
+<script>
+function validarFormulario(event) {
+    const valorCuota = document.querySelector("input[name='valor_cuota']");
+    const capital = document.querySelector("input[name='capital']");
+    const interes = document.querySelector("input[name='interes']");
+
+    const camposNumericos = [
+        { campo: valorCuota, nombre: "Valor de la Cuota" },
+        { campo: capital, nombre: "Valor del Capital" },
+        { campo: interes, nombre: "Valor del Interés" }
+    ];
+
+    for (let { campo, nombre } of camposNumericos) {
+        const valor = campo.value.trim();
+        if (!/^\d+(\.\d{1,2})?$/.test(valor)) {
+            event.preventDefault();
+            Swal.fire({
+                icon: 'error',
+                title: 'Dato inválido',
+                text: `El campo "${nombre}" solo admite números válidos.`,
+                confirmButtonColor: '#d33'
+            });
+            campo.focus();
+            return false;
+        }
+    }
+
+    return true;
+}
+</script>
 
 
 <!-- Inyecta el rol del usuario como atributo en el body -->
