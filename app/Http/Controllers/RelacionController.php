@@ -107,7 +107,7 @@ public function getByPersona($id)
         if ($response->successful()) {
             return redirect()->back()->with('success', 'Relacion creada correctamente.');
         } else {
-            return redirect()->back()->with('error', 'Error al crear relacion.');
+            return redirect()->back()->with('error', 'Error al crear relacion, uno de los avales ya avala otro cliente.');
         }
 }
    
@@ -123,7 +123,7 @@ public function getByPersona($id)
         $conyuges = Conyuge::all();
         $ingresos = EstadoIngresos::all();
         $egresos = EstadoEgresos::all();
-        $avales = Persona::all(); 
+        $avales = Persona::where('tipo_persona', 'Aval')->get(); 
 
         return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
     }
