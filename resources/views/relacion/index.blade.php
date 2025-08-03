@@ -135,29 +135,6 @@
                                 @endforeach
                             </x-adminlte-select>
 
-                            <x-adminlte-select name="id_solicitud" id="id_solicitud" label="ID Solicitud" fgroup-class="mb-3" required>
-                                <option value="">Selecciona una solicitud</option>
-                            </x-adminlte-select>
-
-                            <div class="form-group mb-3">
-                                <label for="id_ingresos">ID Ingresos</label>
-                                <select name="id_ingresos" id="id_ingresos" class="form-control" required>
-                                    <option value="">Seleccione un ingreso</option>
-                                </select>
-                            </div>
-
-                            <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
-                                <option value="">Seleccione un aval</option>
-                                @foreach ($avales as $aval)
-                                    <option value="{{ $aval->id_persona }}">
-                                        {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
-                                    </option>
-                                @endforeach
-                            </x-adminlte-select>
-                        </div>
-
-                        {{-- Columna derecha --}}
-                        <div class="col-md-6">
                             <div class="form-group mb-3">
                                 <label for="id_conyuge">ID Cónyuge</label>
                                 <select name="id_conyuge" id="id_conyuge" class="form-control">
@@ -170,7 +147,34 @@
                                 </select>
                             </div>
 
-                            <x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
+
+                            <x-adminlte-select name="id_solicitud" id="id_solicitud" label="ID Solicitud" fgroup-class="mb-3" required>
+                                <option value="">Selecciona una solicitud</option>
+                            </x-adminlte-select>
+
+                            <div class="form-group mb-3">
+                                <label for="id_ingresos">ID Ingresos</label>
+                                <select name="id_ingresos" id="id_ingresos" class="form-control" required>
+                                    <option value="">Seleccione un ingreso</option>
+                                </select>
+                            </div>
+  
+                          
+                        </div>
+
+                        {{-- Columna derecha --}}
+                        <div class="col-md-6">
+                            
+                          <x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
+                                <option value="">Seleccione un aval</option>
+                                @foreach ($avales as $aval)
+                                    <option value="{{ $aval->id_persona }}">
+                                        {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
+                                    </option>
+                                @endforeach
+                            </x-adminlte-select>
+
+                              <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
                                 <option value="">Seleccione un aval</option>
                                 @foreach ($avales as $aval)
                                     <option value="{{ $aval->id_persona }}">
@@ -367,12 +371,11 @@
             <p><strong>Nombre del Solicitante:</strong> ${solicitud.nombre_persona}</p>
             <p><strong>Cónyuge:</strong> ${solicitud.nombre_conyuge || 'No disponible'}</p>
             <p><strong>Ingresos:</strong> ${solicitud.ingresos}</p>
-            <p><strong>Egresos:</strong> ${solicitud.egresos}</p>
             <p><strong>Aval 1:</strong> ${solicitud.nombre_aval1 || 'No disponible'}</p>
             <p><strong>Aval 2:</strong> ${solicitud.nombre_aval2 || 'No disponible'}</p>
+             <p><strong>Aval 3:</strong> ${solicitud.nombre_aval3 || 'No disponible'}</p>
         </div>
         <div class="col-md-6">
-            <p><strong>Aval 3:</strong> ${solicitud.nombre_aval3 || 'No disponible'}</p>
             <p><strong>Creado por:</strong> ${solicitud.creado_por}</p>
             <p><strong>Creado en:</strong> ${solicitud.creado_en ? new Date(solicitud.creado_en).toLocaleString() : 'No disponible'}</p>
             <p><strong>Modificado por:</strong> ${solicitud.modificado_por || 'No disponible'}</p>
@@ -406,7 +409,7 @@
         });
     });
     </script>
-@stop
+
 
 @if(session('success'))
 <script>
@@ -432,3 +435,4 @@
     </script>
 @endif
 
+@stop

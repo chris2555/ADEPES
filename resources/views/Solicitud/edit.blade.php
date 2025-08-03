@@ -20,14 +20,15 @@
                         @method('PUT')
                         <div class="card-body">
                             <!-- Solicitud -->
-                            <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
-                                <option value="">Seleccione una solicitud</option>
-                                @foreach ($solicitudes as $solicitud)
-                                <option value="{{ $solicitudes->id_solicitud }}" {{ $solicitudes->id_solicitud == $solicitudes->id_solicitud ? 'selected' : '' }}>
-                                    ID: {{ $solicitudes->id_solicitud }} - Monto: {{ number_format($solicitudes->monto, 2) }}
-                                </option>
-                                @endforeach
-                            </x-adminlte-select>
+                           <x-adminlte-select name="id_solicitud_mostrado" label="Solicitud" fgroup-class="mb-3" disabled>
+    <option selected>
+        ID: {{ $solicitudes->id_solicitud }} - Monto: L {{ number_format($solicitudes->monto, 2) }}
+    </option>
+</x-adminlte-select>
+
+<!-- Input oculto para enviar el ID real al backend -->
+<input type="hidden" name="id_solicitud" value="{{ $solicitudes->id_solicitud }}">
+
 
                             <div class="row">
                                 <!-- Columna Izquierda -->

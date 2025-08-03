@@ -19,69 +19,64 @@
                         @csrf
                         @method('PUT')
                         <div class="card-body">
-                            <!-- Solicitud -->
-                            <x-adminlte-select name="id_solicitud" label="Seleccionar Solicitud" fgroup-class="mb-3" required>
-                                <option value="">Seleccione una solicitud</option>
-                                @foreach ($solicitudes as $solicitud)
-                                    <option value="{{ $solicitud->id_solicitud }}" {{ $solicitud->id_solicitud == $relacion->id_solicitud ? 'selected' : '' }}>
-                                        ID: {{ $solicitud->id_solicitud }} - Monto: {{ number_format($solicitud->monto, 2) }}
-                                    </option>
-                                @endforeach
-                            </x-adminlte-select>
+                            <!-- Mostrar solicitud como campo deshabilitado -->
+<x-adminlte-select name="id_solicitud_disabled" label="Solicitud" fgroup-class="mb-3" disabled>
+    <option selected>
+        ID: {{ $relacion->id_solicitud }} - Monto: L 
+        {{ number_format(optional($solicitudes->firstWhere('id_solicitud', $relacion->id_solicitud))->monto ?? 0, 2) }}
+    </option>
+</x-adminlte-select>
+
+<!-- Campo oculto para enviar el valor real -->
+<input type="hidden" name="id_solicitud" value="{{ $relacion->id_solicitud }}">
+
 
                             <div class="row">
                                 <!-- Columna Izquierda -->
                                 <div class="col-md-6">
                                     <!-- Persona -->
-                                    <x-adminlte-select name="id_persona" label="Seleccionar Persona" fgroup-class="mb-3" required>
-                                        <option value="">Seleccione una persona</option>
-                                        @foreach ($personas as $persona)
-                                            <option value="{{ $persona->id_persona }}" {{ $persona->id_persona == $relacion->id_persona ? 'selected' : '' }}>
-                                                {{ $persona->nombres_apellidos }} - {{ $persona->n_identidad }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+                                    <x-adminlte-select name="id_persona_disabled" label="Persona" fgroup-class="mb-3" disabled>
+    <option selected>
+        {{ optional($personas->firstWhere('id_persona', $relacion->id_persona))->nombres_apellidos ?? '' }} - 
+        {{ optional($personas->firstWhere('id_persona', $relacion->id_persona))->n_identidad ?? '' }}
+    </option>
+</x-adminlte-select>
+<input type="hidden" name="id_persona" value="{{ $relacion->id_persona }}">
+
+<!-- Conyuge -->
+
+                                    <x-adminlte-select name="id_conyuge_disabled" label="Cónyuge" fgroup-class="mb-3" disabled>
+    <option selected>
+        {{ optional($conyuges->firstWhere('id_conyuge', $relacion->id_conyuge))->nombres_conyuge ?? '' }} - 
+        {{ optional($conyuges->firstWhere('id_conyuge', $relacion->id_conyuge))->identidad_conyuge ?? '' }}
+    </option>
+</x-adminlte-select>
+<input type="hidden" name="id_conyuge" value="{{ $relacion->id_conyuge }}">
+
 
                                     <!-- Ingresos -->
-                                    <x-adminlte-select name="id_ingresos" label="Seleccione un ingreso" fgroup-class="mb-3" required>
-                                        <option value="">Seleccione...</option>
-                                        @foreach ($ingresos as $ingreso)
-                                            <option value="{{ $ingreso->id_ingresos }}" {{ $ingreso->id_ingresos == $relacion->id_ingresos ? 'selected' : '' }}>
-                                                {{ $ingreso->id_ingresos }} - {{ $ingreso->total_ingresos }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+                                    <x-adminlte-select name="id_ingresos_disabled" label="Ingreso" fgroup-class="mb-3" disabled>
+    <option selected>
+        ID: {{ $relacion->id_ingresos }} - L 
+        {{ number_format(optional($ingresos->firstWhere('id_ingresos', $relacion->id_ingresos))->total_ingresos ?? 0, 2) }}
+    </option>
+</x-adminlte-select>
+<input type="hidden" name="id_ingresos" value="{{ $relacion->id_ingresos }}">
 
-                                    <!-- Aval 1 -->
+
+                                    
+                                </div>
+
+                                <!-- Columna Derecha -->
+                                <div class="col-md-6">
+                                    
+
+<!-- Aval 1 -->
                                     <x-adminlte-select name="id_aval1" label="Seleccionar Aval 1" fgroup-class="mb-3">
                                         <option value="">Seleccione un aval</option>
                                         @foreach ($avales as $aval)
                                             <option value="{{ $aval->id_persona }}" {{ $aval->id_persona == $relacion->id_aval1 ? 'selected' : '' }}>
                                                 {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
-                                </div>
-
-                                <!-- Columna Derecha -->
-                                <div class="col-md-6">
-                                    <!-- Cónyuge -->
-                                    <x-adminlte-select name="id_conyuge" label="ID Cónyuge" fgroup-class="mb-3">
-                                        <option value="">Seleccione un cónyuge</option>
-                                        @foreach ($conyuges as $conyuge)
-                                            <option value="{{ $conyuge->id_conyuge }}" {{ isset($relacion->id_conyuge) && $conyuge->id_conyuge == $relacion->id_conyuge ? 'selected' : '' }}>
-                                                {{ $conyuge->nombres_conyuge }} - {{ $conyuge->identidad_conyuge }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
-
-
-                                    <!-- Egresos -->
-                                    <x-adminlte-select name="id_egresos" label="Seleccione un egreso" fgroup-class="mb-3" required>
-                                        <option value="">Seleccione...</option>
-                                        @foreach ($egresos as $egreso)
-                                            <option value="{{ $egreso->id_egresos }}" {{ $egreso->id_egresos == $relacion->id_egresos ? 'selected' : '' }}>
-                                                {{ $egreso->id_egresos }} - {{ $egreso->total_egresos }}
                                             </option>
                                         @endforeach
                                     </x-adminlte-select>
