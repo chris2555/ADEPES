@@ -107,7 +107,7 @@ public function getByPersona($id)
         if ($response->successful()) {
             return redirect()->back()->with('success', 'Relacion creada correctamente.');
         } else {
-            return redirect()->back()->with('error', 'Error al crear relacion, uno de los avales ya avala otro cliente.');
+            return redirect()->back()->with('error', 'Error al crear relacion.');
         }
 }
    
@@ -123,8 +123,8 @@ public function getByPersona($id)
         $conyuges = Conyuge::all();
         $ingresos = EstadoIngresos::all();
         $egresos = EstadoEgresos::all();
-        $avales = Persona::where('tipo_persona', 'Aval')->get(); 
-
+        $avales = Persona::where('tipo_persona', 'Aval')->get();
+        
         return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
     }
 
@@ -157,11 +157,16 @@ public function getByPersona($id)
         'modificado_por' => $usuario_id,
     ]);
 
-    if ($response->successful()) {
-        return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
-    } else {
-        return redirect()->back()->with('relacion.index')->with('error', 'Error al actualizar la solicitud.');
-    }
+   if ($response->successful()) {
+    return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
+} else {
+    // Aquí tienes:
+    // return redirect()->back()->with('relacion.index')->with('error', 'Error al actualizar la solicitud.');
+    
+    // Cambiar a:
+    return redirect()->back()->withInput()->with('error', 'Error al actualizar la solicitud: uno de los avales ya está en uso.');
+}
+
 }
 
     /**
@@ -264,7 +269,6 @@ public function generarSolicitudPDF($id_solicitud)
 
 
 }
-
 
 
 
