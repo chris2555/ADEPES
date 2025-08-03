@@ -78,54 +78,38 @@ public function getByPersona($id)
     /**
      * Store a newly created resource in storage.
      */
+    public function store(Request $request)
+    {
+        $usuario_id = auth()->id();
+        // Validar los datos del formulario
+        $request->validate([
+            'id_solicitud' => 'nullable|integer',
+            'id_persona' => 'required|integer',
+            'id_conyuge' => 'nullable|integer',
+            'id_ingresos' => 'nullable|integer',
+            'id_aval1' => 'nullable|integer',
+            'id_aval2' => 'nullable|integer',
+            'id_aval3' => 'nullable|integer',
+        ]);
 
-public function store(Request $request)
-{
-    // Extraer los avales del formulario
-    $aval1 = $request->input('id_aval1');
-    $aval2 = $request->input('id_aval2');
-    $aval3 = $request->input('id_aval3');
+        // Enviar datos a la API
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona', [
+            'id_solicitud' => $request->id_solicitud,
+            'id_persona' => $request->id_persona,
+            'id_conyuge' => $request->id_conyuge,
+            'id_ingresos' => $request->id_ingresos,
+            'id_aval1' => $request->id_aval1,
+            'id_aval2' => $request->id_aval2,
+            'id_aval3' => $request->id_aval3,
+            'creado_por' => $usuario_id,
+        ]);
 
-    // Eliminar nulos y duplicados
-    $avales = collect([$aval1, $aval2, $aval3])->filter()->unique();
-
-    // Buscar si alguno de los avales ya está en uso en una solicitud activa (Pendiente o Aprobada)
-    $avalEnUso = RelacionSolicitudPersona::where(function ($query) use ($avales) {
-        foreach ($avales as $aval) {
-            $query->orWhere('id_aval1', $aval)
-                  ->orWhere('id_aval2', $aval)
-                  ->orWhere('id_aval3', $aval);
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Relacion creada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al crear relacion.');
         }
-    })->whereHas('solicitud', function ($q) {
-        $q->whereIn('estado_solicitud', ['Pendiente', 'Aprobado']);
-    })->exists();
-
-    // Si se encuentra un aval en uso, redirigir con mensaje de error
-    if ($avalEnUso) {
-        return redirect()->back()
-            ->withInput()
-            ->with('error', 'Uno de los avales seleccionados ya está en uso en otra solicitud activa.');
-    }
-
-    // Crear nueva relación si no hay conflictos
-    RelacionSolicitudPersona::create([
-        'id_solicitud'    => $request->input('id_solicitud'),
-        'id_persona'      => $request->input('id_persona'),
-        'id_conyuge'      => $request->input('id_conyuge'),
-        'id_ingresos'     => $request->input('id_ingresos'),
-        'id_egresos'      => $request->input('id_egresos'),
-        'id_aval1'        => $aval1,
-        'id_aval2'        => $aval2,
-        'id_aval3'        => $aval3,
-        'creado_por'      => auth()->id(),
-        'creado_en'       => now(),
-    ]);
-
-    // Redirigir con mensaje de éxito
-    return redirect()->route('relacion.index')
-        ->with('success', 'Relación guardada correctamente.');
 }
-
    
 
     /**
@@ -280,6 +264,5 @@ public function generarSolicitudPDF($id_solicitud)
 
 
 }
-
 
 
