@@ -123,8 +123,8 @@ public function getByPersona($id)
         $conyuges = Conyuge::all();
         $ingresos = EstadoIngresos::all();
         $egresos = EstadoEgresos::all();
-        $avales = Persona::all(); 
-
+        $avales = Persona::where('tipo_persona', 'Aval')->get();
+        
         return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
     }
 
