@@ -122,6 +122,12 @@
 
 @section('js')
 @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if(session('error'))
     <script>
         Swal.fire({
             icon: 'error',
@@ -133,11 +139,12 @@
     </script>
 
 @endif
-   
+
 @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<script>
+    alert("{{ session('error') }}");
+</script>
 @endif
+
 
 @stop

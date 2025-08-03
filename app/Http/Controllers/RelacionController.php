@@ -157,12 +157,13 @@ public function getByPersona($id)
         'modificado_por' => $usuario_id,
     ]);
 
-  if ($response->successful()) {
+if ($response->successful()) {
     return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
 } else {
-    $errorMsg = $response->json('message') ?? 'Error al actualizar la solicitud.';
-    return redirect()->back()->withInput()->with('error', $errorMsg);
+   return redirect()->back()->with('error', 'EL aval que se actualizo ya se esta utilizando en otro registro.');
+
 }
+
 
 
 }
