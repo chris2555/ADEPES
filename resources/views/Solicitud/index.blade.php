@@ -504,9 +504,9 @@ function validarFormulario(event) {
             <p><strong>Valor de la Cuota:</strong> ${solicitud.valor_cuota || 'No disponible'}</p>
              <p><strong>Es Aval:</strong> ${solicitud.es_aval || 'No disponible'}</p>
              <p><strong>Finalidad Del Credito:</strong> ${solicitud.finalidad_cre || 'No disponible'}</p>
-            <p><strong>Creado por:</strong> ${solicitud.creado_por}</p>
+            <p><strong>Creado por:</strong> ${solicitud.creado_nombre}</p>
             <p><strong>Creado en:</strong> ${solicitud.creado_en ? new Date(solicitud.creado_en).toLocaleString() : 'No disponible'}</p>
-            <p><strong>Modificado por:</strong> ${solicitud.modificado_por || 'No disponible'}</p>
+            <p><strong>Modificado por:</strong> ${solicitud.modificado_nombre || 'No disponible'}</p>
             <p><strong>Modificado en:</strong> ${solicitud.modificado_en ? new Date(solicitud.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>
     `;
