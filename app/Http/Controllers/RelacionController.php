@@ -157,11 +157,16 @@ public function getByPersona($id)
         'modificado_por' => $usuario_id,
     ]);
 
-    if ($response->successful()) {
-        return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
-    } else {
-        return redirect()->back()->with('relacion.index')->with('error', 'Error al actualizar la solicitud.');
-    }
+   if ($response->successful()) {
+    return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
+} else {
+    // Aquí tienes:
+    // return redirect()->back()->with('relacion.index')->with('error', 'Error al actualizar la solicitud.');
+    
+    // Cambiar a:
+    return redirect()->back()->withInput()->with('error', 'Error al actualizar la solicitud: uno de los avales ya está en uso.');
+}
+
 }
 
     /**
