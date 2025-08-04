@@ -304,7 +304,3 @@ public function generarSolicitudPDF($id_solicitud)
 
 
 }
-
-
-
-
