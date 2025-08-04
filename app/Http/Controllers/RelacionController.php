@@ -118,15 +118,22 @@ public function getByPersona($id)
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-    // Obtener la relación desde la API
-    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona/{$id}");
+{
+    // Obtener todas las relaciones desde la API
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona");
 
-    if ($response->status() === 404) {
-        abort(404, 'Relación no encontrada.');
+    if (!$response->successful()) {
+        abort(500, 'Error al obtener las relaciones desde la API.');
     }
 
-    $relacion = $response->json();
+    $relaciones = $response->json();
+
+    // Buscar la relación con el ID proporcionado
+    $relacion = collect($relaciones)->firstWhere('id_relacion', (int) $id);
+
+    if (!$relacion) {
+        abort(404, 'Relación no encontrada.');
+    }
 
     // Obtener datos necesarios para el formulario de edición
     $solicitudes = SolicitudPrestamo::all();
@@ -138,6 +145,7 @@ public function getByPersona($id)
 
     return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
 }
+
     
     public function update(Request $request, $id)
 {
