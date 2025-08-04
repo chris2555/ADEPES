@@ -118,17 +118,33 @@ public function getByPersona($id)
      * Display the specified resource.
      */
     public function show(string $id)
-    {
-        $relacion = RelacionSolicitudPersona::findOrFail($id);
-        $solicitudes = SolicitudPrestamo::all();
-        $personas = Persona::all();
-        $conyuges = Conyuge::all();
-        $ingresos = EstadoIngresos::all();
-        $egresos = EstadoEgresos::all();
-        $avales = Persona::where('tipo_persona', 'Aval')->get();
-        
-        return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
+{
+    // Obtener todas las relaciones desde la API
+    $response = Http::get("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona");
+
+    if (!$response->successful()) {
+        abort(500, 'Error al obtener las relaciones desde la API.');
     }
+
+    $relaciones = $response->json();
+
+    // Buscar la relación con el ID proporcionado
+    $relacion = collect($relaciones)->firstWhere('id_relacion', (int) $id);
+
+    if (!$relacion) {
+        abort(404, 'Relación no encontrada.');
+    }
+
+    // Obtener datos necesarios para el formulario de edición
+    $solicitudes = SolicitudPrestamo::all();
+    $personas = Persona::all();
+    $conyuges = Conyuge::all();
+    $ingresos = EstadoIngresos::all();
+    $egresos = EstadoEgresos::all();
+    $avales = Persona::where('tipo_persona', 'Aval')->get();
+
+    return view('relacion.edit', compact('relacion', 'solicitudes', 'personas', 'conyuges', 'ingresos', 'egresos', 'avales'));
+}
 
     
     public function update(Request $request, $id)
@@ -304,8 +320,3 @@ public function generarSolicitudPDF($id_solicitud)
 
 
 }
-
-
-
-
-
