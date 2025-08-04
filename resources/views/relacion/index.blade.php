@@ -410,6 +410,29 @@
     });
     </script>
 
+@if(session('error_aval_campos'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const insertModal = new bootstrap.Modal(document.getElementById('insert'));
+        insertModal.show();
+
+        const errores = @json(session('error_aval_campos'));
+        errores.forEach(nombreCampo => {
+            const campo = document.querySelector(`[name="${nombreCampo}"]`);
+            if (campo) {
+                campo.classList.add('is-invalid');
+            }
+        });
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#d33'
+        });
+    });
+</script>
+@endif
 
 
 @if (session('success'))

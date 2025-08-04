@@ -84,6 +84,7 @@ public function getByPersona($id)
 {
     $usuario_id = auth()->id();
 
+    // Validación básica de los campos
     $request->validate([
         'id_solicitud' => 'nullable|integer',
         'id_persona' => 'required|integer',
@@ -94,26 +95,57 @@ public function getByPersona($id)
         'id_aval3' => 'nullable|integer',
     ]);
 
-    // Validar que los avales no estén ya usados en otro registro
+    // Validación de avales repetidos o ya usados en otra relación
     $avalIDs = [];
     if ($request->id_aval1) $avalIDs[] = $request->id_aval1;
     if ($request->id_aval2) $avalIDs[] = $request->id_aval2;
     if ($request->id_aval3) $avalIDs[] = $request->id_aval3;
 
-    if (!empty($avalIDs)) {
-        // Buscar en la base si alguno de los avales ya existe como aval1, aval2 o aval3
-        $exists = RelacionSolicitudPersona::where(function ($query) use ($avalIDs) {
-            $query->whereIn('id_aval1', $avalIDs)
-                  ->orWhereIn('id_aval2', $avalIDs)
-                  ->orWhereIn('id_aval3', $avalIDs);
-        })->exists();
+    $errores_aval = [];
 
-        if ($exists) {
-            return redirect()->back()->with('error', 'Uno de los avales ingresados ya está asignado en otro registro.');
+    // Verificar si alguno de los avales ya está registrado en otra relación
+    foreach ($avalIDs as $id) {
+        $existe = DB::table('RelacionSolicitudPersona')
+            ->where(function ($query) use ($id) {
+                $query->where('id_aval1', $id)
+                      ->orWhere('id_aval2', $id)
+                      ->orWhere('id_aval3', $id);
+            })->exists();
+
+        if ($existe) {
+            if ($request->id_aval1 == $id) $errores_aval[] = 'id_aval1';
+            if ($request->id_aval2 == $id) $errores_aval[] = 'id_aval2';
+            if ($request->id_aval3 == $id) $errores_aval[] = 'id_aval3';
         }
     }
 
-    // Enviar a la API si no hay duplicados
+    // Verificar que no se repita el mismo aval en más de un campo
+    if (
+        $request->id_aval1 &&
+        (
+            $request->id_aval1 == $request->id_aval2 ||
+            $request->id_aval1 == $request->id_aval3
+        )
+    ) {
+        $errores_aval[] = 'id_aval1';
+    }
+
+    if (
+        $request->id_aval2 &&
+        $request->id_aval2 == $request->id_aval3
+    ) {
+        $errores_aval[] = 'id_aval2';
+        $errores_aval[] = 'id_aval3';
+    }
+
+    // Si hay errores, devolver al modal con marca visual
+    if (!empty($errores_aval)) {
+        return redirect()->back()->withInput()
+            ->with('error', 'Uno de los avales ingresados ya está asignado en otro registro o está repetido.')
+            ->with('error_aval_campos', $errores_aval);
+    }
+
+    // Si pasa todas las validaciones, enviar a la API
     $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona', [
         'id_solicitud' => $request->id_solicitud,
         'id_persona' => $request->id_persona,
@@ -131,6 +163,7 @@ public function getByPersona($id)
         return redirect()->back()->with('error', 'Error al crear la relación.');
     }
 }
+
    
 
     /**
