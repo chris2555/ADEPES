@@ -410,29 +410,54 @@
     });
     </script>
 
-
-@if(session('success'))
+@if(session('error_aval_campos'))
 <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'Éxito',
-        text: '{{ session('success') }}',
-        confirmButtonColor: '#3085d6',
-        confirmButtonText: 'Aceptar'
-    });
-</script>
-@endif
+    document.addEventListener('DOMContentLoaded', function () {
+        const insertModal = new bootstrap.Modal(document.getElementById('insert'));
+        insertModal.show();
 
-@if(session('error'))
-    <script>
+        const errores = @json(session('error_aval_campos'));
+        errores.forEach(nombreCampo => {
+            const campo = document.querySelector(`[name="${nombreCampo}"]`);
+            if (campo) {
+                campo.classList.add('is-invalid');
+            }
+        });
+
         Swal.fire({
             icon: 'error',
             title: 'Error',
             text: '{{ session('error') }}',
+            confirmButtonColor: '#d33'
+        });
+    });
+</script>
+@endif
+
+
+@if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: "{{ session('success') }}",
+            confirmButtonColor: '#3085d6',
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: "{{ session('error') }}",
             confirmButtonColor: '#d33',
-            confirmButtonText: 'Aceptar'
         });
     </script>
 @endif
 
 @stop
+
+
+
