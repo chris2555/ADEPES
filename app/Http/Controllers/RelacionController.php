@@ -11,6 +11,8 @@ use App\Models\SolicitudPrestamo;
 use App\Models\RelacionSolicitudPersona;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
+
 
 
 class RelacionController extends Controller
@@ -133,7 +135,6 @@ public function getByPersona($id)
 {
     $usuario_id = auth()->id();
 
-    // Validar los datos del formulario
     $request->validate([
         'id_solicitud' => 'nullable|integer',
         'id_persona' => 'required|integer',
@@ -143,6 +144,46 @@ public function getByPersona($id)
         'id_aval2' => 'nullable|integer',
         'id_aval3' => 'nullable|integer',
     ]);
+
+    // Validación: verificar si algún aval ya está siendo usado en otra relación
+    $errores_aval = [];
+
+$aval2 = $request->id_aval2;
+$aval3 = $request->id_aval3;
+
+if ($aval2) {
+    $existe2 = DB::table('RelacionSolicitudPersona')
+        ->where(function ($query) use ($aval2) {
+            $query->where('id_aval1', $aval2)
+                  ->orWhere('id_aval2', $aval2)
+                  ->orWhere('id_aval3', $aval2);
+        })
+        ->where('id_relacion', '!=', $id)
+        ->exists();
+
+    if ($existe2) {
+        $errores_aval[] = 'id_aval2';
+    }
+}
+
+if ($aval3) {
+    $existe3 = DB::table('RelacionSolicitudPersona')
+        ->where(function ($query) use ($aval3) {
+            $query->where('id_aval1', $aval3)
+                  ->orWhere('id_aval2', $aval3)
+                  ->orWhere('id_aval3', $aval3);
+        })
+        ->where('id_relacion', '!=', $id)
+        ->exists();
+
+    if ($existe3) {
+        $errores_aval[] = 'id_aval3';
+    }
+}
+
+if (!empty($errores_aval)) {
+    return redirect()->back()->withInput()->with('error_aval_campos', $errores_aval);
+}
 
     // Enviar datos a la API externa
     $response = Http::put("https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona/{$id}", [
@@ -157,17 +198,12 @@ public function getByPersona($id)
         'modificado_por' => $usuario_id,
     ]);
 
-if ($response->successful()) {
-    return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
-} else {
-   return redirect()->back()->with('error', 'EL aval que se actualizo ya se esta utilizando en otro registro.');
-
+    if ($response->successful()) {
+        return redirect()->route('relacion.index')->with('success', 'Relación de solicitud actualizada correctamente.');
+    } else {
+        return redirect()->back()->with('error', 'Error al actualizar la relación.');
+    }
 }
-
-
-
-}
-
     /**
      * Remove the specified resource from storage.
      */
