@@ -81,89 +81,37 @@ public function getByPersona($id)
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $usuario_id = auth()->id();
+    {
+        $usuario_id = auth()->id();
+        // Validar los datos del formulario
+        $request->validate([
+            'id_solicitud' => 'nullable|integer',
+            'id_persona' => 'required|integer',
+            'id_conyuge' => 'nullable|integer',
+            'id_ingresos' => 'nullable|integer',
+            'id_aval1' => 'nullable|integer',
+            'id_aval2' => 'nullable|integer',
+            'id_aval3' => 'nullable|integer',
+        ]);
 
-    // Validación básica de los campos
-    $request->validate([
-        'id_solicitud' => 'nullable|integer',
-        'id_persona' => 'required|integer',
-        'id_conyuge' => 'nullable|integer',
-        'id_ingresos' => 'nullable|integer',
-        'id_aval1' => 'nullable|integer',
-        'id_aval2' => 'nullable|integer',
-        'id_aval3' => 'nullable|integer',
-    ]);
+        // Enviar datos a la API
+        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona', [
+            'id_solicitud' => $request->id_solicitud,
+            'id_persona' => $request->id_persona,
+            'id_conyuge' => $request->id_conyuge,
+            'id_ingresos' => $request->id_ingresos,
+            'id_aval1' => $request->id_aval1,
+            'id_aval2' => $request->id_aval2,
+            'id_aval3' => $request->id_aval3,
+            'creado_por' => $usuario_id,
+        ]);
 
-    // Validación de avales repetidos o ya usados en otra relación
-    $avalIDs = [];
-    if ($request->id_aval1) $avalIDs[] = $request->id_aval1;
-    if ($request->id_aval2) $avalIDs[] = $request->id_aval2;
-    if ($request->id_aval3) $avalIDs[] = $request->id_aval3;
-
-    $errores_aval = [];
-
-    // Verificar si alguno de los avales ya está registrado en otra relación
-    foreach ($avalIDs as $id) {
-        $existe = DB::table('RelacionSolicitudPersona')
-            ->where(function ($query) use ($id) {
-                $query->where('id_aval1', $id)
-                      ->orWhere('id_aval2', $id)
-                      ->orWhere('id_aval3', $id);
-            })->exists();
-
-        if ($existe) {
-            if ($request->id_aval1 == $id) $errores_aval[] = 'id_aval1';
-            if ($request->id_aval2 == $id) $errores_aval[] = 'id_aval2';
-            if ($request->id_aval3 == $id) $errores_aval[] = 'id_aval3';
+        if ($response->successful()) {
+            return redirect()->back()->with('success', 'Relacion creada correctamente.');
+        } else {
+            return redirect()->back()->with('error', 'Error al crear relacion.');
         }
-    }
-
-    // Verificar que no se repita el mismo aval en más de un campo
-    if (
-        $request->id_aval1 &&
-        (
-            $request->id_aval1 == $request->id_aval2 ||
-            $request->id_aval1 == $request->id_aval3
-        )
-    ) {
-        $errores_aval[] = 'id_aval1';
-    }
-
-    if (
-        $request->id_aval2 &&
-        $request->id_aval2 == $request->id_aval3
-    ) {
-        $errores_aval[] = 'id_aval2';
-        $errores_aval[] = 'id_aval3';
-    }
-
-    // Si hay errores, devolver al modal con marca visual
-    if (!empty($errores_aval)) {
-        return redirect()->back()->withInput()
-            ->with('error', 'Uno de los avales ingresados ya está asignado en otro registro o está repetido.')
-            ->with('error_aval_campos', $errores_aval);
-    }
-
-    // Si pasa todas las validaciones, enviar a la API
-    $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona', [
-        'id_solicitud' => $request->id_solicitud,
-        'id_persona' => $request->id_persona,
-        'id_conyuge' => $request->id_conyuge,
-        'id_ingresos' => $request->id_ingresos,
-        'id_aval1' => $request->id_aval1,
-        'id_aval2' => $request->id_aval2,
-        'id_aval3' => $request->id_aval3,
-        'creado_por' => $usuario_id,
-    ]);
-
-    if ($response->successful()) {
-        return redirect()->back()->with('success', 'Relación creada correctamente.');
-    } else {
-        return redirect()->back()->with('error', 'Error al crear la relación.');
-    }
 }
-
    
 
     /**
@@ -356,3 +304,7 @@ public function generarSolicitudPDF($id_solicitud)
 
 
 }
+
+
+
+
