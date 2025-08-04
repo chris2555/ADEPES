@@ -81,58 +81,55 @@ public function getByPersona($id)
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $usuario_id = auth()->id();
-        // Validar los datos del formulario
-        $request->validate([
-            'id_solicitud' => 'nullable|integer',
-            'id_persona' => 'required|integer',
-            'id_conyuge' => 'nullable|integer',
-            'id_ingresos' => 'nullable|integer',
-            'id_aval1' => 'nullable|integer',
-            'id_aval2' => 'nullable|integer',
-            'id_aval3' => 'nullable|integer',
-        ]);
+{
+    $usuario_id = auth()->id();
 
-        $avales = [$request->id_aval1, $request->id_aval2, $request->id_aval3];
-$errores_aval = [];
+    $request->validate([
+        'id_solicitud' => 'nullable|integer',
+        'id_persona' => 'required|integer',
+        'id_conyuge' => 'nullable|integer',
+        'id_ingresos' => 'nullable|integer',
+        'id_aval1' => 'nullable|integer',
+        'id_aval2' => 'nullable|integer',
+        'id_aval3' => 'nullable|integer',
+    ]);
 
-foreach ($avales as $indice => $aval) {
-    if ($aval) {
-        $existe = DB::table('RelacionSolicitudPersona')
-            ->where(function ($q) use ($aval) {
-                $q->where('id_aval1', $aval)
-                  ->orWhere('id_aval2', $aval)
-                  ->orWhere('id_aval3', $aval);
-            })->exists();
+    // Validar que los avales no estén ya usados en otro registro
+    $avalIDs = [];
+    if ($request->id_aval1) $avalIDs[] = $request->id_aval1;
+    if ($request->id_aval2) $avalIDs[] = $request->id_aval2;
+    if ($request->id_aval3) $avalIDs[] = $request->id_aval3;
 
-        if ($existe) {
-            $errores_aval[] = 'id_aval' . ($indice + 1);
+    if (!empty($avalIDs)) {
+        // Buscar en la base si alguno de los avales ya existe como aval1, aval2 o aval3
+        $exists = RelacionSolicitudPersona::where(function ($query) use ($avalIDs) {
+            $query->whereIn('id_aval1', $avalIDs)
+                  ->orWhereIn('id_aval2', $avalIDs)
+                  ->orWhereIn('id_aval3', $avalIDs);
+        })->exists();
+
+        if ($exists) {
+            return redirect()->back()->with('error', 'Uno de los avales ingresados ya está asignado en otro registro.');
         }
     }
-}
 
-if (!empty($errores_aval)) {
-    return redirect()->back()->withInput()->with('error_aval_campos', $errores_aval);
-}
+    // Enviar a la API si no hay duplicados
+    $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona', [
+        'id_solicitud' => $request->id_solicitud,
+        'id_persona' => $request->id_persona,
+        'id_conyuge' => $request->id_conyuge,
+        'id_ingresos' => $request->id_ingresos,
+        'id_aval1' => $request->id_aval1,
+        'id_aval2' => $request->id_aval2,
+        'id_aval3' => $request->id_aval3,
+        'creado_por' => $usuario_id,
+    ]);
 
-        // Enviar datos a la API
-        $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona', [
-            'id_solicitud' => $request->id_solicitud,
-            'id_persona' => $request->id_persona,
-            'id_conyuge' => $request->id_conyuge,
-            'id_ingresos' => $request->id_ingresos,
-            'id_aval1' => $request->id_aval1,
-            'id_aval2' => $request->id_aval2,
-            'id_aval3' => $request->id_aval3,
-            'creado_por' => $usuario_id,
-        ]);
-
-        if ($response->successful()) {
-            return redirect()->back()->with('success', 'Relacion creada correctamente.');
-        } else {
-            return redirect()->back()->with('error', 'Error al crear relacion.');
-        }
+    if ($response->successful()) {
+        return redirect()->back()->with('success', 'Relación creada correctamente.');
+    } else {
+        return redirect()->back()->with('error', 'Error al crear la relación.');
+    }
 }
    
 
