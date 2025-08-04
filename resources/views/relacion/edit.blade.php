@@ -82,24 +82,41 @@
                                     </x-adminlte-select>
 
                                     <!-- Aval 2 -->
-                                    <x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3">
-                                        <option value="">Seleccione un aval</option>
-                                        @foreach ($avales as $aval)
-                                            <option value="{{ $aval->id_persona }}" {{ $aval->id_persona == $relacion->id_aval2 ? 'selected' : '' }}>
-                                                {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+@php
+    $errores_aval = session('error_aval_campos', []);
+@endphp
 
-                                    <!-- Aval 3 -->
-                                    <x-adminlte-select name="id_aval3" label="Seleccionar Aval 3" fgroup-class="mb-3">
-                                        <option value="">Seleccione un aval</option>
-                                        @foreach ($avales as $aval)
-                                            <option value="{{ $aval->id_persona }}" {{ $aval->id_persona == $relacion->id_aval3 ? 'selected' : '' }}>
-                                                {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
-                                            </option>
-                                        @endforeach
-                                    </x-adminlte-select>
+<x-adminlte-select name="id_aval2" label="Seleccionar Aval 2" fgroup-class="mb-3" 
+                   class="{{ in_array('id_aval2', $errores_aval) ? 'is-invalid' : '' }}">
+    <option value="">Seleccione un aval</option>
+    @foreach ($avales as $aval)
+        <option value="{{ $aval->id_persona }}" 
+            @if (old('id_aval2', $relacion->id_aval2) == $aval->id_persona) selected @endif>
+            {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
+        </option>
+    @endforeach
+</x-adminlte-select>
+@if(in_array('id_aval2', $errores_aval))
+    <small class="text-danger">Este aval ya está relacionado con otro cliente.</small>
+@endif
+
+
+<!-- Aval 3 -->
+<x-adminlte-select name="id_aval3" label="Seleccionar Aval 3" fgroup-class="mb-3" 
+                   class="{{ in_array('id_aval3', $errores_aval) ? 'is-invalid' : '' }}">
+    <option value="">Seleccione un aval</option>
+    @foreach ($avales as $aval)
+        <option value="{{ $aval->id_persona }}" 
+            @if (old('id_aval3', $relacion->id_aval3) == $aval->id_persona) selected @endif>
+            {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
+        </option>
+    @endforeach
+</x-adminlte-select>
+@if(in_array('id_aval3', $errores_aval))
+    <small class="text-danger">Este aval ya está relacionado con otro cliente.</small>
+@endif
+
+
                                 </div>
                             </div>
                         </div>
@@ -117,10 +134,44 @@
 @stop
 
 @section('css')
+<style>
+    .is-invalid {
+        border-color: #dc3545 !important;
+    }
+</style>
+
     
 @stop
 
 @section('js')
+
+@if(session('error_aval'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        ['id_aval1', 'id_aval2', 'id_aval3'].forEach(function(name) {
+            const select = document.querySelector(`[name="${name}"]`);
+            if (select) {
+                select.classList.add('is-invalid');
+            }
+        });
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Aval duplicado',
+            text: '{{ session('error_aval') }}',
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Aceptar'
+        });
+    });
+</script>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 @if(session('error'))
     <script>
         Swal.fire({
@@ -133,11 +184,12 @@
     </script>
 
 @endif
-   
+
 @if(session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<script>
+    alert("{{ session('error') }}");
+</script>
 @endif
+
 
 @stop
