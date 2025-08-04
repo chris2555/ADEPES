@@ -94,6 +94,28 @@ public function getByPersona($id)
             'id_aval3' => 'nullable|integer',
         ]);
 
+        $avales = [$request->id_aval1, $request->id_aval2, $request->id_aval3];
+$errores_aval = [];
+
+foreach ($avales as $indice => $aval) {
+    if ($aval) {
+        $existe = DB::table('RelacionSolicitudPersona')
+            ->where(function ($q) use ($aval) {
+                $q->where('id_aval1', $aval)
+                  ->orWhere('id_aval2', $aval)
+                  ->orWhere('id_aval3', $aval);
+            })->exists();
+
+        if ($existe) {
+            $errores_aval[] = 'id_aval' . ($indice + 1);
+        }
+    }
+}
+
+if (!empty($errores_aval)) {
+    return redirect()->back()->withInput()->with('error_aval_campos', $errores_aval);
+}
+
         // Enviar datos a la API
         $response = Http::post('https://goldfish-app-q3ucp.ondigitalocean.app/api/relacionsolicitudpersona', [
             'id_solicitud' => $request->id_solicitud,
