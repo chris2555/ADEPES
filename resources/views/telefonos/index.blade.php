@@ -290,7 +290,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         <div class="col-md-6">
         <p><strong>Creado por:</strong> ${telefono.creado_nombre}</p>
-            <p><strong>Creado en:</strong> ${telefono.creado_en}</p>
+            <p><strong>Creado en:</strong> ${telefono.creado_en ? new Date(telefono.creado_en).toLocaleString('es-ES') : 'No disponible'}</p>
+
             <p><strong>Modificado por:</strong> ${telefono.modificado_nombre}</p>
               <p><strong>Modificado en:</strong> ${telefono.modificado_en? new Date(telefono.modificado_en).toLocaleString() : 'No disponible'}</p>
         </div>

@@ -60,7 +60,7 @@
             <td>{{ $prestamo['estado'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['tipo'] ?? 'N/A' }}</td>
             <td>{{ $prestamo['tipo_garantia'] ?? 'N/A' }}</td>
-            <td>{{ \Carbon\Carbon::parse($prestamo['fecha_inicio'])->format('Y-m-d') }}</td>
+            <td>{{ \Carbon\Carbon::parse($prestamo['fecha_inicio'])->format('d/m/Y') }}</td>
 <!-- <td>{{ \Carbon\Carbon::parse($prestamo['fecha_inicio'])->translatedFormat('j \d\e F \d\e Y') }}</td> -->
             <td style="text-align: center">
                 <!-- Botón Ver sin onclick directo -->
@@ -707,6 +707,15 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script>
+
+    function formatDateToDDMMYYYY(fecha) {
+    const date = new Date(fecha);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".view-prestamo").forEach(button => {
         button.addEventListener("click", function () {
@@ -716,8 +725,8 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("view-identidad").textContent = this.getAttribute("data-identidad");
             document.getElementById("view-tipo-persona").textContent = this.getAttribute("data-tipo-persona");
             document.getElementById("view-total").textContent = this.getAttribute("data-total");
-            document.getElementById("view-inicio").textContent = new Date(this.getAttribute("data-inicio")).toISOString().split("T")[0];
-            document.getElementById("view-vencimiento").textContent = new Date(this.getAttribute("data-vencimiento")).toISOString().split("T")[0];
+            document.getElementById("view-inicio").textContent = formatDateToDDMMYYYY(this.getAttribute("data-inicio"));
+            document.getElementById("view-vencimiento").textContent = formatDateToDDMMYYYY(this.getAttribute("data-vencimiento"));
 
             document.getElementById("view-tipo").textContent = this.getAttribute("data-tipo");
             document.getElementById("view-monto").textContent = this.getAttribute("data-monto");
