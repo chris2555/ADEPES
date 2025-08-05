@@ -47,7 +47,7 @@ class PrestamoController extends Controller
         // Validar los datos del formulariox
         $request->validate([
             'id_persona' => 'required|integer|min:1',
-            'total_pagado' => 'required|numeric|min:1',
+            'total_pagado' => 'nullable|numeric|min:0',
             'fecha_inicio' => 'required|date',
             'fecha_vencimiento' => 'required|date|after_or_equal:fecha_inicio',
             'tipo' => 'required|string',

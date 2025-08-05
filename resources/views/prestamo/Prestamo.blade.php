@@ -72,7 +72,7 @@
                 data-nombre="{{ $prestamo['nombres_apellidos'] }}"
                 data-identidad="{{ $prestamo['n_identidad'] }}"
                  data-tipo-persona="{{ $prestamo['tipo_persona'] }}"
-                data-total="{{ $prestamo['total_pagado'] }}"
+                
                 data-inicio="{{ $prestamo['fecha_inicio'] }}"
                 data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
                 data-tipo="{{ $prestamo['tipo'] }}"
@@ -106,7 +106,7 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
                 data-id-persona="{{ $prestamo['id_persona'] }}"
                 data-nombres="{{ $prestamo['nombres_apellidos'] }}"
                 data-dni="{{ $prestamo['n_identidad'] }}"
-                data-total="{{ $prestamo['total_pagado'] }}"
+                
                 data-inicio="{{ $prestamo['fecha_inicio'] }}"
                 data-vencimiento="{{ $prestamo['fecha_vencimiento'] }}"
                 data-tipo="{{ $prestamo['tipo'] }}"
@@ -181,11 +181,12 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
                                     @endforeach
                                 </select>
                             </div>
-
-                            <div class="mb-3">
-                                <label for="total_pagado" class="form-label">Total Pagado</label>
-                                <input type="number" class="form-control" id="total_pagado" name="total_pagado" min="1" step="0.01" max ="61000"required>
-                            </div>
+                            <!--
+                                <div class="mb-3">
+                                    <label for="total_pagado" class="form-label">Total Pagado</label>
+                                    <input type="number" class="form-control" id="total_pagado" name="total_pagado" min="1" step="0.01" max="61000" required>
+                                </div>
+                            -->
 
                             <div class="mb-3">
                                 <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
@@ -351,7 +352,7 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
                     <div class="col-md-6">
                         <p><strong>Tasa de Interés:</strong> <span id="view-tasa"></span>%</p>
                         <p><strong>Plazo:</strong> <span id="view-plazo"></span> meses</p>
-                        <p><strong>Total Pagado:</strong> L.<span id="view-total"></span></p>
+                        <!--<p><strong>Total Pagado:</strong> L.<span id="view-total"></span></p>-->
                         <p><strong>Fecha Inicio:</strong> <span id="view-inicio"></span></p>
                         <p><strong>Fecha Vencimiento:</strong> <span id="view-vencimiento"></span></p>
                         <p><strong>Tipo de Garantía:</strong> <span id="view-garantia"></span></p>
@@ -466,12 +467,12 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
                                 <input type="text" class="form-control" id="e.n_identidad" name="n_identidad" readonly>
                             </div>
 
-                            <!-- Total Pagado -->
+                            <!-- Total Pagado
                             <div class="mb-3">
                                 <label class="form-label">Total Pagado</label>
-                                <input type="number" class="form-control" id="e.total_pagado" name="total_pagado" min="1" required>
+                                <input type="number" class="form-control" id="e.total_pagado" name="total_pagado" min="1">
                             </div>
-
+                                -->
                             <!-- Fechas -->
                            <div class="mb-3">
                             <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
@@ -665,7 +666,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("e.id_persona").value = this.getAttribute("data-id-persona");
             document.getElementById("e.nombres_apellidos").value = this.getAttribute("data-nombres");
             document.getElementById("e.n_identidad").value = this.getAttribute("data-dni");
-            document.getElementById("e.total_pagado").value = parseFloat(this.getAttribute("data-total")).toFixed(2);
+          //  document.getElementById("e.total_pagado").value = parseFloat(this.getAttribute("data-total")).toFixed(2);
             document.getElementById("e.fecha_inicio").value = new Date(this.getAttribute("data-inicio")).toISOString().split("T")[0];
             document.getElementById("e.fecha_vencimiento").value = new Date(this.getAttribute("data-vencimiento")).toISOString().split("T")[0];
             document.getElementById("e.tipo").value = this.getAttribute("data-tipo");
@@ -712,7 +713,7 @@ document.addEventListener('DOMContentLoaded', function () {
         button.addEventListener('click', function () {
             const idPrestamo = button.getAttribute('data-id');
             const idPersona = button.getAttribute('data-id-persona');
-            const totalPagado = button.getAttribute('data-total-pagado');
+            //const totalPagado = button.getAttribute('data-total-pagado');
             const fechaInicio = button.getAttribute('data-fecha-inicio');
             const fechaVencimiento = button.getAttribute('data-fecha-vencimiento');
             const tipo = button.getAttribute('data-tipo');
@@ -759,7 +760,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("view-nombre").textContent = this.getAttribute("data-nombre");
             document.getElementById("view-identidad").textContent = this.getAttribute("data-identidad");
             document.getElementById("view-tipo-persona").textContent = this.getAttribute("data-tipo-persona");
-            document.getElementById("view-total").textContent = this.getAttribute("data-total");
+            //document.getElementById("view-total").textContent = this.getAttribute("data-total");
             document.getElementById("view-inicio").textContent = formatDateToDDMMYYYY(this.getAttribute("data-inicio"));
             document.getElementById("view-vencimiento").textContent = formatDateToDDMMYYYY(this.getAttribute("data-vencimiento"));
 
