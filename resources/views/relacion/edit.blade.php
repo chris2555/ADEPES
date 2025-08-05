@@ -96,23 +96,24 @@ $errores_aval = session('error_aval_campos', []);
         <small class="text-danger">Este aval ya está relacionado con otro cliente.</small>
 @endif
 
+
 <!-- Aval 3 -->
 <!-- Aval 3 -->
 <x-adminlte-select name="id_aval3" label="Seleccionar Aval 3" fgroup-class="mb-3" 
                 class="{{ in_array('id_aval3', $errores_aval) ? 'is-invalid' : '' }}">
     <option value="">Seleccione un aval</option>
     @foreach ($avales as $aval)
+
         <option value="{{ $aval->id_persona }}" 
-            @if (old('id_aval3', $relacion->id_aval3) == $aval->id_persona) selected @endif>
-            {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
+        @if (old('id_aval3', $relacion->id_aval3) == $aval->id_persona) selected @endif>
+        {{ $aval->nombres_apellidos }} - {{ $aval->n_identidad }}
         </option>
-    @endforeach
+        @endforeach
 </x-adminlte-select>
 
 @if(in_array('id_aval3', $errores_aval))
-    <small class="text-danger">Este aval ya está relacionado con otro cliente.</small>
+       <small class="text-danger">Este aval ya está relacionado con otro cliente.</small>
 @endif
-
 
                         </div>
                         </div>
