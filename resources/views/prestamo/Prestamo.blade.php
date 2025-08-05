@@ -267,7 +267,7 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
 <script>
     document.getElementById("nuevoPrestamoForm").addEventListener("submit", function(event) {
         let id_persona = document.getElementById("id_persona").value;
-        let total_pagado = document.getElementById("total_pagado").value;
+        //let total_pagado = document.getElementById("total_pagado").value;
         let fecha_inicio = document.getElementById("fecha_inicio").value;
         let fecha_vencimiento = document.getElementById("fecha_vencimiento").value;
         let tipo = document.getElementById("tipo").value;
@@ -280,13 +280,6 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
             event.preventDefault();
             return;
         }
-
-        if (isNaN(total_pagado) || total_pagado < 0) {
-            alert("Error: Total Pagado no puede ser negativo");
-            event.preventDefault();
-            return;
-        }
-
         if (isNaN(monto) || monto < 1 || monto > 60000) {
             alert("Error: Monto debe estar entre 1 y 60,000");
             event.preventDefault();
@@ -966,7 +959,7 @@ $(document).on('click', '.view-prestamo', function () {
         // Llenar los campos del formulario con los datos del préstamo
        $('#id_prestamo').val(prestamo.id_prestamo); // Actualiza el campo id_prestamo
         $('#id_persona').val(prestamo.id_persona);
-        $('#total_pagado').val(prestamo.total_pagado);
+        //$('#total_pagado').val(prestamo.total_pagado);
         $('#fecha_inicio').val(formatFecha(prestamo.fecha_inicio));
         $('#fecha_vencimiento').val(formatFecha(prestamo.fecha_vencimiento));
         $('#tipo').val(prestamo.tipo);

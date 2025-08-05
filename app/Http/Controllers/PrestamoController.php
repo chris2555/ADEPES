@@ -135,7 +135,7 @@ class PrestamoController extends Controller
 
     $validatedData = $request->validate([
         'id_persona' => 'required|integer',
-        'total_pagado' => 'required|numeric',
+        'total_pagado' => 'nullable|numeric|min:0',
         'fecha_inicio' => 'required|date',
         'fecha_vencimiento' => 'required|date',
         'tipo' => 'required|string|max:50',
