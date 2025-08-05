@@ -81,6 +81,11 @@
                 data-plazo="{{ $prestamo['plazo'] }}"
                  data-estado="{{ $prestamo['estado'] }}"
                  data-garantia="{{ $prestamo['tipo_garantia'] }}"
+                 data-creado-nombre="{{ $prestamo['creado_por_nombre'] }}"
+data-modificado-nombre="{{ $prestamo['modificado_por_nombre'] }}"
+data-creado-en="{{ $prestamo['creado_en'] }}"
+    data-modificado-en="{{ $prestamo['modificado_en'] }}"
+
 >
                 <i class="bi bi-eye"></i>
                 </button>
@@ -110,6 +115,10 @@
                 data-plazo="{{ $prestamo['plazo'] }}"
                 data-estado="{{ $prestamo['estado'] }}"
                 data-garantia="{{ $prestamo['tipo_garantia'] }}"
+                data-creado-en="{{ $prestamo['creado_en'] ?? '' }}"
+                data-creado-nombre="{{ $prestamo['creado_por_nombre'] }}"
+                data-modificado-en="{{ $prestamo['modificado_en'] ?? '' }}"
+                data-modificado-nombre="{{ $prestamo['modificado_por_nombre'] }}"
                 data-modificado-por="{{ auth()->user()->name }}">
                 <i class="bi bi-pencil"></i>
             </button>
@@ -347,6 +356,14 @@
                         <p><strong>Fecha Vencimiento:</strong> <span id="view-vencimiento"></span></p>
                         <p><strong>Tipo de Garantía:</strong> <span id="view-garantia"></span></p>
                         <p><strong>Estado:</strong> <span id="view-estado"></span></p>
+                    <p><strong>Creado en:</strong> <span id="view-creado-en"></span></p>
+                        <p><strong>Creado por:</strong> <span id="view-creado-nombre"></span></p>
+<p><strong>Modificado en:</strong> <span id="view-modificado-en"></span></p>
+                        <p><strong>Modificado por:</strong> <span id="view-modificado-nombre"></span></p>
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -562,65 +579,83 @@
     </div>
 </div>
 
+
 <script>
-document.getElementById("form-update-prestamo").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita que el formulario se envíe automáticamente
+    
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("form-update-prestamo");
 
-    // Obtener valores
-    let id_persona = document.getElementById("e.id_persona").value;
-    let total_pagado = document.getElementById("e.total_pagado").value;
-    let fecha_inicio = document.getElementById("e.fecha_inicio").value;
-    let fecha_vencimiento = document.getElementById("e.fecha_vencimiento");
-    let tipo = document.getElementById("e.tipo").value.trim();
-    let monto = document.getElementById("e.monto").value;
-    let tasa = document.getElementById("e.tasa").value;
-    let plazo = document.getElementById("e.plazo").value;
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
 
-    // Validaciones
-    if (isNaN(id_persona) || id_persona < 1) {
-        alert("Error: ID Persona debe ser un número mayor que 1.");
-        return;
+        const formData = new FormData(form);
+        const actionUrl = form.getAttribute("action");
+
+        // Validación mínima
+        const tipo = formData.get("tipo")?.trim();
+        if (!/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/.test(tipo)) {
+            Swal.fire("Error", "Tipo debe contener solo letras y espacios.", "error");
+            return;
+        }
+
+       fetch(actionUrl, {
+    method: "POST",
+    body: formData,
+    headers: {
+        "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+    }
+})
+.then(async response => {
+    if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Error en la solicitud");
     }
 
-    if (isNaN(total_pagado) || total_pagado < 1) {
-        alert("Error: Total Pagado debe ser un número mayor que 1.");
-        return;
+    const datos = await response.json(); // ⬅️ recibe el objeto actualizado
+
+    // Cerrar el modal
+    const modalElement = document.getElementById('edit');
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modal.hide();
+
+    // Actualizar la fila sin recargar
+    const fila = document.getElementById(`fila-prestamo-${datos.id_prestamo}`);
+    if (fila) {
+        fila.innerHTML = `
+            <td>${datos.id_prestamo}</td>
+            <td>${datos.nombre}</td>
+            <td>Lps. ${datos.monto}</td>
+            <td>${datos.tasa}%</td>
+            <td>${datos.plazo}</td>
+            <td>${datos.tipo}</td>
+            <td>${datos.fecha_inicio}</td>
+            <td>
+                <button class="btn btn-warning btn-sm" onclick="editarPrestamo(${datos.id_prestamo})">Editar</button>
+            </td>
+        `;
     }
 
-    if (isNaN(monto) || monto < 1 || monto > 60000) {
-        alert("Error: Monto debe estar entre 1 y 60,000.");
-        return;
-    }
+    // Mostrar éxito
+    Swal.fire({
+    icon: 'success',
+    title: '¡Actualizado!',
+    text: 'El préstamo se ha actualizado correctamente.',
+    confirmButtonText: 'Aceptar',
+    confirmButtonColor: '#007bff'
+}).then(() => {
+    localStorage.setItem("prestamo_actualizado", "1");
+    location.reload();
+});
 
-    if (isNaN(tasa) || tasa < 1 || tasa > 12) {
-        alert("Error: Tasa debe estar entre 1% y 12%.");
-        return;
-    }
 
-    if (!/^[a-zA-Z\s]+$/.test(tipo)) {
-        alert("Error: Tipo debe contener solo letras y espacios.");
-        return;
-    }
-
-    if (isNaN(plazo) || plazo < 1 || plazo >36) {
-        alert("Error: Plazo debe estar entre 1 y 36 meses");
-        return;
-    }
-
-    if (new Date(fecha_inicio) > new Date()) {
-        alert("Error: La fecha de inicio no puede estar en el futuro.");
-        return;
-    }
-
-    // Calcular fecha de vencimiento sumando los meses del plazo
-    let fechaInicioDate = new Date(fecha_inicio);
-    fechaInicioDate.setMonth(fechaInicioDate.getMonth() + parseInt(plazo));
-    fecha_vencimiento.value = fechaInicioDate.toISOString().split("T")[0];
-
-    // Enviar formulario después de validaciones
-    event.target.submit();
+})
+.catch(error => {
+    console.error("Error:", error);
+    Swal.fire("Error", "No se pudo actualizar el préstamo.\n" + error.message, "error");
+});
 });
 </script>
+
 <!-- Script para asignar datos al modal -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -734,6 +769,12 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("view-plazo").textContent = this.getAttribute("data-plazo");
             document.getElementById("view-estado").textContent = this.getAttribute("data-estado");
             document.getElementById("view-garantia").textContent = this.getAttribute("data-garantia");
+            document.getElementById("view-creado-en").textContent = this.getAttribute("data-creado-en") ? new Date(this.getAttribute("data-creado-en")).toLocaleString() : "No disponible";
+            document.getElementById("view-creado-nombre").textContent = this.getAttribute("data-creado-nombre") || 'N/A';
+            document.getElementById("view-modificado-en").textContent = this.getAttribute("data-modificado-en") ? new Date(this.getAttribute("data-modificado-en")).toLocaleString() : "No disponible";
+            document.getElementById("view-modificado-nombre").textContent = this.getAttribute("data-modificado-nombre") || 'N/A';
+
+            
         });
     });
 });
@@ -813,8 +854,49 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-   
+document.addEventListener("DOMContentLoaded", function () {
+    if (localStorage.getItem("prestamo_actualizado") === "1") {
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: 'El préstamo fue actualizado correctamente.',
+            confirmButtonText: 'Aceptar',
+    confirmButtonColor: '#007bff'
+        });
+        localStorage.removeItem("prestamo_actualizado");
+    }
+      if (localStorage.getItem("prestamo_eliminado") === "1") {
+        Swal.fire({
+            icon: 'success',
+            title: '¡Préstamo eliminado!',
+            text: 'El préstamo se eliminó correctamente.',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#d33'
+        });
+        localStorage.removeItem("prestamo_eliminado");
+    }
+
+    @if(session('success'))
+        Swal.fire({
+            icon: 'success',
+            title: '¡Éxito!',
+            text: '{{ session('success') }}',
+            confirmButtonText: 'Aceptar',
+    confirmButtonColor: '#007bff'
+        });
+    @endif
+
+    @if(session('error'))
+        Swal.fire({
+            icon: 'error',
+            title: '¡Error!',
+            text: '{{ session('error') }}',
+            confirmButtonColor: '#dc3545'
+        });
+    @endif
+});
 </script>
+@endsection
 
 <script>
 function abrirModalJustificacion(idPrestamo) {
@@ -836,9 +918,7 @@ function abrirModalJustificacion(idPrestamo) {
 </script>
 @stop
 
-@endsection
 
-@section('css')
 
 
 
@@ -929,8 +1009,5 @@ $(document).on('click', '.view-prestamo', function () {
         });
     });
 </script>
-
-
-
-@endsection
 @stop
+
