@@ -464,9 +464,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 <p><strong>Email personal:</strong> ${personas.email_personal}</p>
                 <p><strong>Email laboral:</strong> ${personas.email_laboral}</p>
                 <p><strong>Teléfono secundario:</strong> ${personas.telefono_secundario}</p>
-                <p><strong>Creado por:</strong> ${personas.creado_nombre ?? 'No disponible'}</p>
+                <p><strong>Creado por:</strong> ${personas.creado_por_nombre ?? 'No disponible'}</p>
             <p><strong>Creado en:</strong> ${personas.creado_en ? new Date(personas.creado_en).toLocaleString() : 'No disponible'}</p>
-                 <p><strong>Modificado por:</strong> ${personas.modificado_nombre ?? 'No disponible'}</p>
+                 <p><strong>Modificado por:</strong> ${personas.modificado_por_nombre ?? 'No disponible'}</p>
                 <p><strong>Modificado en:</strong> ${personas.modificado_en ? new Date(personas.modificado_en).toLocaleString() : 'No disponible'}</p>
             </div>
         </div>
