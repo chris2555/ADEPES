@@ -98,7 +98,7 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
                 -->
                @hasanyrole(['Administrador'])
     @if($prestamo['estado'] === 'aprobado' || Auth::user()->hasRole('Administrador'))
-        
+        <!--
             <button class="btn btn-success btn-sm edit-prestamo"
                 data-bs-toggle="modal"
                 data-bs-target="#edit"
@@ -122,7 +122,7 @@ data-creado-en="{{ $prestamo['creado_en'] }}"
                 data-modificado-por="{{ auth()->user()->name }}">
                 <i class="bi bi-pencil"></i>
             </button>
-
+-->
            <form action="{{ route('prestamos.destroy', $prestamo['id_prestamo']) }}" method="POST" class="d-inline delete-form">
     @csrf
     @method('DELETE')
