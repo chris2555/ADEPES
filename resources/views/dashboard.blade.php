@@ -155,7 +155,12 @@
     <div id="personasPagoLista" class="list-group list-group-flush"></div>
       </div>
     </div>
-
+<div class="card w-100 mt-3">
+  <div class="card-body">
+    <div class="goal-title">Personas Que Tienen Sus Pagos Retrasados</div>
+    <div id="personasPagoRetrasadoLista" class="list-group list-group-flush"></div>
+      </div>
+    </div>
   </div>
   </div>
 </div>
@@ -544,6 +549,43 @@ async function cargarPersonasPagoLista() {
 }
 
 window.addEventListener('DOMContentLoaded', cargarPersonasPagoLista);
+</script>
+
+<script>
+async function cargarPersonasPagoRetrasadoLista() {
+  try {
+    const response = await fetch('/api-local/pagoss/retrasados');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const personas = await response.json();
+    const lista = document.getElementById('personasPagoRetrasadoLista');
+    lista.innerHTML = ''; // Limpiar contenido previo
+
+    if (personas.length === 0) {
+      const div = document.createElement('div');
+      div.className = 'list-group-item';
+      div.textContent = 'No hay pagos programados para esta semana.';
+      lista.appendChild(div);
+    } else {
+      personas.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'list-group-item';
+        div.textContent = `${p.nombres_apellidos} - Tel: ${p.telefono_secundario || 'No registrado'}`;
+        lista.appendChild(div);
+      });
+    }
+
+    // Estilo forzado para altura máxima
+    lista.style.maxHeight = '156px';
+    lista.style.overflowY = personas.length > 3 ? 'auto' : 'hidden';
+    lista.style.border = '1px solid #dee2e6';
+
+  } catch (error) {
+    console.error('Error al cargar personas:', error);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', cargarPersonasPagoRetrasadoLista);
 </script>
 
 @stop
