@@ -102,7 +102,10 @@ Route::middleware('auth','twofactor')->group(function () {
     Route::get('/centro-de-ayuda', [HelpCenterController::class, 'index'])->name('centro-de-ayuda');
 
     
-
+    Route::get('/api-local/pagoss/retrasados', function () {
+    $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss/retrasados');
+    return $response->json();
+});
 
     Route::get('/api-local/pagos/por-mes', function () {
     $response = Http::get('https://goldfish-app-q3ucp.ondigitalocean.app/api/pagoss/por-mes');
