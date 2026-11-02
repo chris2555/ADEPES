@@ -7,8 +7,9 @@
 /storage/*.key
 /storage/pail
 /vendor
-.env.backup
-.env.production
+.env
+.env.*
+!.env.example
 .phpactor.json
 .phpunit.result.cache
 Homestead.json
@@ -21,3 +22,8 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+*.log
+.DS_Store
+Thumbs.db
+/database/*.sqlite
+/database/*.sqlite-journal
