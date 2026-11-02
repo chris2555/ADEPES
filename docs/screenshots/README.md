@@ -1,19 +1,20 @@
 # Capturas de pantalla
 
-Coloca aquí las capturas de la aplicación con estos nombres. El README las toma automáticamente cuando se activa la galería.
+Estas imágenes se usan en la sección **Capturas** del README. Fueron extraídas del video de demostración y recortadas para dejar solo la aplicación; los datos personales están difuminados con mosaico.
 
 | Archivo | Pantalla |
 | --- | --- |
-| `01-login.png` | Inicio de sesión |
+| `01-acceso-2fa.png` | Verificación en dos pasos |
 | `02-dashboard.png` | Panel general con indicadores y gráficas |
-| `03-clientes.png` | Listado y expediente de clientes |
-| `04-solicitud.png` | Registro / detalle de una solicitud |
-| `05-amortizacion.png` | Tabla de amortización o dictamen |
-| `06-pagos.png` | Registro de pagos y recibo |
+| `03-alta-cliente.png` | Formulario de alta de cliente |
+| `04-clientes.png` | Listado de clientes y confirmación |
+| `05-conyuge.png` | Listado de cónyuges |
+| `06-usuarios.png` | Usuarios del sistema |
+| `07-roles.png` | Roles y permisos |
 
-## Recomendaciones
+## Si actualizas una captura
 
 - Formato PNG, ancho de 1440 px (o 2× para pantallas Retina).
-- Ventana del navegador completa, sin barras del sistema operativo.
-- Usa datos de prueba: nunca información real de socios.
-- Si la captura es de un PDF, expórtala a PNG a 150–200 ppp.
+- Ventana del navegador completa, sin cámaras de videollamada ni barra de tareas.
+- Usa datos de prueba y difumina cualquier dato real antes de guardarla.
+- Mantén el mismo nombre de archivo para no tocar el README.

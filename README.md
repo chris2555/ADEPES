@@ -54,19 +54,25 @@ Aprobación y registro del préstamo  →  Pagos y cuotas  →  Recibo (PDF) + b
 
 ---
 
-<!--
 ## Capturas
 
-Cuando las imágenes estén en `docs/screenshots/`, activa esta sección:
-
 <p align="center">
-  <img src="docs/screenshots/02-dashboard.png" alt="Panel general de ADEPES" width="100%">
+  <img src="docs/screenshots/02-dashboard.png" alt="Panel general de ADEPES con indicadores y gráficas" width="100%">
 </p>
 
-| Clientes | Solicitudes | Pagos |
-| --- | --- | --- |
-| ![](docs/screenshots/03-clientes.png) | ![](docs/screenshots/04-solicitud.png) | ![](docs/screenshots/06-pagos.png) |
--->
+| Acceso con verificación 2FA | Alta de cliente |
+| --- | --- |
+| ![Verificación en dos pasos](docs/screenshots/01-acceso-2fa.png) | ![Formulario de alta de cliente](docs/screenshots/03-alta-cliente.png) |
+
+| Listado de clientes | Expediente del cónyuge |
+| --- | --- |
+| ![Listado de clientes](docs/screenshots/04-clientes.png) | ![Listado de cónyuges](docs/screenshots/05-conyuge.png) |
+
+| Usuarios del sistema | Roles y permisos |
+| --- | --- |
+| ![Listado de usuarios](docs/screenshots/06-usuarios.png) | ![Gestión de roles](docs/screenshots/07-roles.png) |
+
+> Los datos personales de las capturas están difuminados.
 
 ## Arquitectura
 
