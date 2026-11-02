@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="610" viewBox="0 0 1200 610" role="img" aria-labelledby="t d">
+  <title id="t">Arquitectura de ADEPES</title>
+  <desc id="d">Diagrama: navegador, aplicación Laravel 11, API REST Node.js y base de datos MySQL.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7C8B7E"/>
+    </marker>
+    <linearGradient id="apiGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFF9EC"/>
+      <stop offset="1" stop-color="#FDF1D6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="610" fill="#FFFCF6"/>
+
+  <text x="60" y="62" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="30" font-weight="800" fill="#12351A">Arquitectura de la solución</text>
+  <text x="60" y="92" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="16" fill="#6B7A6E">Aplicación web Laravel + API REST + base de datos relacional</text>
+
+  <!-- Navegador -->
+  <rect x="60" y="130" width="200" height="250" rx="16" fill="#FFFFFF" stroke="#E3E8DF" stroke-width="1.5"/>
+  <rect x="84" y="154" width="44" height="44" rx="12" fill="#EAF4E8"/>
+  <g stroke="#007D0C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="95" y="164" width="22" height="16" rx="2"/>
+    <path d="M95 180h22"/>
+    <path d="M103 184v4h6v-4"/>
+  </g>
+  <text x="84" y="232" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="700" fill="#12351A">Navegador</text>
+  <text x="84" y="262" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">Blade + Bootstrap</text>
+  <text x="84" y="286" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">AdminLTE 3</text>
+  <text x="84" y="310" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">Chart.js</text>
+  <text x="84" y="350" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="12" fill="#93A094">Usuarios y roles internos</text>
+
+  <!-- Laravel -->
+  <rect x="300" y="130" width="400" height="250" rx="16" fill="#0A6B14"/>
+  <text x="324" y="178" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="800" fill="#FFF6E6">Aplicación web</text>
+  <text x="324" y="203" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" font-weight="600" fill="#A9D8A3">Laravel 11 · Blade · AdminLTE · Vite</text>
+  <line x1="324" y1="222" x2="676" y2="222" stroke="#FFF6E6" stroke-opacity="0.18"/>
+  <g font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13.5" fill="#EAF6E6">
+    <circle cx="329" cy="245" r="3" fill="#FFDE00"/><text x="342" y="250">Autenticación con verificación 2FA</text>
+    <circle cx="329" cy="271" r="3" fill="#FFDE00"/><text x="342" y="276">Roles y permisos con Spatie</text>
+    <circle cx="329" cy="297" r="3" fill="#FFDE00"/><text x="342" y="302">Clientes, cónyuge, vivienda e ingresos</text>
+    <circle cx="329" cy="323" r="3" fill="#FFDE00"/><text x="342" y="328">Solicitudes, préstamos, pagos y cuotas</text>
+    <circle cx="329" cy="349" r="3" fill="#FFDE00"/><text x="342" y="354">Dictamen, solicitud y recibo en PDF</text>
+  </g>
+
+  <!-- API -->
+  <rect x="740" y="130" width="200" height="250" rx="16" fill="#FFFFFF" stroke="#E3E8DF" stroke-width="1.5"/>
+  <rect x="764" y="154" width="44" height="44" rx="12" fill="#FFF4D1"/>
+  <g stroke="#B58A00" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="775" y="163" width="22" height="8" rx="2"/>
+    <rect x="775" y="177" width="22" height="8" rx="2"/>
+    <path d="M779 167h.01M779 181h.01"/>
+  </g>
+  <text x="764" y="232" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="700" fill="#12351A">API REST</text>
+  <text x="764" y="262" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">Node.js + Express</text>
+  <text x="764" y="286" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">Endpoints /api/*</text>
+  <text x="764" y="310" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">Repositorio API-ADEPES</text>
+  <text x="764" y="350" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="12" fill="#93A094">Capa de datos y negocio</text>
+
+  <!-- DB -->
+  <rect x="980" y="130" width="160" height="250" rx="16" fill="#FFFFFF" stroke="#E3E8DF" stroke-width="1.5"/>
+  <g stroke="#007D0C" stroke-width="2" fill="#EAF4E8" stroke-linecap="round">
+    <ellipse cx="1028" cy="166" rx="22" ry="8"/>
+    <path d="M1006 166v36c0 4.4 9.8 8 22 8s22-3.6 22-8v-36"/>
+    <path d="M1006 184c0 4.4 9.8 8 22 8s22-3.6 22-8" fill="none"/>
+  </g>
+  <text x="1004" y="232" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="20" font-weight="700" fill="#12351A">MySQL</text>
+  <text x="1004" y="262" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">Datos relacionales</text>
+  <text x="1004" y="286" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">Personas, préstamos,</text>
+  <text x="1004" y="304" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="13" fill="#6B7A6E">pagos y auditoría</text>
+
+  <!-- Flechas -->
+  <g stroke="#7C8B7E" stroke-width="2" marker-end="url(#arrow)">
+    <line x1="264" y1="255" x2="292" y2="255"/>
+    <line x1="704" y1="255" x2="732" y2="255"/>
+    <line x1="944" y1="255" x2="972" y2="255"/>
+  </g>
+  <g font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="11" font-weight="700" fill="#7C8B7E" text-anchor="middle">
+    <text x="278" y="243">HTTPS</text>
+    <text x="718" y="243">JSON</text>
+    <text x="958" y="243">SQL</text>
+  </g>
+
+  <!-- Módulos -->
+  <text x="60" y="432" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2" fill="#93A094">MÓDULOS PRINCIPALES</text>
+  <g font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="14" font-weight="600" fill="#12351A">
+    <rect x="60" y="448" width="168" height="52" rx="12" fill="#FFFFFF" stroke="#E3E8DF"/>
+    <text x="144" y="479" text-anchor="middle">Clientes</text>
+
+    <rect x="240" y="448" width="168" height="52" rx="12" fill="#FFFFFF" stroke="#E3E8DF"/>
+    <text x="324" y="479" text-anchor="middle">Solicitudes</text>
+
+    <rect x="420" y="448" width="168" height="52" rx="12" fill="#FFFFFF" stroke="#E3E8DF"/>
+    <text x="504" y="479" text-anchor="middle">Préstamos</text>
+
+    <rect x="600" y="448" width="168" height="52" rx="12" fill="#FFFFFF" stroke="#E3E8DF"/>
+    <text x="684" y="479" text-anchor="middle">Pagos</text>
+
+    <rect x="780" y="448" width="168" height="52" rx="12" fill="#FFFFFF" stroke="#E3E8DF"/>
+    <text x="864" y="479" text-anchor="middle">Reportes PDF</text>
+
+    <rect x="960" y="448" width="180" height="52" rx="12" fill="#FFF4D1" stroke="#F0D98A"/>
+    <text x="1050" y="479" text-anchor="middle">Seguridad</text>
+  </g>
+
+  <text x="60" y="556" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="12.5" fill="#93A094">Desplegado en DigitalOcean App Platform: la app web y la API corren como servicios separados.</text>
+</svg>
